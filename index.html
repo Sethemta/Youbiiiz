@@ -729,7 +729,7 @@
     async function analyzeWithGemini(imgBase64) {
         try {
             const mimeType = imgBase64.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
-            const response = await fetch('https://us-central1-youbiiiz-app.cloudfunctions.net/analyzeImage', {
+            const response = await fetch('https://analyzeimage-xjtnixfrra-uc.a.run.app', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
