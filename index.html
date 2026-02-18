@@ -8,27 +8,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #050505;
-            color: white;
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
-
-        /* --- LOGO ENGINE (3i Balle au sol - Validé) --- */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050505; color: white; overflow: hidden; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         .brand-logo { display: inline-flex; align-items: baseline; font-weight: 800; line-height: 1; user-select: none; }
         .i-wrapper { display: inline-flex; align-items: flex-end; gap: 4px; margin: 0 4px; height: 100%; }
         .i-stem { width: 12px; height: 38px; background: #22d3ee; border-radius: 2px; }
         .i-dot { width: 12px; height: 12px; background: #22d3ee; border-radius: 2px; position: absolute; bottom: 48px; box-shadow: 0 0 20px rgba(34, 211, 238, 0.5); }
         .i-char { position: relative; display: flex; flex-direction: column; align-items: center; }
-
         header .i-stem { width: 5px; height: 16px; }
         header .i-dot { width: 5px; height: 5px; bottom: 20px; box-shadow: none; }
         header .i-wrapper { gap: 2px; margin: 0 2px; }
-
         @keyframes subtle-dribble {
             0%, 100% { transform: translateY(0); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
             50% { transform: translateY(var(--bounce)); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
@@ -36,38 +24,51 @@
         .i-char:nth-child(1) .i-dot { --bounce: -10px; animation: subtle-dribble 0.9s infinite; }
         .i-char:nth-child(2) .i-dot { --bounce: -15px; animation: subtle-dribble 1.3s infinite 0.2s; }
         .i-char:nth-child(3) .i-dot { --bounce: -12px; animation: subtle-dribble 1.1s infinite 0.5s; }
-
-        /* UI */
-        .glass-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-        .nav-blur { background: rgba(5, 5, 5, 0.9); backdrop-filter: saturate(180%) blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.05); }
-        
+        .glass-card { background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+        .nav-blur { background: rgba(5,5,5,0.9); backdrop-filter: saturate(180%) blur(20px); border-top: 1px solid rgba(255,255,255,0.05); }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
         .scan-line-anim { animation: scanMove 2s linear infinite; }
         @keyframes scanMove { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-        
         .modal-enter { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        /* ERROR TOAST */
+        .slide-in { animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         #debug-console { display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; padding: 10px 20px; border-radius: 99px; font-size: 12px; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 90%; text-align: center; }
+        .filter-btn { padding: 6px 14px; border-radius: 99px; font-size: 10px; font-weight: 700; border: 1px solid rgba(255,255,255,0.1); color: #71717a; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .filter-btn.active { background: #22d3ee; color: black; border-color: #22d3ee; }
+        .msg-bubble-me { background: #22d3ee; color: black; border-radius: 18px 18px 4px 18px; }
+        .msg-bubble-them { background: #18181b; color: white; border-radius: 18px 18px 18px 4px; border: 1px solid rgba(255,255,255,0.08); }
+        @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
     </style>
 </head>
 <body class="bg-[#050505]">
 
-    <div id="debug-console"></div>
+<div id="debug-console"></div>
 
-    <!-- SPLASH SCREEN -->
-    <div id="splash" class="fixed inset-0 z-[200] bg-[#050505] flex flex-col items-center justify-center transition-all duration-500">
-        <div class="brand-logo text-7xl flex items-baseline">
+<!-- SPLASH -->
+<div id="splash" class="fixed inset-0 z-[200] bg-[#050505] flex flex-col items-center justify-center transition-all duration-500">
+    <div class="brand-logo text-7xl flex items-baseline">
+        <span>YOUB</span>
+        <span class="i-wrapper">
+            <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
+            <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
+            <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
+        </span>
+        <span>Z</span>
+    </div>
+    <div class="mt-12 w-32 h-1 bg-zinc-900 rounded-full overflow-hidden">
+        <div class="h-full bg-cyan-500 animate-[loading_2s_ease-in-out_infinite]" style="width:50%"></div>
+    </div>
+    <p class="mt-4 text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Connexion...</p>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden opacity-0 transition-opacity duration-700 h-screen flex flex-col">
+
+    <header class="h-20 px-6 flex items-center justify-between nav-blur z-50 shrink-0">
+        <div class="brand-logo text-2xl cursor-pointer" onclick="switchView('home')">
             <span>YOUB</span>
             <span class="i-wrapper">
                 <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
@@ -76,469 +77,679 @@
             </span>
             <span>Z</span>
         </div>
-        <div class="mt-12 w-32 h-1 bg-zinc-900 rounded-full overflow-hidden">
-            <div class="h-full bg-cyan-500 animate-[loading_2s_ease-in-out_infinite]" style="width: 50%"></div>
-        </div>
-        <p class="mt-4 text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Connexion...</p>
-        <style>@keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }</style>
-    </div>
-
-    <!-- APP -->
-    <div id="app" class="hidden opacity-0 transition-opacity duration-700 h-screen flex flex-col">
-        
-        <header class="h-20 px-6 flex items-center justify-between nav-blur z-50 shrink-0">
-            <div class="brand-logo text-2xl" onclick="switchView('home')">
-                <span>YOUB</span>
-                <span class="i-wrapper">
-                    <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
-                    <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
-                    <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
-                </span>
-                <span>Z</span>
+        <div class="flex items-center gap-4">
+            <div id="user-badge" class="text-[10px] font-mono text-zinc-500">...</div>
+            <div onclick="switchView('profile')" class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center border border-white/10 cursor-pointer">
+                <i class="fa-solid fa-user text-sm text-white"></i>
             </div>
-            <div class="flex items-center gap-4">
-                <div id="user-badge" class="text-[10px] font-mono text-zinc-500">...</div>
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center border border-white/10">
-                    <i class="fa-solid fa-user text-sm text-white"></i>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto no-scrollbar pb-32 relative">
+
+        <!-- HOME -->
+        <div id="view-home" class="px-6 pt-6 max-w-lg mx-auto">
+            <div class="glass-card rounded-[2.5rem] p-8 relative overflow-hidden mb-6 text-center cursor-pointer active:scale-95 transition-transform" onclick="startScan()">
+                <div class="relative z-10 flex flex-col items-center gap-4">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.4)] border-[4px] border-[#050505]">
+                        <i class="fa-solid fa-camera text-3xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-extrabold tracking-tighter text-white">SCANNER UN OBJET</h1>
+                        <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">IA active • Instantané</p>
+                    </div>
                 </div>
             </div>
-        </header>
 
-        <main class="flex-1 overflow-y-auto no-scrollbar pb-32 relative">
-            <div id="view-home" class="px-6 pt-6 max-w-lg mx-auto transition-all duration-300">
-                
-                <!-- BANNER SCAN -->
-                <div class="glass-card rounded-[2.5rem] p-8 relative overflow-hidden mb-8 text-center cursor-pointer active:scale-95 transition-transform" onclick="startScan()">
-                    <div class="relative z-10 flex flex-col items-center gap-4">
-                        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.4)] border-[4px] border-[#050505]">
-                            <i class="fa-solid fa-camera text-3xl text-white"></i>
+            <!-- FILTRES -->
+            <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
+                <button class="filter-btn active" onclick="filterFeed('all', this)">Tout</button>
+                <button class="filter-btn" onclick="filterFeed('High-Tech', this)">High-Tech</button>
+                <button class="filter-btn" onclick="filterFeed('Jeux vidéo', this)">Jeux vidéo</button>
+                <button class="filter-btn" onclick="filterFeed('Informatique', this)">Informatique</button>
+                <button class="filter-btn" onclick="filterFeed('Mode', this)">Mode</button>
+                <button class="filter-btn" onclick="filterFeed('Maison', this)">Maison</button>
+                <button class="filter-btn" onclick="filterFeed('Sport', this)">Sport</button>
+            </div>
+
+            <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-2">
+                <h2 class="text-lg font-bold tracking-tight">Derniers Drops</h2>
+                <div class="text-[10px] text-green-500 font-bold uppercase flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Live Sync
+                </div>
+            </div>
+
+            <div id="feed" class="grid grid-cols-1 gap-4 pb-10">
+                <div class="py-10 text-center text-zinc-700"><i class="fa-solid fa-circle-notch animate-spin text-2xl"></i></div>
+            </div>
+        </div>
+
+        <!-- SEARCH -->
+        <div id="view-search" class="px-6 pt-6 max-w-lg mx-auto hidden">
+            <div class="relative mb-6">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                <input id="search-input" type="text" placeholder="Rechercher un objet..." oninput="searchItems(this.value)"
+                    class="w-full bg-zinc-900 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-zinc-600 outline-none focus:border-cyan-500 transition-colors text-sm font-medium">
+            </div>
+            <div id="search-results" class="grid grid-cols-1 gap-4 pb-10">
+                <div class="py-12 text-center text-zinc-600 text-xs font-bold uppercase">Tapez pour rechercher</div>
+            </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div id="view-profile" class="px-6 pt-6 max-w-lg mx-auto hidden">
+            <div class="glass-card rounded-[2.5rem] p-6 mb-6">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center border-2 border-white/10 shrink-0">
+                        <i class="fa-solid fa-user text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-extrabold text-lg text-white">Mon Profil</h2>
+                        <p id="profile-uid" class="text-[10px] text-zinc-500 font-mono">...</p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                            <span class="text-[10px] text-green-500 font-bold">Actif</span>
                         </div>
-                        <div>
-                            <h1 class="text-2xl font-extrabold tracking-tighter text-white">SCANNER UN OBJET</h1>
-                            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">IA active • Instantané</p>
-                        </div>
                     </div>
                 </div>
-
-                <div class="flex items-center justify-between mb-6 border-b border-white/5 pb-2">
-                    <h2 class="text-lg font-bold tracking-tight">Derniers Drops</h2>
-                    <div class="text-[10px] text-green-500 font-bold uppercase flex items-center gap-2">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Live Sync
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="bg-black/50 rounded-2xl p-3 text-center border border-white/5">
+                        <p id="profile-count" class="text-2xl font-black text-cyan-400">0</p>
+                        <p class="text-[9px] text-zinc-500 uppercase font-bold mt-1">Annonces</p>
                     </div>
-                </div>
-
-                <div id="feed" class="grid grid-cols-1 gap-4 pb-10">
-                    <div class="py-10 text-center text-zinc-700">
-                        <i class="fa-solid fa-circle-notch animate-spin text-2xl"></i>
+                    <div class="bg-black/50 rounded-2xl p-3 text-center border border-white/5">
+                        <p class="text-2xl font-black text-white">0</p>
+                        <p class="text-[9px] text-zinc-500 uppercase font-bold mt-1">Ventes</p>
+                    </div>
+                    <div class="bg-black/50 rounded-2xl p-3 text-center border border-white/5">
+                        <p class="text-2xl font-black text-yellow-400">★ 5.0</p>
+                        <p class="text-[9px] text-zinc-500 uppercase font-bold mt-1">Note</p>
                     </div>
                 </div>
             </div>
-        </main>
 
-        <nav class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-20 glass-card rounded-full flex items-center justify-around px-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[100]">
-            <button onclick="switchView('home')" class="text-2xl text-cyan-400"><i class="fa-solid fa-house"></i></button>
-            <button onclick="startScan()" class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex items-center justify-center text-white shadow-[0_0_25px_rgba(34,211,238,0.5)] -mt-8 border-[6px] border-[#050505] active:scale-90 transition-transform">
-                <i class="fa-solid fa-plus text-2xl"></i>
+            <h3 class="font-bold text-sm text-zinc-400 uppercase tracking-widest mb-3">Mes annonces</h3>
+            <div id="my-listings" class="grid grid-cols-1 gap-4 pb-10">
+                <div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- NAV -->
+    <nav class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-20 glass-card rounded-full flex items-center justify-around px-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[100]">
+        <button onclick="switchView('home')" id="nav-home" class="text-2xl text-cyan-400"><i class="fa-solid fa-house"></i></button>
+        <button onclick="startScan()" class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex items-center justify-center text-white shadow-[0_0_25px_rgba(34,211,238,0.5)] -mt-8 border-[6px] border-[#050505] active:scale-90 transition-transform">
+            <i class="fa-solid fa-plus text-2xl"></i>
+        </button>
+        <button onclick="switchView('search')" id="nav-search" class="text-2xl text-zinc-600"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </nav>
+</div>
+
+<!-- SCAN OVERLAY -->
+<div id="scan-overlay" class="fixed inset-0 z-[300] bg-black hidden flex-col p-6">
+    <div class="flex justify-between items-center mb-6">
+        <span class="text-xs font-bold tracking-[0.3em] text-cyan-500">SCANNER IA</span>
+        <button onclick="stopScan()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="flex-1 relative bg-zinc-900 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl flex flex-col justify-center items-center">
+        <img id="scan-preview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
+        <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
+        <div id="scan-placeholder" class="text-center">
+            <i class="fa-solid fa-camera text-4xl text-zinc-700 mb-4"></i>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Alignez l'objet</p>
+        </div>
+        <div id="uploading-msg" class="hidden absolute inset-0 bg-black/90 z-30 flex flex-col items-center justify-center">
+            <i class="fa-solid fa-circle-notch animate-spin text-cyan-500 text-4xl mb-4"></i>
+            <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest">ANALYSE EN COURS...</span>
+        </div>
+    </div>
+    <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminée</span>
+            <span class="text-xs text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> Succès</span>
+        </div>
+        <input id="ai-item-name" class="w-full bg-transparent text-xl font-extrabold text-white mb-4 border-b border-white/10 focus:border-cyan-500 outline-none pb-2" value="...">
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <div class="bg-black p-3 rounded-xl border border-white/10">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">Prix Estimé</p>
+                <p id="ai-price" class="text-lg font-black text-cyan-400">...</p>
+            </div>
+            <div class="bg-black p-3 rounded-xl border border-white/10">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">Catégorie</p>
+                <p id="ai-category" class="text-sm font-black text-white">...</p>
+            </div>
+            <div class="bg-black p-3 rounded-xl border border-white/10">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">État</p>
+                <p id="ai-condition" class="text-sm font-black text-green-400">...</p>
+            </div>
+        </div>
+        <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-6">
+            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Description Auto</p>
+            <textarea id="ai-desc" class="w-full bg-transparent text-xs text-zinc-300 outline-none h-16 resize-none" readonly></textarea>
+        </div>
+        <button id="validate-btn" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform">VALIDER & PUBLIER</button>
+    </div>
+    <canvas id="capture-canvas" class="hidden"></canvas>
+    <div class="h-24 flex items-center justify-center shrink-0" style="position:relative; z-index:50;">
+        <input type="file" id="camera-input" class="hidden" accept="image/*" onchange="handleImageFile(event)">
+        <button id="capture-btn" onclick="capturePhoto()" class="w-20 h-20 bg-white rounded-full border-[6px] border-black ring-2 ring-white active:scale-90 transition-all shadow-2xl"></button>
+    </div>
+</div>
+<video id="camera-video" class="hidden" style="position:fixed; top:120px; left:0; right:0; width:100%; height:calc(100% - 220px); object-fit:cover; z-index:310;" autoplay playsinline muted></video>
+
+<!-- DETAIL ANNONCE -->
+<div id="detail-modal" class="fixed inset-0 z-[400] bg-[#050505] hidden flex-col slide-in">
+    <div class="h-14 flex items-center px-4 nav-blur shrink-0">
+        <button onclick="closeDetail()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center mr-4"><i class="fa-solid fa-arrow-left text-white"></i></button>
+        <span class="font-bold text-sm">Détail de l'annonce</span>
+    </div>
+    <div class="flex-1 overflow-y-auto no-scrollbar">
+        <div id="detail-img-wrap" class="w-full h-72 bg-zinc-900 relative overflow-hidden">
+            <img id="detail-img" class="w-full h-full object-cover">
+            <div class="absolute bottom-4 right-4">
+                <span id="detail-condition" class="bg-black/70 text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/10"></span>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-4">
+                <h2 id="detail-title" class="font-extrabold text-2xl text-white flex-1 pr-4 leading-tight"></h2>
+                <p id="detail-price" class="text-cyan-400 font-black text-3xl shrink-0"></p>
+            </div>
+            <span id="detail-category" class="text-[10px] text-zinc-500 font-bold uppercase bg-zinc-900 px-3 py-1 rounded-full border border-white/5 mb-4 inline-block"></span>
+            <div class="glass-card rounded-2xl p-4 mb-4">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2">Description</p>
+                <p id="detail-desc" class="text-sm text-zinc-300 leading-relaxed"></p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 mb-6">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-3">Vendeur</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center">
+                        <i class="fa-solid fa-user text-sm text-white"></i>
+                    </div>
+                    <div>
+                        <p id="detail-seller" class="font-bold text-sm text-white"></p>
+                        <p class="text-[10px] text-yellow-400">★★★★★ Vendeur vérifié</p>
+                    </div>
+                </div>
+            </div>
+            <button id="contact-btn" onclick="" class="w-full bg-zinc-900 border border-white/10 text-white font-bold py-4 rounded-xl mb-3 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                <i class="fa-solid fa-message"></i> Contacter le vendeur
             </button>
-            <button class="text-2xl text-zinc-600"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </nav>
-    </div>
-
-    <!-- SCAN OVERLAY -->
-    <div id="scan-overlay" class="fixed inset-0 z-[300] bg-black hidden flex-col p-6">
-        <div class="flex justify-between items-center mb-6">
-            <span class="text-xs font-bold tracking-[0.3em] text-cyan-500">SCANNER IA</span>
-            <button onclick="stopScan()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        
-        <div class="flex-1 relative bg-zinc-900 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl flex flex-col justify-center items-center">
-            <img id="scan-preview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
-            <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
-            
-            <div id="scan-placeholder" class="text-center">
-                <i class="fa-solid fa-camera text-4xl text-zinc-700 mb-4"></i>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Alignez l'objet</p>
-            </div>
-            
-            <!-- LOADER FORCÉ AVEC FOND -->
-            <div id="uploading-msg" class="hidden absolute inset-0 bg-black/90 z-30 flex flex-col items-center justify-center">
-                 <i class="fa-solid fa-circle-notch animate-spin text-cyan-500 text-4xl mb-4"></i>
-                 <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest">ANALYSE EN COURS...</span>
-            </div>
-        </div>
-
-        <!-- AI RESULTS -->
-        <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter">
-            <div class="flex justify-between items-center mb-4">
-                <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminée</span>
-                <span class="text-xs text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> Succès</span>
-            </div>
-            
-            <input id="ai-item-name" class="w-full bg-transparent text-xl font-extrabold text-white mb-4 border-b border-white/10 focus:border-cyan-500 outline-none pb-2" value="...">
-            
-            <div class="grid grid-cols-3 gap-3 mb-6">
-                <div class="bg-black p-3 rounded-xl border border-white/10">
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">Prix Estimé</p>
-                    <p id="ai-price" class="text-lg font-black text-cyan-400">...</p>
-                </div>
-                <div class="bg-black p-3 rounded-xl border border-white/10">
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">Catégorie</p>
-                    <p id="ai-category" class="text-sm font-black text-white">...</p>
-                </div>
-                <div class="bg-black p-3 rounded-xl border border-white/10">
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">État</p>
-                    <p id="ai-condition" class="text-sm font-black text-green-400">...</p>
-                </div>
-            </div>
-            
-            <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-6">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Description Auto</p>
-                <textarea id="ai-desc" class="w-full bg-transparent text-xs text-zinc-300 outline-none h-16 resize-none" readonly>...</textarea>
-            </div>
-
-            <button id="validate-btn" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform">VALIDER & PUBLIER</button>
-        </div>
-
-        <!-- Canvas caché pour capturer la frame vidéo -->
-        <canvas id="capture-canvas" class="hidden"></canvas>
-
-        <!-- Bouton capture TOUJOURS au dessus de la vidéo -->
-        <div class="h-24 flex items-center justify-center shrink-0" style="position:relative; z-index:50;">
-            <input type="file" id="camera-input" class="hidden" accept="image/*" onchange="handleImageFile(event)">
-            <button id="capture-btn" onclick="capturePhoto()" class="w-20 h-20 bg-white rounded-full border-[6px] border-black ring-2 ring-white active:scale-90 transition-all shadow-2xl"></button>
-        </div>
-    </div>
-
-    <!-- Vidéo positionnée en fixed pour couvrir la zone aperçu sans déborder sur le bouton -->
-    <video id="camera-video" class="hidden" style="position:fixed; top:120px; left:0; right:0; width:100%; height:calc(100% - 220px); object-fit:cover; z-index:310;" autoplay playsinline muted></video>
-
-    <!-- PAIEMENT MODAL -->
-    <div id="payment-modal" class="fixed inset-0 z-[400] bg-black/95 backdrop-blur-sm hidden items-end sm:items-center justify-center p-4">
-        <div class="bg-[#0f0f0f] w-full max-w-md p-6 rounded-[2.5rem] border border-white/10 modal-enter shadow-2xl">
-            <div class="flex justify-between items-center mb-8">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-500"><i class="fa-solid fa-shield-halved"></i></div>
-                    <span class="font-bold text-sm">Paiement Sécurisé</span>
-                </div>
-                <button onclick="closePayment()" class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="flex gap-4 mb-8">
-                <div id="pay-img" class="w-20 h-20 rounded-2xl bg-zinc-800 bg-cover bg-center border border-white/10"></div>
-                <div class="flex-1">
-                    <h4 id="pay-title" class="font-bold text-lg leading-tight mb-1">...</h4>
-                    <p id="pay-price" class="text-cyan-500 font-extrabold text-2xl">0€</p>
-                </div>
-            </div>
-            <button onclick="processPayment()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-5 rounded-2xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all active:scale-95">
-                <i class="fa-brands fa-apple-pay text-xl"></i> Payer & Bloquer
+            <button id="buy-btn" onclick="" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.3)] active:scale-95 transition-transform">
+                <i class="fa-brands fa-apple-pay text-xl"></i> Acheter maintenant
             </button>
         </div>
     </div>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+<!-- MESSAGERIE -->
+<div id="chat-modal" class="fixed inset-0 z-[500] bg-[#050505] hidden flex-col">
+    <div class="h-14 flex items-center px-4 nav-blur shrink-0">
+        <button onclick="closeChat()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center mr-3"><i class="fa-solid fa-arrow-left text-white"></i></button>
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center">
+                <i class="fa-solid fa-user text-xs text-white"></i>
+            </div>
+            <div>
+                <p id="chat-seller-name" class="font-bold text-sm text-white"></p>
+                <p class="text-[10px] text-green-400">En ligne</p>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 py-2 bg-zinc-900/50 border-b border-white/5 flex gap-3 items-center shrink-0">
+        <img id="chat-item-img" class="w-10 h-10 rounded-xl object-cover border border-white/10">
+        <div>
+            <p id="chat-item-name" class="text-xs font-bold text-white truncate max-w-[200px]"></p>
+            <p id="chat-item-price" class="text-xs text-cyan-400 font-bold"></p>
+        </div>
+    </div>
+    <div id="chat-messages" class="flex-1 overflow-y-auto no-scrollbar p-4 flex flex-col gap-3">
+        <div class="text-center py-4">
+            <span class="text-[10px] text-zinc-600 font-bold uppercase bg-zinc-900 px-3 py-1 rounded-full">Début de la conversation</span>
+        </div>
+    </div>
+    <div class="p-4 nav-blur shrink-0">
+        <div class="flex gap-3 items-center">
+            <input id="chat-input" type="text" placeholder="Votre message..." 
+                class="flex-1 bg-zinc-900 border border-white/10 rounded-2xl px-4 py-3 text-white placeholder-zinc-600 outline-none focus:border-cyan-500 text-sm"
+                onkeypress="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()" class="w-12 h-12 bg-cyan-500 rounded-2xl flex items-center justify-center active:scale-90 transition-transform">
+                <i class="fa-solid fa-paper-plane text-black"></i>
+            </button>
+        </div>
+        <!-- Messages rapides -->
+        <div class="flex gap-2 mt-2 overflow-x-auto no-scrollbar">
+            <button onclick="quickMsg('Est-ce encore disponible ?')" class="text-[10px] text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-full border border-white/5 whitespace-nowrap">Disponible ?</button>
+            <button onclick="quickMsg('Quel est le dernier prix ?')" class="text-[10px] text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-full border border-white/5 whitespace-nowrap">Dernier prix ?</button>
+            <button onclick="quickMsg('Possible de livrer ?')" class="text-[10px] text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-full border border-white/5 whitespace-nowrap">Livraison ?</button>
+            <button onclick="quickMsg('Je suis intéressé(e) !')" class="text-[10px] text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-full border border-white/5 whitespace-nowrap">Intéressé !</button>
+        </div>
+    </div>
+</div>
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",
-          authDomain: "youbiiiz-app.firebaseapp.com",
-          projectId: "youbiiiz-app",
-          storageBucket: "youbiiiz-app.firebasestorage.app",
-          messagingSenderId: "664733497216",
-          appId: "1:664733497216:web:ae19fbadf0fa509f59b365"
-        };
-        const GEMINI_API_KEY = "AIzaSyDWfqiabzSu5d3To5yzIDd_PZUQyZBJFzc";
+<!-- PAIEMENT MODAL -->
+<div id="payment-modal" class="fixed inset-0 z-[600] bg-black/95 backdrop-blur-sm hidden items-end sm:items-center justify-center p-4">
+    <div class="bg-[#0f0f0f] w-full max-w-md p-6 rounded-[2.5rem] border border-white/10 modal-enter shadow-2xl">
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-500"><i class="fa-solid fa-shield-halved"></i></div>
+                <span class="font-bold text-sm">Paiement Sécurisé</span>
+            </div>
+            <button onclick="closePayment()" class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="flex gap-4 mb-8">
+            <div id="pay-img" class="w-20 h-20 rounded-2xl bg-zinc-800 bg-cover bg-center border border-white/10"></div>
+            <div class="flex-1">
+                <h4 id="pay-title" class="font-bold text-lg leading-tight mb-1">...</h4>
+                <p id="pay-price" class="text-cyan-500 font-extrabold text-2xl">0€</p>
+            </div>
+        </div>
+        <button onclick="processPayment()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-5 rounded-2xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all active:scale-95">
+            <i class="fa-brands fa-apple-pay text-xl"></i> Payer & Bloquer
+        </button>
+    </div>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        let currentUser = null;
-        let currentScanData = null;
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // ✅ FIX 2 — allItems déclaré globalement
-        let allItems = [];
+    const firebaseConfig = {
+        apiKey: "AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",
+        authDomain: "youbiiiz-app.firebaseapp.com",
+        projectId: "youbiiiz-app",
+        storageBucket: "youbiiiz-app.firebasestorage.app",
+        messagingSenderId: "664733497216",
+        appId: "1:664733497216:web:ae19fbadf0fa509f59b365"
+    };
+    const GEMINI_API_KEY = "AIzaSyDWfqiabzSu5d3To5yzIDd_PZUQyZBJFzc";
 
-        function logError(msg) {
-            console.error(msg);
-            const debug = document.getElementById('debug-console');
-            debug.style.display = 'block';
-            debug.innerText = msg;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let currentUser = null;
+    let currentScanData = null;
+    let allItems = [];
+    let currentItem = null;
+    let chatMessages = [];
+
+    function logError(msg) {
+        console.error(msg);
+        const debug = document.getElementById('debug-console');
+        debug.style.display = 'block';
+        debug.innerText = msg;
+        setTimeout(() => debug.style.display = 'none', 5000);
+    }
+
+    // AUTH
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUser = user;
+            document.getElementById('user-badge').innerText = `ID: ${user.uid.substring(0,4)}`;
+            document.getElementById('profile-uid').innerText = `UID: ${user.uid.substring(0,12)}...`;
+            startApp();
+        } else {
+            signInAnonymously(auth).catch(e => logError("Auth Error: " + e.message));
         }
+    });
 
-        // AUTH
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                if(document.getElementById('user-badge')) document.getElementById('user-badge').innerText = `ID: ${user.uid.substring(0,4)}`;
-                startApp();
-            } else {
-                signInAnonymously(auth).catch(e => {
-                    logError("Auth Error: " + e.message);
-                });
-            }
-        });
+    function startApp() {
+        setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
+            setTimeout(() => document.getElementById('app').style.opacity = '1', 100);
+            initFeed();
+        }, 1000);
+    }
 
-        function startApp() {
-            setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-                document.getElementById('app').classList.remove('hidden');
-                setTimeout(() => document.getElementById('app').style.opacity = '1', 100);
-                initFeed();
-            }, 1000);
+    // FEED
+    function initFeed() {
+        const feedCol = collection(db, 'scans');
+        onSnapshot(feedCol, (snapshot) => {
+            allItems = [];
+            snapshot.forEach(d => allItems.push({id: d.id, ...d.data()}));
+            allItems.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+            renderFeed(allItems);
+            updateProfileListings();
+        }, (error) => logError("Feed Error: " + error.message));
+    }
+
+    function renderFeed(items) {
+        const container = document.getElementById('feed');
+        if (items.length === 0) {
+            container.innerHTML = `<div class="py-12 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce</div>`;
+            return;
         }
+        container.innerHTML = items.map(item => itemCard(item)).join('');
+    }
 
-        // DATA
-        function initFeed() {
-            const feedCol = collection(db, 'scans');
-            onSnapshot(feedCol, (snapshot) => {
-                // ✅ FIX 2 — on remplit allItems ici
-                allItems = [];
-                snapshot.forEach(doc => allItems.push({id: doc.id, ...doc.data()}));
-                allItems.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                renderFeed(allItems);
-            }, (error) => {
-                logError("Feed Error: " + error.message);
+    function itemCard(item) {
+        return `
+        <div class="glass-card rounded-[2rem] p-4 flex gap-4 items-center fade-in cursor-pointer active:scale-95 transition-transform" onclick="openDetail('${item.id}')">
+            <div class="w-20 h-20 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5">
+                <img src="${item.imageUrl || ''}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-zinc-600\'><i class=\'fa-solid fa-image text-2xl\'></i></div>'">
+            </div>
+            <div class="flex-1 min-w-0">
+                <h4 class="font-bold text-sm truncate text-white">${item.itemName || 'Objet'}</h4>
+                <p class="text-cyan-400 font-extrabold text-lg">${item.price || 0}€</p>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">${item.category || 'Divers'}</span>
+                    ${item.condition ? `<span class="text-[9px] text-green-500 font-bold">${item.condition}</span>` : ''}
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-zinc-700 text-xs shrink-0"></i>
+        </div>`;
+    }
+
+    // FILTRES
+    window.filterFeed = (cat, btn) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (cat === 'all') {
+            renderFeed(allItems);
+        } else {
+            const filtered = allItems.filter(i => (i.category || '').toLowerCase().includes(cat.toLowerCase()));
+            renderFeed(filtered);
+        }
+    };
+
+    // RECHERCHE
+    window.searchItems = (query) => {
+        const container = document.getElementById('search-results');
+        if (!query.trim()) {
+            container.innerHTML = `<div class="py-12 text-center text-zinc-600 text-xs font-bold uppercase">Tapez pour rechercher</div>`;
+            return;
+        }
+        const results = allItems.filter(i =>
+            (i.itemName || '').toLowerCase().includes(query.toLowerCase()) ||
+            (i.category || '').toLowerCase().includes(query.toLowerCase()) ||
+            (i.description || '').toLowerCase().includes(query.toLowerCase())
+        );
+        if (results.length === 0) {
+            container.innerHTML = `<div class="py-12 text-center text-zinc-600 text-xs font-bold uppercase">Aucun résultat</div>`;
+        } else {
+            container.innerHTML = results.map(item => itemCard(item)).join('');
+        }
+    };
+
+    // PROFIL
+    function updateProfileListings() {
+        if (!currentUser) return;
+        const myItems = allItems.filter(i => i.userId === currentUser.uid);
+        document.getElementById('profile-count').innerText = myItems.length;
+        const container = document.getElementById('my-listings');
+        if (myItems.length === 0) {
+            container.innerHTML = `<div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce</div>`;
+        } else {
+            container.innerHTML = myItems.map(item => itemCard(item)).join('');
+        }
+    }
+
+    // DETAIL ANNONCE
+    window.openDetail = (itemId) => {
+        const item = allItems.find(i => i.id === itemId);
+        if (!item) return;
+        currentItem = item;
+        document.getElementById('detail-img').src = item.imageUrl || '';
+        document.getElementById('detail-title').innerText = item.itemName || 'Objet';
+        document.getElementById('detail-price').innerText = (item.price || 0) + '€';
+        document.getElementById('detail-category').innerText = item.category || 'Divers';
+        document.getElementById('detail-condition').innerText = item.condition || 'Bon état';
+        document.getElementById('detail-desc').innerText = item.description || 'Aucune description.';
+        document.getElementById('detail-seller').innerText = 'Vendeur #' + (item.userId || '').substring(0, 6);
+        document.getElementById('contact-btn').onclick = () => openChat(item);
+        document.getElementById('buy-btn').onclick = () => openPaymentFromItem(item);
+        const modal = document.getElementById('detail-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    };
+
+    window.closeDetail = () => {
+        const modal = document.getElementById('detail-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    };
+
+    // CHAT
+    window.openChat = (item) => {
+        currentItem = item;
+        chatMessages = [];
+        document.getElementById('chat-seller-name').innerText = 'Vendeur #' + (item.userId || '').substring(0, 6);
+        document.getElementById('chat-item-name').innerText = item.itemName || 'Objet';
+        document.getElementById('chat-item-price').innerText = (item.price || 0) + '€';
+        document.getElementById('chat-item-img').src = item.imageUrl || '';
+        document.getElementById('chat-messages').innerHTML = `
+            <div class="text-center py-4">
+                <span class="text-[10px] text-zinc-600 font-bold uppercase bg-zinc-900 px-3 py-1 rounded-full">Début de la conversation</span>
+            </div>`;
+        const modal = document.getElementById('chat-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.classList.add('flex-col');
+        closeDetail();
+    };
+
+    window.closeChat = () => {
+        document.getElementById('chat-modal').classList.add('hidden');
+        document.getElementById('chat-modal').classList.remove('flex');
+    };
+
+    window.sendMessage = () => {
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        if (!text) return;
+        appendMessage(text, true);
+        input.value = '';
+        // Simulation réponse vendeur
+        setTimeout(() => {
+            const responses = [
+                "Bonjour ! Oui l'objet est toujours disponible 😊",
+                "Je peux faire un petit geste sur le prix si vous êtes sérieux.",
+                "Vous pouvez venir le voir sur place si vous voulez.",
+                "Livraison possible en Mondial Relay, comptez 5€.",
+                "L'objet est en parfait état, aucun défaut."
+            ];
+            const r = responses[Math.floor(Math.random() * responses.length)];
+            appendMessage(r, false);
+        }, 1200);
+    };
+
+    window.quickMsg = (msg) => {
+        document.getElementById('chat-input').value = msg;
+        sendMessage();
+    };
+
+    function appendMessage(text, isMe) {
+        const container = document.getElementById('chat-messages');
+        const div = document.createElement('div');
+        div.className = `flex ${isMe ? 'justify-end' : 'justify-start'}`;
+        div.innerHTML = `<div class="max-w-[75%] px-4 py-2.5 text-sm font-medium ${isMe ? 'msg-bubble-me' : 'msg-bubble-them'}">${text}</div>`;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // PAIEMENT
+    window.openPaymentFromItem = (item) => {
+        document.getElementById('pay-img').style.backgroundImage = `url(${item.imageUrl})`;
+        document.getElementById('pay-title').innerText = item.itemName;
+        document.getElementById('pay-price').innerText = item.price + '€';
+        document.getElementById('payment-modal').classList.remove('hidden');
+        document.getElementById('payment-modal').classList.add('flex');
+        closeDetail();
+    };
+
+    window.closePayment = () => {
+        document.getElementById('payment-modal').classList.add('hidden');
+        document.getElementById('payment-modal').classList.remove('flex');
+    };
+
+    window.processPayment = () => {
+        closePayment();
+        setTimeout(() => alert("✅ Paiement validé ! L'objet vous a été réservé."), 100);
+    };
+
+    // NAVIGATION
+    window.switchView = (v) => {
+        document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
+        document.getElementById('view-' + v)?.classList.remove('hidden');
+        // Nav highlight
+        document.getElementById('nav-home').className = 'text-2xl ' + (v === 'home' ? 'text-cyan-400' : 'text-zinc-600');
+        document.getElementById('nav-search').className = 'text-2xl ' + (v === 'search' ? 'text-cyan-400' : 'text-zinc-600');
+    };
+
+    // CAMERA
+    let cameraStream = null;
+
+    window.startScan = async () => {
+        document.getElementById('scan-overlay').classList.remove('hidden');
+        document.getElementById('scan-overlay').classList.add('flex');
+        await startCamera();
+    };
+
+    async function startCamera() {
+        const video = document.getElementById('camera-video');
+        try {
+            cameraStream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+                audio: false
             });
-        }
-
-        function renderFeed(items) {
-            const container = document.getElementById('feed');
-            if (items.length === 0) {
-                container.innerHTML = `<div class="py-12 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce</div>`;
-                return;
-            }
-            container.innerHTML = items.map(item => `
-                <div class="glass-card rounded-[2rem] p-4 flex gap-4 items-center fade-in mb-4 group cursor-pointer" onclick="openPayment('${item.id}')">
-                    <div class="w-20 h-20 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5 relative">
-                        <img src="${item.imageUrl}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-bold text-sm truncate text-white">${item.itemName}</h4>
-                        <p class="text-cyan-400 font-extrabold text-lg">${item.price}€</p>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">${item.category || 'Divers'}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // ✅ CAMERA — getUserMedia avec fallback input file
-        let cameraStream = null;
-
-        window.startScan = async () => {
-            document.getElementById('scan-overlay').classList.remove('hidden');
-            document.getElementById('scan-overlay').classList.add('flex');
-            await startCamera();
-        };
-
-        async function startCamera() {
-            const video = document.getElementById('camera-video');
-            const placeholder = document.getElementById('scan-placeholder');
-            try {
-                cameraStream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
-                    audio: false
-                });
-                video.srcObject = cameraStream;
-                video.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-            } catch (err) {
-                console.warn("getUserMedia échoué, fallback input file", err);
-                document.getElementById('camera-input').click();
-            }
-        }
-
-        function stopCamera() {
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(t => t.stop());
-                cameraStream = null;
-            }
-            const video = document.getElementById('camera-video');
-            video.srcObject = null;
-            video.classList.add('hidden');
-        }
-
-        window.capturePhoto = () => {
-            const video = document.getElementById('camera-video');
-            // Si la vidéo est active, on capture une frame
-            if (cameraStream && !video.classList.contains('hidden')) {
-                const canvas = document.getElementById('capture-canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                const imgBase64 = canvas.toDataURL('image/jpeg', 0.9);
-                stopCamera();
-                processCapture(imgBase64);
-            } else {
-                // Fallback : ouvre l'input file
-                document.getElementById('camera-input').click();
-            }
-        };
-
-        // Fallback : si l'utilisateur sélectionne un fichier
-        window.handleImageFile = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => processCapture(evt.target.result);
-            reader.readAsDataURL(file);
-        };
-
-        function processCapture(imgBase64) {
+            video.srcObject = cameraStream;
+            video.classList.remove('hidden');
             document.getElementById('scan-placeholder').classList.add('hidden');
-            document.getElementById('capture-btn').classList.add('hidden');
-            document.getElementById('uploading-msg').classList.remove('hidden');
-            document.getElementById('scan-line').classList.remove('hidden');
-            document.getElementById('scan-preview').src = imgBase64;
-            document.getElementById('scan-preview').classList.remove('hidden');
-
-            analyzeWithGemini(imgBase64);
+        } catch (err) {
+            document.getElementById('camera-input').click();
         }
+    }
 
-        async function analyzeWithGemini(imgBase64) {
-            try {
-                const prompt = `Tu es un expert en estimation de produits d'occasion. Analyse cette image avec une précision maximale.
+    function stopCamera() {
+        if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+        const video = document.getElementById('camera-video');
+        video.srcObject = null;
+        video.classList.add('hidden');
+    }
 
-Identifie :
-- La marque exacte et le modèle précis du produit (ex: "Souris Gaming Alienware AW510M")
-- Le prix de revente réaliste en euros sur le marché occasion français (base-toi sur les prix Leboncoin, Vinted, eBay FR)
-- La catégorie précise (ex: "Informatique > Périphériques", "High-Tech", "Jeux vidéo", etc.)
-- Une description vendeuse de 2-3 phrases mentionnant les caractéristiques clés visibles
-- L'état estimé du produit (Neuf, Très bon état, Bon état, État correct)
-
-Réponds UNIQUEMENT avec ce JSON valide, sans aucun texte autour :
-{"title": "Marque Modèle exact", "price": 0, "category": "catégorie précise", "description": "description vendeuse 2-3 phrases", "condition": "état estimé"}`;
-
-                const mimeType = imgBase64.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
-
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [
-                                { inlineData: { mimeType: mimeType, data: imgBase64.split(',')[1] } },
-                                { text: prompt }
-                            ]
-                        }],
-                        generationConfig: { temperature: 0.1, maxOutputTokens: 600 }
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.error) {
-                    logError("Erreur Gemini: " + data.error.message);
-                    document.getElementById('uploading-msg').classList.add('hidden');
-                    document.getElementById('scan-line').classList.add('hidden');
-                    document.getElementById('capture-btn').classList.remove('hidden');
-                    return;
-                }
-
-                const text = data.candidates[0].content.parts[0].text;
-                const jsonStr = text.replace(/```json|```/g, '').trim();
-                const aiData = JSON.parse(jsonStr);
-                updateScanUI(aiData, imgBase64);
-
-            } catch (err) {
-                console.error("Erreur IA", err);
-                logError("Erreur analyse IA: " + err.message);
-                document.getElementById('uploading-msg').classList.add('hidden');
-                document.getElementById('scan-line').classList.add('hidden');
-                document.getElementById('capture-btn').classList.remove('hidden');
-            }
-        }
-
-        function updateScanUI(result, img) {
-            document.getElementById('uploading-msg').classList.add('hidden');
-            document.getElementById('scan-line').classList.add('hidden');
-            
-            document.getElementById('ai-item-name').value = result.title;
-            document.getElementById('ai-price').innerText = result.price + "€";
-            document.getElementById('ai-category').innerText = result.category;
-            if(document.getElementById('ai-desc')) document.getElementById('ai-desc').value = result.description || "";
-            if(document.getElementById('ai-condition')) document.getElementById('ai-condition').innerText = result.condition || "Bon état";
-            
-            currentScanData = { 
-                itemName: result.title, 
-                price: result.price, 
-                category: result.category,
-                condition: result.condition || "Bon état",
-                imageUrl: img
-            };
-            document.getElementById('ai-hud').classList.remove('hidden');
-        }
-
-        document.getElementById('validate-btn').addEventListener('click', async () => {
-            if(!currentScanData || !currentUser) return;
-            const finalTitle = document.getElementById('ai-item-name').value;
-            
-            try {
-                await addDoc(collection(db, 'scans'), {
-                    userId: currentUser.uid,
-                    itemName: finalTitle,
-                    price: currentScanData.price,
-                    category: currentScanData.category,
-                    condition: currentScanData.condition || "Bon état",
-                    imageUrl: currentScanData.imageUrl, // ✅ FIX 3 — utilise bien .imageUrl
-                    createdAt: serverTimestamp()
-                });
-                window.stopScan();
-                window.switchView('home');
-            } catch (err) { 
-                logError("Publish Error: " + err.message);
-                console.error(err); 
-            }
-        });
-
-        window.stopScan = () => {
+    window.capturePhoto = () => {
+        const video = document.getElementById('camera-video');
+        if (cameraStream && !video.classList.contains('hidden')) {
+            const canvas = document.getElementById('capture-canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
             stopCamera();
-            document.getElementById('scan-overlay').classList.add('hidden');
-            document.getElementById('scan-overlay').classList.remove('flex');
-            document.getElementById('scan-preview').classList.add('hidden');
-            document.getElementById('scan-placeholder').classList.remove('hidden');
-            document.getElementById('ai-hud').classList.add('hidden');
-            document.getElementById('uploading-msg').classList.add('hidden');
-            document.getElementById('scan-line').classList.add('hidden');
-            document.getElementById('capture-btn').classList.remove('hidden');
-            document.getElementById('camera-input').value = ""; 
-            currentScanData = null;
-        };
+            processCapture(canvas.toDataURL('image/jpeg', 0.9));
+        } else {
+            document.getElementById('camera-input').click();
+        }
+    };
 
-        window.openPayment = (itemId) => {
-            // ✅ FIX 2 — allItems est maintenant accessible
-            const item = allItems.find(i => i.id === itemId);
-            if(item) {
-                document.getElementById('pay-img').style.backgroundImage = `url(${item.imageUrl})`;
-                document.getElementById('pay-title').innerText = item.itemName;
-                document.getElementById('pay-price').innerText = item.price + "€";
-                document.getElementById('payment-modal').classList.remove('hidden');
-                document.getElementById('payment-modal').classList.add('flex');
-            }
-        };
+    window.handleImageFile = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => processCapture(evt.target.result);
+        reader.readAsDataURL(file);
+    };
 
-        window.closePayment = () => {
-            document.getElementById('payment-modal').classList.add('hidden');
-            document.getElementById('payment-modal').classList.remove('flex');
-        };
+    function processCapture(imgBase64) {
+        document.getElementById('scan-placeholder').classList.add('hidden');
+        document.getElementById('capture-btn').classList.add('hidden');
+        document.getElementById('uploading-msg').classList.remove('hidden');
+        document.getElementById('scan-line').classList.remove('hidden');
+        document.getElementById('scan-preview').src = imgBase64;
+        document.getElementById('scan-preview').classList.remove('hidden');
+        analyzeWithGemini(imgBase64);
+    }
 
-        window.processPayment = () => { alert("Paiement validé !"); window.closePayment(); };
+    async function analyzeWithGemini(imgBase64) {
+        try {
+            const prompt = `Tu es un expert en estimation de produits d'occasion. Analyse cette image avec une précision maximale.
+Identifie la marque exacte et le modèle précis, le prix de revente réaliste en euros sur Leboncoin/Vinted/eBay FR, la catégorie précise, une description vendeuse de 2-3 phrases et l'état estimé.
+Réponds UNIQUEMENT avec ce JSON valide:
+{"title": "Marque Modèle exact", "price": 0, "category": "catégorie", "description": "description 2-3 phrases", "condition": "état"}`;
+            const mimeType = imgBase64.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [
+                        { inlineData: { mimeType, data: imgBase64.split(',')[1] } },
+                        { text: prompt }
+                    ]}],
+                    generationConfig: { temperature: 0.1, maxOutputTokens: 600 }
+                })
+            });
+            const data = await response.json();
+            if (data.error) { logError("Erreur Gemini: " + data.error.message); resetScanUI(); return; }
+            const text = data.candidates[0].content.parts[0].text;
+            const jsonStr = text.replace(/```json|```/g, '').trim();
+            updateScanUI(JSON.parse(jsonStr), imgBase64);
+        } catch (err) {
+            logError("Erreur analyse IA: " + err.message);
+            resetScanUI();
+        }
+    }
 
-        window.switchView = (v) => {
-            document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById('view-'+v).classList.remove('hidden');
-        };
+    function resetScanUI() {
+        document.getElementById('uploading-msg').classList.add('hidden');
+        document.getElementById('scan-line').classList.add('hidden');
+        document.getElementById('capture-btn').classList.remove('hidden');
+    }
 
-        window.closeHud = () => {
-            document.getElementById('ai-hud').classList.add('hidden');
-            document.getElementById('scan-overlay').classList.add('hidden');
-            document.getElementById('scan-overlay').classList.remove('flex');
-            document.getElementById('scan-preview').classList.add('hidden');
-            document.getElementById('scan-placeholder').classList.remove('hidden');
-            document.getElementById('capture-btn').classList.remove('hidden');
-        };
-    </script>
+    function updateScanUI(result, img) {
+        document.getElementById('uploading-msg').classList.add('hidden');
+        document.getElementById('scan-line').classList.add('hidden');
+        document.getElementById('ai-item-name').value = result.title;
+        document.getElementById('ai-price').innerText = result.price + '€';
+        document.getElementById('ai-category').innerText = result.category;
+        document.getElementById('ai-desc').value = result.description || '';
+        document.getElementById('ai-condition').innerText = result.condition || 'Bon état';
+        currentScanData = { itemName: result.title, price: result.price, category: result.category, condition: result.condition || 'Bon état', description: result.description || '', imageUrl: img };
+        document.getElementById('ai-hud').classList.remove('hidden');
+    }
+
+    document.getElementById('validate-btn').addEventListener('click', async () => {
+        if (!currentScanData || !currentUser) return;
+        const btn = document.getElementById('validate-btn');
+        btn.innerText = 'Publication...';
+        btn.disabled = true;
+        try {
+            await addDoc(collection(db, 'scans'), {
+                userId: currentUser.uid,
+                itemName: document.getElementById('ai-item-name').value,
+                price: currentScanData.price,
+                category: currentScanData.category,
+                condition: currentScanData.condition,
+                description: currentScanData.description,
+                imageUrl: currentScanData.imageUrl,
+                createdAt: serverTimestamp()
+            });
+            window.stopScan();
+            window.switchView('home');
+        } catch (err) {
+            logError("Publish Error: " + err.message);
+            btn.innerText = 'VALIDER & PUBLIER';
+            btn.disabled = false;
+        }
+    });
+
+    window.stopScan = () => {
+        stopCamera();
+        document.getElementById('scan-overlay').classList.add('hidden');
+        document.getElementById('scan-overlay').classList.remove('flex');
+        document.getElementById('scan-preview').classList.add('hidden');
+        document.getElementById('scan-placeholder').classList.remove('hidden');
+        document.getElementById('ai-hud').classList.add('hidden');
+        document.getElementById('uploading-msg').classList.add('hidden');
+        document.getElementById('scan-line').classList.add('hidden');
+        document.getElementById('capture-btn').classList.remove('hidden');
+        const btn = document.getElementById('validate-btn');
+        btn.innerText = 'VALIDER & PUBLIER';
+        btn.disabled = false;
+        document.getElementById('camera-input').value = '';
+        currentScanData = null;
+    };
+</script>
 </body>
 </html>
