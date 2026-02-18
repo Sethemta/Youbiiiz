@@ -209,25 +209,68 @@
             <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminée</span>
             <span class="text-xs text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> Succès</span>
         </div>
-        <input id="ai-item-name" class="w-full bg-transparent text-xl font-extrabold text-white mb-4 border-b border-white/10 focus:border-cyan-500 outline-none pb-2" value="...">
-        <div class="grid grid-cols-3 gap-3 mb-6">
+        <input id="ai-item-name" class="w-full bg-transparent text-xl font-extrabold text-white mb-3 border-b border-white/10 focus:border-cyan-500 outline-none pb-2" value="...">
+        
+        <!-- Marque & Modèle -->
+        <div class="grid grid-cols-2 gap-3 mb-3">
             <div class="bg-black p-3 rounded-xl border border-white/10">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold">Prix Estimé</p>
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">Marque</p>
+                <p id="ai-brand" class="text-sm font-black text-cyan-400">...</p>
+            </div>
+            <div class="bg-black p-3 rounded-xl border border-white/10">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">Modèle</p>
+                <p id="ai-model" class="text-sm font-black text-white truncate">...</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 mb-3">
+            <div class="bg-black p-3 rounded-xl border border-white/10">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">Prix</p>
                 <p id="ai-price" class="text-lg font-black text-cyan-400">...</p>
             </div>
             <div class="bg-black p-3 rounded-xl border border-white/10">
                 <p class="text-[9px] text-zinc-500 uppercase font-bold">Catégorie</p>
-                <p id="ai-category" class="text-sm font-black text-white">...</p>
+                <p id="ai-category" class="text-xs font-black text-white">...</p>
             </div>
             <div class="bg-black p-3 rounded-xl border border-white/10">
                 <p class="text-[9px] text-zinc-500 uppercase font-bold">État</p>
-                <p id="ai-condition" class="text-sm font-black text-green-400">...</p>
+                <p id="ai-condition" class="text-xs font-black text-green-400">...</p>
             </div>
         </div>
-        <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-6">
-            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Description Auto</p>
-            <textarea id="ai-desc" class="w-full bg-transparent text-xs text-zinc-300 outline-none h-16 resize-none" readonly></textarea>
+
+        <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-3">
+            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Description</p>
+            <textarea id="ai-desc" class="w-full bg-transparent text-xs text-zinc-300 outline-none h-14 resize-none" readonly></textarea>
         </div>
+
+        <!-- LIVRAISON -->
+        <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-4">
+            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2">Mode de livraison</p>
+            <div class="flex flex-col gap-2">
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="ship-hand" class="w-4 h-4 accent-cyan-500" onchange="updateShipping()">
+                    <div class="flex-1">
+                        <span class="text-xs font-bold text-white">🤝 Remise en main propre</span>
+                        <span class="text-[10px] text-zinc-500 ml-2">Gratuit</span>
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="ship-relay" class="w-4 h-4 accent-cyan-500" onchange="updateShipping()">
+                    <div class="flex-1">
+                        <span class="text-xs font-bold text-white">📦 Mondial Relay</span>
+                        <input type="number" id="ship-relay-price" placeholder="Prix €" class="ml-2 w-16 bg-zinc-800 border border-white/10 rounded-lg px-2 py-0.5 text-xs text-white outline-none focus:border-cyan-500" value="5">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="ship-colissimo" class="w-4 h-4 accent-cyan-500" onchange="updateShipping()">
+                    <div class="flex-1">
+                        <span class="text-xs font-bold text-white">🚚 Colissimo</span>
+                        <input type="number" id="ship-colissimo-price" placeholder="Prix €" class="ml-2 w-16 bg-zinc-800 border border-white/10 rounded-lg px-2 py-0.5 text-xs text-white outline-none focus:border-cyan-500" value="8">
+                    </div>
+                </label>
+            </div>
+        </div>
+
         <button id="validate-btn" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform">VALIDER & PUBLIER</button>
     </div>
     <canvas id="capture-canvas" class="hidden"></canvas>
@@ -257,9 +300,18 @@
                 <p id="detail-price" class="text-cyan-400 font-black text-3xl shrink-0"></p>
             </div>
             <span id="detail-category" class="text-[10px] text-zinc-500 font-bold uppercase bg-zinc-900 px-3 py-1 rounded-full border border-white/5 mb-4 inline-block"></span>
+            <!-- Marque & Modèle -->
+            <p id="detail-brand" class="text-xs text-zinc-500 font-mono mb-3"></p>
+
             <div class="glass-card rounded-2xl p-4 mb-4">
                 <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2">Description</p>
                 <p id="detail-desc" class="text-sm text-zinc-300 leading-relaxed"></p>
+            </div>
+
+            <!-- Livraison -->
+            <div class="glass-card rounded-2xl p-4 mb-4">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-3">Livraison proposée</p>
+                <div id="detail-shipping" class="flex flex-wrap gap-2"></div>
             </div>
             <div class="glass-card rounded-2xl p-4 mb-6">
                 <p class="text-[9px] text-zinc-500 uppercase font-bold mb-3">Vendeur</p>
@@ -499,6 +551,18 @@
         document.getElementById('detail-condition').innerText = item.condition || 'Bon état';
         document.getElementById('detail-desc').innerText = item.description || 'Aucune description.';
         document.getElementById('detail-seller').innerText = 'Vendeur #' + (item.userId || '').substring(0, 6);
+        const brandEl = document.getElementById('detail-brand');
+        if (brandEl) brandEl.innerText = [item.brand, item.model].filter(Boolean).join(' — ') || '';
+        const shipEl = document.getElementById('detail-shipping');
+        if (shipEl) {
+            if (item.shipping && item.shipping.length > 0) {
+                shipEl.innerHTML = item.shipping.map(s =>
+                    '<span class="bg-zinc-900 border border-white/5 rounded-xl px-3 py-1.5 text-xs font-bold text-white">' + s.method + ' <span class="text-cyan-400">' + (s.price === 0 ? 'Gratuit' : s.price + '€') + '</span></span>'
+                ).join('');
+            } else {
+                shipEl.innerHTML = '<span class="text-xs text-zinc-500">Non renseigné</span>';
+            }
+        }
         document.getElementById('contact-btn').onclick = () => openChat(item);
         document.getElementById('buy-btn').onclick = () => openPaymentFromItem(item);
         const modal = document.getElementById('detail-modal');
@@ -664,10 +728,20 @@
 
     async function analyzeWithGemini(imgBase64) {
         try {
-            const prompt = `Tu es un expert en estimation de produits d'occasion. Analyse cette image avec une précision maximale.
-Identifie la marque exacte et le modèle précis, le prix de revente réaliste en euros sur Leboncoin/Vinted/eBay FR, la catégorie précise, une description vendeuse de 2-3 phrases et l'état estimé.
-Réponds UNIQUEMENT avec ce JSON valide:
-{"title": "Marque Modèle exact", "price": 0, "category": "catégorie", "description": "description 2-3 phrases", "condition": "état"}`;
+            const prompt = `Tu es un expert en évaluation de produits high-tech, gaming, mode et objets d'occasion. Analyse cette image avec une précision absolue.
+
+INSTRUCTIONS STRICTES :
+1. Identifie la MARQUE (ex: Apple, Sony, Nike, Nintendo, Samsung, Alienware...)
+2. Identifie le MODÈLE EXACT avec numéro si visible (ex: AirPods Pro 2ème gen, PS5 Slim, Air Jordan 1 Retro High OG...)
+3. Donne le PRIX DE REVENTE RÉALISTE en euros basé sur Leboncoin, Vinted, eBay.fr en 2024
+4. Catégorie précise parmi: High-Tech, Jeux vidéo, Informatique, Mode, Maison, Sport, Divers
+5. Description vendeuse de 2-3 phrases avec caractéristiques techniques clés et état visible
+6. État: Neuf, Très bon état, Bon état, ou État correct
+
+IMPORTANT: Le titre DOIT commencer par la marque. Ex: "Apple AirPods Pro 2ème génération" pas juste "Écouteurs sans fil"
+
+Réponds UNIQUEMENT avec ce JSON valide, rien d'autre:
+{"title": "MARQUE Modèle exact", "price": 0, "category": "catégorie", "description": "description vendeuse 2-3 phrases avec specs", "condition": "état", "brand": "MARQUE", "model": "Modèle exact"}`;
             const mimeType = imgBase64.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: 'POST',
@@ -705,12 +779,23 @@ Réponds UNIQUEMENT avec ce JSON valide:
         document.getElementById('ai-category').innerText = result.category;
         document.getElementById('ai-desc').value = result.description || '';
         document.getElementById('ai-condition').innerText = result.condition || 'Bon état';
-        currentScanData = { itemName: result.title, price: result.price, category: result.category, condition: result.condition || 'Bon état', description: result.description || '', imageUrl: img };
+        if(document.getElementById('ai-brand')) document.getElementById('ai-brand').innerText = result.brand || '—';
+        if(document.getElementById('ai-model')) document.getElementById('ai-model').innerText = result.model || '—';
+        currentScanData = { itemName: result.title, price: result.price, category: result.category, condition: result.condition || 'Bon état', description: result.description || '', brand: result.brand || '', model: result.model || '', imageUrl: img, shipping: [] };
         document.getElementById('ai-hud').classList.remove('hidden');
     }
 
+    window.updateShipping = () => {
+        const options = [];
+        if (document.getElementById('ship-hand')?.checked) options.push({ method: 'Remise en main propre', price: 0 });
+        if (document.getElementById('ship-relay')?.checked) options.push({ method: 'Mondial Relay', price: parseFloat(document.getElementById('ship-relay-price').value) || 5 });
+        if (document.getElementById('ship-colissimo')?.checked) options.push({ method: 'Colissimo', price: parseFloat(document.getElementById('ship-colissimo-price').value) || 8 });
+        if (currentScanData) currentScanData.shipping = options;
+    };
+
     document.getElementById('validate-btn').addEventListener('click', async () => {
         if (!currentScanData || !currentUser) return;
+        window.updateShipping();
         const btn = document.getElementById('validate-btn');
         btn.innerText = 'Publication...';
         btn.disabled = true;
@@ -722,6 +807,9 @@ Réponds UNIQUEMENT avec ce JSON valide:
                 category: currentScanData.category,
                 condition: currentScanData.condition,
                 description: currentScanData.description,
+                brand: currentScanData.brand || '',
+                model: currentScanData.model || '',
+                shipping: currentScanData.shipping || [],
                 imageUrl: currentScanData.imageUrl,
                 createdAt: serverTimestamp()
             });
