@@ -120,7 +120,7 @@
                         </div>
                         <div>
                             <h1 class="text-2xl font-extrabold tracking-tighter text-white">SCANNER UN OBJET</h1>
-                            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">Multi-shot IA • Instantané</p>
+                            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">IA active • Instantané</p>
                         </div>
                     </div>
                 </div>
@@ -244,12 +244,8 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // VOS CLÉS (Intégrées directement)
+    <script>
+        // CONFIGURATION
         const firebaseConfig = {
           apiKey: "AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",
           authDomain: "youbiiiz-app.firebaseapp.com",
@@ -258,57 +254,69 @@
           messagingSenderId: "664733497216",
           appId: "1:664733497216:web:ae19fbadf0fa509f59b365"
         };
-        
-        // --- COLLEZ VOTRE CLÉ API GEMINI ICI ---
         const GEMINI_API_KEY = "AIzaSyDK6Tvf9ioz_eIWQs2q0c31WZo3QG5VgvY";
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = 'youbiiiz-prod-v1';
-        let currentUser = null;
-        let scannedImages = []; 
+        let db, auth, currentUser;
+        let scannedImages = [];
         let currentScanData = null;
+        let allItems = [];
+
+        // INIT
+        window.onload = function() {
+            try {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+                auth = firebase.auth();
+
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        currentUser = user;
+                        document.getElementById('user-badge').innerText = `ID: ${user.uid.substring(0,4)}`;
+                        startApp();
+                    } else {
+                        auth.signInAnonymously().catch(e => {
+                            console.error("Auth:", e);
+                            logError("Activez l'Auth Anonyme sur Firebase !");
+                        });
+                    }
+                });
+            } catch(e) {
+                console.error(e);
+                logError("Erreur Init Firebase");
+            }
+        };
 
         function logError(msg) {
-            console.error(msg);
-            const debug = document.getElementById('debug-console');
-            debug.style.display = 'block';
-            debug.innerText = msg;
+            const el = document.getElementById('debug-console');
+            el.style.display = 'block';
+            el.innerText = msg;
         }
 
-        // AUTH
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                if(document.getElementById('user-badge')) document.getElementById('user-badge').innerText = `ID: ${user.uid.substring(0,4)}`;
-                startApp();
-            } else {
-                signInAnonymously(auth).catch(e => {
-                    logError("Auth Error: " + e.message);
-                });
-            }
-        });
-
         function startApp() {
+            document.getElementById('progress').style.width = '100%';
             setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-                document.getElementById('app').classList.remove('hidden');
-                setTimeout(() => document.getElementById('app').style.opacity = '1', 100);
-                initFeed();
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
+                    document.getElementById('app').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('app').style.opacity = '1', 100);
+                    initFeed();
+                }, 800);
             }, 1000);
         }
 
         // DATA
         function initFeed() {
-            const feedCol = collection(db, 'scans');
-            onSnapshot(feedCol, (snapshot) => {
-                const items = [];
-                snapshot.forEach(doc => items.push({id: doc.id, ...doc.data()}));
-                items.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                renderFeed(items);
-            }, (error) => {
-                logError("Feed Error: " + error.message);
+            const feedCol = db.collection('scans');
+            feedCol.orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+                allItems = [];
+                snapshot.forEach(doc => allItems.push({ id: doc.id, ...doc.data() }));
+                renderFeed(allItems);
+            }, error => {
+                console.log(error);
+                logError("Erreur DB: Vérifiez les règles Firestore");
             });
         }
 
@@ -322,7 +330,6 @@
                 <div class="glass-card rounded-[2rem] p-4 flex gap-4 items-center fade-in mb-4 group cursor-pointer" onclick="window.openPayment('${item.id}')">
                     <div class="w-20 h-20 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5 relative">
                         <img src="${item.imageUrl}" class="w-full h-full object-cover">
-                        ${item.images && item.images.length > 1 ? '<div class="absolute top-1 right-1 bg-black/60 px-1.5 rounded text-[8px] font-bold">+'+(item.images.length-1)+'</div>' : ''}
                     </div>
                     <div class="flex-1 min-w-0">
                         <h4 class="font-bold text-sm truncate text-white">${item.itemName}</h4>
@@ -335,8 +342,8 @@
             `).join('');
         }
 
-        // --- GLOBAL FUNCTIONS ---
-        window.startScan = () => {
+        // --- MULTI-SCAN LOGIC ---
+        window.startScan = function() {
             scannedImages = [];
             updateGallery();
             document.getElementById('scan-overlay').classList.remove('hidden');
@@ -344,17 +351,17 @@
             
             document.getElementById('scan-placeholder').classList.remove('hidden');
             document.getElementById('main-preview').classList.add('hidden');
+            document.getElementById('capture-btn').classList.remove('hidden');
             document.getElementById('analyze-btn').classList.add('hidden');
             document.getElementById('analyze-btn').classList.remove('flex');
-            document.getElementById('capture-btn').classList.remove('hidden');
             
-            // Trigger auto pour UX fluide
+            // Trigger auto
             setTimeout(() => {
                window.triggerCamera(); 
             }, 300);
         };
 
-        window.triggerCamera = () => {
+        window.triggerCamera = function() {
              if(scannedImages.length >= 3) {
                  alert("Max 3 photos atteint !");
                  return;
@@ -362,18 +369,18 @@
              document.getElementById('camera-input').click();
         };
 
-        window.handleImage = (e) => {
+        window.handleImage = function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = (evt) => {
+            reader.onload = function(evt) {
                 const img = evt.target.result;
                 
-                // Compression Canvas (Evite surcharge Firestore)
+                // Compression
                 const image = new Image();
                 image.src = img;
-                image.onload = () => {
+                image.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     const MAX_WIDTH = 800;
@@ -385,7 +392,7 @@
 
                     scannedImages.push(compressedImg);
                     
-                    // UI Update
+                    // Update UI
                     document.getElementById('scan-placeholder').classList.add('hidden');
                     document.getElementById('main-preview').src = compressedImg;
                     document.getElementById('main-preview').classList.remove('hidden');
@@ -413,7 +420,8 @@
             `).join('');
         }
 
-        window.processAnalysis = async () => {
+        // --- ANALYSE GEMINI ---
+        window.processAnalysis = async function() {
             document.getElementById('uploading-msg').classList.remove('hidden');
             
             try {
@@ -421,24 +429,17 @@
                     inlineData: { mimeType: "image/jpeg", data: base64.split(',')[1] }
                 }));
 
-                // Configuration JSON stricte pour Gemini 1.5 Flash (Plus stable pour vision)
-                const prompt = `Analyse ces images pour une vente.
-                Réponds UNIQUEMENT avec ce JSON brut : 
-                { "title": "Nom précis", "price": 0, "category": "Categorie", "description": "Description courte et vendeuse" }`;
-
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                // UPDATED MODEL NAME (Fixes "Not Found" error)
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{
                             parts: [
-                                { text: prompt },
+                                { text: "Analyse ces images pour une vente. JSON: { \"title\": \"...\", \"price\": 0, \"category\": \"...\", \"description\": \"...\" }" },
                                 ...imageParts
                             ]
-                        }],
-                         generationConfig: {
-                            responseMimeType: "application/json"
-                        }
+                        }]
                     })
                 });
                 
@@ -446,15 +447,17 @@
                 
                 if(data.error) throw new Error(data.error.message);
                 
-                const aiData = JSON.parse(data.candidates[0].content.parts[0].text);
+                const text = data.candidates[0].content.parts[0].text;
+                const jsonStr = text.replace(/```json|```/g, '').trim();
+                const result = JSON.parse(jsonStr);
 
-                // Populate HUD
-                document.getElementById('ai-item-name').value = aiData.title;
-                document.getElementById('ai-price').value = aiData.price;
-                document.getElementById('ai-category').value = aiData.category;
-                document.getElementById('ai-desc').value = aiData.description;
+                // UI Update
+                document.getElementById('ai-item-name').value = result.title;
+                document.getElementById('ai-price').value = result.price;
+                document.getElementById('ai-category').value = result.category;
+                document.getElementById('ai-desc').value = result.description;
                 
-                currentScanData = { ...aiData, img: scannedImages[0] };
+                currentScanData = { ...result, img: scannedImages[0] };
 
                 document.getElementById('uploading-msg').classList.add('hidden');
                 document.getElementById('scan-overlay').classList.add('hidden'); 
@@ -463,13 +466,13 @@
                 document.getElementById('ai-hud').classList.add('flex');
 
             } catch (err) {
-                console.error("Erreur IA:", err);
-                alert("Erreur analyse IA : " + err.message);
+                console.error("Erreur IA", err);
+                alert("Erreur Analyse IA: " + err.message);
                 document.getElementById('uploading-msg').classList.add('hidden');
             }
         };
 
-        // VALIDATION
+        // SAVE
         document.getElementById('validate-btn').addEventListener('click', async () => {
             const title = document.getElementById('ai-item-name').value;
             const price = document.getElementById('ai-price').value;
@@ -483,8 +486,8 @@
                     price: parseInt(price),
                     category: cat,
                     description: desc,
+                    imageUrl: currentScanData.img,
                     images: scannedImages,
-                    imageUrl: scannedImages[0], 
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 window.closeHud();
@@ -494,21 +497,30 @@
             }
         });
 
-        window.closeHud = () => {
+        window.closeHud = function() {
             document.getElementById('ai-hud').classList.add('hidden');
             document.getElementById('ai-hud').classList.remove('flex');
             window.switchView('home');
         };
 
-        window.stopScan = () => {
+        window.stopScan = function() {
             document.getElementById('scan-overlay').classList.add('hidden');
             document.getElementById('scan-overlay').classList.remove('flex');
             scannedImages = [];
             document.getElementById('gallery-strip').innerHTML = '';
+            document.getElementById('analyze-btn').classList.remove('flex');
+            document.getElementById('analyze-btn').classList.add('hidden');
+            document.getElementById('main-preview').classList.add('hidden');
+            document.getElementById('scan-placeholder').classList.remove('hidden');
+            document.getElementById('uploading-msg').classList.add('hidden');
+            document.getElementById('camera-input').value = ""; 
+            
+            document.getElementById('capture-btn').classList.remove('w-14', 'h-14', 'border-2');
+            document.getElementById('capture-btn').classList.add('w-20', 'h-20');
         };
 
         // Payment
-        window.openPayment = (itemId) => {
+        window.openPayment = function(itemId) {
             const item = allItems.find(i => i.id === itemId);
             if(item) {
                 document.getElementById('pay-img').style.backgroundImage = `url(${item.imageUrl})`;
@@ -518,12 +530,12 @@
                 document.getElementById('payment-modal').classList.add('flex');
             }
         };
-        window.closePayment = () => {
+        window.closePayment = function() {
             document.getElementById('payment-modal').classList.add('hidden');
             document.getElementById('payment-modal').classList.remove('flex');
         };
-        window.processPayment = () => { alert("Paiement validé !"); window.closePayment(); };
-        window.switchView = (v) => {
+        window.processPayment = function() { alert("Paiement validé !"); window.closePayment(); };
+        window.switchView = function(v) {
             document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
             document.getElementById('view-'+v).classList.remove('hidden');
         };
