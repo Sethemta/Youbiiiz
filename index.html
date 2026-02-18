@@ -6,6 +6,12 @@
     <title>Youbiiiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- FIREBASE COMPAT (Version Stable pour éviter les erreurs de modules) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
         
@@ -18,9 +24,10 @@
             touch-action: manipulation;
         }
 
-        /* --- LOGO ENGINE (3i Balle au sol - Validé) --- */
+        /* --- LOGO ENGINE (Version Validée : 3i Balle au sol) --- */
         .brand-logo { display: inline-flex; align-items: baseline; font-weight: 800; line-height: 1; user-select: none; }
         .i-wrapper { display: inline-flex; align-items: flex-end; gap: 4px; margin: 0 4px; height: 100%; }
+        
         .i-stem { width: 12px; height: 38px; background: #22d3ee; border-radius: 2px; }
         .i-dot { width: 12px; height: 12px; background: #22d3ee; border-radius: 2px; position: absolute; bottom: 48px; box-shadow: 0 0 20px rgba(34, 211, 238, 0.5); }
         .i-char { position: relative; display: flex; flex-direction: column; align-items: center; }
@@ -37,7 +44,7 @@
         .i-char:nth-child(2) .i-dot { --bounce: -15px; animation: subtle-dribble 1.3s infinite 0.2s; }
         .i-char:nth-child(3) .i-dot { --bounce: -12px; animation: subtle-dribble 1.1s infinite 0.5s; }
 
-        /* UI */
+        /* UI COMPONENTS */
         .glass-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
             backdrop-filter: blur(12px);
@@ -57,7 +64,7 @@
         .modal-enter { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        /* ERROR TOAST */
+        /* DEBUG */
         #debug-console { display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; padding: 10px 20px; border-radius: 99px; font-size: 12px; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 90%; text-align: center; }
     </style>
 </head>
@@ -77,17 +84,15 @@
             <span>Z</span>
         </div>
         <div class="mt-12 w-32 h-1 bg-zinc-900 rounded-full overflow-hidden">
-            <div class="h-full bg-cyan-500 animate-[loading_2s_ease-in-out_infinite]" style="width: 50%"></div>
+            <div id="progress" class="h-full bg-cyan-500 w-0 transition-all duration-[2000ms] ease-out"></div>
         </div>
-        <p class="mt-4 text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Connexion...</p>
-        <style>@keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }</style>
+        <p id="auth-status" class="mt-4 text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Connexion Cloud...</p>
     </div>
 
     <!-- APP -->
     <div id="app" class="hidden opacity-0 transition-opacity duration-700 h-screen flex flex-col">
-        
         <header class="h-20 px-6 flex items-center justify-between nav-blur z-50 shrink-0">
-            <div class="brand-logo text-2xl" onclick="switchView('home')">
+            <div class="brand-logo text-2xl" onclick="window.switchView('home')">
                 <span>YOUB</span>
                 <span class="i-wrapper">
                     <div class="i-char"><div class="i-dot"></div><div class="i-stem"></div></div>
@@ -108,14 +113,14 @@
             <div id="view-home" class="px-6 pt-6 max-w-lg mx-auto transition-all duration-300">
                 
                 <!-- BANNER SCAN -->
-                <div class="glass-card rounded-[2.5rem] p-8 relative overflow-hidden mb-8 text-center cursor-pointer active:scale-95 transition-transform" onclick="startScan()">
+                <div class="glass-card rounded-[2.5rem] p-8 relative overflow-hidden mb-8 text-center cursor-pointer active:scale-95 transition-transform" onclick="window.startScan()">
                     <div class="relative z-10 flex flex-col items-center gap-4">
                         <div class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.4)] border-[4px] border-[#050505]">
                             <i class="fa-solid fa-camera text-3xl text-white"></i>
                         </div>
                         <div>
                             <h1 class="text-2xl font-extrabold tracking-tighter text-white">SCANNER UN OBJET</h1>
-                            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">IA active • Instantané</p>
+                            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">Multi-shot IA • Instantané</p>
                         </div>
                     </div>
                 </div>
@@ -136,8 +141,8 @@
         </main>
 
         <nav class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-20 glass-card rounded-full flex items-center justify-around px-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[100]">
-            <button onclick="switchView('home')" class="text-2xl text-cyan-400"><i class="fa-solid fa-house"></i></button>
-            <button onclick="startScan()" class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex items-center justify-center text-white shadow-[0_0_25px_rgba(34,211,238,0.5)] -mt-8 border-[6px] border-[#050505] active:scale-90 transition-transform">
+            <button onclick="window.switchView('home')" class="text-2xl text-cyan-400"><i class="fa-solid fa-house"></i></button>
+            <button onclick="window.startScan()" class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex items-center justify-center text-white shadow-[0_0_25px_rgba(34,211,238,0.5)] -mt-8 border-[6px] border-[#050505] active:scale-90 transition-transform">
                 <i class="fa-solid fa-plus text-2xl"></i>
             </button>
             <button class="text-2xl text-zinc-600"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -147,72 +152,76 @@
     <!-- SCAN OVERLAY -->
     <div id="scan-overlay" class="fixed inset-0 z-[300] bg-black hidden flex-col p-6">
         <div class="flex justify-between items-center mb-6">
-            <span class="text-xs font-bold tracking-[0.3em] text-cyan-500">SCANNER IA</span>
-            <button onclick="stopScan()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
+            <span class="text-xs font-bold tracking-[0.3em] text-cyan-500 uppercase">Multi-Scan IA</span>
+            <button onclick="window.stopScan()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
-        <div class="flex-1 relative bg-zinc-900 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl flex flex-col justify-center items-center">
-            <img id="scan-preview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
-            <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
-            
-            <div id="scan-placeholder" class="text-center">
-                <i class="fa-solid fa-camera text-4xl text-zinc-700 mb-4"></i>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Alignez l'objet</p>
+        <!-- ZONE PREVIEW -->
+        <div class="flex-1 relative bg-zinc-900 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl flex flex-col justify-center items-center mb-4">
+            <div id="camera-feed" class="w-full h-full relative bg-black flex items-center justify-center">
+                <img id="main-preview" class="w-full h-full object-cover hidden">
+                <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
+                <div id="scan-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-zinc-700">
+                    <i class="fa-solid fa-camera text-4xl mb-4"></i>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Ajoutez jusqu'à 3 photos</p>
+                </div>
             </div>
             
-            <!-- LOADER FORCÉ AVEC FOND -->
             <div id="uploading-msg" class="hidden absolute inset-0 bg-black/90 z-30 flex flex-col items-center justify-center">
                  <i class="fa-solid fa-circle-notch animate-spin text-cyan-500 text-4xl mb-4"></i>
-                 <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest">ANALYSE EN COURS...</span>
+                 <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest mt-2">ANALYSE MULTI-MODALE...</span>
             </div>
         </div>
 
-        <!-- AI RESULTS -->
-        <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter">
-            <div class="flex justify-between items-center mb-4">
-                <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminée</span>
-                <span class="text-xs text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> Succès</span>
-            </div>
-            
-            <input id="ai-item-name" class="w-full bg-transparent text-xl font-extrabold text-white mb-4 border-b border-white/10 focus:border-cyan-500 outline-none pb-2" value="...">
-            
-            <div class="grid grid-cols-3 gap-3 mb-6">
-                <div class="bg-black p-3 rounded-xl border border-white/10">
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">Prix Estimé</p>
-                    <p id="ai-price" class="text-lg font-black text-cyan-400">...</p>
-                </div>
-                <div class="bg-black p-3 rounded-xl border border-white/10">
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">Catégorie</p>
-                    <p id="ai-category" class="text-sm font-black text-white">...</p>
-                </div>
-                <div class="bg-black p-3 rounded-xl border border-white/10">
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">État</p>
-                    <p id="ai-condition" class="text-sm font-black text-green-400">...</p>
-                </div>
-            </div>
-            
-            <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-6">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Description Auto</p>
-                <textarea id="ai-desc" class="w-full bg-transparent text-xs text-zinc-300 outline-none h-16 resize-none" readonly>...</textarea>
-            </div>
+        <!-- GALLERIE MINIATURES -->
+        <div id="gallery-strip" class="flex gap-2 mb-6 h-16 w-full justify-center"></div>
 
-            <button id="validate-btn" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform">VALIDER & PUBLIER</button>
-        </div>
+        <!-- ACTIONS -->
+        <div class="h-24 flex items-center justify-center relative gap-6 w-full">
+            <input type="file" id="camera-input" class="hidden" accept="image/*" capture="environment" onchange="window.handleImage(event)">
+            
+            <button id="capture-btn" onclick="window.triggerCamera()" class="w-20 h-20 bg-white rounded-full border-[6px] border-black ring-2 ring-white active:scale-90 transition-all flex items-center justify-center">
+                <i class="fa-solid fa-camera text-black text-2xl"></i>
+            </button>
 
-        <!-- Canvas caché pour capturer la frame vidéo -->
-        <canvas id="capture-canvas" class="hidden"></canvas>
-
-        <!-- Bouton capture TOUJOURS au dessus de la vidéo -->
-        <div class="h-24 flex items-center justify-center shrink-0" style="position:relative; z-index:50;">
-            <input type="file" id="camera-input" class="hidden" accept="image/*" onchange="handleImageFile(event)">
-            <button id="capture-btn" onclick="capturePhoto()" class="w-20 h-20 bg-white rounded-full border-[6px] border-black ring-2 ring-white active:scale-90 transition-all shadow-2xl"></button>
+            <!-- BOUTON ANALYSE (Visible si photos) -->
+            <button id="analyze-btn" onclick="window.processAnalysis()" class="hidden w-20 h-20 bg-cyan-500 rounded-full border-[6px] border-black ring-2 ring-cyan-500 active:scale-90 transition-all flex items-center justify-center animate-bounce shadow-[0_0_30px_rgba(34,211,238,0.6)]">
+                <i class="fa-solid fa-bolt text-black text-3xl"></i>
+            </button>
         </div>
     </div>
 
-    <!-- Vidéo positionnée en fixed pour couvrir la zone aperçu sans déborder sur le bouton -->
-    <video id="camera-video" class="hidden" style="position:fixed; top:120px; left:0; right:0; width:100%; height:calc(100% - 220px); object-fit:cover; z-index:310;" autoplay playsinline muted></video>
+    <!-- AI RESULTS HUD -->
+    <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter fixed bottom-0 left-0 right-0 z-[400] max-h-[85vh] overflow-y-auto bg-black">
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminée</span>
+            <button onclick="window.closeHud()" class="text-white"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        
+        <input id="ai-item-name" class="w-full bg-transparent text-2xl font-extrabold text-white mb-4 border-b border-white/10 focus:border-cyan-500 outline-none pb-2" value="...">
+        
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-black p-4 rounded-2xl border border-white/10">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">Prix Estimé</p>
+                <input id="ai-price" type="number" class="w-full bg-transparent text-xl font-black text-cyan-400 outline-none" value="0">
+            </div>
+            <div class="bg-black p-4 rounded-2xl border border-white/10">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold">Catégorie</p>
+                <input id="ai-category" class="w-full bg-transparent text-lg font-black text-white outline-none" value="...">
+            </div>
+        </div>
+        
+        <div class="bg-zinc-800/50 p-4 rounded-2xl border border-white/5 mb-8">
+            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2">Description Auto</p>
+            <textarea id="ai-desc" class="w-full bg-transparent text-sm text-zinc-300 outline-none h-24 resize-none font-medium leading-relaxed"></textarea>
+        </div>
 
-    <!-- PAIEMENT MODAL -->
+        <button id="validate-btn" class="w-full bg-cyan-500 text-black font-bold py-5 rounded-2xl shadow-lg active:scale-95 transition-transform text-lg mb-8">VALIDER LE DROP</button>
+        
+        <div class="h-20"></div>
+    </div>
+
+    <!-- PAIEMENT -->
     <div id="payment-modal" class="fixed inset-0 z-[400] bg-black/95 backdrop-blur-sm hidden items-end sm:items-center justify-center p-4">
         <div class="bg-[#0f0f0f] w-full max-w-md p-6 rounded-[2.5rem] border border-white/10 modal-enter shadow-2xl">
             <div class="flex justify-between items-center mb-8">
@@ -220,7 +229,7 @@
                     <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-500"><i class="fa-solid fa-shield-halved"></i></div>
                     <span class="font-bold text-sm">Paiement Sécurisé</span>
                 </div>
-                <button onclick="closePayment()" class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="window.closePayment()" class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="flex gap-4 mb-8">
                 <div id="pay-img" class="w-20 h-20 rounded-2xl bg-zinc-800 bg-cover bg-center border border-white/10"></div>
@@ -229,7 +238,7 @@
                     <p id="pay-price" class="text-cyan-500 font-extrabold text-2xl">0€</p>
                 </div>
             </div>
-            <button onclick="processPayment()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-5 rounded-2xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all active:scale-95">
+            <button onclick="window.processPayment()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-5 rounded-2xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all active:scale-95">
                 <i class="fa-brands fa-apple-pay text-xl"></i> Payer & Bloquer
             </button>
         </div>
@@ -240,6 +249,7 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // VOS CLÉS (Intégrées directement)
         const firebaseConfig = {
           apiKey: "AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",
           authDomain: "youbiiiz-app.firebaseapp.com",
@@ -248,16 +258,17 @@
           messagingSenderId: "664733497216",
           appId: "1:664733497216:web:ae19fbadf0fa509f59b365"
         };
-        const GEMINI_API_KEY = "AIzaSyAf6tqev93k2d7vdYV74ZfjPv-FYtnXcCY";
+        
+        // --- COLLEZ VOTRE CLÉ API GEMINI ICI ---
+        const GEMINI_API_KEY = "AIzaSyDK6Tvf9ioz_eIWQs2q0c31WZo3QG5VgvY";
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const appId = 'youbiiiz-prod-v1';
         let currentUser = null;
+        let scannedImages = []; 
         let currentScanData = null;
-
-        // ✅ FIX 2 — allItems déclaré globalement
-        let allItems = [];
 
         function logError(msg) {
             console.error(msg);
@@ -292,11 +303,10 @@
         function initFeed() {
             const feedCol = collection(db, 'scans');
             onSnapshot(feedCol, (snapshot) => {
-                // ✅ FIX 2 — on remplit allItems ici
-                allItems = [];
-                snapshot.forEach(doc => allItems.push({id: doc.id, ...doc.data()}));
-                allItems.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                renderFeed(allItems);
+                const items = [];
+                snapshot.forEach(doc => items.push({id: doc.id, ...doc.data()}));
+                items.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                renderFeed(items);
             }, (error) => {
                 logError("Feed Error: " + error.message);
             });
@@ -309,9 +319,10 @@
                 return;
             }
             container.innerHTML = items.map(item => `
-                <div class="glass-card rounded-[2rem] p-4 flex gap-4 items-center fade-in mb-4 group cursor-pointer" onclick="openPayment('${item.id}')">
+                <div class="glass-card rounded-[2rem] p-4 flex gap-4 items-center fade-in mb-4 group cursor-pointer" onclick="window.openPayment('${item.id}')">
                     <div class="w-20 h-20 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5 relative">
                         <img src="${item.imageUrl}" class="w-full h-full object-cover">
+                        ${item.images && item.images.length > 1 ? '<div class="absolute top-1 right-1 bg-black/60 px-1.5 rounded text-[8px] font-bold">+'+(item.images.length-1)+'</div>' : ''}
                     </div>
                     <div class="flex-1 min-w-0">
                         <h4 class="font-bold text-sm truncate text-white">${item.itemName}</h4>
@@ -324,190 +335,180 @@
             `).join('');
         }
 
-        // ✅ CAMERA — getUserMedia avec fallback input file
-        let cameraStream = null;
-
-        window.startScan = async () => {
+        // --- GLOBAL FUNCTIONS ---
+        window.startScan = () => {
+            scannedImages = [];
+            updateGallery();
             document.getElementById('scan-overlay').classList.remove('hidden');
             document.getElementById('scan-overlay').classList.add('flex');
-            await startCamera();
+            
+            document.getElementById('scan-placeholder').classList.remove('hidden');
+            document.getElementById('main-preview').classList.add('hidden');
+            document.getElementById('analyze-btn').classList.add('hidden');
+            document.getElementById('analyze-btn').classList.remove('flex');
+            document.getElementById('capture-btn').classList.remove('hidden');
+            
+            // Trigger auto pour UX fluide
+            setTimeout(() => {
+               window.triggerCamera(); 
+            }, 300);
         };
 
-        async function startCamera() {
-            const video = document.getElementById('camera-video');
-            const placeholder = document.getElementById('scan-placeholder');
-            try {
-                cameraStream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
-                    audio: false
-                });
-                video.srcObject = cameraStream;
-                video.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-            } catch (err) {
-                console.warn("getUserMedia échoué, fallback input file", err);
-                document.getElementById('camera-input').click();
-            }
-        }
-
-        function stopCamera() {
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(t => t.stop());
-                cameraStream = null;
-            }
-            const video = document.getElementById('camera-video');
-            video.srcObject = null;
-            video.classList.add('hidden');
-        }
-
-        window.capturePhoto = () => {
-            const video = document.getElementById('camera-video');
-            // Si la vidéo est active, on capture une frame
-            if (cameraStream && !video.classList.contains('hidden')) {
-                const canvas = document.getElementById('capture-canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                const imgBase64 = canvas.toDataURL('image/jpeg', 0.9);
-                stopCamera();
-                processCapture(imgBase64);
-            } else {
-                // Fallback : ouvre l'input file
-                document.getElementById('camera-input').click();
-            }
+        window.triggerCamera = () => {
+             if(scannedImages.length >= 3) {
+                 alert("Max 3 photos atteint !");
+                 return;
+             }
+             document.getElementById('camera-input').click();
         };
 
-        // Fallback : si l'utilisateur sélectionne un fichier
-        window.handleImageFile = (e) => {
+        window.handleImage = (e) => {
             const file = e.target.files[0];
             if (!file) return;
+
             const reader = new FileReader();
-            reader.onload = (evt) => processCapture(evt.target.result);
+            reader.onload = (evt) => {
+                const img = evt.target.result;
+                
+                // Compression Canvas (Evite surcharge Firestore)
+                const image = new Image();
+                image.src = img;
+                image.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 800;
+                    const scale = MAX_WIDTH / image.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = image.height * scale;
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    const compressedImg = canvas.toDataURL('image/jpeg', 0.7);
+
+                    scannedImages.push(compressedImg);
+                    
+                    // UI Update
+                    document.getElementById('scan-placeholder').classList.add('hidden');
+                    document.getElementById('main-preview').src = compressedImg;
+                    document.getElementById('main-preview').classList.remove('hidden');
+                    
+                    updateGallery();
+                    
+                    if(scannedImages.length > 0) {
+                        document.getElementById('analyze-btn').classList.remove('hidden');
+                        document.getElementById('analyze-btn').classList.add('flex');
+                        document.getElementById('capture-btn').classList.remove('w-20', 'h-20');
+                        document.getElementById('capture-btn').classList.add('w-14', 'h-14', 'border-2');
+                    }
+                };
+            };
             reader.readAsDataURL(file);
         };
 
-        function processCapture(imgBase64) {
-            document.getElementById('scan-placeholder').classList.add('hidden');
-            document.getElementById('capture-btn').classList.add('hidden');
-            document.getElementById('uploading-msg').classList.remove('hidden');
-            document.getElementById('scan-line').classList.remove('hidden');
-            document.getElementById('scan-preview').src = imgBase64;
-            document.getElementById('scan-preview').classList.remove('hidden');
-
-            analyzeWithGemini(imgBase64);
+        function updateGallery() {
+            const container = document.getElementById('gallery-strip');
+            container.innerHTML = scannedImages.map((img, idx) => `
+                <div class="w-14 h-14 rounded-xl overflow-hidden border-2 border-white/20 relative">
+                    <img src="${img}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center font-bold text-xs">${idx + 1}</div>
+                </div>
+            `).join('');
         }
 
-        async function analyzeWithGemini(imgBase64) {
+        window.processAnalysis = async () => {
+            document.getElementById('uploading-msg').classList.remove('hidden');
+            
             try {
-                const prompt = `Tu es un expert en estimation de produits d'occasion. Analyse cette image avec une précision maximale.
+                const imageParts = scannedImages.map(base64 => ({
+                    inlineData: { mimeType: "image/jpeg", data: base64.split(',')[1] }
+                }));
 
-Identifie :
-- La marque exacte et le modèle précis du produit (ex: "Souris Gaming Alienware AW510M")
-- Le prix de revente réaliste en euros sur le marché occasion français (base-toi sur les prix Leboncoin, Vinted, eBay FR)
-- La catégorie précise (ex: "Informatique > Périphériques", "High-Tech", "Jeux vidéo", etc.)
-- Une description vendeuse de 2-3 phrases mentionnant les caractéristiques clés visibles
-- L'état estimé du produit (Neuf, Très bon état, Bon état, État correct)
+                // Configuration JSON stricte pour Gemini 1.5 Flash (Plus stable pour vision)
+                const prompt = `Analyse ces images pour une vente.
+                Réponds UNIQUEMENT avec ce JSON brut : 
+                { "title": "Nom précis", "price": 0, "category": "Categorie", "description": "Description courte et vendeuse" }`;
 
-Réponds UNIQUEMENT avec ce JSON valide, sans aucun texte autour :
-{"title": "Marque Modèle exact", "price": 0, "category": "catégorie précise", "description": "description vendeuse 2-3 phrases", "condition": "état estimé"}`;
-
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{
                             parts: [
-                                { inlineData: { mimeType: "image/jpeg", data: imgBase64.split(',')[1] } },
-                                { text: prompt }
+                                { text: prompt },
+                                ...imageParts
                             ]
                         }],
-                        generationConfig: { temperature: 0.1, maxOutputTokens: 600 }
+                         generationConfig: {
+                            responseMimeType: "application/json"
+                        }
                     })
                 });
-
+                
                 const data = await response.json();
+                
+                if(data.error) throw new Error(data.error.message);
+                
+                const aiData = JSON.parse(data.candidates[0].content.parts[0].text);
 
-                // Affiche l'erreur brute si problème API
-                if (data.error) {
-                    logError("Erreur Gemini: " + data.error.message);
-                    document.getElementById('uploading-msg').classList.add('hidden');
-                    document.getElementById('scan-line').classList.add('hidden');
-                    document.getElementById('capture-btn').classList.remove('hidden');
-                    return;
-                }
+                // Populate HUD
+                document.getElementById('ai-item-name').value = aiData.title;
+                document.getElementById('ai-price').value = aiData.price;
+                document.getElementById('ai-category').value = aiData.category;
+                document.getElementById('ai-desc').value = aiData.description;
+                
+                currentScanData = { ...aiData, img: scannedImages[0] };
 
-                const text = data.candidates[0].content.parts[0].text;
-                const jsonStr = text.replace(/```json|```/g, '').trim();
-                const aiData = JSON.parse(jsonStr);
-                updateScanUI(aiData, imgBase64);
+                document.getElementById('uploading-msg').classList.add('hidden');
+                document.getElementById('scan-overlay').classList.add('hidden'); 
+                document.getElementById('scan-overlay').classList.remove('flex'); 
+                document.getElementById('ai-hud').classList.remove('hidden');
+                document.getElementById('ai-hud').classList.add('flex');
 
             } catch (err) {
-                console.error("Erreur IA", err);
-                logError("Erreur analyse IA: " + err.message);
+                console.error("Erreur IA:", err);
+                alert("Erreur analyse IA : " + err.message);
                 document.getElementById('uploading-msg').classList.add('hidden');
-                document.getElementById('scan-line').classList.add('hidden');
-                document.getElementById('capture-btn').classList.remove('hidden');
             }
-        }
+        };
 
-        function updateScanUI(result, img) {
-            document.getElementById('uploading-msg').classList.add('hidden');
-            document.getElementById('scan-line').classList.add('hidden');
-            
-            document.getElementById('ai-item-name').value = result.title;
-            document.getElementById('ai-price').innerText = result.price + "€";
-            document.getElementById('ai-category').innerText = result.category;
-            if(document.getElementById('ai-desc')) document.getElementById('ai-desc').value = result.description || "";
-            if(document.getElementById('ai-condition')) document.getElementById('ai-condition').innerText = result.condition || "Bon état";
-            
-            currentScanData = { 
-                itemName: result.title, 
-                price: result.price, 
-                category: result.category,
-                condition: result.condition || "Bon état",
-                imageUrl: img
-            };
-            document.getElementById('ai-hud').classList.remove('hidden');
-        }
-
+        // VALIDATION
         document.getElementById('validate-btn').addEventListener('click', async () => {
-            if(!currentScanData || !currentUser) return;
-            const finalTitle = document.getElementById('ai-item-name').value;
+            const title = document.getElementById('ai-item-name').value;
+            const price = document.getElementById('ai-price').value;
+            const desc = document.getElementById('ai-desc').value;
+            const cat = document.getElementById('ai-category').value;
             
             try {
-                await addDoc(collection(db, 'scans'), {
+                await db.collection('scans').add({
                     userId: currentUser.uid,
-                    itemName: finalTitle,
-                    price: currentScanData.price,
-                    category: currentScanData.category,
-                    condition: currentScanData.condition || "Bon état",
-                    imageUrl: currentScanData.imageUrl, // ✅ FIX 3 — utilise bien .imageUrl
-                    createdAt: serverTimestamp()
+                    itemName: title,
+                    price: parseInt(price),
+                    category: cat,
+                    description: desc,
+                    images: scannedImages,
+                    imageUrl: scannedImages[0], 
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                window.stopScan();
-                window.switchView('home');
+                window.closeHud();
             } catch (err) { 
-                logError("Publish Error: " + err.message);
                 console.error(err); 
+                alert("Erreur Sauvegarde DB");
             }
         });
 
-        window.stopScan = () => {
-            stopCamera();
-            document.getElementById('scan-overlay').classList.add('hidden');
-            document.getElementById('scan-overlay').classList.remove('flex');
-            document.getElementById('scan-preview').classList.add('hidden');
-            document.getElementById('scan-placeholder').classList.remove('hidden');
+        window.closeHud = () => {
             document.getElementById('ai-hud').classList.add('hidden');
-            document.getElementById('uploading-msg').classList.add('hidden');
-            document.getElementById('scan-line').classList.add('hidden');
-            document.getElementById('capture-btn').classList.remove('hidden');
-            document.getElementById('camera-input').value = ""; 
-            currentScanData = null;
+            document.getElementById('ai-hud').classList.remove('flex');
+            window.switchView('home');
         };
 
+        window.stopScan = () => {
+            document.getElementById('scan-overlay').classList.add('hidden');
+            document.getElementById('scan-overlay').classList.remove('flex');
+            scannedImages = [];
+            document.getElementById('gallery-strip').innerHTML = '';
+        };
+
+        // Payment
         window.openPayment = (itemId) => {
-            // ✅ FIX 2 — allItems est maintenant accessible
             const item = allItems.find(i => i.id === itemId);
             if(item) {
                 document.getElementById('pay-img').style.backgroundImage = `url(${item.imageUrl})`;
@@ -517,26 +518,14 @@ Réponds UNIQUEMENT avec ce JSON valide, sans aucun texte autour :
                 document.getElementById('payment-modal').classList.add('flex');
             }
         };
-
         window.closePayment = () => {
             document.getElementById('payment-modal').classList.add('hidden');
             document.getElementById('payment-modal').classList.remove('flex');
         };
-
         window.processPayment = () => { alert("Paiement validé !"); window.closePayment(); };
-
         window.switchView = (v) => {
             document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
             document.getElementById('view-'+v).classList.remove('hidden');
-        };
-
-        window.closeHud = () => {
-            document.getElementById('ai-hud').classList.add('hidden');
-            document.getElementById('scan-overlay').classList.add('hidden');
-            document.getElementById('scan-overlay').classList.remove('flex');
-            document.getElementById('scan-preview').classList.add('hidden');
-            document.getElementById('scan-placeholder').classList.remove('hidden');
-            document.getElementById('capture-btn').classList.remove('hidden');
         };
     </script>
 </body>
