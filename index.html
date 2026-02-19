@@ -204,7 +204,7 @@
         <button onclick="stopScan()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-8">
-        <div class="relative bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 w-full mb-5" style="aspect-ratio:1/1;">
+        <div class="relative bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 w-full mb-5" style="height:300px;">
             <video id="camera-video" class="hidden absolute inset-0 w-full h-full object-cover z-10" autoplay playsinline muted></video>
             <img id="scan-preview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
             <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
@@ -1181,13 +1181,14 @@
     };
 
     function processCapture(imgBase64) {
+        // Cacher placeholder et bouton, montrer spinner
         document.getElementById('scan-placeholder').classList.add('hidden');
-        document.getElementById('capture-btn').classList.add('hidden');
-        // Recadrage carré immédiat AVANT d'afficher quoi que ce soit
+        document.getElementById('capture-btn-wrap').classList.add('hidden');
+        document.getElementById('uploading-msg').classList.remove('hidden');
+        // Recadrer l'image en carré 1000x1000 PUIS afficher
         optimizeImage(imgBase64, 0.92).then(optimized => {
             document.getElementById('scan-preview').src = optimized;
             document.getElementById('scan-preview').classList.remove('hidden');
-            document.getElementById('uploading-msg').classList.remove('hidden');
             document.getElementById('scan-line').classList.remove('hidden');
             analyzeWithGemini(optimized);
         });
@@ -1247,7 +1248,9 @@
     function resetScanUI() {
         document.getElementById('uploading-msg').classList.add('hidden');
         document.getElementById('scan-line').classList.add('hidden');
-        document.getElementById('capture-btn').classList.remove('hidden');
+        document.getElementById('capture-btn-wrap').classList.remove('hidden');
+        document.getElementById('scan-preview').classList.add('hidden');
+        document.getElementById('scan-placeholder').classList.remove('hidden');
     }
 
     function updateScanUI(result, img) {
@@ -1310,9 +1313,9 @@
         document.getElementById('ai-hud').classList.add('hidden');
         document.getElementById('uploading-msg').classList.add('hidden');
         document.getElementById('scan-line').classList.add('hidden');
-        document.getElementById('capture-btn').classList.remove('hidden');
+        document.getElementById('capture-btn-wrap').classList.remove('hidden');
         const btn = document.getElementById('validate-btn');
-        btn.innerText = 'VALIDER & PUBLIER';
+        btn.innerText = 'VALIDER ET PUBLIER';
         btn.disabled = false;
         document.getElementById('camera-input').value = '';
         currentScanData = null;
