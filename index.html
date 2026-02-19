@@ -779,12 +779,16 @@ function cropImage(b64,q){
       const s=Math.min(img.width,img.height);
       const sx=Math.floor((img.width-s)/2),sy=Math.floor((img.height-s)/2);
       // Taille de sortie max 600px — suffisant pour l'affichage mobile
-      const OUT=400;
+      // Taille de sortie : 500px pour un bon compromis qualité/poids
+      const OUT=500;
       const c=document.createElement('canvas');c.width=OUT;c.height=OUT;
       const ctx=c.getContext('2d');
       ctx.fillStyle='#111';ctx.fillRect(0,0,OUT,OUT);
       ctx.drawImage(img,sx,sy,s,s,0,0,OUT,OUT);
-      res(c.toDataURL('image/jpeg',0.72));
+      // Compression progressive jusqu'à passer sous 120ko
+      let q=0.78,result=c.toDataURL('image/jpeg',q);
+      while(result.length>160000&&q>0.4){q-=0.08;result=c.toDataURL('image/jpeg',q);}
+      res(result);
     };
     img.onerror=()=>res(b64);img.src=b64;
   });
