@@ -198,101 +198,89 @@
 </div>
 
 <!-- SCAN OVERLAY -->
-<div id="scan-overlay" class="fixed inset-0 z-[300] bg-[#050505] hidden flex-col overflow-y-auto no-scrollbar">
-    <!-- Header fixe -->
-    <div class="flex justify-between items-center px-6 pt-6 pb-4 shrink-0">
+<div id="scan-overlay" class="fixed inset-0 z-[300] bg-[#050505] hidden flex-col">
+    <div class="flex justify-between items-center px-5 pt-5 pb-3 shrink-0">
         <span class="text-xs font-bold tracking-[0.3em] text-cyan-500">SCANNER IA</span>
         <button onclick="stopScan()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <!-- Zone image carrée -->
-    <div class="px-6 shrink-0">
-        <div id="scan-img-container" class="relative bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl w-full" style="aspect-ratio:1/1;">
+    <div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-8">
+        <div class="relative bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 w-full mb-5" style="aspect-ratio:1/1;">
             <video id="camera-video" class="hidden absolute inset-0 w-full h-full object-cover z-10" autoplay playsinline muted></video>
             <img id="scan-preview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
             <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
             <div id="scan-placeholder" class="absolute inset-0 flex flex-col items-center justify-center">
-                <i class="fa-solid fa-camera text-4xl text-zinc-700 mb-4"></i>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Alignez l'objet</p>
+                <i class="fa-solid fa-camera text-5xl text-zinc-700 mb-4"></i>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Alignez l'objet dans le cadre</p>
             </div>
-            <div id="uploading-msg" class="hidden absolute inset-0 bg-black/90 z-30 flex flex-col items-center justify-center">
-                <i class="fa-solid fa-circle-notch animate-spin text-cyan-500 text-4xl mb-4"></i>
-                <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest">ANALYSE EN COURS...</span>
-            </div>
-            <!-- Bouton capture centré sur l'image -->
-            <div id="capture-btn-wrap" class="absolute bottom-4 left-0 right-0 flex justify-center z-40">
-                <input type="file" id="camera-input" class="hidden" accept="image/*" onchange="handleImageFile(event)">
-                <button id="capture-btn" onclick="capturePhoto()" class="w-16 h-16 bg-white rounded-full border-[5px] border-black ring-2 ring-white active:scale-90 transition-all shadow-2xl"></button>
+            <div id="uploading-msg" class="hidden absolute inset-0 bg-black/90 z-30 flex flex-col items-center justify-center gap-3">
+                <i class="fa-solid fa-circle-notch animate-spin text-cyan-500 text-4xl"></i>
+                <span class="text-cyan-500 text-xs font-bold animate-pulse tracking-widest">ANALYSE IA EN COURS...</span>
             </div>
         </div>
-    </div>
-    <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter overflow-y-auto max-h-[55vh] no-scrollbar">
-        <div class="flex justify-between items-center mb-4">
-            <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminée</span>
-            <span class="text-xs text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> Succès</span>
+        <div id="capture-btn-wrap" class="flex justify-center mb-5">
+            <input type="file" id="camera-input" class="hidden" accept="image/*" onchange="handleImageFile(event)">
+            <button id="capture-btn" onclick="capturePhoto()" class="bg-white rounded-full border-[5px] border-[#050505] ring-2 ring-white active:scale-90 transition-all shadow-2xl" style="width:72px;height:72px;"></button>
         </div>
-        <input id="ai-item-name" class="w-full bg-transparent text-xl font-extrabold text-white mb-3 border-b border-white/10 focus:border-cyan-500 outline-none pb-2" value="...">
-        
-        <!-- Marque & Modèle -->
-        <div class="grid grid-cols-2 gap-3 mb-3">
-            <div class="bg-black p-3 rounded-xl border border-white/10">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold">Marque</p>
-                <p id="ai-brand" class="text-sm font-black text-cyan-400">...</p>
+        <div id="ai-hud" class="hidden bg-zinc-900/60 rounded-[2rem] border border-white/10 p-5 modal-enter">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminee</span>
+                <span class="text-xs text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> Succes</span>
             </div>
-            <div class="bg-black p-3 rounded-xl border border-white/10">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold">Modèle</p>
-                <p id="ai-model" class="text-sm font-black text-white truncate">...</p>
+            <input id="ai-item-name" class="w-full bg-transparent text-xl font-extrabold text-white mb-4 border-b border-white/10 focus:border-cyan-500 outline-none pb-2">
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div class="bg-black p-3 rounded-xl border border-white/10">
+                    <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Marque</p>
+                    <p id="ai-brand" class="text-sm font-black text-cyan-400">...</p>
+                </div>
+                <div class="bg-black p-3 rounded-xl border border-white/10">
+                    <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Modele</p>
+                    <p id="ai-model" class="text-sm font-black text-white truncate">...</p>
+                </div>
             </div>
+            <div class="grid grid-cols-3 gap-3 mb-3">
+                <div class="bg-black p-3 rounded-xl border border-white/10">
+                    <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Prix</p>
+                    <p id="ai-price" class="text-lg font-black text-cyan-400">...</p>
+                </div>
+                <div class="bg-black p-3 rounded-xl border border-white/10">
+                    <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Categorie</p>
+                    <p id="ai-category" class="text-xs font-black text-white">...</p>
+                </div>
+                <div class="bg-black p-3 rounded-xl border border-white/10">
+                    <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Etat</p>
+                    <p id="ai-condition" class="text-xs font-black text-green-400">...</p>
+                </div>
+            </div>
+            <div class="bg-black/50 p-4 rounded-xl border border-white/5 mb-3">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2">Description</p>
+                <textarea id="ai-desc" class="w-full bg-transparent text-sm text-zinc-300 outline-none resize-none leading-relaxed" rows="3" readonly></textarea>
+            </div>
+            <div class="bg-black/50 p-4 rounded-xl border border-white/5 mb-5">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-3">Mode de livraison</p>
+                <div class="flex flex-col gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="ship-hand" class="w-5 h-5 accent-cyan-500" onchange="updateShipping()">
+                        <span class="text-sm font-bold text-white flex-1">Remise en main propre</span>
+                        <span class="text-xs text-zinc-500">Gratuit</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="ship-relay" class="w-5 h-5 accent-cyan-500" onchange="updateShipping()">
+                        <span class="text-sm font-bold text-white flex-1">Mondial Relay</span>
+                        <input type="number" id="ship-relay-price" class="w-14 bg-zinc-800 border border-white/10 rounded-lg px-2 py-1 text-xs text-white outline-none text-center" value="5">
+                        <span class="text-xs text-zinc-500">euros</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="ship-colissimo" class="w-5 h-5 accent-cyan-500" onchange="updateShipping()">
+                        <span class="text-sm font-bold text-white flex-1">Colissimo</span>
+                        <input type="number" id="ship-colissimo-price" class="w-14 bg-zinc-800 border border-white/10 rounded-lg px-2 py-1 text-xs text-white outline-none text-center" value="8">
+                        <span class="text-xs text-zinc-500">euros</span>
+                    </label>
+                </div>
+            </div>
+            <button id="validate-btn" class="w-full bg-cyan-500 text-black font-extrabold py-5 rounded-2xl text-base shadow-[0_0_20px_rgba(34,211,238,0.4)] active:scale-95 transition-transform">
+                VALIDER ET PUBLIER
+            </button>
         </div>
-
-        <div class="grid grid-cols-3 gap-3 mb-3">
-            <div class="bg-black p-3 rounded-xl border border-white/10">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold">Prix</p>
-                <p id="ai-price" class="text-lg font-black text-cyan-400">...</p>
-            </div>
-            <div class="bg-black p-3 rounded-xl border border-white/10">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold">Catégorie</p>
-                <p id="ai-category" class="text-xs font-black text-white">...</p>
-            </div>
-            <div class="bg-black p-3 rounded-xl border border-white/10">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold">État</p>
-                <p id="ai-condition" class="text-xs font-black text-green-400">...</p>
-            </div>
-        </div>
-
-        <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-3">
-            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Description</p>
-            <textarea id="ai-desc" class="w-full bg-transparent text-xs text-zinc-300 outline-none h-14 resize-none" readonly></textarea>
-        </div>
-
-        <!-- LIVRAISON -->
-        <div class="bg-black/50 p-3 rounded-xl border border-white/5 mb-4">
-            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2">Mode de livraison</p>
-            <div class="flex flex-col gap-2">
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" id="ship-hand" class="w-4 h-4 accent-cyan-500" onchange="updateShipping()">
-                    <div class="flex-1">
-                        <span class="text-xs font-bold text-white">🤝 Remise en main propre</span>
-                        <span class="text-[10px] text-zinc-500 ml-2">Gratuit</span>
-                    </div>
-                </label>
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" id="ship-relay" class="w-4 h-4 accent-cyan-500" onchange="updateShipping()">
-                    <div class="flex-1">
-                        <span class="text-xs font-bold text-white">📦 Mondial Relay</span>
-                        <input type="number" id="ship-relay-price" placeholder="Prix €" class="ml-2 w-16 bg-zinc-800 border border-white/10 rounded-lg px-2 py-0.5 text-xs text-white outline-none focus:border-cyan-500" value="5">
-                    </div>
-                </label>
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" id="ship-colissimo" class="w-4 h-4 accent-cyan-500" onchange="updateShipping()">
-                    <div class="flex-1">
-                        <span class="text-xs font-bold text-white">🚚 Colissimo</span>
-                        <input type="number" id="ship-colissimo-price" placeholder="Prix €" class="ml-2 w-16 bg-zinc-800 border border-white/10 rounded-lg px-2 py-0.5 text-xs text-white outline-none focus:border-cyan-500" value="8">
-                    </div>
-                </label>
-            </div>
-        </div>
-
-        <button id="validate-btn" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform">VALIDER & PUBLIER</button>
     </div>
     <canvas id="capture-canvas" class="hidden"></canvas>
 </div>
