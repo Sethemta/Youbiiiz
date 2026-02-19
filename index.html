@@ -215,7 +215,7 @@
             <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest">ANALYSE EN COURS...</span>
         </div>
     </div>
-    <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter">
+    <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter overflow-y-auto max-h-[55vh] no-scrollbar">
         <div class="flex justify-between items-center mb-4">
             <span class="text-xs text-zinc-400 font-mono uppercase">Analyse terminée</span>
             <span class="text-xs text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> Succès</span>
@@ -299,24 +299,25 @@
         <span class="font-bold text-sm">Détail de l'annonce</span>
     </div>
     <div class="flex-1 overflow-y-auto no-scrollbar">
-        <div id="detail-img-wrap" class="w-full h-72 bg-zinc-900 relative overflow-hidden">
+        <div id="detail-img-wrap" class="w-full h-80 bg-zinc-900 relative overflow-hidden">
             <img id="detail-img" class="w-full h-full object-cover">
-            <div class="absolute bottom-4 right-4">
-                <span id="detail-condition" class="bg-black/70 text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/10"></span>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                <p id="detail-price" class="text-cyan-400 font-black text-4xl drop-shadow-lg"></p>
+                <span id="detail-condition" class="bg-black/70 backdrop-blur text-white text-[10px] font-bold px-3 py-1.5 rounded-full border border-white/10"></span>
             </div>
         </div>
         <div class="p-6">
-            <div class="flex items-start justify-between mb-4">
-                <h2 id="detail-title" class="font-extrabold text-2xl text-white flex-1 pr-4 leading-tight"></h2>
-                <p id="detail-price" class="text-cyan-400 font-black text-3xl shrink-0"></p>
+            <div class="mb-4">
+                <h2 id="detail-title" class="font-extrabold text-2xl text-white leading-tight mb-2"></h2>
+                <span id="detail-category" class="text-[10px] text-zinc-500 font-bold uppercase bg-zinc-900 px-3 py-1.5 rounded-full border border-white/5 inline-block"></span>
             </div>
-            <span id="detail-category" class="text-[10px] text-zinc-500 font-bold uppercase bg-zinc-900 px-3 py-1 rounded-full border border-white/5 mb-4 inline-block"></span>
             <!-- Marque & Modèle -->
             <p id="detail-brand" class="text-xs text-zinc-500 font-mono mb-3"></p>
 
-            <div class="glass-card rounded-2xl p-4 mb-4">
-                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2">Description</p>
-                <p id="detail-desc" class="text-sm text-zinc-300 leading-relaxed"></p>
+            <div class="glass-card rounded-2xl p-5 mb-4">
+                <p class="text-[9px] text-zinc-500 uppercase font-bold mb-3 tracking-widest">Description</p>
+                <p id="detail-desc" class="text-sm text-zinc-300 leading-loose"></p>
             </div>
 
             <!-- Livraison -->
@@ -611,20 +612,24 @@
     }
 
     function itemCard(item) {
+        const desc = item.description ? item.description.substring(0, 80) + (item.description.length > 80 ? '...' : '') : '';
         return `
-        <div class="glass-card rounded-[2rem] p-4 flex gap-4 items-center fade-in cursor-pointer active:scale-95 transition-transform" onclick="openDetail('${item.id}')">
-            <div class="w-20 h-20 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5">
-                <img src="${item.imageUrl || ''}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-zinc-600\'><i class=\'fa-solid fa-image text-2xl\'></i></div>'">
-            </div>
-            <div class="flex-1 min-w-0">
-                <h4 class="font-bold text-sm truncate text-white">${item.itemName || 'Objet'}</h4>
-                <p class="text-cyan-400 font-extrabold text-lg">${item.price || 0}€</p>
-                <div class="flex items-center gap-2 mt-1">
-                    <span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">${item.category || 'Divers'}</span>
-                    ${item.condition ? `<span class="text-[9px] text-green-500 font-bold">${item.condition}</span>` : ''}
+        <div class="glass-card rounded-[2rem] overflow-hidden fade-in cursor-pointer active:scale-[0.98] transition-transform" onclick="openDetail('${item.id}')">
+            <div class="w-full h-52 bg-zinc-900 overflow-hidden relative">
+                <img src="${item.imageUrl || ''}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-zinc-700\'><i class=\'fa-solid fa-image text-4xl\'></i></div>'">
+                <div class="absolute top-3 right-3 flex gap-2">
+                    ${item.condition ? `<span class="bg-black/70 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/10">${item.condition}</span>` : ''}
                 </div>
+                <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <p class="absolute bottom-3 left-4 text-cyan-400 font-black text-2xl">${item.price || 0}€</p>
             </div>
-            <i class="fa-solid fa-chevron-right text-zinc-700 text-xs shrink-0"></i>
+            <div class="p-4">
+                <div class="flex items-start justify-between gap-2 mb-2">
+                    <h4 class="font-bold text-base text-white leading-tight">${item.itemName || 'Objet'}</h4>
+                    <span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-1 rounded-lg border border-white/5 shrink-0">${item.category || 'Divers'}</span>
+                </div>
+                ${desc ? `<p class="text-xs text-zinc-500 leading-relaxed">${desc}</p>` : ''}
+            </div>
         </div>`;
     }
 
@@ -676,24 +681,24 @@
 
     function myItemCard(item) {
         return `
-        <div class="glass-card rounded-[2rem] p-4 fade-in">
-            <div class="flex gap-4 items-center mb-3">
-                <div class="w-16 h-16 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5">
-                    <img src="${item.imageUrl || ''}" class="w-full h-full object-cover">
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h4 class="font-bold text-sm truncate text-white">${item.itemName || 'Objet'}</h4>
-                    <p class="text-cyan-400 font-extrabold text-lg">${item.price || 0}€</p>
-                    <span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">${item.category || 'Divers'}</span>
-                </div>
+        <div class="glass-card rounded-[2rem] overflow-hidden fade-in">
+            <div class="w-full h-44 bg-zinc-900 overflow-hidden relative">
+                <img src="${item.imageUrl || ''}" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <p class="absolute bottom-3 left-4 text-cyan-400 font-black text-xl">${item.price || 0}€</p>
+                <span class="absolute top-3 right-3 bg-black/70 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/10">${item.condition || ''}</span>
             </div>
-            <div class="flex gap-2">
-                <button onclick="openEdit('${item.id}')" class="flex-1 bg-zinc-900 border border-white/10 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">
-                    <i class="fa-solid fa-pen"></i> Modifier
-                </button>
-                <button onclick="confirmDelete('${item.id}')" class="flex-1 bg-red-500/10 border border-red-500/20 text-red-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">
-                    <i class="fa-solid fa-trash"></i> Supprimer
-                </button>
+            <div class="p-4">
+                <h4 class="font-bold text-base text-white mb-1">${item.itemName || 'Objet'}</h4>
+                <span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-1 rounded-lg border border-white/5">${item.category || 'Divers'}</span>
+                <div class="flex gap-2 mt-4">
+                    <button onclick="openEdit('${item.id}')" class="flex-1 bg-zinc-900 border border-white/10 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                        <i class="fa-solid fa-pen"></i> Modifier
+                    </button>
+                    <button onclick="confirmDelete('${item.id}')" class="flex-1 bg-red-500/10 border border-red-500/20 text-red-400 font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                        <i class="fa-solid fa-trash"></i> Supprimer
+                    </button>
+                </div>
             </div>
         </div>`;
     }
@@ -773,6 +778,7 @@
         document.getElementById('detail-title').innerText = item.itemName || 'Objet';
         document.getElementById('detail-price').innerText = (item.price || 0) + '€';
         document.getElementById('detail-category').innerText = item.category || 'Divers';
+        document.getElementById('detail-img').style.height = '320px';
         document.getElementById('detail-condition').innerText = item.condition || 'Bon état';
         document.getElementById('detail-desc').innerText = item.description || 'Aucune description.';
         document.getElementById('detail-seller').innerText = 'Vendeur #' + (item.userId || '').substring(0, 6);
