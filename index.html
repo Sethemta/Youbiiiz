@@ -198,21 +198,31 @@
 </div>
 
 <!-- SCAN OVERLAY -->
-<div id="scan-overlay" class="fixed inset-0 z-[300] bg-black hidden flex-col p-6">
-    <div class="flex justify-between items-center mb-6">
+<div id="scan-overlay" class="fixed inset-0 z-[300] bg-[#050505] hidden flex-col overflow-y-auto no-scrollbar">
+    <!-- Header fixe -->
+    <div class="flex justify-between items-center px-6 pt-6 pb-4 shrink-0">
         <span class="text-xs font-bold tracking-[0.3em] text-cyan-500">SCANNER IA</span>
         <button onclick="stopScan()" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <div class="relative bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl flex flex-col justify-center items-center mx-auto" style="width:100%;aspect-ratio:1/1;max-height:50vh;">
-        <img id="scan-preview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
-        <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
-        <div id="scan-placeholder" class="text-center">
-            <i class="fa-solid fa-camera text-4xl text-zinc-700 mb-4"></i>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Alignez l'objet</p>
-        </div>
-        <div id="uploading-msg" class="hidden absolute inset-0 bg-black/90 z-30 flex flex-col items-center justify-center">
-            <i class="fa-solid fa-circle-notch animate-spin text-cyan-500 text-4xl mb-4"></i>
-            <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest">ANALYSE EN COURS...</span>
+    <!-- Zone image carrée -->
+    <div class="px-6 shrink-0">
+        <div id="scan-img-container" class="relative bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl w-full" style="aspect-ratio:1/1;">
+            <video id="camera-video" class="hidden absolute inset-0 w-full h-full object-cover z-10" autoplay playsinline muted></video>
+            <img id="scan-preview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
+            <div id="scan-line" class="hidden absolute w-full h-[3px] bg-cyan-400 shadow-[0_0_20px_#22d3ee] top-0 left-0 z-20 scan-line-anim"></div>
+            <div id="scan-placeholder" class="absolute inset-0 flex flex-col items-center justify-center">
+                <i class="fa-solid fa-camera text-4xl text-zinc-700 mb-4"></i>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Alignez l'objet</p>
+            </div>
+            <div id="uploading-msg" class="hidden absolute inset-0 bg-black/90 z-30 flex flex-col items-center justify-center">
+                <i class="fa-solid fa-circle-notch animate-spin text-cyan-500 text-4xl mb-4"></i>
+                <span class="text-cyan-500 text-xs font-bold animate-pulse text-center tracking-widest">ANALYSE EN COURS...</span>
+            </div>
+            <!-- Bouton capture centré sur l'image -->
+            <div id="capture-btn-wrap" class="absolute bottom-4 left-0 right-0 flex justify-center z-40">
+                <input type="file" id="camera-input" class="hidden" accept="image/*" onchange="handleImageFile(event)">
+                <button id="capture-btn" onclick="capturePhoto()" class="w-16 h-16 bg-white rounded-full border-[5px] border-black ring-2 ring-white active:scale-90 transition-all shadow-2xl"></button>
+            </div>
         </div>
     </div>
     <div id="ai-hud" class="hidden w-full mt-6 bg-zinc-900/50 p-6 rounded-[2rem] border border-white/10 modal-enter overflow-y-auto max-h-[55vh] no-scrollbar">
@@ -285,12 +295,7 @@
         <button id="validate-btn" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform">VALIDER & PUBLIER</button>
     </div>
     <canvas id="capture-canvas" class="hidden"></canvas>
-    <div class="h-24 flex items-center justify-center shrink-0" style="position:relative; z-index:50;">
-        <input type="file" id="camera-input" class="hidden" accept="image/*" onchange="handleImageFile(event)">
-        <button id="capture-btn" onclick="capturePhoto()" class="w-20 h-20 bg-white rounded-full border-[6px] border-black ring-2 ring-white active:scale-90 transition-all shadow-2xl"></button>
-    </div>
 </div>
-<video id="camera-video" class="hidden" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:311; border-radius:2rem;" autoplay playsinline muted></video>
 
 <!-- DETAIL ANNONCE -->
 <div id="detail-modal" class="fixed inset-0 z-[400] bg-[#050505] hidden flex-col slide-in">
@@ -1146,7 +1151,7 @@
         const video = document.getElementById('camera-video');
         try {
             cameraStream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+                video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 1280 } },
                 audio: false
             });
             video.srcObject = cameraStream;
