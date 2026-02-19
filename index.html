@@ -37,7 +37,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .card{background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .12s}
 .card:active{transform:scale(.96)}
 .sq{width:100%;aspect-ratio:1/1;background:#1c1c1c;overflow:hidden;position:relative}
-.sq img{width:100%;height:100%;object-fit:cover}
+.sq img{width:100%;height:100%;object-fit:contain;background:#f8f8f8;}
 .inf{padding:8px 10px 10px}
 .inp{width:100%;background:#1c1c1c;border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:11px 13px;color:#fff;font-size:14px;font-weight:600;outline:none;transition:border-color .15s;font-family:inherit}
 .inp:focus{border-color:#22d3ee}
@@ -348,8 +348,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
   </div>
   <div class="flex-1 overflow-y-auto no-sb">
     <div class="px-3 pt-3 pb-2">
-      <div class="rounded-2xl overflow-hidden bg-zinc-900 mx-auto" style="width:100%;max-width:500px;height:420px;">
-        <img id="det-img" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div style="width:100%;height:380px;background:#f8f8f8;border-radius:16px;overflow:hidden;">
+        <img id="det-img" style="width:100%;height:100%;object-fit:contain;display:block;">
       </div>
     </div>
     <div class="px-4 pb-8">
