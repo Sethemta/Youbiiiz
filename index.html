@@ -6,6 +6,8 @@
 <title>Youbiiiz</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 *{box-sizing:border-box}
@@ -116,7 +118,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
   </header>
 
   <!-- MAIN -->
-  <main class="flex-1 overflow-y-auto no-sb">
+  <main class="flex-1 overflow-y-auto no-sb" id="main-scroll" style="position:relative;">
 
     <!-- HOME -->
     <div id="view-home" class="px-3 pt-3 pb-24">
@@ -156,6 +158,25 @@ header .i-wrapper{gap:2px;margin:0 2px}
       <div id="notif-list">
         <p class="text-center text-zinc-600 text-xs font-bold uppercase py-12">Aucune notification</p>
       </div>
+    </div>
+
+    <!-- CARTE -->
+    <div id="view-map" class="hidden" style="height:100%;position:absolute;inset:0;">
+      <div id="map-container" style="width:100%;height:100%;"></div>
+      <!-- Bulle position -->
+      <div id="map-info" class="hidden absolute bottom-20 left-4 right-4 bg-[#111] border border-white/8 rounded-2xl p-3 z-[1000] flex items-center gap-3">
+        <img id="map-item-img" class="w-12 h-12 rounded-xl object-cover border border-white/8 shrink-0">
+        <div class="flex-1 min-w-0">
+          <p id="map-item-name" class="font-bold text-sm truncate"></p>
+          <p id="map-item-price" class="text-cyan-400 font-black text-base"></p>
+          <p id="map-item-city" class="text-[10px] text-zinc-500 mt-0.5"></p>
+        </div>
+        <button id="map-item-btn" class="shrink-0 bg-cyan-500 text-black font-bold text-xs px-3 py-2 rounded-xl active:scale-95 transition-transform">Voir</button>
+      </div>
+      <!-- Bouton recentrer -->
+      <button onclick="centerMap()" class="absolute top-4 right-4 z-[1000] w-10 h-10 bg-[#111] border border-white/8 rounded-xl flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+        <i class="fa-solid fa-location-crosshairs text-cyan-400"></i>
+      </button>
     </div>
 
     <!-- PROFIL -->
@@ -201,6 +222,9 @@ header .i-wrapper{gap:2px;margin:0 2px}
     </button>
     <button onclick="openScan()" class="w-14 h-14 -mt-6 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-[18px] flex items-center justify-center shadow-[0_0_24px_rgba(34,211,238,.5)] border-[3px] border-[#0a0a0a] active:scale-90 transition-transform">
       <i class="fa-solid fa-plus text-xl text-white"></i>
+    </button>
+    <button onclick="switchView('map')" id="nav-map">
+      <i class="fa-solid fa-map-location-dot text-xl text-zinc-600"></i>
     </button>
     <button onclick="switchView('profile')" id="nav-profile">
       <i class="fa-solid fa-user text-xl text-zinc-600"></i>
@@ -755,20 +779,12 @@ function cropImage(b64,q){
       const s=Math.min(img.width,img.height);
       const sx=Math.floor((img.width-s)/2),sy=Math.floor((img.height-s)/2);
       // Taille de sortie max 600px — suffisant pour l'affichage mobile
-      const OUT=600;
+      const OUT=400;
       const c=document.createElement('canvas');c.width=OUT;c.height=OUT;
       const ctx=c.getContext('2d');
       ctx.fillStyle='#111';ctx.fillRect(0,0,OUT,OUT);
       ctx.drawImage(img,sx,sy,s,s,0,0,OUT,OUT);
-      // Qualité adaptative : si > 200ko on réduit encore
-      let result=c.toDataURL('image/jpeg',0.80);
-      if(result.length>270000){
-        // Réduire à 400px
-        const c2=document.createElement('canvas');c2.width=400;c2.height=400;
-        c2.getContext('2d').drawImage(c,0,0,400,400);
-        result=c2.toDataURL('image/jpeg',0.75);
-      }
-      res(result);
+      res(c.toDataURL('image/jpeg',0.72));
     };
     img.onerror=()=>res(b64);img.src=b64;
   });
@@ -1040,6 +1056,97 @@ window.doDelete=async()=>{
   if(!deletingId)return;
   try{await deleteDoc(doc(db,'scans',deletingId));closeDel();}
   catch(e){toast('Erreur:'+e.message);}
+};
+
+// ── CARTE ──
+let map=null,userLat=null,userLng=null,mapMarkers=[];
+
+function initMap(){
+  if(map)return;
+  // Centre France par défaut
+  const lat=userLat||46.2276,lng=userLng||2.2137,zoom=userLat?12:5;
+  map=L.map('map-container',{zoomControl:false}).setView([lat,lng],zoom);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
+  }).addTo(map);
+  // Marqueur position user
+  if(userLat){
+    L.circleMarker([userLat,userLng],{radius:10,fillColor:'#22d3ee',color:'#fff',weight:2,fillOpacity:0.9})
+      .addTo(map).bindPopup('<b style="color:#000">Vous êtes ici</b>');
+  }
+  renderMapMarkers();
+}
+
+function renderMapMarkers(){
+  if(!map)return;
+  mapMarkers.forEach(m=>m.remove());mapMarkers=[];
+  // On geocode les villes via nominatim pour chaque item avec une ville
+  const withCity=items.filter(i=>i.city&&i.city.trim());
+  if(!withCity.length){
+    if(userLat) return; // pas d'annonces avec ville
+    return;
+  }
+  withCity.forEach(async item=>{
+    try{
+      const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.city+',France')}&format=json&limit=1`);
+      const d=await r.json();
+      if(!d.length)return;
+      const lat=parseFloat(d[0].lat),lng=parseFloat(d[0].lon);
+      const icon=L.divIcon({
+        className:'',
+        html:`<div style="background:#22d3ee;color:#000;font-size:11px;font-weight:900;padding:4px 8px;border-radius:99px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.5)">${item.price||0}€</div>`,
+        iconAnchor:[20,12]
+      });
+      const marker=L.marker([lat,lng],{icon}).addTo(map);
+      marker.on('click',()=>{
+        document.getElementById('map-item-img').src=item.imageUrl||'';
+        document.getElementById('map-item-name').innerText=item.itemName||'';
+        document.getElementById('map-item-price').innerText=(item.price||0)+'€';
+        document.getElementById('map-item-city').innerText=item.city||'';
+        document.getElementById('map-item-btn').onclick=()=>openDetail(item.id);
+        document.getElementById('map-info').classList.remove('hidden');
+      });
+      mapMarkers.push(marker);
+    }catch{}
+  });
+}
+
+window.centerMap=()=>{
+  if(map&&userLat) map.setView([userLat,userLng],13);
+  else askGeo();
+};
+
+function askGeo(){
+  if(!navigator.geolocation){toast('Géolocalisation non supportée');return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    userLat=pos.coords.latitude;userLng=pos.coords.longitude;
+    if(map){
+      map.setView([userLat,userLng],13);
+      L.circleMarker([userLat,userLng],{radius:10,fillColor:'#22d3ee',color:'#fff',weight:2,fillOpacity:.9}).addTo(map);
+    }
+    toast('📍 Position obtenue !',true);
+  },()=>toast('Position refusée'));
+}
+
+// Surcharger switchView pour init carte
+const _sw=window.switchView;
+window.switchView=v=>{
+  // Gérer la vue map séparément (height:100%)
+  document.getElementById('view-map').classList.add('hidden');
+  _sw(v);
+  if(v==='map'){
+    document.getElementById('view-map').classList.remove('hidden');
+    // Demander position si pas encore fait
+    if(!userLat) askGeo();
+    setTimeout(()=>{
+      initMap();
+      if(items.length) renderMapMarkers();
+      if(map) map.invalidateSize();
+    },200);
+  }
+  // Update nav map icon
+  const nm=document.getElementById('nav-map');
+  if(nm) nm.querySelector('i').className='fa-solid fa-map-location-dot text-xl '+(v==='map'?'text-cyan-400':'text-zinc-600');
 };
 </script>
 </body>
