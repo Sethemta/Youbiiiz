@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Youbiiiz v3.2</title>
+<title>Youbiiiz</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -12,8 +12,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 *{box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#0a0a0a;color:#fff;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-
-/* LOGO */
 .brand-logo{display:inline-flex;align-items:baseline;font-weight:800;user-select:none}
 .i-wrapper{display:inline-flex;align-items:flex-end;gap:4px;margin:0 4px}
 .i-stem{width:12px;height:38px;background:#22d3ee;border-radius:2px}
@@ -26,8 +24,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .i-char:nth-child(1) .i-dot{--b:-10px;animation:dribble .9s infinite}
 .i-char:nth-child(2) .i-dot{--b:-15px;animation:dribble 1.3s infinite .2s}
 .i-char:nth-child(3) .i-dot{--b:-12px;animation:dribble 1.1s infinite .5s}
-
-/* UTILS */
 .no-sb{-ms-overflow-style:none;scrollbar-width:none}
 .no-sb::-webkit-scrollbar{display:none}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -37,35 +33,21 @@ header .i-wrapper{gap:2px;margin:0 2px}
 @keyframes sr{from{transform:translateX(100%)}to{transform:translateX(0)}}
 .sr{animation:sr .28s cubic-bezier(.16,1,.3,1) forwards}
 @keyframes ld{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
-@keyframes sm{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
-
-/* CARD */
+@keyframes scanmove{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
 .card{background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .12s}
 .card:active{transform:scale(.96)}
-.card .sq{width:100%;aspect-ratio:1/1;background:#1c1c1c;overflow:hidden;position:relative}
-.card .sq img{width:100%;height:100%;object-fit:cover}
-.card .inf{padding:8px 10px 10px}
-
-/* INPUTS */
+.sq{width:100%;aspect-ratio:1/1;background:#1c1c1c;overflow:hidden;position:relative}
+.sq img{width:100%;height:100%;object-fit:cover}
+.inf{padding:8px 10px 10px}
 .inp{width:100%;background:#1c1c1c;border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:11px 13px;color:#fff;font-size:14px;font-weight:600;outline:none;transition:border-color .15s;font-family:inherit}
 .inp:focus{border-color:#22d3ee}
-
-/* CHIP */
 .chip{padding:5px 13px;border-radius:99px;font-size:11px;font-weight:700;border:1.5px solid rgba(255,255,255,.08);color:#71717a;white-space:nowrap;cursor:pointer;transition:all .12s;background:transparent}
 .chip.on{background:#22d3ee;color:#000;border-color:#22d3ee}
-
-/* SEARCH */
 .sbar{background:#161616;border:1.5px solid rgba(255,255,255,.07);border-radius:12px}
-
-/* MODAL BG */
 .mover{background:rgba(0,0,0,.8);backdrop-filter:blur(6px)}
 .msheet{background:#111;border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.07)}
-
-/* BUBBLES */
 .bme{background:#22d3ee;color:#000;border-radius:18px 18px 4px 18px}
 .bthem{background:#1e1e1e;border:1px solid rgba(255,255,255,.07);border-radius:18px 18px 18px 4px}
-
-/* DBG */
 #dbg{display:none;position:fixed;top:12px;left:50%;transform:translateX(-50%);background:#ef4444;color:#fff;padding:7px 18px;border-radius:99px;font-size:11px;font-weight:700;z-index:9999;max-width:90%;text-align:center}
 </style>
 </head>
@@ -105,78 +87,73 @@ header .i-wrapper{gap:2px;margin:0 2px}
     </div>
     <div class="flex-1 relative">
       <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" style="font-size:11px"></i>
-      <input id="header-search" type="text" placeholder="Rechercher un objet, une ville..." oninput="onSearch(this.value)"
+      <input id="header-search" type="text" placeholder="Rechercher..." oninput="applyFilters()"
         class="sbar w-full pl-8 pr-3 py-2 text-[13px] font-medium text-white placeholder-zinc-600 outline-none">
     </div>
-    <button onclick="switchView('notifications')" class="relative shrink-0 w-9 h-9 rounded-xl bg-zinc-900 border border-white/7 flex items-center justify-center">
+    <button onclick="switchView('notifications')" class="relative shrink-0 w-9 h-9 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-center">
       <i class="fa-solid fa-bell text-zinc-400" style="font-size:13px"></i>
       <span id="nbadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[9px] font-black flex items-center justify-center">0</span>
     </button>
-    <button onclick="switchView('profile')" id="hdr-profile" class="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+    <button onclick="switchView('profile')" class="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
       <i class="fa-solid fa-user text-white" style="font-size:11px"></i>
     </button>
   </header>
 
   <!-- MAIN -->
-  <main class="flex-1 overflow-y-auto no-sb" id="main-scroll" style="position:relative;">
+  <main class="flex-1 overflow-y-auto no-sb" id="main-scroll">
 
     <!-- HOME -->
     <div id="view-home" class="px-3 pt-3 pb-24">
-      <!-- Catégories -->
       <div class="flex gap-2 overflow-x-auto no-sb pb-2">
         <button class="chip on" onclick="filterCat('all',this)">Tout</button>
         <button class="chip" onclick="filterCat('High-Tech',this)">High-Tech</button>
-        <button class="chip" onclick="filterCat('Jeux vidéo',this)">Jeux vidéo</button>
+        <button class="chip" onclick="filterCat('Jeux video',this)">Jeux video</button>
         <button class="chip" onclick="filterCat('Informatique',this)">Informatique</button>
         <button class="chip" onclick="filterCat('Mode',this)">Mode</button>
         <button class="chip" onclick="filterCat('Maison',this)">Maison</button>
         <button class="chip" onclick="filterCat('Sport',this)">Sport</button>
       </div>
-      <!-- Filtre ville -->
       <div class="flex items-center gap-2 mt-2 mb-3">
         <div class="relative flex-1">
           <i class="fa-solid fa-location-dot absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" style="font-size:10px"></i>
-          <input id="city-inp" type="text" placeholder="Filtrer par ville..." oninput="filterCity(this.value)"
+          <input id="city-inp" type="text" placeholder="Filtrer par ville..." oninput="applyFilters()"
             class="sbar w-full pl-7 pr-3 py-1.5 text-xs font-semibold text-white placeholder-zinc-600 outline-none">
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
-          <span class="w-1.5 h-1.5 bg-green-400 rounded-full" style="animation:dribble 1.5s infinite"></span>
+          <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
           <span class="text-[10px] text-green-400 font-bold">Live</span>
         </div>
       </div>
-      <!-- Grille 2 colonnes -->
       <div id="feed" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div style="grid-column:1/-1;padding:56px 0;text-align:center;">
+        <div style="grid-column:1/-1;padding:56px 0;text-align:center">
           <i class="fa-solid fa-circle-notch animate-spin text-zinc-700 text-2xl"></i>
         </div>
       </div>
+    </div>
+
+    <!-- CARTE -->
+    <div id="view-map" class="hidden" style="position:absolute;inset:0;top:60px;bottom:64px;">
+      <div id="map-el" style="width:100%;height:100%;"></div>
+      <div id="map-popup" class="hidden" style="position:absolute;bottom:16px;left:12px;right:12px;background:#111;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:12px;z-index:1000;display:flex;align-items:center;gap:12px;">
+        <img id="map-pop-img" style="width:48px;height:48px;border-radius:12px;object-fit:cover;border:1px solid rgba(255,255,255,.08);flex-shrink:0">
+        <div style="flex:1;min-width:0">
+          <p id="map-pop-name" style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></p>
+          <p id="map-pop-price" style="font-size:15px;font-weight:900;color:#22d3ee"></p>
+          <p id="map-pop-city" style="font-size:10px;color:#71717a;margin-top:2px"></p>
+        </div>
+        <button id="map-pop-btn" style="flex-shrink:0;background:#22d3ee;color:#000;font-size:12px;font-weight:700;padding:8px 12px;border-radius:12px;border:none;cursor:pointer">Voir</button>
+      </div>
+      <button onclick="centerMap()" style="position:absolute;top:12px;right:12px;z-index:1000;width:40px;height:40px;background:#111;border:1px solid rgba(255,255,255,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.5)">
+        <i class="fa-solid fa-location-crosshairs" style="color:#22d3ee"></i>
+      </button>
     </div>
 
     <!-- NOTIFICATIONS -->
     <div id="view-notifications" class="hidden px-4 pt-5 pb-24">
       <h2 class="font-extrabold text-base mb-4">Notifications</h2>
       <div id="notif-list">
-        <p class="text-center text-zinc-600 text-xs font-bold uppercase py-12">Aucune notification</p>
+        <p style="text-align:center;color:#52525b;font-size:11px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>
       </div>
-    </div>
-
-    <!-- CARTE -->
-    <div id="view-map" class="hidden" style="height:100%;position:absolute;inset:0;">
-      <div id="map-container" style="width:100%;height:100%;"></div>
-      <!-- Bulle position -->
-      <div id="map-info" class="hidden absolute bottom-20 left-4 right-4 bg-[#111] border border-white/8 rounded-2xl p-3 z-[1000] flex items-center gap-3">
-        <img id="map-item-img" class="w-12 h-12 rounded-xl object-cover border border-white/8 shrink-0">
-        <div class="flex-1 min-w-0">
-          <p id="map-item-name" class="font-bold text-sm truncate"></p>
-          <p id="map-item-price" class="text-cyan-400 font-black text-base"></p>
-          <p id="map-item-city" class="text-[10px] text-zinc-500 mt-0.5"></p>
-        </div>
-        <button id="map-item-btn" class="shrink-0 bg-cyan-500 text-black font-bold text-xs px-3 py-2 rounded-xl active:scale-95 transition-transform">Voir</button>
-      </div>
-      <!-- Bouton recentrer -->
-      <button onclick="centerMap()" class="absolute top-4 right-4 z-[1000] w-10 h-10 bg-[#111] border border-white/8 rounded-xl flex items-center justify-center shadow-lg active:scale-90 transition-transform">
-        <i class="fa-solid fa-location-crosshairs text-cyan-400"></i>
-      </button>
     </div>
 
     <!-- PROFIL -->
@@ -202,7 +179,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <p class="text-[9px] text-zinc-500 font-bold uppercase mt-0.5">Valeur</p>
           </div>
           <div class="bg-black/40 rounded-xl p-3 text-center">
-            <p id="profile-rating" class="text-xl font-black text-yellow-400">—</p>
+            <p id="profile-rating" class="text-xl font-black text-yellow-400">-</p>
             <p class="text-[9px] text-zinc-500 font-bold uppercase mt-0.5">Note</p>
           </div>
         </div>
@@ -216,15 +193,18 @@ header .i-wrapper{gap:2px;margin:0 2px}
   </main>
 
   <!-- NAV -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-white/5 h-[60px] flex items-center justify-around px-8 z-[100]" style="backdrop-filter:blur(20px)">
+  <nav class="fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-white/5 h-16 flex items-center justify-around px-6 z-[100]">
     <button onclick="switchView('home')" id="nav-home">
       <i class="fa-solid fa-house text-xl text-cyan-400"></i>
     </button>
-    <button onclick="openScan()" class="w-14 h-14 -mt-6 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-[18px] flex items-center justify-center shadow-[0_0_24px_rgba(34,211,238,.5)] border-[3px] border-[#0a0a0a] active:scale-90 transition-transform">
-      <i class="fa-solid fa-plus text-xl text-white"></i>
-    </button>
     <button onclick="switchView('map')" id="nav-map">
       <i class="fa-solid fa-map-location-dot text-xl text-zinc-600"></i>
+    </button>
+    <button onclick="openScan()" class="w-14 h-14 -mt-5 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-[18px] flex items-center justify-center shadow-[0_0_24px_rgba(34,211,238,.5)] border-[3px] border-[#0a0a0a] active:scale-90 transition-transform">
+      <i class="fa-solid fa-plus text-xl text-white"></i>
+    </button>
+    <button onclick="switchView('notifications')" id="nav-notif">
+      <i class="fa-solid fa-bell text-xl text-zinc-600"></i>
     </button>
     <button onclick="switchView('profile')" id="nav-profile">
       <i class="fa-solid fa-user text-xl text-zinc-600"></i>
@@ -232,19 +212,15 @@ header .i-wrapper{gap:2px;margin:0 2px}
   </nav>
 </div>
 
-<!-- ═══════════════════════════════════════
-     SCAN MODAL — bottom sheet Instagram
-═══════════════════════════════════════ -->
+<!-- SCAN MODAL -->
 <div id="scan-modal" class="fixed inset-0 z-[400] hidden flex-col justify-end">
   <div class="mover absolute inset-0" onclick="closeScan()"></div>
   <div class="relative msheet su w-full max-w-lg mx-auto" style="max-height:94vh;display:flex;flex-direction:column;">
-
-    <!-- Handle -->
     <div class="flex justify-center pt-3 pb-2 shrink-0">
       <div class="w-10 h-1 bg-zinc-700 rounded-full"></div>
     </div>
 
-    <!-- ÉTAPE 1 : photo -->
+    <!-- ETAPE 1: photo -->
     <div id="step-photo" class="px-4 pb-5 shrink-0">
       <div class="flex items-center justify-between mb-3">
         <p class="font-extrabold text-[15px]">Nouvelle annonce</p>
@@ -252,37 +228,30 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
-
-      <!-- Photo preview carrée -->
       <div id="scan-box" class="relative bg-zinc-900 rounded-2xl overflow-hidden mx-auto mb-3" style="width:100%;max-width:340px;aspect-ratio:1/1;">
         <video id="cam-vid" class="hidden absolute inset-0 w-full h-full object-cover" autoplay playsinline muted></video>
         <img id="scan-prev" class="hidden absolute inset-0 w-full h-full object-cover">
-        <!-- Scan line -->
-        <div id="scan-line" class="hidden absolute w-full left-0 z-20" style="height:2px;background:#22d3ee;box-shadow:0 0 10px #22d3ee;animation:sm 1.8s linear infinite"></div>
-        <!-- Placeholder -->
+        <div id="scan-line" class="hidden absolute w-full left-0 z-20" style="height:2px;background:#22d3ee;box-shadow:0 0 10px #22d3ee;animation:scanmove 1.8s linear infinite"></div>
         <div id="scan-ph" class="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none">
           <div class="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center">
             <i class="fa-solid fa-camera text-2xl text-zinc-500"></i>
           </div>
           <p class="text-xs text-zinc-500 font-semibold">Photo ou galerie</p>
         </div>
-        <!-- Spinner -->
         <div id="scan-spin" class="hidden absolute inset-0 bg-black/75 z-30 flex flex-col items-center justify-center gap-3">
           <i class="fa-solid fa-circle-notch animate-spin text-cyan-400 text-3xl"></i>
           <p class="text-xs text-cyan-400 font-bold tracking-widest uppercase">Analyse IA...</p>
         </div>
       </div>
-
-      <!-- Boutons photo -->
       <div id="photo-btns" class="flex gap-2">
         <input type="file" id="file-input" class="hidden" accept="image/*" onchange="onFile(event)">
         <button onclick="document.getElementById('file-input').click()"
-          class="flex-1 bg-zinc-800 border border-white/8 rounded-xl py-3 text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+          class="flex-1 bg-zinc-800 border border-white/5 rounded-xl py-3 text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
           <i class="fa-solid fa-image text-zinc-400"></i> Galerie
         </button>
         <button id="cam-toggle" onclick="toggleCam()"
-          class="flex-1 bg-zinc-800 border border-white/8 rounded-xl py-3 text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
-          <i class="fa-solid fa-camera text-zinc-400"></i> Caméra
+          class="flex-1 bg-zinc-800 border border-white/5 rounded-xl py-3 text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+          <i class="fa-solid fa-camera text-zinc-400"></i> Camera
         </button>
         <button id="snap-btn" onclick="snapPhoto()" class="hidden flex-1 bg-cyan-500 rounded-xl py-3 text-sm font-bold text-black flex items-center justify-center gap-2 active:scale-95 transition-transform">
           <i class="fa-solid fa-circle"></i> Capturer
@@ -290,94 +259,81 @@ header .i-wrapper{gap:2px;margin:0 2px}
       </div>
     </div>
 
-    <!-- ÉTAPE 2 : résultats IA -->
+    <!-- ETAPE 2: resultats IA -->
     <div id="step-result" class="hidden flex-col flex-1 overflow-hidden">
       <div class="overflow-y-auto no-sb px-4 pb-6 flex-1">
-
-        <!-- Header résultat -->
         <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/6">
           <img id="res-thumb" class="w-16 h-16 rounded-xl object-cover border border-white/8 shrink-0">
           <div class="flex-1 min-w-0">
-            <p class="text-[10px] text-green-400 font-bold uppercase tracking-wide mb-1"><i class="fa-solid fa-check-circle mr-1"></i>IA terminée</p>
+            <p class="text-[10px] text-green-400 font-bold uppercase tracking-wide mb-1"><i class="fa-solid fa-check-circle mr-1"></i>IA terminee</p>
             <input id="ai-name" class="w-full bg-transparent text-sm font-extrabold text-white outline-none border-b border-white/10 pb-1 focus:border-cyan-400 truncate">
           </div>
-          <button onclick="resetScan()" class="shrink-0 w-8 h-8 rounded-xl bg-zinc-800 flex items-center justify-center text-zinc-400 active:scale-90 transition-transform" title="Reprendre une photo">
+          <button onclick="resetScan()" class="shrink-0 w-8 h-8 rounded-xl bg-zinc-800 flex items-center justify-center text-zinc-400 active:scale-90 transition-transform">
             <i class="fa-solid fa-rotate-left text-xs"></i>
           </button>
         </div>
-
-        <!-- Infos IA -->
-        <div class="grid grid-cols-2 gap-2 mb-2">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
           <div class="bg-zinc-900 rounded-xl p-3 border border-white/5">
             <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Marque</p>
-            <p id="ai-brand" class="text-sm font-extrabold text-cyan-400">—</p>
+            <p id="ai-brand" class="text-sm font-extrabold text-cyan-400">-</p>
           </div>
           <div class="bg-zinc-900 rounded-xl p-3 border border-white/5">
-            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Modèle</p>
-            <p id="ai-model" class="text-sm font-extrabold text-white truncate">—</p>
+            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Modele</p>
+            <p id="ai-model" class="text-sm font-extrabold text-white truncate">-</p>
           </div>
         </div>
-        <div class="grid grid-cols-3 gap-2 mb-2">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
           <div class="bg-zinc-900 rounded-xl p-3 border border-white/5">
             <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Prix</p>
-            <p id="ai-price" class="text-sm font-extrabold text-cyan-400">—</p>
+            <p id="ai-price" class="text-sm font-extrabold text-cyan-400">-</p>
           </div>
           <div class="bg-zinc-900 rounded-xl p-3 border border-white/5">
-            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Catégorie</p>
-            <p id="ai-cat" class="text-xs font-extrabold text-white">—</p>
+            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Categorie</p>
+            <p id="ai-cat" class="text-xs font-extrabold text-white">-</p>
           </div>
           <div class="bg-zinc-900 rounded-xl p-3 border border-white/5">
-            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">État</p>
-            <p id="ai-cond" class="text-xs font-extrabold text-green-400">—</p>
+            <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1">Etat</p>
+            <p id="ai-cond" class="text-xs font-extrabold text-green-400">-</p>
           </div>
         </div>
-
-        <!-- Description -->
         <div class="bg-zinc-900 rounded-xl p-3 border border-white/5 mb-2">
           <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Description</p>
           <textarea id="ai-desc" rows="3" class="w-full bg-transparent text-xs text-zinc-300 outline-none resize-none leading-relaxed font-medium"></textarea>
         </div>
-
-        <!-- Ville -->
         <div class="bg-zinc-900 rounded-xl p-3 border border-white/5 mb-2">
           <p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Ville</p>
           <div class="relative">
             <i class="fa-solid fa-location-dot absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" style="font-size:10px"></i>
-            <input id="item-city" type="text" placeholder="Ex : Paris, Lyon, Montpellier..."
-              class="inp pl-7 py-2 text-sm" style="background:#0a0a0a;border-color:rgba(255,255,255,.06)">
+            <input id="item-city" type="text" placeholder="Ex : Paris, Lyon..." class="inp pl-7 py-2 text-sm" style="background:#0a0a0a;border-color:rgba(255,255,255,.06)">
           </div>
         </div>
-
-        <!-- Livraison -->
         <div class="bg-zinc-900 rounded-xl p-3 border border-white/5 mb-4">
           <p class="text-[9px] text-zinc-500 uppercase font-bold mb-2.5">Livraison</p>
           <div class="flex flex-col gap-3">
             <label class="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" id="sh-hand" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
-              <span class="text-sm font-semibold flex-1">🤝 Main propre</span>
+              <span class="text-sm font-semibold flex-1">Main propre</span>
               <span class="text-xs text-zinc-500">Gratuit</span>
             </label>
             <label class="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" id="sh-relay" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
-              <span class="text-sm font-semibold flex-1">📦 Mondial Relay</span>
-              <input type="number" id="sh-relay-p" value="5" class="w-14 bg-[#0a0a0a] border border-white/8 rounded-lg px-2 py-1 text-xs text-center text-white outline-none focus:border-cyan-500">
-              <span class="text-xs text-zinc-500">€</span>
+              <span class="text-sm font-semibold flex-1">Mondial Relay</span>
+              <input type="number" id="sh-relay-p" value="5" class="w-14 bg-[#0a0a0a] border border-white/8 rounded-lg px-2 py-1 text-xs text-center text-white outline-none">
+              <span class="text-xs text-zinc-500">euro</span>
             </label>
             <label class="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" id="sh-colis" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
-              <span class="text-sm font-semibold flex-1">🚚 Colissimo</span>
-              <input type="number" id="sh-colis-p" value="8" class="w-14 bg-[#0a0a0a] border border-white/8 rounded-lg px-2 py-1 text-xs text-center text-white outline-none focus:border-cyan-500">
-              <span class="text-xs text-zinc-500">€</span>
+              <span class="text-sm font-semibold flex-1">Colissimo</span>
+              <input type="number" id="sh-colis-p" value="8" class="w-14 bg-[#0a0a0a] border border-white/8 rounded-lg px-2 py-1 text-xs text-center text-white outline-none">
+              <span class="text-xs text-zinc-500">euro</span>
             </label>
           </div>
         </div>
-
         <button id="pub-btn" class="w-full bg-cyan-500 text-black font-extrabold py-4 rounded-2xl text-[15px] active:scale-95 transition-transform shadow-[0_0_18px_rgba(34,211,238,.35)]">
           Publier l'annonce
         </button>
       </div>
     </div>
-
   </div>
   <canvas id="cap-canvas" class="hidden"></canvas>
 </div>
@@ -388,7 +344,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <button onclick="closeDetail()" class="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center active:scale-90 transition-transform">
       <i class="fa-solid fa-arrow-left text-sm"></i>
     </button>
-    <p class="font-bold text-sm">Détail de l'annonce</p>
+    <p class="font-bold text-sm">Detail de l'annonce</p>
   </div>
   <div class="flex-1 overflow-y-auto no-sb">
     <div class="px-3 pt-3 pb-2">
@@ -489,7 +445,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div class="w-7 h-7 rounded-lg bg-green-500/15 flex items-center justify-center">
           <i class="fa-solid fa-shield-halved text-green-400 text-xs"></i>
         </div>
-        <span class="font-bold text-sm">Paiement sécurisé</span>
+        <span class="font-bold text-sm">Paiement securise</span>
       </div>
       <button onclick="closePay()" class="w-8 h-8 rounded-xl bg-zinc-800 flex items-center justify-center">
         <i class="fa-solid fa-xmark text-sm"></i>
@@ -508,7 +464,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
     </div>
     <div class="bg-zinc-900 rounded-xl p-4 mb-4 border border-white/5 text-sm">
       <div class="flex justify-between mb-2"><span class="text-zinc-400">Article</span><span id="pay-sub" class="font-bold"></span></div>
-      <div class="flex justify-between mb-3"><span class="text-zinc-400">Livraison</span><span id="pay-shipcost" class="font-bold">—</span></div>
+      <div class="flex justify-between mb-3"><span class="text-zinc-400">Livraison</span><span id="pay-shipcost" class="font-bold">-</span></div>
       <div class="flex justify-between border-t border-white/5 pt-3"><span class="font-bold">Total</span><span id="pay-total" class="font-extrabold text-cyan-400 text-base"></span></div>
     </div>
     <button id="stripe-btn" onclick="doStripe()" class="w-full bg-[#635bff] text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
@@ -525,16 +481,15 @@ header .i-wrapper{gap:2px;margin:0 2px}
       <i class="fa-solid fa-star text-yellow-400 text-2xl"></i>
     </div>
     <h3 class="font-extrabold text-base mb-1">Laisser une note</h3>
-    <p id="rate-sub" class="text-zinc-500 text-xs mb-4">Comment s'est passée cette transaction ?</p>
+    <p id="rate-sub" class="text-zinc-500 text-xs mb-4">Comment s'est passee la transaction ?</p>
     <div class="flex justify-center gap-2 mb-4">
-      <button onclick="setStar(1)" class="star text-3xl text-zinc-700 transition-all" data-v="1">★</button>
-      <button onclick="setStar(2)" class="star text-3xl text-zinc-700 transition-all" data-v="2">★</button>
-      <button onclick="setStar(3)" class="star text-3xl text-zinc-700 transition-all" data-v="3">★</button>
-      <button onclick="setStar(4)" class="star text-3xl text-zinc-700 transition-all" data-v="4">★</button>
-      <button onclick="setStar(5)" class="star text-3xl text-zinc-700 transition-all" data-v="5">★</button>
+      <button onclick="setStar(1)" class="star text-3xl text-zinc-700 transition-all" data-v="1">&#9733;</button>
+      <button onclick="setStar(2)" class="star text-3xl text-zinc-700 transition-all" data-v="2">&#9733;</button>
+      <button onclick="setStar(3)" class="star text-3xl text-zinc-700 transition-all" data-v="3">&#9733;</button>
+      <button onclick="setStar(4)" class="star text-3xl text-zinc-700 transition-all" data-v="4">&#9733;</button>
+      <button onclick="setStar(5)" class="star text-3xl text-zinc-700 transition-all" data-v="5">&#9733;</button>
     </div>
-    <textarea id="rate-comment" placeholder="Commentaire (optionnel)" rows="2"
-      class="inp text-sm mb-4 resize-none" style="font-size:13px"></textarea>
+    <textarea id="rate-comment" placeholder="Commentaire (optionnel)" rows="2" class="inp text-sm mb-4 resize-none" style="font-size:13px"></textarea>
     <button onclick="submitRate()" class="w-full bg-yellow-400 text-black font-bold py-3.5 rounded-2xl mb-2 active:scale-95 transition-transform">Envoyer</button>
     <button onclick="closeRate()" class="w-full text-zinc-500 text-sm py-2">Passer</button>
   </div>
@@ -552,26 +507,24 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <div class="overflow-y-auto no-sb px-4 pb-8" style="max-height:65vh">
       <div class="mb-3"><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Titre</p>
         <input id="edit-title" class="inp"></div>
-      <div class="grid grid-cols-2 gap-2 mb-3">
-        <div><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Prix (€)</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Prix (euro)</p>
           <input id="edit-price" type="number" class="inp text-cyan-400 font-black"></div>
-        <div><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">État</p>
+        <div><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Etat</p>
           <select id="edit-cond" class="inp" style="cursor:pointer">
-            <option>Neuf</option><option>Très bon état</option><option>Bon état</option><option>État correct</option>
+            <option>Neuf</option><option>Tres bon etat</option><option>Bon etat</option><option>Etat correct</option>
           </select></div>
       </div>
-      <div class="mb-3"><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Catégorie</p>
+      <div class="mb-3"><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Categorie</p>
         <select id="edit-cat" class="inp" style="cursor:pointer">
-          <option>High-Tech</option><option>Jeux vidéo</option><option>Informatique</option>
+          <option>High-Tech</option><option>Jeux video</option><option>Informatique</option>
           <option>Mode</option><option>Maison</option><option>Sport</option><option>Divers</option>
         </select></div>
       <div class="mb-4"><p class="text-[9px] text-zinc-500 uppercase font-bold mb-1.5">Description</p>
         <textarea id="edit-desc" rows="3" class="inp resize-none"></textarea></div>
-      <button id="edit-save" onclick="saveEdit()" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-2xl mb-2 active:scale-95 transition-transform">
-        Sauvegarder
-      </button>
+      <button id="edit-save" onclick="saveEdit()" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-2xl mb-2 active:scale-95 transition-transform">Sauvegarder</button>
       <button onclick="confirmDel(editingId)" class="w-full bg-red-500/8 border border-red-500/20 text-red-400 font-bold py-3.5 rounded-2xl text-sm active:scale-95 transition-transform">
-        <i class="fa-solid fa-trash mr-2"></i>Supprimer l'annonce
+        <i class="fa-solid fa-trash mr-2"></i>Supprimer
       </button>
     </div>
   </div>
@@ -583,7 +536,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
   <div class="relative bg-[#111] rounded-3xl p-5 w-full max-w-xs border border-red-500/20 text-center su">
     <i class="fa-solid fa-trash text-red-400 text-2xl mb-3"></i>
     <p class="font-extrabold text-base mb-1">Supprimer ?</p>
-    <p class="text-zinc-500 text-xs mb-5">Cette action est définitive.</p>
+    <p class="text-zinc-500 text-xs mb-5">Cette action est definitive.</p>
     <div class="flex gap-2">
       <button onclick="closeDel()" class="flex-1 bg-zinc-800 font-bold py-3 rounded-xl text-sm">Annuler</button>
       <button onclick="doDelete()" class="flex-1 bg-red-500 font-bold py-3 rounded-xl text-sm">Supprimer</button>
@@ -594,560 +547,609 @@ header .i-wrapper{gap:2px;margin:0 2px}
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import{getAuth,signInAnonymously,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,query,where,orderBy,getDocs,deleteDoc,updateDoc,getDoc}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,where,orderBy,query,getDocs,deleteDoc,updateDoc,getDoc}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 const FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
 const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
 
 let me=null,items=[],curItem=null,scanData=null,camStream=null;
 let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
+let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
 
-// ERR
-window.onerror=(m,s,l)=>{const e=document.getElementById('dbg');e.style.display='block';e.innerText='JS:'+m+' L'+l;};
-function toast(m,ok=false){const e=document.getElementById('dbg');e.style.display='block';e.style.background=ok?'#22c55e':'#ef4444';e.innerText=m;setTimeout(()=>e.style.display='none',3500);}
+window.onerror=(m,s,l)=>{toast("JS:"+m+" L"+l);};
+function toast(m,ok){
+  var e=document.getElementById("dbg");
+  e.style.display="block";
+  e.style.background=ok?"#22c55e":"#ef4444";
+  e.innerText=m;
+  setTimeout(function(){e.style.display="none";},3500);
+}
 
-// AUTH
-onAuthStateChanged(auth,u=>{
-  if(u){me=u;document.getElementById('user-badge').innerText='ID:'+u.uid.slice(0,4);document.getElementById('profile-uid').innerText=u.uid.slice(0,18)+'...';boot();}
-  else signInAnonymously(auth).catch(e=>toast('Auth:'+e.message));
+onAuthStateChanged(auth,function(u){
+  if(u){
+    me=u;
+    document.getElementById("user-badge").innerText="ID:"+u.uid.slice(0,4);
+    document.getElementById("profile-uid").innerText=u.uid.slice(0,18)+"...";
+    boot();
+  }else{
+    signInAnonymously(auth).catch(function(e){toast("Auth:"+e.message);});
+  }
 });
 
 function boot(){
-  setTimeout(()=>{
-    document.getElementById('splash').style.display='none';
-    document.getElementById('app').classList.remove('hidden');
-    setTimeout(()=>document.getElementById('app').style.opacity='1',80);
-    initFeed();initNotifs();checkPayReturn();
+  setTimeout(function(){
+    document.getElementById("splash").style.display="none";
+    document.getElementById("app").classList.remove("hidden");
+    setTimeout(function(){document.getElementById("app").style.opacity="1";},80);
+    initFeed();
+    initNotifs();
+    checkPayReturn();
   },900);
 }
 
-// ── FEED ──
 function initFeed(){
-  onSnapshot(collection(db,'scans'),snap=>{
-    items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));
-    items.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    renderFeed(items);updateProfile();
-  },e=>toast('Feed:'+e.message));
-}
-
-function renderFeed(list){
-  const el=document.getElementById('feed');
-  if(!list.length){el.innerHTML='<div class="col-span-2 py-14 text-center text-zinc-700 text-xs font-bold uppercase">Aucune annonce</div>';return;}
-  el.innerHTML=list.map(card).join('');
+  onSnapshot(collection(db,"scans"),function(snap){
+    items=[];
+    snap.forEach(function(d){items.push(Object.assign({id:d.id},d.data()));});
+    items.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
+    applyFilters();
+    updateProfile();
+  },function(e){toast("Feed:"+e.message);});
 }
 
 function card(i){
-  return`<div class="card fi" onclick="openDetail('${i.id}')">
-    <div class="sq">
-      <img src="${i.imageUrl||''}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:flex;align-items:center;justify-content:center\'><i class=\'fa-solid fa-image text-zinc-700 text-2xl\'></i></div>'">
-      ${i.condition?`<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">${i.condition}</span>`:''}
-    </div>
-    <div class="inf">
-      <p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px">${i.itemName||'Objet'}</p>
-      <p style="font-size:15px;font-weight:900;color:#22d3ee">${i.price||0}€</p>
-      ${i.city?`<p style="font-size:10px;color:#52525b;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#22d3ee;font-size:8px;margin-right:2px"></i>${i.city}</p>`:''}
-    </div>
-  </div>`;
-}
-
-// ── FILTRES ──
-window.filterCat=(cat,btn)=>{
-  document.querySelectorAll('.chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-  applyFilters();
-};
-window.filterCity=()=>applyFilters();
-window.onSearch=()=>applyFilters();
-
-function applyFilters(){
-  const cat=document.querySelector('.chip.on')?.textContent?.trim()||'Tout';
-  const city=(document.getElementById('city-inp').value||'').toLowerCase().trim();
-  const q=(document.getElementById('header-search').value||'').toLowerCase().trim();
-  let list=items;
-  if(cat!=='Tout') list=list.filter(i=>(i.category||'').toLowerCase().includes(cat.toLowerCase()));
-  if(city) list=list.filter(i=>(i.city||'').toLowerCase().includes(city));
-  if(q) list=list.filter(i=>(i.itemName||'').toLowerCase().includes(q)||(i.description||'').toLowerCase().includes(q)||(i.city||'').toLowerCase().includes(q));
-  renderFeed(list);
-}
-
-// ── NAVIGATION ──
-window.switchView=v=>{
-  ['home','notifications','profile'].forEach(n=>{
-    document.getElementById('view-'+n)[n===v?'classList':'classList'][n===v?'remove':'add']('hidden');
-  });
-  document.getElementById('nav-home').querySelector('i').className='fa-solid fa-house text-xl '+(v==='home'?'text-cyan-400':'text-zinc-600');
-  document.getElementById('nav-profile').querySelector('i').className='fa-solid fa-user text-xl '+(v==='profile'?'text-cyan-400':'text-zinc-600');
-  if(v==='notifications'&&me){
-    getDocs(query(collection(db,'notifications'),where('userId','==',me.uid),where('read','==',false))).then(s=>s.forEach(d=>updateDoc(doc(db,'notifications',d.id),{read:true})));
-  }
-  if(v==='profile') loadMyRating();
-};
-
-// ── PROFIL ──
-function updateProfile(){
-  if(!me) return;
-  const mine=items.filter(i=>i.userId===me.uid);
-  document.getElementById('profile-count').innerText=mine.length;
-  document.getElementById('profile-total').innerText=mine.reduce((s,i)=>s+(parseFloat(i.price)||0),0)+'€';
-  const el=document.getElementById('my-listings');
-  el.innerHTML=mine.length?mine.map(myCard).join(''):'<p style="grid-column:1/-1;text-align:center;color:#52525b;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>';
+  var cond=i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">'+i.condition+"</span>":"";
+  var city=i.city?'<p style="font-size:10px;color:#52525b;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#22d3ee;font-size:8px;margin-right:2px"></i>'+i.city+"</p>":"";
+  return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px">'+(i.itemName||"Objet")+'</p><p style="font-size:15px;font-weight:900;color:#22d3ee">'+(i.price||0)+"euro</p>"+city+"</div></div>";
 }
 
 function myCard(i){
-  return`<div class="card fi">
-    <div class="sq"><img src="${i.imageUrl||''}">
-      ${i.condition?`<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">${i.condition}</span>`:''}
-    </div>
-    <div class="inf">
-      <p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">${i.itemName||'Objet'}</p>
-      <p style="font-size:14px;font-weight:900;color:#22d3ee;margin-bottom:6px">${i.price||0}€</p>
-      <div style="display:flex;gap:5px">
-        <button onclick="event.stopPropagation();openEdit('${i.id}')" style="flex:1;background:#1e1e1e;border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:5px;font-size:10px;font-weight:700;cursor:pointer"><i class="fa-solid fa-pen"></i> Modif.</button>
-        <button onclick="event.stopPropagation();confirmDel('${i.id}')" style="flex:1;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:9px;padding:5px;font-size:10px;font-weight:700;color:#f87171;cursor:pointer"><i class="fa-solid fa-trash"></i> Supp.</button>
-      </div>
-    </div>
-  </div>`;
+  return '<div class="card fi"><div class="sq"><img src="'+(i.imageUrl||"")+'">'+(i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+"</span>":"")+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#22d3ee;margin-bottom:6px">'+(i.price||0)+'euro</p><div style="display:flex;gap:5px"><button onclick="event.stopPropagation();openEdit(\''+i.id+'\')" style="flex:1;background:#1e1e1e;border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:5px;font-size:10px;font-weight:700;cursor:pointer">Modif.</button><button onclick="event.stopPropagation();confirmDel(\''+i.id+'\')" style="flex:1;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:9px;padding:5px;font-size:10px;font-weight:700;color:#f87171;cursor:pointer">Supp.</button></div></div></div>';
 }
 
-// ── SCAN ──
-window.openScan=()=>{
-  document.getElementById('scan-modal').classList.remove('hidden');
-  document.getElementById('scan-modal').classList.add('flex');
-};
-window.closeScan=()=>{stopCam();resetScan();document.getElementById('scan-modal').classList.remove('flex');document.getElementById('scan-modal').classList.add('hidden');};
-window.resetScan=()=>{
-  stopCam();scanData=null;
-  document.getElementById('scan-prev').classList.add('hidden');document.getElementById('scan-prev').src='';
-  document.getElementById('scan-ph').classList.remove('hidden');
-  document.getElementById('scan-spin').classList.add('hidden');
-  document.getElementById('scan-line').classList.add('hidden');
-  document.getElementById('photo-btns').classList.remove('hidden');
-  document.getElementById('snap-btn').classList.add('hidden');
-  document.getElementById('cam-toggle').classList.remove('hidden');
-  document.getElementById('step-photo').classList.remove('hidden');
-  document.getElementById('step-result').classList.add('hidden');
-  document.getElementById('step-result').classList.remove('flex');
-  document.getElementById('pub-btn').innerText="Publier l'annonce";
-  document.getElementById('pub-btn').disabled=false;
-  document.getElementById('file-input').value='';
-  ['sh-hand','sh-relay','sh-colis'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
+function renderFeed(list){
+  var el=document.getElementById("feed");
+  if(!list.length){el.innerHTML='<div style="grid-column:1/-1;padding:56px 0;text-align:center;color:#52525b;font-size:11px;font-weight:700;text-transform:uppercase">Aucune annonce</div>';return;}
+  el.innerHTML=list.map(card).join("");
+}
+
+window.applyFilters=function(){
+  var cat=activeCat;
+  var city=(document.getElementById("city-inp").value||"").toLowerCase().trim();
+  var q=(document.getElementById("header-search").value||"").toLowerCase().trim();
+  var list=items;
+  if(cat!=="all") list=list.filter(function(i){return(i.category||"").toLowerCase().indexOf(cat.toLowerCase())>=0;});
+  if(city) list=list.filter(function(i){return(i.city||"").toLowerCase().indexOf(city)>=0;});
+  if(q) list=list.filter(function(i){return(i.itemName||"").toLowerCase().indexOf(q)>=0||(i.description||"").toLowerCase().indexOf(q)>=0||(i.city||"").toLowerCase().indexOf(q)>=0;});
+  renderFeed(list);
 };
 
-window.toggleCam=async()=>{
+window.filterCat=function(cat,btn){
+  activeCat=cat;
+  document.querySelectorAll(".chip").forEach(function(b){b.classList.remove("on");});
+  btn.classList.add("on");
+  applyFilters();
+};
+
+window.switchView=function(v){
+  ["home","map","notifications","profile"].forEach(function(n){
+    var el=document.getElementById("view-"+n);
+    if(el){
+      if(n==="map"){
+        el.style.display=n===v?"block":"none";
+      }else{
+        el.classList[n===v?"remove":"add"]("hidden");
+      }
+    }
+  });
+  document.getElementById("main-scroll").style.overflow=v==="map"?"hidden":"auto";
+  ["home","map","notif","profile"].forEach(function(n){
+    var el=document.getElementById("nav-"+n);
+    if(el){
+      var icon=el.querySelector("i");
+      if(icon) icon.style.color=v===n||("notifications"===v&&n==="notif")?"#22d3ee":"#71717a";
+    }
+  });
+  if(v==="map"){
+    if(!userLat) askGeo();
+    setTimeout(function(){
+      initMap();
+      renderMapMarkers();
+      if(map) map.invalidateSize();
+    },250);
+  }
+  if(v==="notifications"&&me){
+    getDocs(query(collection(db,"notifications"),where("userId","==",me.uid),where("read","==",false))).then(function(s){
+      s.forEach(function(d){updateDoc(doc(db,"notifications",d.id),{read:true});});
+    });
+  }
+  if(v==="profile") loadMyRating();
+};
+
+function updateProfile(){
+  if(!me) return;
+  var mine=items.filter(function(i){return i.userId===me.uid;});
+  document.getElementById("profile-count").innerText=mine.length;
+  document.getElementById("profile-total").innerText=mine.reduce(function(s,i){return s+(parseFloat(i.price)||0);},0)+"euro";
+  var el=document.getElementById("my-listings");
+  el.innerHTML=mine.length?mine.map(myCard).join(""):'<p style="grid-column:1/-1;text-align:center;color:#52525b;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>';
+}
+
+// SCAN
+window.openScan=function(){
+  var m=document.getElementById("scan-modal");
+  m.classList.remove("hidden");
+  m.classList.add("flex");
+};
+window.closeScan=function(){
+  stopCam();resetScan();
+  var m=document.getElementById("scan-modal");
+  m.classList.remove("flex");
+  m.classList.add("hidden");
+};
+window.resetScan=function(){
+  stopCam();scanData=null;
+  document.getElementById("scan-prev").classList.add("hidden");
+  document.getElementById("scan-prev").src="";
+  document.getElementById("scan-ph").classList.remove("hidden");
+  document.getElementById("scan-spin").classList.add("hidden");
+  document.getElementById("scan-line").classList.add("hidden");
+  document.getElementById("photo-btns").classList.remove("hidden");
+  document.getElementById("snap-btn").classList.add("hidden");
+  document.getElementById("cam-toggle").classList.remove("hidden");
+  document.getElementById("step-photo").classList.remove("hidden");
+  document.getElementById("step-result").classList.add("hidden");
+  document.getElementById("step-result").classList.remove("flex");
+  document.getElementById("pub-btn").innerText="Publier l'annonce";
+  document.getElementById("pub-btn").disabled=false;
+  document.getElementById("file-input").value="";
+  ["sh-hand","sh-relay","sh-colis"].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.checked=false;
+  });
+};
+window.toggleCam=async function(){
   if(camStream){stopCam();return;}
   try{
-    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1080},height:{ideal:1080}},audio:false});
-    const v=document.getElementById('cam-vid');v.srcObject=camStream;v.classList.remove('hidden');
-    document.getElementById('scan-ph').classList.add('hidden');
-    document.getElementById('cam-toggle').classList.add('hidden');
-    document.getElementById('snap-btn').classList.remove('hidden');
-  }catch{document.getElementById('file-input').click();}
+    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1080},height:{ideal:1080}},audio:false});
+    var v=document.getElementById("cam-vid");
+    v.srcObject=camStream;v.classList.remove("hidden");
+    document.getElementById("scan-ph").classList.add("hidden");
+    document.getElementById("cam-toggle").classList.add("hidden");
+    document.getElementById("snap-btn").classList.remove("hidden");
+  }catch(e){document.getElementById("file-input").click();}
 };
-
 function stopCam(){
-  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
-  const v=document.getElementById('cam-vid');v.srcObject=null;v.classList.add('hidden');
+  if(camStream){camStream.getTracks().forEach(function(t){t.stop();});camStream=null;}
+  var v=document.getElementById("cam-vid");
+  v.srcObject=null;v.classList.add("hidden");
 }
-
-window.snapPhoto=()=>{
-  const v=document.getElementById('cam-vid'),c=document.getElementById('cap-canvas');
+window.snapPhoto=function(){
+  var v=document.getElementById("cam-vid"),c=document.getElementById("cap-canvas");
   c.width=v.videoWidth;c.height=v.videoHeight;
-  c.getContext('2d').drawImage(v,0,0);
+  c.getContext("2d").drawImage(v,0,0);
   stopCam();
-  document.getElementById('snap-btn').classList.add('hidden');
-  processImg(c.toDataURL('image/jpeg',1.0));
+  document.getElementById("snap-btn").classList.add("hidden");
+  processImg(c.toDataURL("image/jpeg",1.0));
 };
-
-window.onFile=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>processImg(ev.target.result);r.readAsDataURL(f);};
-
+window.onFile=function(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){processImg(ev.target.result);};
+  r.readAsDataURL(f);
+};
 function processImg(raw){
-  document.getElementById('scan-ph').classList.add('hidden');
-  document.getElementById('photo-btns').classList.add('hidden');
-  document.getElementById('scan-spin').classList.remove('hidden');
-  cropImage(raw,.92).then(opt=>{
-    document.getElementById('scan-prev').src=opt;
-    document.getElementById('scan-prev').classList.remove('hidden');
-    document.getElementById('scan-line').classList.remove('hidden');
+  document.getElementById("scan-ph").classList.add("hidden");
+  document.getElementById("photo-btns").classList.add("hidden");
+  document.getElementById("scan-spin").classList.remove("hidden");
+  cropImage(raw).then(function(opt){
+    document.getElementById("scan-prev").src=opt;
+    document.getElementById("scan-prev").classList.remove("hidden");
+    document.getElementById("scan-line").classList.remove("hidden");
     callGemini(opt);
   });
 }
-
-function cropImage(b64,q){
-  return new Promise(res=>{
-    const img=new Image();
-    img.onload=()=>{
-      const s=Math.min(img.width,img.height);
-      const sx=Math.floor((img.width-s)/2),sy=Math.floor((img.height-s)/2);
-      const OUT=400;
-      const c=document.createElement('canvas');c.width=OUT;c.height=OUT;
-      const ctx=c.getContext('2d');
-      ctx.fillStyle='#111';ctx.fillRect(0,0,OUT,OUT);
-      ctx.drawImage(img,sx,sy,s,s,0,0,OUT,OUT);
-      res(c.toDataURL('image/jpeg',0.72));
+function cropImage(b64){
+  return new Promise(function(resolve){
+    var img=new Image();
+    img.onload=function(){
+      var s=Math.min(img.width,img.height);
+      var sx=Math.floor((img.width-s)/2);
+      var sy=Math.floor((img.height-s)/2);
+      var c=document.createElement("canvas");
+      c.width=400;c.height=400;
+      var ctx=c.getContext("2d");
+      ctx.fillStyle="#111";
+      ctx.fillRect(0,0,400,400);
+      ctx.drawImage(img,sx,sy,s,s,0,0,400,400);
+      resolve(c.toDataURL("image/jpeg",0.72));
     };
-    img.onerror=()=>res(b64);img.src=b64;
+    img.onerror=function(){resolve(b64);};
+    img.src=b64;
   });
-});
 }
-
 async function callGemini(b64){
   try{
-    const mime=b64.startsWith('data:image/png')?'image/png':'image/jpeg';
-    const r=await fetch('https://analyzeimage-xjtnixfrra-uc.a.run.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageBase64:b64.split(',')[1],mimeType:mime})});
-    const d=await r.json();
-    if(d.error){toast('IA:'+d.error);resetScan();return;}
+    var mime=b64.indexOf("data:image/png")===0?"image/png":"image/jpeg";
+    var r=await fetch("https://analyzeimage-xjtnixfrra-uc.a.run.app",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({imageBase64:b64.split(",")[1],mimeType:mime})
+    });
+    var d=await r.json();
+    if(d.error){toast("IA:"+d.error);resetScan();return;}
     showResult(d,b64);
-  }catch(e){toast('IA:'+e.message);resetScan();}
+  }catch(e){toast("IA:"+e.message);resetScan();}
 }
-
 function showResult(d,img){
-  document.getElementById('scan-spin').classList.add('hidden');
-  document.getElementById('scan-line').classList.add('hidden');
-  document.getElementById('res-thumb').src=img;
-  document.getElementById('ai-name').value=d.title||'';
-  document.getElementById('ai-price').innerText=(d.price||0)+'€';
-  document.getElementById('ai-cat').innerText=d.category||'';
-  document.getElementById('ai-desc').value=d.description||'';
-  document.getElementById('ai-cond').innerText=d.condition||'';
-  document.getElementById('ai-brand').innerText=d.brand||'—';
-  document.getElementById('ai-model').innerText=d.model||'—';
-  scanData={itemName:d.title,price:d.price,category:d.category,condition:d.condition||'Bon état',description:d.description||'',brand:d.brand||'',model:d.model||'',imageUrl:img,shipping:[]};
-  document.getElementById('step-photo').classList.add('hidden');
-  document.getElementById('step-result').classList.remove('hidden');
-  document.getElementById('step-result').classList.add('flex');
+  document.getElementById("scan-spin").classList.add("hidden");
+  document.getElementById("scan-line").classList.add("hidden");
+  document.getElementById("res-thumb").src=img;
+  document.getElementById("ai-name").value=d.title||"";
+  document.getElementById("ai-price").innerText=(d.price||0)+"euro";
+  document.getElementById("ai-cat").innerText=d.category||"";
+  document.getElementById("ai-desc").value=d.description||"";
+  document.getElementById("ai-cond").innerText=d.condition||"";
+  document.getElementById("ai-brand").innerText=d.brand||"-";
+  document.getElementById("ai-model").innerText=d.model||"-";
+  scanData={itemName:d.title,price:d.price,category:d.category,condition:d.condition||"Bon etat",description:d.description||"",brand:d.brand||"",model:d.model||"",imageUrl:img,shipping:[]};
+  document.getElementById("step-photo").classList.add("hidden");
+  document.getElementById("step-result").classList.remove("hidden");
+  document.getElementById("step-result").classList.add("flex");
 }
-
-window.updShip=()=>{
-  if(!scanData)return;
-  const o=[];
-  if(document.getElementById('sh-hand')?.checked)o.push({method:'Remise en main propre',price:0});
-  if(document.getElementById('sh-relay')?.checked)o.push({method:'Mondial Relay',price:parseFloat(document.getElementById('sh-relay-p').value)||5});
-  if(document.getElementById('sh-colis')?.checked)o.push({method:'Colissimo',price:parseFloat(document.getElementById('sh-colis-p').value)||8});
+window.updShip=function(){
+  if(!scanData) return;
+  var o=[];
+  if(document.getElementById("sh-hand").checked) o.push({method:"Main propre",price:0});
+  if(document.getElementById("sh-relay").checked) o.push({method:"Mondial Relay",price:parseFloat(document.getElementById("sh-relay-p").value)||5});
+  if(document.getElementById("sh-colis").checked) o.push({method:"Colissimo",price:parseFloat(document.getElementById("sh-colis-p").value)||8});
   scanData.shipping=o;
 };
-
-document.getElementById('pub-btn').addEventListener('click',async()=>{
-  if(!scanData||!me)return;
+document.getElementById("pub-btn").addEventListener("click",async function(){
+  if(!scanData||!me) return;
   updShip();
-  const btn=document.getElementById('pub-btn');
-  btn.innerText='Publication...';btn.disabled=true;
+  var btn=document.getElementById("pub-btn");
+  btn.innerText="Publication...";btn.disabled=true;
   try{
-    const city=document.getElementById('item-city').value.trim();
-    await addDoc(collection(db,'scans'),{
+    var city=document.getElementById("item-city").value.trim();
+    await addDoc(collection(db,"scans"),{
       userId:me.uid,
-      itemName:document.getElementById('ai-name').value,
-      price:scanData.price,category:scanData.category,
-      condition:scanData.condition,description:document.getElementById('ai-desc').value,
-      brand:scanData.brand,model:scanData.model,shipping:scanData.shipping,
-      city,imageUrl:scanData.imageUrl,createdAt:serverTimestamp()
+      itemName:document.getElementById("ai-name").value,
+      price:scanData.price,
+      category:scanData.category,
+      condition:scanData.condition,
+      description:document.getElementById("ai-desc").value,
+      brand:scanData.brand,
+      model:scanData.model,
+      shipping:scanData.shipping,
+      city:city,
+      imageUrl:scanData.imageUrl,
+      createdAt:serverTimestamp()
     });
-    closeScan();switchView('home');
-    toast('✅ Annonce publiée !',true);
-  }catch(e){toast('Erreur:'+e.message);btn.innerText="Publier l'annonce";btn.disabled=false;}
+    closeScan();
+    switchView("home");
+    toast("Annonce publiee !",true);
+  }catch(e){
+    toast("Erreur:"+e.message);
+    btn.innerText="Publier l'annonce";
+    btn.disabled=false;
+  }
 });
 
-// ── DETAIL ──
-window.openDetail=id=>{
-  const i=items.find(x=>x.id===id);if(!i)return;curItem=i;
-  document.getElementById('det-img').src=i.imageUrl||'';
-  document.getElementById('det-title').innerText=i.itemName||'';
-  document.getElementById('det-price').innerText=(i.price||0)+'€';
-  document.getElementById('det-cat').innerText=i.category||'';
-  document.getElementById('det-cond').innerText=i.condition||'';
-  document.getElementById('det-desc').innerText=i.description||'Aucune description.';
-  document.getElementById('det-seller').innerText='Vendeur #'+(i.userId||'').slice(0,6);
-  document.getElementById('det-brand').innerText=[i.brand,i.model].filter(Boolean).join(' — ');
-  const ct=document.getElementById('det-city-tag');
-  if(i.city){document.getElementById('det-city-val').innerText=i.city;ct.classList.remove('hidden');}else ct.classList.add('hidden');
-  const sh=document.getElementById('det-ship');
-  sh.innerHTML=i.shipping?.length?i.shipping.map(s=>`<span style="background:#1c1c1c;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700">${s.method} <span style="color:#22d3ee">${s.price===0?'Gratuit':s.price+'€'}</span></span>`).join(''):'<span style="font-size:12px;color:#52525b">Non renseigné</span>';
-  document.getElementById('contact-btn').onclick=()=>openChat(i);
-  document.getElementById('buy-btn').onclick=()=>openPay(i);
-  loadSellerRating(i.userId);
-  const m=document.getElementById('detail-modal');m.classList.remove('hidden');m.classList.add('flex');
-};
-window.closeDetail=()=>{const m=document.getElementById('detail-modal');m.classList.add('hidden');m.classList.remove('flex');};
-
-// ── CHAT ──
-window.openChat=i=>{
+// DETAIL
+window.openDetail=function(id){
+  var i=items.find(function(x){return x.id===id;});
+  if(!i) return;
   curItem=i;
-  document.getElementById('chat-seller').innerText='Vendeur #'+(i.userId||'').slice(0,6);
-  document.getElementById('chat-iname').innerText=i.itemName||'';
-  document.getElementById('chat-iprice').innerText=(i.price||0)+'€';
-  document.getElementById('chat-img').src=i.imageUrl||'';
-  document.getElementById('chat-msgs').innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:10px;color:#52525b;background:#1c1c1c;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Début de conversation</span></div>';
-  const m=document.getElementById('chat-modal');m.classList.remove('hidden');m.classList.add('flex');
+  document.getElementById("det-img").src=i.imageUrl||"";
+  document.getElementById("det-title").innerText=i.itemName||"";
+  document.getElementById("det-price").innerText=(i.price||0)+"euro";
+  document.getElementById("det-cat").innerText=i.category||"";
+  document.getElementById("det-cond").innerText=i.condition||"";
+  document.getElementById("det-desc").innerText=i.description||"Aucune description.";
+  document.getElementById("det-seller").innerText="Vendeur #"+(i.userId||"").slice(0,6);
+  document.getElementById("det-brand").innerText=[i.brand,i.model].filter(Boolean).join(" - ");
+  var ct=document.getElementById("det-city-tag");
+  if(i.city){document.getElementById("det-city-val").innerText=i.city;ct.classList.remove("hidden");}
+  else{ct.classList.add("hidden");}
+  var sh=document.getElementById("det-ship");
+  if(i.shipping&&i.shipping.length){
+    sh.innerHTML=i.shipping.map(function(s){
+      return '<span style="background:#1c1c1c;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700">'+s.method+' <span style="color:#22d3ee">'+(s.price===0?"Gratuit":s.price+"euro")+"</span></span>";
+    }).join("");
+  }else{
+    sh.innerHTML='<span style="font-size:12px;color:#52525b">Non renseigne</span>';
+  }
+  document.getElementById("contact-btn").onclick=function(){openChat(i);};
+  document.getElementById("buy-btn").onclick=function(){openPay(i);};
+  loadSellerRating(i.userId);
+  var m=document.getElementById("detail-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeDetail=function(){
+  var m=document.getElementById("detail-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+
+// CHAT
+window.openChat=function(i){
+  curItem=i;
+  document.getElementById("chat-seller").innerText="Vendeur #"+(i.userId||"").slice(0,6);
+  document.getElementById("chat-iname").innerText=i.itemName||"";
+  document.getElementById("chat-iprice").innerText=(i.price||0)+"euro";
+  document.getElementById("chat-img").src=i.imageUrl||"";
+  document.getElementById("chat-msgs").innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:10px;color:#52525b;background:#1c1c1c;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Debut de conversation</span></div>';
+  var m=document.getElementById("chat-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
   closeDetail();
 };
-window.closeChat=()=>{const m=document.getElementById('chat-modal');m.classList.add('hidden');m.classList.remove('flex');};
-window.sendMsg=()=>{
-  const inp=document.getElementById('chat-inp'),t=inp.value.trim();if(!t)return;
-  addBubble(t,true);inp.value='';
-  const reps=["Oui, disponible 😊","Je peux baisser un peu.","Envoi en Mondial Relay possible.","Article en parfait état.","Je peux envoyer d'autres photos."];
-  setTimeout(()=>addBubble(reps[Math.floor(Math.random()*reps.length)],false),1100);
+window.closeChat=function(){
+  var m=document.getElementById("chat-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
 };
-window.qMsg=m=>{document.getElementById('chat-inp').value=m;sendMsg();};
+window.sendMsg=function(){
+  var inp=document.getElementById("chat-inp"),t=inp.value.trim();if(!t)return;
+  addBubble(t,true);inp.value="";
+  var reps=["Oui disponible !","Je peux baisser un peu.","Envoi Mondial Relay possible.","Article en parfait etat.","Je peux envoyer plus de photos."];
+  setTimeout(function(){addBubble(reps[Math.floor(Math.random()*reps.length)],false);},1100);
+};
+window.qMsg=function(m){document.getElementById("chat-inp").value=m;sendMsg();};
 function addBubble(t,mine){
-  const el=document.getElementById('chat-msgs');
-  const d=document.createElement('div');d.className='flex '+(mine?'justify-end':'justify-start');
-  d.innerHTML=`<div class="max-w-[72%] px-4 py-2 text-sm font-medium ${mine?'bme':'bthem'}">${t}</div>`;
+  var el=document.getElementById("chat-msgs");
+  var d=document.createElement("div");
+  d.className="flex "+(mine?"justify-end":"justify-start");
+  d.innerHTML='<div class="max-w-[72%] px-4 py-2 text-sm font-medium '+(mine?"bme":"bthem")+'">'+t+"</div>";
   el.appendChild(d);el.scrollTop=el.scrollHeight;
 }
 
-// ── STRIPE ──
-window.openPay=i=>{
+// PAIEMENT
+window.openPay=function(i){
   payItem=i;selShip=null;
-  document.getElementById('pay-img').style.backgroundImage=`url(${i.imageUrl})`;
-  document.getElementById('pay-title').innerText=i.itemName;
-  document.getElementById('pay-price').innerText=i.price+'€';
-  document.getElementById('pay-sub').innerText=i.price+'€';
-  document.getElementById('pay-shipcost').innerText='—';
-  document.getElementById('pay-total').innerText=i.price+'€';
-  const wrap=document.getElementById('pay-ship-wrap'),list=document.getElementById('pay-ship-list');
-  if(i.shipping?.length){
-    wrap.classList.remove('hidden');
-    list.innerHTML=i.shipping.map((s,idx)=>`<label style="display:flex;align-items:center;gap:10px;background:#1c1c1c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px 12px;cursor:pointer">
-      <input type="radio" name="ship" value="${idx}" onchange="selShipping(${idx})" style="accent-color:#22d3ee">
-      <span style="font-size:13px;font-weight:600;flex:1">${s.method}</span>
-      <span style="font-size:13px;font-weight:800;color:#22d3ee">${s.price===0?'Gratuit':s.price+'€'}</span>
-    </label>`).join('');
-  }else wrap.classList.add('hidden');
-  const m=document.getElementById('pay-modal');m.classList.remove('hidden');m.classList.add('flex');
+  document.getElementById("pay-img").style.backgroundImage="url("+i.imageUrl+")";
+  document.getElementById("pay-title").innerText=i.itemName;
+  document.getElementById("pay-price").innerText=i.price+"euro";
+  document.getElementById("pay-sub").innerText=i.price+"euro";
+  document.getElementById("pay-shipcost").innerText="-";
+  document.getElementById("pay-total").innerText=i.price+"euro";
+  var wrap=document.getElementById("pay-ship-wrap"),list=document.getElementById("pay-ship-list");
+  if(i.shipping&&i.shipping.length){
+    wrap.classList.remove("hidden");
+    list.innerHTML=i.shipping.map(function(s,idx){
+      return '<label style="display:flex;align-items:center;gap:10px;background:#1c1c1c;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px 12px;cursor:pointer"><input type="radio" name="ship" value="'+idx+'" onchange="selShipping('+idx+')" style="accent-color:#22d3ee"><span style="font-size:13px;font-weight:600;flex:1">'+s.method+'</span><span style="font-size:13px;font-weight:800;color:#22d3ee">'+(s.price===0?"Gratuit":s.price+"euro")+"</span></label>";
+    }).join("");
+  }else{wrap.classList.add("hidden");}
+  var m=document.getElementById("pay-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
   closeDetail();
 };
-window.selShipping=idx=>{
+window.selShipping=function(idx){
   selShip=payItem.shipping[idx];
-  const tot=(parseFloat(payItem.price)||0)+selShip.price;
-  document.getElementById('pay-shipcost').innerText=selShip.price===0?'Gratuit':selShip.price+'€';
-  document.getElementById('pay-total').innerText=tot+'€';
+  var tot=(parseFloat(payItem.price)||0)+selShip.price;
+  document.getElementById("pay-shipcost").innerText=selShip.price===0?"Gratuit":selShip.price+"euro";
+  document.getElementById("pay-total").innerText=tot+"euro";
 };
-window.closePay=()=>{const m=document.getElementById('pay-modal');m.classList.add('hidden');m.classList.remove('flex');};
-window.doStripe=async()=>{
-  if(!payItem||!me)return;
-  if(payItem.shipping?.length&&!selShip){toast('Choisissez un mode de livraison');return;}
-  const btn=document.getElementById('stripe-btn');btn.innerHTML='<i class="fa-solid fa-circle-notch animate-spin mr-2"></i>Redirection...';btn.disabled=true;
+window.closePay=function(){
+  var m=document.getElementById("pay-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.doStripe=async function(){
+  if(!payItem||!me) return;
+  if(payItem.shipping&&payItem.shipping.length&&!selShip){toast("Choisissez un mode de livraison");return;}
+  var btn=document.getElementById("stripe-btn");
+  btn.innerHTML='<i class="fa-solid fa-circle-notch animate-spin mr-2"></i>Redirection...';btn.disabled=true;
   try{
-    const shipCost=selShip?selShip.price:0;
-    const tot=(parseFloat(payItem.price)||0)+shipCost;
-    const r=await fetch('https://createpayment-xjtnixfrra-uc.a.run.app',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:tot,itemName:payItem.itemName,itemId:payItem.id,buyerId:me.uid,sellerId:payItem.userId})});
-    const d=await r.json();
-    if(d.error){toast('Stripe:'+d.error);return;}
-    await addDoc(collection(db,'notifications'),{userId:payItem.userId,type:'payment_initiated',message:`Paiement pour "${payItem.itemName}"`,itemId:payItem.id,read:false,createdAt:serverTimestamp()});
+    var shipCost=selShip?selShip.price:0;
+    var tot=(parseFloat(payItem.price)||0)+shipCost;
+    var r=await fetch("https://createpayment-xjtnixfrra-uc.a.run.app",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:tot,itemName:payItem.itemName,itemId:payItem.id,buyerId:me.uid,sellerId:payItem.userId})});
+    var d=await r.json();
+    if(d.error){toast("Stripe:"+d.error);return;}
+    await addDoc(collection(db,"notifications"),{userId:payItem.userId,type:"payment_initiated",message:"Paiement pour "+payItem.itemName,itemId:payItem.id,read:false,createdAt:serverTimestamp()});
     window.location.href=d.url;
-  }catch(e){toast('Erreur:'+e.message);}
+  }catch(e){toast("Erreur:"+e.message);}
   btn.innerHTML='<i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant';btn.disabled=false;
 };
-
 function checkPayReturn(){
-  const p=new URLSearchParams(window.location.search);
-  if(p.get('payment')!=='success')return;
-  history.replaceState({},'','/');
-  const iid=p.get('itemId'),sid=p.get('sellerId');
-  setTimeout(async()=>{
-    if(!me)return;
+  var p=new URLSearchParams(window.location.search);
+  if(p.get("payment")!=="success") return;
+  history.replaceState({},"","/");
+  var iid=p.get("itemId"),sid=p.get("sellerId");
+  setTimeout(async function(){
+    if(!me) return;
     try{
-      await addDoc(collection(db,'notifications'),{userId:me.uid,type:'payment_success',message:'Paiement validé ! Contactez le vendeur.',itemId:iid||'',read:false,createdAt:serverTimestamp()});
-      if(sid)await addDoc(collection(db,'notifications'),{userId:sid,type:'sale',message:"Votre article vient d'être acheté !",itemId:iid||'',read:false,createdAt:serverTimestamp()});
-      rateCtx={targetUserId:sid,role:'buyer',itemId:iid||''};
-      setTimeout(()=>openRate('vendeur'),2000);
-    }catch{}
+      await addDoc(collection(db,"notifications"),{userId:me.uid,type:"payment_success",message:"Paiement valide ! Contactez le vendeur.",itemId:iid||"",read:false,createdAt:serverTimestamp()});
+      if(sid) await addDoc(collection(db,"notifications"),{userId:sid,type:"sale",message:"Votre article vient d'etre achete !",itemId:iid||"",read:false,createdAt:serverTimestamp()});
+      rateCtx={targetUserId:sid,role:"buyer",itemId:iid||""};
+      setTimeout(function(){openRate("vendeur");},2000);
+    }catch(e){}
   },1500);
 }
 
-// ── NOTIFS ──
+// NOTIFS
 function initNotifs(){
-  if(!me)return;
-  const q=query(collection(db,'notifications'),where('userId','==',me.uid));
-  onSnapshot(q,snap=>{
-    const list=[];snap.forEach(d=>list.push({id:d.id,...d.data()}));
-    // Tri côté client - pas besoin d'index Firestore
-    list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    const unread=list.filter(n=>!n.read).length;
-    const b=document.getElementById('nbadge');
-    b.classList.toggle('hidden',unread===0);if(unread)b.innerText=unread;
-    const icons={payment_success:'✅',payment_initiated:'💳',sale:'🎉',rating:'⭐'};
-    document.getElementById('notif-list').innerHTML=list.length?list.map(n=>`
-      <div onclick="markRead('${n.id}')" style="background:#161616;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;margin-bottom:8px;cursor:pointer;opacity:${n.read?.5:1}">
-        <div style="display:flex;gap:10px;align-items:flex-start">
-          <span style="font-size:18px">${icons[n.type]||'🔔'}</span>
-          <div style="flex:1">
-            <p style="font-size:13px;font-weight:700;margin-bottom:3px">${n.message}</p>
-            <p style="font-size:10px;color:#52525b">${n.createdAt?new Date(n.createdAt.seconds*1000).toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</p>
-          </div>
-          ${!n.read?'<span style="width:7px;height:7px;background:#22d3ee;border-radius:99px;margin-top:3px;flex-shrink:0"></span>':''}
-        </div>
-      </div>`).join(''):'<p style="text-align:center;color:#3f3f46;font-size:11px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>';
+  if(!me) return;
+  var q=query(collection(db,"notifications"),where("userId","==",me.uid));
+  onSnapshot(q,function(snap){
+    var list=[];
+    snap.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));});
+    list.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
+    var unread=list.filter(function(n){return !n.read;}).length;
+    var b=document.getElementById("nbadge");
+    b.classList.toggle("hidden",unread===0);
+    if(unread) b.innerText=unread;
+    var icons={payment_success:"ok",payment_initiated:"cb",sale:"vente",rating:"note"};
+    var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
+    document.getElementById("notif-list").innerHTML=list.length?list.map(function(n){
+      var date=n.createdAt?new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"";
+      return '<div onclick="markRead(\''+n.id+'\')" style="background:#161616;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;margin-bottom:8px;cursor:pointer;opacity:'+(n.read?".5":"1")+'"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">'+(emojis[n.type]||"bell")+'</span><div style="flex:1"><p style="font-size:13px;font-weight:700;margin-bottom:3px">'+n.message+'</p><p style="font-size:10px;color:#52525b">'+date+"</p></div>"+(n.read?"":'<span style="width:7px;height:7px;background:#22d3ee;border-radius:99px;margin-top:3px;flex-shrink:0;display:block"></span>')+"</div></div>";
+    }).join(""):'<p style="text-align:center;color:#52525b;font-size:11px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>';
   });
 }
-window.markRead=async id=>updateDoc(doc(db,'notifications',id),{read:true});
+window.markRead=async function(id){await updateDoc(doc(db,"notifications",id),{read:true});};
 
-// ── NOTATION ──
-window.openRate=role=>{
+// NOTATION
+window.openRate=function(role){
   curStar=0;
-  document.querySelectorAll('.star').forEach(s=>{s.style.color='#3f3f46';s.style.transform='scale(1)';});
-  document.getElementById('rate-comment').value='';
-  document.getElementById('rate-sub').innerText=role==='buyer'?"Comment s'est comporté l'acheteur ?":"Comment était le vendeur ?";
-  const m=document.getElementById('rate-modal');m.classList.remove('hidden');m.classList.add('flex');
+  document.querySelectorAll(".star").forEach(function(s){s.style.color="#3f3f46";s.style.transform="scale(1)";});
+  document.getElementById("rate-comment").value="";
+  document.getElementById("rate-sub").innerText=role==="buyer"?"Comment s'est comporte l'acheteur ?":"Comment etait le vendeur ?";
+  var m=document.getElementById("rate-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
 };
-window.closeRate=()=>{const m=document.getElementById('rate-modal');m.classList.add('hidden');m.classList.remove('flex');};
-window.setStar=v=>{
+window.closeRate=function(){
+  var m=document.getElementById("rate-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.setStar=function(v){
   curStar=v;
-  document.querySelectorAll('.star').forEach(s=>{const sv=parseInt(s.dataset.v);s.style.color=sv<=v?'#facc15':'#3f3f46';s.style.transform=sv<=v?'scale(1.15)':'scale(1)';});
+  document.querySelectorAll(".star").forEach(function(s){
+    var sv=parseInt(s.dataset.v);
+    s.style.color=sv<=v?"#facc15":"#3f3f46";
+    s.style.transform=sv<=v?"scale(1.15)":"scale(1)";
+  });
 };
-window.submitRate=async()=>{
-  if(!curStar){toast('Choisissez une note');return;}
-  if(!rateCtx)return;
+window.submitRate=async function(){
+  if(!curStar){toast("Choisissez une note");return;}
+  if(!rateCtx) return;
   try{
-    await addDoc(collection(db,'ratings'),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById('rate-comment').value,createdAt:serverTimestamp()});
+    await addDoc(collection(db,"ratings"),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById("rate-comment").value,createdAt:serverTimestamp()});
     await updUserRating(rateCtx.targetUserId);
-    await addDoc(collection(db,'notifications'),{userId:rateCtx.targetUserId,type:'rating',message:`Vous avez reçu une note de ${curStar}★`,read:false,createdAt:serverTimestamp()});
-    closeRate();toast('⭐ Note envoyée !',true);
-  }catch(e){toast('Erreur:'+e.message);}
+    await addDoc(collection(db,"notifications"),{userId:rateCtx.targetUserId,type:"rating",message:"Vous avez recu une note de "+curStar+"etoiles",read:false,createdAt:serverTimestamp()});
+    closeRate();toast("Note envoyee !",true);
+  }catch(e){toast("Erreur:"+e.message);}
 };
 async function updUserRating(uid){
   try{
-    const s=await getDocs(query(collection(db,'ratings'),where('targetUserId','==',uid)));
-    const r=[];s.forEach(d=>r.push(d.data().rating));
-    if(!r.length)return;
-    const avg=(r.reduce((a,b)=>a+b,0)/r.length).toFixed(1);
-    await updateDoc(doc(db,'users',uid),{rating:parseFloat(avg),ratingCount:r.length});
-  }catch{}
+    var s=await getDocs(query(collection(db,"ratings"),where("targetUserId","==",uid)));
+    var r=[];s.forEach(function(d){r.push(d.data().rating);});
+    if(!r.length) return;
+    var avg=(r.reduce(function(a,b){return a+b;},0)/r.length).toFixed(1);
+    await updateDoc(doc(db,"users",uid),{rating:parseFloat(avg),ratingCount:r.length});
+  }catch(e){}
 }
 async function loadSellerRating(uid){
   try{
-    const d=await getDoc(doc(db,'users',uid));
-    const el=document.getElementById('det-rating');
-    if(d.exists()&&d.data().rating){const r=d.data().rating,n=d.data().ratingCount||0;el.innerText='★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r))+` ${r}/5 (${n} avis)`;}
-    else el.innerText='Nouveau vendeur';
-  }catch{}
+    var d=await getDoc(doc(db,"users",uid));
+    var el=document.getElementById("det-rating");
+    if(d.exists()&&d.data().rating){
+      var r=d.data().rating,n=d.data().ratingCount||0;
+      var stars="";
+      for(var k=1;k<=5;k++) stars+=k<=Math.round(r)?"★":"☆";
+      el.innerText=stars+" "+r+"/5 ("+n+" avis)";
+    }else{el.innerText="Nouveau vendeur";}
+  }catch(e){}
 }
 async function loadMyRating(){
-  if(!me)return;
-  try{const d=await getDoc(doc(db,'users',me.uid));if(d.exists()&&d.data().rating)document.getElementById('profile-rating').innerText='★'+d.data().rating;}catch{}
-}
-
-// ── EDIT / DELETE ──
-window.openEdit=id=>{
-  const i=items.find(x=>x.id===id);if(!i)return;
-  editingId=id;
-  document.getElementById('edit-title').value=i.itemName||'';
-  document.getElementById('edit-price').value=i.price||0;
-  document.getElementById('edit-desc').value=i.description||'';
-  document.getElementById('edit-cond').value=i.condition||'Bon état';
-  document.getElementById('edit-cat').value=i.category||'Divers';
-  const m=document.getElementById('edit-modal');m.classList.remove('hidden');m.classList.add('flex');
-};
-window.closeEdit=()=>{const m=document.getElementById('edit-modal');m.classList.add('hidden');m.classList.remove('flex');editingId=null;};
-window.saveEdit=async()=>{
-  if(!editingId)return;
-  const btn=document.getElementById('edit-save');btn.innerText='Sauvegarde...';btn.disabled=true;
+  if(!me) return;
   try{
-    await updateDoc(doc(db,'scans',editingId),{
-      itemName:document.getElementById('edit-title').value,
-      price:parseFloat(document.getElementById('edit-price').value)||0,
-      description:document.getElementById('edit-desc').value,
-      condition:document.getElementById('edit-cond').value,
-      category:document.getElementById('edit-cat').value
-    });closeEdit();
-  }catch(e){toast('Erreur:'+e.message);}
-  btn.innerText='Sauvegarder';btn.disabled=false;
-};
-window.confirmDel=id=>{deletingId=id;closeEdit();const m=document.getElementById('del-modal');m.classList.remove('hidden');m.classList.add('flex');};
-window.closeDel=()=>{const m=document.getElementById('del-modal');m.classList.add('hidden');m.classList.remove('flex');deletingId=null;};
-window.doDelete=async()=>{
-  if(!deletingId)return;
-  try{await deleteDoc(doc(db,'scans',deletingId));closeDel();}
-  catch(e){toast('Erreur:'+e.message);}
-};
-
-// ── CARTE ──
-let map=null,userLat=null,userLng=null,mapMarkers=[];
-
-function initMap(){
-  if(map)return;
-  // Centre France par défaut
-  const lat=userLat||46.2276,lng=userLng||2.2137,zoom=userLat?12:5;
-  map=L.map('map-container',{zoomControl:false}).setView([lat,lng],zoom);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
-  }).addTo(map);
-  // Marqueur position user
-  if(userLat){
-    L.circleMarker([userLat,userLng],{radius:10,fillColor:'#22d3ee',color:'#fff',weight:2,fillOpacity:0.9})
-      .addTo(map).bindPopup('<b style="color:#000">Vous êtes ici</b>');
-  }
-  renderMapMarkers();
+    var d=await getDoc(doc(db,"users",me.uid));
+    if(d.exists()&&d.data().rating) document.getElementById("profile-rating").innerText="★"+d.data().rating;
+  }catch(e){}
 }
 
-function renderMapMarkers(){
-  if(!map)return;
-  mapMarkers.forEach(m=>m.remove());mapMarkers=[];
-  // On geocode les villes via nominatim pour chaque item avec une ville
-  const withCity=items.filter(i=>i.city&&i.city.trim());
-  if(!withCity.length){
-    if(userLat) return; // pas d'annonces avec ville
-    return;
+// EDIT / DELETE
+window.openEdit=function(id){
+  var i=items.find(function(x){return x.id===id;});if(!i)return;
+  editingId=id;
+  document.getElementById("edit-title").value=i.itemName||"";
+  document.getElementById("edit-price").value=i.price||0;
+  document.getElementById("edit-desc").value=i.description||"";
+  document.getElementById("edit-cond").value=i.condition||"Bon etat";
+  document.getElementById("edit-cat").value=i.category||"Divers";
+  var m=document.getElementById("edit-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeEdit=function(){
+  var m=document.getElementById("edit-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+  editingId=null;
+};
+window.saveEdit=async function(){
+  if(!editingId) return;
+  var btn=document.getElementById("edit-save");btn.innerText="Sauvegarde...";btn.disabled=true;
+  try{
+    await updateDoc(doc(db,"scans",editingId),{
+      itemName:document.getElementById("edit-title").value,
+      price:parseFloat(document.getElementById("edit-price").value)||0,
+      description:document.getElementById("edit-desc").value,
+      condition:document.getElementById("edit-cond").value,
+      category:document.getElementById("edit-cat").value
+    });
+    closeEdit();
+  }catch(e){toast("Erreur:"+e.message);}
+  btn.innerText="Sauvegarder";btn.disabled=false;
+};
+window.confirmDel=function(id){
+  deletingId=id;closeEdit();
+  var m=document.getElementById("del-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeDel=function(){
+  var m=document.getElementById("del-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+  deletingId=null;
+};
+window.doDelete=async function(){
+  if(!deletingId) return;
+  try{await deleteDoc(doc(db,"scans",deletingId));closeDel();}
+  catch(e){toast("Erreur:"+e.message);}
+};
+
+// CARTE
+function initMap(){
+  if(map) return;
+  var lat=userLat||46.2276,lng=userLng||2.2137,zoom=userLat?12:5;
+  map=L.map("map-el",{zoomControl:false}).setView([lat,lng],zoom);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{attribution:"CartoDB",maxZoom:19}).addTo(map);
+  if(userLat){
+    L.circleMarker([userLat,userLng],{radius:10,fillColor:"#22d3ee",color:"#fff",weight:2,fillOpacity:0.9}).addTo(map);
   }
-  withCity.forEach(async item=>{
+}
+function renderMapMarkers(){
+  if(!map) return;
+  mapMarkers.forEach(function(m){m.remove();});mapMarkers=[];
+  var withCity=items.filter(function(i){return i.city&&i.city.trim();});
+  withCity.forEach(async function(item){
     try{
-      const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.city+',France')}&format=json&limit=1`);
-      const d=await r.json();
-      if(!d.length)return;
-      const lat=parseFloat(d[0].lat),lng=parseFloat(d[0].lon);
-      const icon=L.divIcon({
-        className:'',
-        html:`<div style="background:#22d3ee;color:#000;font-size:11px;font-weight:900;padding:4px 8px;border-radius:99px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.5)">${item.price||0}€</div>`,
+      var r=await fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(item.city+",France")+"&format=json&limit=1");
+      var d=await r.json();
+      if(!d.length) return;
+      var lat=parseFloat(d[0].lat),lng=parseFloat(d[0].lon);
+      var icon=L.divIcon({
+        className:"",
+        html:'<div style="background:#22d3ee;color:#000;font-size:11px;font-weight:900;padding:4px 8px;border-radius:99px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.5)">'+(item.price||0)+"euro</div>",
         iconAnchor:[20,12]
       });
-      const marker=L.marker([lat,lng],{icon}).addTo(map);
-      marker.on('click',()=>{
-        document.getElementById('map-item-img').src=item.imageUrl||'';
-        document.getElementById('map-item-name').innerText=item.itemName||'';
-        document.getElementById('map-item-price').innerText=(item.price||0)+'€';
-        document.getElementById('map-item-city').innerText=item.city||'';
-        document.getElementById('map-item-btn').onclick=()=>openDetail(item.id);
-        document.getElementById('map-info').classList.remove('hidden');
+      var marker=L.marker([lat,lng],{icon:icon}).addTo(map);
+      marker.on("click",function(){
+        document.getElementById("map-pop-img").src=item.imageUrl||"";
+        document.getElementById("map-pop-name").innerText=item.itemName||"";
+        document.getElementById("map-pop-price").innerText=(item.price||0)+"euro";
+        document.getElementById("map-pop-city").innerText=item.city||"";
+        document.getElementById("map-pop-btn").onclick=function(){openDetail(item.id);};
+        var p=document.getElementById("map-popup");
+        p.classList.remove("hidden");p.style.display="flex";
       });
       mapMarkers.push(marker);
-    }catch{}
+    }catch(e){}
   });
 }
-
-window.centerMap=()=>{
+function askGeo(){
+  if(!navigator.geolocation){toast("Geolocalisation non supportee");return;}
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      userLat=pos.coords.latitude;userLng=pos.coords.longitude;
+      if(map){
+        map.setView([userLat,userLng],13);
+        L.circleMarker([userLat,userLng],{radius:10,fillColor:"#22d3ee",color:"#fff",weight:2,fillOpacity:.9}).addTo(map);
+      }
+      toast("Position obtenue !",true);
+    },
+    function(){toast("Position refusee ou non disponible");}
+  );
+}
+window.centerMap=function(){
   if(map&&userLat) map.setView([userLat,userLng],13);
   else askGeo();
-};
-
-function askGeo(){
-  if(!navigator.geolocation){toast('Géolocalisation non supportée');return;}
-  navigator.geolocation.getCurrentPosition(pos=>{
-    userLat=pos.coords.latitude;userLng=pos.coords.longitude;
-    if(map){
-      map.setView([userLat,userLng],13);
-      L.circleMarker([userLat,userLng],{radius:10,fillColor:'#22d3ee',color:'#fff',weight:2,fillOpacity:.9}).addTo(map);
-    }
-    toast('📍 Position obtenue !',true);
-  },()=>toast('Position refusée'));
-}
-
-// Surcharger switchView pour init carte
-const _sw=window.switchView;
-window.switchView=v=>{
-  // Gérer la vue map séparément (height:100%)
-  document.getElementById('view-map').classList.add('hidden');
-  _sw(v);
-  if(v==='map'){
-    document.getElementById('view-map').classList.remove('hidden');
-    // Demander position si pas encore fait
-    if(!userLat) askGeo();
-    setTimeout(()=>{
-      initMap();
-      if(items.length) renderMapMarkers();
-      if(map) map.invalidateSize();
-    },200);
-  }
-  // Update nav map icon
-  const nm=document.getElementById('nav-map');
-  if(nm) nm.querySelector('i').className='fa-solid fa-map-location-dot text-xl '+(v==='map'?'text-cyan-400':'text-zinc-600');
 };
 </script>
 </body>
