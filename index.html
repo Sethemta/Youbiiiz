@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Youbiiiz</title>
+<title>Youbiiiz v3.2</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -145,8 +145,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
       <!-- Grille 2 colonnes -->
-      <div id="feed" class="grid grid-cols-2 gap-3">
-        <div class="col-span-2 py-14 text-center">
+      <div id="feed" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="grid-column:1/-1;padding:56px 0;text-align:center;">
           <i class="fa-solid fa-circle-notch animate-spin text-zinc-700 text-2xl"></i>
         </div>
       </div>
@@ -208,8 +208,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
       <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Mes annonces</p>
-      <div id="my-listings" class="grid grid-cols-2 gap-3">
-        <p class="col-span-2 text-center text-zinc-600 text-xs font-bold uppercase py-8">Aucune annonce</p>
+      <div id="my-listings" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <p style="grid-column:1/-1;text-align:center;color:#52525b;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>
       </div>
     </div>
 
@@ -689,7 +689,7 @@ function updateProfile(){
   document.getElementById('profile-count').innerText=mine.length;
   document.getElementById('profile-total').innerText=mine.reduce((s,i)=>s+(parseFloat(i.price)||0),0)+'€';
   const el=document.getElementById('my-listings');
-  el.innerHTML=mine.length?mine.map(myCard).join(''):'<p class="col-span-2 text-center text-zinc-600 text-xs font-bold uppercase py-8">Aucune annonce</p>';
+  el.innerHTML=mine.length?mine.map(myCard).join(''):'<p style="grid-column:1/-1;text-align:center;color:#52525b;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>';
 }
 
 function myCard(i){
@@ -775,23 +775,18 @@ function cropImage(b64,q){
   return new Promise(res=>{
     const img=new Image();
     img.onload=()=>{
-      // Crop carré centré
       const s=Math.min(img.width,img.height);
       const sx=Math.floor((img.width-s)/2),sy=Math.floor((img.height-s)/2);
-      // Taille de sortie max 600px — suffisant pour l'affichage mobile
-      // Taille de sortie : 500px pour un bon compromis qualité/poids
-      const OUT=500;
+      const OUT=400;
       const c=document.createElement('canvas');c.width=OUT;c.height=OUT;
       const ctx=c.getContext('2d');
       ctx.fillStyle='#111';ctx.fillRect(0,0,OUT,OUT);
       ctx.drawImage(img,sx,sy,s,s,0,0,OUT,OUT);
-      // Compression progressive jusqu'à passer sous 120ko
-      let q=0.78,result=c.toDataURL('image/jpeg',q);
-      while(result.length>160000&&q>0.4){q-=0.08;result=c.toDataURL('image/jpeg',q);}
-      res(result);
+      res(c.toDataURL('image/jpeg',0.72));
     };
     img.onerror=()=>res(b64);img.src=b64;
   });
+});
 }
 
 async function callGemini(b64){
@@ -961,9 +956,11 @@ function checkPayReturn(){
 // ── NOTIFS ──
 function initNotifs(){
   if(!me)return;
-  const q=query(collection(db,'notifications'),where('userId','==',me.uid),orderBy('createdAt','desc'));
+  const q=query(collection(db,'notifications'),where('userId','==',me.uid));
   onSnapshot(q,snap=>{
     const list=[];snap.forEach(d=>list.push({id:d.id,...d.data()}));
+    // Tri côté client - pas besoin d'index Firestore
+    list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
     const unread=list.filter(n=>!n.read).length;
     const b=document.getElementById('nbadge');
     b.classList.toggle('hidden',unread===0);if(unread)b.innerText=unread;
