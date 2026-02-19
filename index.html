@@ -752,20 +752,22 @@ function processImg(raw){
 function cropImage(b64){
   return new Promise(function(resolve){
     var img=new Image();
-    img.crossOrigin="anonymous";
     img.onload=function(){
       var w=img.naturalWidth||img.width;
       var h=img.naturalHeight||img.height;
       if(!w||!h){resolve(b64);return;}
-      var s=Math.min(w,h);
-      var sx=Math.floor((w-s)/2);
-      var sy=Math.floor((h-s)/2);
+      // Calcul pour tenir l'image entiere dans 400x400 avec padding
+      var scale=Math.min(400/w,400/h);
+      var dw=Math.round(w*scale);
+      var dh=Math.round(h*scale);
+      var dx=Math.round((400-dw)/2);
+      var dy=Math.round((400-dh)/2);
       var c=document.createElement("canvas");
       c.width=400;c.height=400;
       var ctx=c.getContext("2d");
       ctx.fillStyle="#f5f5f5";
       ctx.fillRect(0,0,400,400);
-      ctx.drawImage(img,sx,sy,s,s,0,0,400,400);
+      ctx.drawImage(img,0,0,w,h,dx,dy,dw,dh);
       resolve(c.toDataURL("image/jpeg",0.82));
     };
     img.onerror=function(){resolve(b64);};
