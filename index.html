@@ -143,7 +143,7 @@
                     <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center border-2 border-white/10 shrink-0">
                         <i class="fa-solid fa-user text-2xl text-white"></i>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <h2 class="font-extrabold text-lg text-white">Mon Profil</h2>
                         <p id="profile-uid" class="text-[10px] text-zinc-500 font-mono">...</p>
                         <div class="flex items-center gap-1 mt-1">
@@ -158,18 +158,17 @@
                         <p class="text-[9px] text-zinc-500 uppercase font-bold mt-1">Annonces</p>
                     </div>
                     <div class="bg-black/50 rounded-2xl p-3 text-center border border-white/5">
-                        <p class="text-2xl font-black text-white">0</p>
-                        <p class="text-[9px] text-zinc-500 uppercase font-bold mt-1">Ventes</p>
+                        <p id="profile-total" class="text-2xl font-black text-white">0€</p>
+                        <p class="text-[9px] text-zinc-500 uppercase font-bold mt-1">Valeur totale</p>
                     </div>
                     <div class="bg-black/50 rounded-2xl p-3 text-center border border-white/5">
-                        <p class="text-2xl font-black text-yellow-400">★ 5.0</p>
+                        <p class="text-2xl font-black text-yellow-400">&#9733; 5.0</p>
                         <p class="text-[9px] text-zinc-500 uppercase font-bold mt-1">Note</p>
                     </div>
                 </div>
             </div>
-
             <h3 class="font-bold text-sm text-zinc-400 uppercase tracking-widest mb-3">Mes annonces</h3>
-            <div id="my-listings" class="grid grid-cols-1 gap-4 pb-10">
+            <div id="my-listings" class="grid grid-cols-1 gap-4 pb-32">
                 <div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce</div>
             </div>
         </div>
@@ -380,6 +379,75 @@
     </div>
 </div>
 
+
+<!-- EDIT ANNONCE MODAL -->
+<div id="edit-modal" class="fixed inset-0 z-[700] bg-black/95 backdrop-blur-sm hidden items-end justify-center p-4">
+    <div class="bg-[#0f0f0f] w-full max-w-md rounded-[2.5rem] border border-white/10 modal-enter shadow-2xl overflow-hidden">
+        <div class="flex items-center justify-between p-6 border-b border-white/5">
+            <h3 class="font-extrabold text-lg">Modifier l'annonce</h3>
+            <button onclick="closeEdit()" class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center"><i class="fa-solid fa-xmark text-white"></i></button>
+        </div>
+        <div class="p-6 overflow-y-auto max-h-[75vh] no-scrollbar">
+            <div class="mb-4">
+                <label class="text-[10px] text-zinc-500 uppercase font-bold mb-1 block">Titre</label>
+                <input id="edit-title" class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500 text-sm font-bold">
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div>
+                    <label class="text-[10px] text-zinc-500 uppercase font-bold mb-1 block">Prix (€)</label>
+                    <input id="edit-price" type="number" class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-4 py-3 text-cyan-400 font-black outline-none focus:border-cyan-500 text-lg">
+                </div>
+                <div>
+                    <label class="text-[10px] text-zinc-500 uppercase font-bold mb-1 block">État</label>
+                    <select id="edit-condition" class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500 text-sm">
+                        <option>Neuf</option>
+                        <option>Très bon état</option>
+                        <option>Bon état</option>
+                        <option>État correct</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="text-[10px] text-zinc-500 uppercase font-bold mb-1 block">Catégorie</label>
+                <select id="edit-category" class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500 text-sm">
+                    <option>High-Tech</option>
+                    <option>Jeux vidéo</option>
+                    <option>Informatique</option>
+                    <option>Mode</option>
+                    <option>Maison</option>
+                    <option>Sport</option>
+                    <option>Divers</option>
+                </select>
+            </div>
+            <div class="mb-6">
+                <label class="text-[10px] text-zinc-500 uppercase font-bold mb-1 block">Description</label>
+                <textarea id="edit-desc" class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500 text-sm resize-none h-24"></textarea>
+            </div>
+            <button id="edit-save-btn" onclick="saveEdit()" class="w-full bg-cyan-500 text-black font-bold py-4 rounded-2xl mb-3 active:scale-95 transition-transform">
+                <i class="fa-solid fa-check mr-2"></i>Sauvegarder
+            </button>
+            <button onclick="confirmDelete()" class="w-full bg-red-500/10 border border-red-500/30 text-red-400 font-bold py-4 rounded-2xl active:scale-95 transition-transform">
+                <i class="fa-solid fa-trash mr-2"></i>Supprimer l'annonce
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div id="confirm-delete-modal" class="fixed inset-0 z-[800] bg-black/95 backdrop-blur-sm hidden items-center justify-center p-6">
+    <div class="bg-[#0f0f0f] w-full max-w-sm p-6 rounded-[2rem] border border-red-500/20 modal-enter text-center">
+        <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-trash text-red-400 text-2xl"></i>
+        </div>
+        <h3 class="font-extrabold text-lg mb-2">Supprimer ?</h3>
+        <p class="text-zinc-500 text-sm mb-6">Cette annonce sera définitivement supprimée.</p>
+        <div class="flex gap-3">
+            <button onclick="closeConfirmDelete()" class="flex-1 bg-zinc-900 text-white font-bold py-3 rounded-2xl border border-white/10">Annuler</button>
+            <button onclick="deleteItem()" class="flex-1 bg-red-500 text-white font-bold py-3 rounded-2xl">Supprimer</button>
+        </div>
+    </div>
+</div>
+
 <!-- PAIEMENT MODAL -->
 <div id="payment-modal" class="fixed inset-0 z-[600] bg-black/95 backdrop-blur-sm hidden items-end sm:items-center justify-center p-4">
     <div class="bg-[#0f0f0f] w-full max-w-md p-6 rounded-[2.5rem] border border-white/10 modal-enter shadow-2xl">
@@ -406,7 +474,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, query, where, orderBy, getDocs, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",
@@ -531,13 +599,104 @@
         if (!currentUser) return;
         const myItems = allItems.filter(i => i.userId === currentUser.uid);
         document.getElementById('profile-count').innerText = myItems.length;
+        const total = myItems.reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0);
+        document.getElementById('profile-total').innerText = total + 'euros';
         const container = document.getElementById('my-listings');
         if (myItems.length === 0) {
-            container.innerHTML = `<div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce</div>`;
+            container.innerHTML = '<div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce publiee</div>';
         } else {
-            container.innerHTML = myItems.map(item => itemCard(item)).join('');
+            container.innerHTML = myItems.map(item => myItemCard(item)).join('');
         }
     }
+
+    function myItemCard(item) {
+        return '<div class="glass-card rounded-[2rem] p-4 fade-in">' +
+            '<div class="flex gap-4 items-center mb-3">' +
+                '<div class="w-16 h-16 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5">' +
+                    '<img src="' + (item.imageUrl || '') + '" class="w-full h-full object-cover">' +
+                '</div>' +
+                '<div class="flex-1 min-w-0">' +
+                    '<h4 class="font-bold text-sm truncate text-white">' + (item.itemName || 'Objet') + '</h4>' +
+                    '<p class="text-cyan-400 font-extrabold text-lg">' + (item.price || 0) + 'euros</p>' +
+                    '<span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">' + (item.category || 'Divers') + '</span>' +
+                '</div>' +
+            '</div>' +
+            '<div class="flex gap-2">' +
+                '<button onclick="openEdit('' + item.id + '')" class="flex-1 bg-zinc-900 border border-white/10 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
+                    '<i class="fa-solid fa-pen"></i> Modifier' +
+                '</button>' +
+                '<button onclick="confirmDelete('' + item.id + '')" class="flex-1 bg-red-500/10 border border-red-500/20 text-red-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
+                    '<i class="fa-solid fa-trash"></i> Supprimer' +
+                '</button>' +
+            '</div>' +
+        '</div>';
+    }
+
+    let editingItemId = null;
+    let deletingItemId = null;
+
+    window.openEdit = (itemId) => {
+        const item = allItems.find(i => i.id === itemId);
+        if (!item) return;
+        editingItemId = itemId;
+        document.getElementById('edit-title').value = item.itemName || '';
+        document.getElementById('edit-price').value = item.price || 0;
+        document.getElementById('edit-desc').value = item.description || '';
+        document.getElementById('edit-condition').value = item.condition || 'Bon etat';
+        document.getElementById('edit-category').value = item.category || 'Divers';
+        document.getElementById('edit-modal').classList.remove('hidden');
+        document.getElementById('edit-modal').classList.add('flex');
+    };
+
+    window.closeEdit = () => {
+        document.getElementById('edit-modal').classList.add('hidden');
+        document.getElementById('edit-modal').classList.remove('flex');
+        editingItemId = null;
+    };
+
+    window.saveEdit = async () => {
+        if (!editingItemId) return;
+        const btn = document.getElementById('edit-save-btn');
+        btn.innerText = 'Sauvegarde...';
+        btn.disabled = true;
+        try {
+            await updateDoc(doc(db, 'scans', editingItemId), {
+                itemName: document.getElementById('edit-title').value,
+                price: parseFloat(document.getElementById('edit-price').value) || 0,
+                description: document.getElementById('edit-desc').value,
+                condition: document.getElementById('edit-condition').value,
+                category: document.getElementById('edit-category').value,
+            });
+            window.closeEdit();
+        } catch (err) {
+            logError('Erreur modification: ' + err.message);
+        }
+        btn.innerText = 'Sauvegarder';
+        btn.disabled = false;
+    };
+
+    window.confirmDelete = (itemId) => {
+        deletingItemId = itemId;
+        window.closeEdit();
+        document.getElementById('confirm-delete-modal').classList.remove('hidden');
+        document.getElementById('confirm-delete-modal').classList.add('flex');
+    };
+
+    window.closeConfirmDelete = () => {
+        document.getElementById('confirm-delete-modal').classList.add('hidden');
+        document.getElementById('confirm-delete-modal').classList.remove('flex');
+        deletingItemId = null;
+    };
+
+    window.deleteItem = async () => {
+        if (!deletingItemId) return;
+        try {
+            await deleteDoc(doc(db, 'scans', deletingItemId));
+            window.closeConfirmDelete();
+        } catch (err) {
+            logError('Erreur suppression: ' + err.message);
+        }
+    };
 
     // DETAIL ANNONCE
     window.openDetail = (itemId) => {
