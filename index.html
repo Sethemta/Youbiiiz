@@ -1172,7 +1172,8 @@
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
             stopCamera();
-            processCapture(canvas.toDataURL('image/jpeg', 0.9));
+            // Capture en qualité maximale depuis la caméra
+            processCapture(canvas.toDataURL('image/jpeg', 1.0));
         } else {
             document.getElementById('camera-input').click();
         }
@@ -1191,9 +1192,48 @@
         document.getElementById('capture-btn').classList.add('hidden');
         document.getElementById('uploading-msg').classList.remove('hidden');
         document.getElementById('scan-line').classList.remove('hidden');
-        document.getElementById('scan-preview').src = imgBase64;
-        document.getElementById('scan-preview').classList.remove('hidden');
-        analyzeWithGemini(imgBase64);
+        // Recadrage + haute qualité avant analyse
+        optimizeImage(imgBase64, 1200, 1200, 0.92).then(optimized => {
+            document.getElementById('scan-preview').src = optimized;
+            document.getElementById('scan-preview').classList.remove('hidden');
+            analyzeWithGemini(optimized);
+        });
+    }
+
+    function optimizeImage(base64, maxW, maxH, quality) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let w = img.width, h = img.height;
+
+                // Redimensionner en conservant le ratio, max 1200px
+                if (w > maxW || h > maxH) {
+                    const ratio = Math.min(maxW / w, maxH / h);
+                    w = Math.round(w * ratio);
+                    h = Math.round(h * ratio);
+                }
+
+                // Recadrage carré centré si portrait ou paysage extrême
+                const size = Math.min(w, h);
+                const offsetX = Math.round((w - size) / 2);
+                const offsetY = Math.round((h - size) / 2);
+
+                canvas.width = 1000;
+                canvas.height = 1000;
+                const ctx = canvas.getContext('2d');
+
+                // Fond noir
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, 0, 1000, 1000);
+
+                // Dessin recadré centré
+                ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, 1000, 1000);
+
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.src = base64;
+        });
     }
 
     async function analyzeWithGemini(imgBase64) {
