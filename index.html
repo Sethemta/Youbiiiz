@@ -585,6 +585,7 @@
             setTimeout(() => document.getElementById('app').style.opacity = '1', 100);
             initFeed();
             initNotifications();
+            checkPaymentReturn();
         }, 1000);
     }
 
@@ -949,38 +950,40 @@
         btn.disabled = false;
     };
 
-    // Check payment return
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('payment') === 'success') {
-        const itemId = urlParams.get('itemId');
-        const sellerId = urlParams.get('sellerId');
-        // Notify buyer
-        setTimeout(async () => {
-            if (currentUser) {
-                await addDoc(collection(db, 'notifications'), {
-                    userId: currentUser.uid,
-                    type: 'payment_success',
-                    message: 'Paiement validé ! Contactez le vendeur pour la livraison.',
-                    itemId,
-                    read: false,
-                    createdAt: serverTimestamp()
-                });
-                if (sellerId) {
-                    await addDoc(collection(db, 'notifications'), {
-                        userId: sellerId,
-                        type: 'sale',
-                        message: 'Votre article vient d'être acheté !',
-                        itemId,
-                        read: false,
-                        createdAt: serverTimestamp()
-                    });
+    // Check payment return - called after auth ready
+    function checkPaymentReturn() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('payment') === 'success') {
+            const itemId = urlParams.get('itemId');
+            const sellerId = urlParams.get('sellerId');
+            history.replaceState({}, '', '/');
+            setTimeout(async () => {
+                if (currentUser) {
+                    try {
+                        await addDoc(collection(db, 'notifications'), {
+                            userId: currentUser.uid,
+                            type: 'payment_success',
+                            message: 'Paiement validé ! Contactez le vendeur pour la livraison.',
+                            itemId: itemId || '',
+                            read: false,
+                            createdAt: serverTimestamp()
+                        });
+                        if (sellerId) {
+                            await addDoc(collection(db, 'notifications'), {
+                                userId: sellerId,
+                                type: 'sale',
+                                message: "Votre article vient d'être acheté !",
+                                itemId: itemId || '',
+                                read: false,
+                                createdAt: serverTimestamp()
+                            });
+                        }
+                        ratingContext = { targetUserId: sellerId, role: 'buyer', itemId: itemId || '' };
+                        setTimeout(() => openRating('vendeur'), 2000);
+                    } catch(e) { console.error(e); }
                 }
-                // Trigger rating after delay
-                ratingContext = { targetUserId: sellerId, role: 'buyer', itemId };
-                setTimeout(() => openRating('vendeur'), 2000);
-            }
-        }, 1000);
-        history.replaceState({}, '', '/');
+            }, 1500);
+        }
     }
 
     // ─── NOTIFICATIONS ─────────────────────────────────────────────────────────
