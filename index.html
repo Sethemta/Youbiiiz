@@ -600,7 +600,7 @@
         const myItems = allItems.filter(i => i.userId === currentUser.uid);
         document.getElementById('profile-count').innerText = myItems.length;
         const total = myItems.reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0);
-        document.getElementById('profile-total').innerText = total + 'euros';
+        document.getElementById('profile-total').innerText = total + '€';
         const container = document.getElementById('my-listings');
         if (myItems.length === 0) {
             container.innerHTML = '<div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce publiee</div>';
@@ -617,15 +617,15 @@
                 '</div>' +
                 '<div class="flex-1 min-w-0">' +
                     '<h4 class="font-bold text-sm truncate text-white">' + (item.itemName || 'Objet') + '</h4>' +
-                    '<p class="text-cyan-400 font-extrabold text-lg">' + (item.price || 0) + 'euros</p>' +
+                    '<p class="text-cyan-400 font-extrabold text-lg">' + (item.price || 0) + '€</p>' +
                     '<span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">' + (item.category || 'Divers') + '</span>' +
                 '</div>' +
             '</div>' +
             '<div class="flex gap-2">' +
-                '<button onclick="openEdit('' + item.id + '')" class="flex-1 bg-zinc-900 border border-white/10 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
+                '<button onclick="openEdit(\'' + item.id + '\')" class="flex-1 bg-zinc-900 border border-white/10 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
                     '<i class="fa-solid fa-pen"></i> Modifier' +
                 '</button>' +
-                '<button onclick="confirmDelete('' + item.id + '')" class="flex-1 bg-red-500/10 border border-red-500/20 text-red-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
+                '<button onclick="confirmDelete(\'' + item.id + '\')" class="flex-1 bg-red-500/10 border border-red-500/20 text-red-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
                     '<i class="fa-solid fa-trash"></i> Supprimer' +
                 '</button>' +
             '</div>' +
@@ -642,7 +642,7 @@
         document.getElementById('edit-title').value = item.itemName || '';
         document.getElementById('edit-price').value = item.price || 0;
         document.getElementById('edit-desc').value = item.description || '';
-        document.getElementById('edit-condition').value = item.condition || 'Bon etat';
+        document.getElementById('edit-condition').value = item.condition || 'Bon état';
         document.getElementById('edit-category').value = item.category || 'Divers';
         document.getElementById('edit-modal').classList.remove('hidden');
         document.getElementById('edit-modal').classList.add('flex');
