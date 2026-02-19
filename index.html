@@ -77,8 +77,12 @@
             </span>
             <span>Z</span>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
             <div id="user-badge" class="text-[10px] font-mono text-zinc-500">...</div>
+            <button onclick="switchView('notifications')" class="relative w-10 h-10 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center">
+                <i class="fa-solid fa-bell text-sm text-zinc-400"></i>
+                <span id="notif-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-[9px] font-black text-white flex items-center justify-center">0</span>
+            </button>
             <div onclick="switchView('profile')" class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center border border-white/10 cursor-pointer">
                 <i class="fa-solid fa-user text-sm text-white"></i>
             </div>
@@ -121,6 +125,14 @@
 
             <div id="feed" class="grid grid-cols-1 gap-4 pb-10">
                 <div class="py-10 text-center text-zinc-700"><i class="fa-solid fa-circle-notch animate-spin text-2xl"></i></div>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div id="view-notifications" class="px-6 pt-6 max-w-lg mx-auto hidden">
+            <h2 class="font-extrabold text-xl mb-6">Notifications</h2>
+            <div id="notif-list" class="flex flex-col gap-3 pb-32">
+                <div class="py-12 text-center text-zinc-600 text-xs font-bold uppercase">Aucune notification</div>
             </div>
         </div>
 
@@ -318,9 +330,9 @@
                     <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center">
                         <i class="fa-solid fa-user text-sm text-white"></i>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <p id="detail-seller" class="font-bold text-sm text-white"></p>
-                        <p class="text-[10px] text-yellow-400">★★★★★ Vendeur vérifié</p>
+                        <p id="detail-seller-rating" class="text-[10px] text-yellow-400">★★★★★ Nouveau vendeur</p>
                     </div>
                 </div>
             </div>
@@ -451,30 +463,74 @@
 <!-- PAIEMENT MODAL -->
 <div id="payment-modal" class="fixed inset-0 z-[600] bg-black/95 backdrop-blur-sm hidden items-end sm:items-center justify-center p-4">
     <div class="bg-[#0f0f0f] w-full max-w-md p-6 rounded-[2.5rem] border border-white/10 modal-enter shadow-2xl">
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex justify-between items-center mb-6">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-500"><i class="fa-solid fa-shield-halved"></i></div>
-                <span class="font-bold text-sm">Paiement Sécurisé</span>
+                <span class="font-bold text-sm">Paiement Sécurisé · Stripe</span>
             </div>
             <button onclick="closePayment()" class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="flex gap-4 mb-8">
-            <div id="pay-img" class="w-20 h-20 rounded-2xl bg-zinc-800 bg-cover bg-center border border-white/10"></div>
+        <div class="flex gap-4 mb-6">
+            <div id="pay-img" class="w-20 h-20 rounded-2xl bg-zinc-800 bg-cover bg-center border border-white/10 shrink-0"></div>
             <div class="flex-1">
-                <h4 id="pay-title" class="font-bold text-lg leading-tight mb-1">...</h4>
+                <h4 id="pay-title" class="font-bold text-base leading-tight mb-1">...</h4>
                 <p id="pay-price" class="text-cyan-500 font-extrabold text-2xl">0€</p>
+                <p id="pay-shipping-info" class="text-xs text-zinc-500 mt-1"></p>
             </div>
         </div>
-        <button onclick="processPayment()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-5 rounded-2xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all active:scale-95">
-            <i class="fa-brands fa-apple-pay text-xl"></i> Payer & Bloquer
+        <!-- Choix livraison -->
+        <div id="pay-shipping-options" class="mb-6 hidden">
+            <p class="text-[10px] text-zinc-500 uppercase font-bold mb-2">Mode de livraison</p>
+            <div id="pay-shipping-list" class="flex flex-col gap-2"></div>
+        </div>
+        <div class="bg-zinc-900 rounded-2xl p-4 mb-6 border border-white/5">
+            <div class="flex justify-between text-sm mb-2">
+                <span class="text-zinc-400">Article</span>
+                <span id="pay-subtotal" class="font-bold text-white">0€</span>
+            </div>
+            <div class="flex justify-between text-sm mb-3">
+                <span class="text-zinc-400">Livraison</span>
+                <span id="pay-ship-cost" class="font-bold text-white">—</span>
+            </div>
+            <div class="flex justify-between border-t border-white/5 pt-3">
+                <span class="font-bold text-white">Total</span>
+                <span id="pay-total" class="font-extrabold text-cyan-400 text-lg">0€</span>
+            </div>
+        </div>
+        <button id="stripe-pay-btn" onclick="processStripePayment()" class="w-full bg-[#635bff] text-white font-bold py-4 rounded-2xl flex justify-center items-center gap-3 shadow-[0_0_20px_rgba(99,91,255,0.4)] active:scale-95 transition-transform mb-3">
+            <i class="fa-brands fa-stripe text-2xl"></i> Payer avec Stripe
         </button>
+        <p class="text-center text-[10px] text-zinc-600">🔒 Paiement crypté · Remboursement si problème</p>
+    </div>
+</div>
+
+<!-- NOTATION MODAL -->
+<div id="rating-modal" class="fixed inset-0 z-[900] bg-black/95 backdrop-blur-sm hidden items-center justify-center p-6">
+    <div class="bg-[#0f0f0f] w-full max-w-sm p-6 rounded-[2.5rem] border border-white/10 modal-enter text-center">
+        <div class="w-16 h-16 rounded-full bg-yellow-500/10 flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-star text-yellow-400 text-2xl"></i>
+        </div>
+        <h3 class="font-extrabold text-lg mb-1">Laisser une note</h3>
+        <p id="rating-subtitle" class="text-zinc-500 text-xs mb-6">Comment s'est passée cette transaction ?</p>
+        <div class="flex justify-center gap-3 mb-6" id="star-rating">
+            <button onclick="setRating(1)" class="star-btn text-4xl text-zinc-700 transition-all" data-val="1">★</button>
+            <button onclick="setRating(2)" class="star-btn text-4xl text-zinc-700 transition-all" data-val="2">★</button>
+            <button onclick="setRating(3)" class="star-btn text-4xl text-zinc-700 transition-all" data-val="3">★</button>
+            <button onclick="setRating(4)" class="star-btn text-4xl text-zinc-700 transition-all" data-val="4">★</button>
+            <button onclick="setRating(5)" class="star-btn text-4xl text-zinc-700 transition-all" data-val="5">★</button>
+        </div>
+        <textarea id="rating-comment" placeholder="Commentaire (optionnel)..." class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-4 py-3 text-white text-sm outline-none focus:border-cyan-500 resize-none h-20 mb-4"></textarea>
+        <button onclick="submitRating()" class="w-full bg-yellow-500 text-black font-bold py-4 rounded-2xl active:scale-95 transition-transform">
+            Envoyer ma note
+        </button>
+        <button onclick="closeRating()" class="w-full text-zinc-600 text-sm mt-3">Passer</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, query, where, orderBy, getDocs, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, query, where, orderBy, getDocs, deleteDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",
@@ -495,12 +551,19 @@
     let currentItem = null;
     let chatMessages = [];
 
+    // Catch ALL JS errors and show them
+    window.onerror = function(msg, src, line, col, err) {
+        const debug = document.getElementById('debug-console');
+        debug.style.display = 'block';
+        debug.innerText = 'JS ERROR: ' + msg + ' (line ' + line + ')';
+    };
+
     function logError(msg) {
         console.error(msg);
         const debug = document.getElementById('debug-console');
         debug.style.display = 'block';
         debug.innerText = msg;
-        setTimeout(() => debug.style.display = 'none', 5000);
+        setTimeout(() => debug.style.display = 'none', 8000);
     }
 
     // AUTH
@@ -521,6 +584,7 @@
             document.getElementById('app').classList.remove('hidden');
             setTimeout(() => document.getElementById('app').style.opacity = '1', 100);
             initFeed();
+            initNotifications();
         }, 1000);
     }
 
@@ -603,36 +667,37 @@
         document.getElementById('profile-total').innerText = total + '€';
         const container = document.getElementById('my-listings');
         if (myItems.length === 0) {
-            container.innerHTML = '<div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce publiee</div>';
+            container.innerHTML = '<div class="py-8 text-center text-zinc-600 text-xs font-bold uppercase">Aucune annonce</div>';
         } else {
             container.innerHTML = myItems.map(item => myItemCard(item)).join('');
         }
     }
 
     function myItemCard(item) {
-        return '<div class="glass-card rounded-[2rem] p-4 fade-in">' +
-            '<div class="flex gap-4 items-center mb-3">' +
-                '<div class="w-16 h-16 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5">' +
-                    '<img src="' + (item.imageUrl || '') + '" class="w-full h-full object-cover">' +
-                '</div>' +
-                '<div class="flex-1 min-w-0">' +
-                    '<h4 class="font-bold text-sm truncate text-white">' + (item.itemName || 'Objet') + '</h4>' +
-                    '<p class="text-cyan-400 font-extrabold text-lg">' + (item.price || 0) + '€</p>' +
-                    '<span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">' + (item.category || 'Divers') + '</span>' +
-                '</div>' +
-            '</div>' +
-            '<div class="flex gap-2">' +
-                '<button onclick="openEdit(\'' + item.id + '\')" class="flex-1 bg-zinc-900 border border-white/10 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
-                    '<i class="fa-solid fa-pen"></i> Modifier' +
-                '</button>' +
-                '<button onclick="confirmDelete(\'' + item.id + '\')" class="flex-1 bg-red-500/10 border border-red-500/20 text-red-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">' +
-                    '<i class="fa-solid fa-trash"></i> Supprimer' +
-                '</button>' +
-            '</div>' +
-        '</div>';
+        return `
+        <div class="glass-card rounded-[2rem] p-4 fade-in">
+            <div class="flex gap-4 items-center mb-3">
+                <div class="w-16 h-16 rounded-2xl bg-zinc-800 overflow-hidden shrink-0 border border-white/5">
+                    <img src="${item.imageUrl || ''}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h4 class="font-bold text-sm truncate text-white">${item.itemName || 'Objet'}</h4>
+                    <p class="text-cyan-400 font-extrabold text-lg">${item.price || 0}€</p>
+                    <span class="text-[9px] text-zinc-500 font-bold uppercase bg-zinc-900 px-2 py-0.5 rounded border border-white/5">${item.category || 'Divers'}</span>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="openEdit('${item.id}')" class="flex-1 bg-zinc-900 border border-white/10 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                    <i class="fa-solid fa-pen"></i> Modifier
+                </button>
+                <button onclick="confirmDelete('${item.id}')" class="flex-1 bg-red-500/10 border border-red-500/20 text-red-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                    <i class="fa-solid fa-trash"></i> Supprimer
+                </button>
+            </div>
+        </div>`;
     }
 
-    let editingItemId = null;
+        let editingItemId = null;
     let deletingItemId = null;
 
     window.openEdit = (itemId) => {
@@ -724,6 +789,7 @@
         }
         document.getElementById('contact-btn').onclick = () => openChat(item);
         document.getElementById('buy-btn').onclick = () => openPaymentFromItem(item);
+        loadSellerRating(item.userId);
         const modal = document.getElementById('detail-modal');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -793,14 +859,47 @@
         container.scrollTop = container.scrollHeight;
     }
 
-    // PAIEMENT
+    // ─── STRIPE PAIEMENT ──────────────────────────────────────────────────────
+    const STRIPE_PK = "pk_test_51Smby57Xwq5gHJ3CzwOMHsCkP52aG36Ybwl14pIAJAWMZKdkbTackJnSKfLR467QLPoHOU0LEfGAihlMARQ0eUt7000rv2wZAu";
+    let paymentItem = null;
+    let selectedShipping = null;
+
     window.openPaymentFromItem = (item) => {
+        paymentItem = item;
+        selectedShipping = null;
         document.getElementById('pay-img').style.backgroundImage = `url(${item.imageUrl})`;
         document.getElementById('pay-title').innerText = item.itemName;
+        document.getElementById('pay-subtotal').innerText = item.price + '€';
         document.getElementById('pay-price').innerText = item.price + '€';
+        document.getElementById('pay-ship-cost').innerText = '—';
+        document.getElementById('pay-total').innerText = item.price + '€';
+
+        // Shipping options
+        const shipList = document.getElementById('pay-shipping-list');
+        const shipOpts = document.getElementById('pay-shipping-options');
+        if (item.shipping && item.shipping.length > 0) {
+            shipOpts.classList.remove('hidden');
+            shipList.innerHTML = item.shipping.map((s, i) => `
+                <label class="flex items-center gap-3 bg-zinc-900 rounded-2xl p-3 border border-white/5 cursor-pointer">
+                    <input type="radio" name="shipping" value="${i}" onchange="selectShipping(${i})" class="accent-cyan-500">
+                    <span class="text-sm font-bold text-white flex-1">${s.method}</span>
+                    <span class="text-cyan-400 font-bold">${s.price === 0 ? 'Gratuit' : s.price + '€'}</span>
+                </label>`).join('');
+        } else {
+            shipOpts.classList.add('hidden');
+        }
         document.getElementById('payment-modal').classList.remove('hidden');
         document.getElementById('payment-modal').classList.add('flex');
         closeDetail();
+    };
+
+    window.selectShipping = (idx) => {
+        if (!paymentItem || !paymentItem.shipping) return;
+        selectedShipping = paymentItem.shipping[idx];
+        const shipCost = selectedShipping.price;
+        const total = (parseFloat(paymentItem.price) || 0) + shipCost;
+        document.getElementById('pay-ship-cost').innerText = shipCost === 0 ? 'Gratuit' : shipCost + '€';
+        document.getElementById('pay-total').innerText = total + '€';
     };
 
     window.closePayment = () => {
@@ -808,18 +907,221 @@
         document.getElementById('payment-modal').classList.remove('flex');
     };
 
-    window.processPayment = () => {
-        closePayment();
-        setTimeout(() => alert("✅ Paiement validé ! L'objet vous a été réservé."), 100);
+    window.processStripePayment = async () => {
+        if (!paymentItem || !currentUser) return;
+        if (paymentItem.shipping && paymentItem.shipping.length > 0 && !selectedShipping) {
+            logError("Veuillez choisir un mode de livraison");
+            return;
+        }
+        const btn = document.getElementById('stripe-pay-btn');
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin"></i> Redirection...';
+        btn.disabled = true;
+        try {
+            const shipCost = selectedShipping ? selectedShipping.price : 0;
+            const total = (parseFloat(paymentItem.price) || 0) + shipCost;
+            const resp = await fetch('https://createpayment-xjtnixfrra-uc.a.run.app', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount: total,
+                    itemName: paymentItem.itemName,
+                    itemId: paymentItem.id,
+                    buyerId: currentUser.uid,
+                    sellerId: paymentItem.userId,
+                })
+            });
+            const data = await resp.json();
+            if (data.error) { logError("Erreur paiement: " + data.error); return; }
+            // Notify seller
+            await addDoc(collection(db, 'notifications'), {
+                userId: paymentItem.userId,
+                type: 'payment_initiated',
+                message: `Paiement en cours pour "${paymentItem.itemName}"`,
+                itemId: paymentItem.id,
+                read: false,
+                createdAt: serverTimestamp()
+            });
+            window.location.href = data.url;
+        } catch (err) {
+            logError("Erreur: " + err.message);
+        }
+        btn.innerHTML = '<i class="fa-brands fa-stripe text-2xl"></i> Payer avec Stripe';
+        btn.disabled = false;
     };
+
+    // Check payment return
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment') === 'success') {
+        const itemId = urlParams.get('itemId');
+        const sellerId = urlParams.get('sellerId');
+        // Notify buyer
+        setTimeout(async () => {
+            if (currentUser) {
+                await addDoc(collection(db, 'notifications'), {
+                    userId: currentUser.uid,
+                    type: 'payment_success',
+                    message: 'Paiement validé ! Contactez le vendeur pour la livraison.',
+                    itemId,
+                    read: false,
+                    createdAt: serverTimestamp()
+                });
+                if (sellerId) {
+                    await addDoc(collection(db, 'notifications'), {
+                        userId: sellerId,
+                        type: 'sale',
+                        message: 'Votre article vient d'être acheté !',
+                        itemId,
+                        read: false,
+                        createdAt: serverTimestamp()
+                    });
+                }
+                // Trigger rating after delay
+                ratingContext = { targetUserId: sellerId, role: 'buyer', itemId };
+                setTimeout(() => openRating('vendeur'), 2000);
+            }
+        }, 1000);
+        history.replaceState({}, '', '/');
+    }
+
+    // ─── NOTIFICATIONS ─────────────────────────────────────────────────────────
+    function initNotifications() {
+        if (!currentUser) return;
+        const q = query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'));
+        onSnapshot(q, (snapshot) => {
+            const notifs = [];
+            snapshot.forEach(d => notifs.push({ id: d.id, ...d.data() }));
+            const unread = notifs.filter(n => !n.read).length;
+            const badge = document.getElementById('notif-badge');
+            if (unread > 0) {
+                badge.classList.remove('hidden');
+                badge.innerText = unread;
+            } else {
+                badge.classList.add('hidden');
+            }
+            renderNotifications(notifs);
+        });
+    }
+
+    function renderNotifications(notifs) {
+        const container = document.getElementById('notif-list');
+        if (notifs.length === 0) {
+            container.innerHTML = '<div class="py-12 text-center text-zinc-600 text-xs font-bold uppercase">Aucune notification</div>';
+            return;
+        }
+        const icons = { payment_success: '✅', payment_initiated: '💳', sale: '🎉', rating: '⭐' };
+        container.innerHTML = notifs.map(n => `
+            <div onclick="markRead('${n.id}')" class="glass-card rounded-2xl p-4 cursor-pointer ${n.read ? 'opacity-50' : ''} fade-in">
+                <div class="flex gap-3 items-start">
+                    <span class="text-2xl">${icons[n.type] || '🔔'}</span>
+                    <div class="flex-1">
+                        <p class="text-sm font-bold text-white">${n.message}</p>
+                        <p class="text-[10px] text-zinc-500 mt-1">${n.createdAt ? new Date(n.createdAt.seconds * 1000).toLocaleDateString('fr-FR', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : 'Maintenant'}</p>
+                    </div>
+                    ${!n.read ? '<span class="w-2 h-2 bg-cyan-400 rounded-full mt-1 shrink-0"></span>' : ''}
+                </div>
+            </div>`).join('');
+    }
+
+    window.markRead = async (notifId) => {
+        await updateDoc(doc(db, 'notifications', notifId), { read: true });
+    };
+
+    // ─── NOTATION ──────────────────────────────────────────────────────────────
+    let currentRating = 0;
+    let ratingContext = null;
+
+    window.openRating = (role) => {
+        currentRating = 0;
+        document.querySelectorAll('.star-btn').forEach(s => s.style.color = '#3f3f46');
+        document.getElementById('rating-comment').value = '';
+        document.getElementById('rating-subtitle').innerText = role === 'buyer'
+            ? 'Comment s'est comporté l'acheteur ?'
+            : 'Comment était le vendeur ?';
+        document.getElementById('rating-modal').classList.remove('hidden');
+        document.getElementById('rating-modal').classList.add('flex');
+    };
+
+    window.closeRating = () => {
+        document.getElementById('rating-modal').classList.add('hidden');
+        document.getElementById('rating-modal').classList.remove('flex');
+    };
+
+    window.setRating = (val) => {
+        currentRating = val;
+        document.querySelectorAll('.star-btn').forEach(s => {
+            s.style.color = parseInt(s.dataset.val) <= val ? '#facc15' : '#3f3f46';
+            s.style.transform = parseInt(s.dataset.val) <= val ? 'scale(1.2)' : 'scale(1)';
+        });
+    };
+
+    window.submitRating = async () => {
+        if (currentRating === 0) { logError("Choisissez une note !"); return; }
+        if (!ratingContext) return;
+        try {
+            const comment = document.getElementById('rating-comment').value;
+            await addDoc(collection(db, 'ratings'), {
+                targetUserId: ratingContext.targetUserId,
+                fromUserId: currentUser.uid,
+                itemId: ratingContext.itemId,
+                rating: currentRating,
+                comment,
+                createdAt: serverTimestamp()
+            });
+            // Update user average rating
+            await updateUserRating(ratingContext.targetUserId);
+            // Notify rated user
+            await addDoc(collection(db, 'notifications'), {
+                userId: ratingContext.targetUserId,
+                type: 'rating',
+                message: `Vous avez reçu une note de ${currentRating}★ !`,
+                read: false,
+                createdAt: serverTimestamp()
+            });
+            closeRating();
+            logError("⭐ Note envoyée !");
+        } catch (err) {
+            logError("Erreur notation: " + err.message);
+        }
+    };
+
+    async function updateUserRating(userId) {
+        try {
+            const q = query(collection(db, 'ratings'), where('targetUserId', '==', userId));
+            const snap = await getDocs(q);
+            const ratings = [];
+            snap.forEach(d => ratings.push(d.data().rating));
+            if (ratings.length === 0) return;
+            const avg = (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1);
+            await updateDoc(doc(db, 'users', userId), { rating: parseFloat(avg), ratingCount: ratings.length });
+        } catch (e) {}
+    }
+
+    async function loadSellerRating(userId) {
+        try {
+            const userDoc = await getDoc(doc(db, 'users', userId));
+            const el = document.getElementById('detail-seller-rating');
+            if (userDoc.exists() && userDoc.data().rating) {
+                const r = userDoc.data().rating;
+                const count = userDoc.data().ratingCount || 0;
+                const stars = '★'.repeat(Math.round(r)) + '☆'.repeat(5 - Math.round(r));
+                el.innerText = `${stars} ${r}/5 (${count} avis)`;
+            } else {
+                el.innerText = '— Nouveau vendeur';
+            }
+        } catch (e) {}
+    }
 
     // NAVIGATION
     window.switchView = (v) => {
         document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
         document.getElementById('view-' + v)?.classList.remove('hidden');
-        // Nav highlight
         document.getElementById('nav-home').className = 'text-2xl ' + (v === 'home' ? 'text-cyan-400' : 'text-zinc-600');
         document.getElementById('nav-search').className = 'text-2xl ' + (v === 'search' ? 'text-cyan-400' : 'text-zinc-600');
+        // Mark notifications read when opening
+        if (v === 'notifications' && currentUser) {
+            const q = query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), where('read', '==', false));
+            getDocs(q).then(snap => snap.forEach(d => updateDoc(doc(db, 'notifications', d.id), { read: true })));
+        }
     };
 
     // CAMERA
