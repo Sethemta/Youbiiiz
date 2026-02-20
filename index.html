@@ -91,6 +91,17 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .sidebar-nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;border-radius:10px;margin:1px 8px;transition:all .12s}
 .sidebar-nav-item:hover{background:#f1f5f9;color:#0f172a}
 .sidebar-nav-item.active{background:#eff9ff;color:#0ea5e9;font-weight:700}
+/* SIDEBAR ACCORDION */
+.sb-group{margin:1px 8px}
+.sb-group-header{display:flex;align-items:center;gap:10px;padding:9px 8px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;border-radius:10px;transition:all .12s;user-select:none}
+.sb-group-header:hover{background:#f1f5f9;color:#0f172a}
+.sb-group-header .sb-group-label{flex:1}
+.sb-arrow{font-size:9px;transition:transform .2s;color:#cbd5e1}
+.sb-arrow.open{transform:rotate(90deg)}
+.sb-sublist{padding-left:32px}
+.sb-subitem{padding:6px 8px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;border-radius:8px;transition:all .12s;margin-bottom:1px}
+.sb-subitem:hover{background:#f1f5f9;color:#0ea5e9}
+.sb-subitem.active{color:#0ea5e9;font-weight:700}
 .sidebar-nav-item .icon{width:20px;text-align:center;font-size:13px}
 .sidebar-section-title{font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;padding:12px 24px 4px}
 .main-content{flex:1;overflow-y:auto;background:#f4f6f8}
@@ -321,13 +332,129 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
       <p class="sidebar-section-title">Catégories</p>
       <div class="sidebar-nav-item" onclick="filterCatSidebar('all',this)"><span class="icon">✨</span>Tout voir</div>
-      <div class="sidebar-nav-item" onclick="filterCatSidebar('High-Tech',this)"><span class="icon">📱</span>High-Tech</div>
-      <div class="sidebar-nav-item" onclick="filterCatSidebar('Jeux video',this)"><span class="icon">🎮</span>Jeux vidéo</div>
-      <div class="sidebar-nav-item" onclick="filterCatSidebar('Informatique',this)"><span class="icon">💻</span>Informatique</div>
-      <div class="sidebar-nav-item" onclick="filterCatSidebar('Mode',this)"><span class="icon">👕</span>Mode</div>
-      <div class="sidebar-nav-item" onclick="filterCatSidebar('Maison',this)"><span class="icon">🏠</span>Maison</div>
-      <div class="sidebar-nav-item" onclick="filterCatSidebar('Sport',this)"><span class="icon">⚽</span>Sport</div>
-      <div class="sidebar-nav-item" onclick="filterCatSidebar('Divers',this)"><span class="icon">🗃️</span>Divers</div>
+
+      <!-- ÉLECTRONIQUE -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-elec')">
+          <span class="icon">📱</span><span class="sb-group-label">Électronique</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-elec"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-elec">
+          <div class="sb-subitem" onclick="filterCatSidebar('Téléphones & objets connectés',this)">Téléphones & objets connectés</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Accessoires téléphones',this)">Accessoires téléphones</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Ordinateurs',this)">Ordinateurs</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Accessoires informatique',this)">Accessoires informatique</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Tablettes & liseuses',this)">Tablettes & liseuses</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Photo, audio & vidéo',this)">Photo, audio & vidéo</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Consoles',this)">Consoles</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Jeux vidéo',this)">Jeux vidéo</div>
+        </div>
+      </div>
+
+      <!-- MODE -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-mode')">
+          <span class="icon">👗</span><span class="sb-group-label">Mode</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-mode"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-mode">
+          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements',this)">Vêtements</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Chaussures',this)">Chaussures</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Accessoires & Bagagerie',this)">Accessoires & Bagagerie</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Montres & Bijoux',this)">Montres & Bijoux</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements bébé & enfant',this)">Vêtements bébé & enfant</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Équipement bébé',this)">Équipement bébé</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Mobilier enfant',this)">Mobilier enfant</div>
+        </div>
+      </div>
+
+      <!-- MAISON & JARDIN -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-maison')">
+          <span class="icon">🏠</span><span class="sb-group-label">Maison & Jardin</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-maison"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-maison">
+          <div class="sb-subitem" onclick="filterCatSidebar('Ameublement',this)">Ameublement</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Électroménager',this)">Électroménager</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Arts de la table',this)">Arts de la table</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Décoration',this)">Décoration</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Linge de maison',this)">Linge de maison</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Bricolage',this)">Bricolage</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Jardin & Plantes',this)">Jardin & Plantes</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Papeterie & fournitures',this)">Papeterie & fournitures</div>
+        </div>
+      </div>
+
+      <!-- LOISIRS -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-loisirs')">
+          <span class="icon">🎭</span><span class="sb-group-label">Loisirs</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-loisirs"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-loisirs">
+          <div class="sb-subitem" onclick="filterCatSidebar('Livres',this)">Livres</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('DVD - Films',this)">DVD - Films</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('CD - Musique',this)">CD - Musique</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Instruments de musique',this)">Instruments de musique</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Vélos',this)">Vélos</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Équipements vélos',this)">Équipements vélos</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Sports & Hobbies',this)">Sports & Hobbies</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Jeux & Jouets',this)">Jeux & Jouets</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Collection',this)">Collection</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Vins & Gastronomie',this)">Vins & Gastronomie</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Loisirs créatifs',this)">Loisirs créatifs</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Antiquités',this)">Antiquités</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Modélisme',this)">Modélisme</div>
+        </div>
+      </div>
+
+      <!-- VÉHICULES -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-vehicules')">
+          <span class="icon">🚗</span><span class="sb-group-label">Véhicules</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-vehicules"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-vehicules">
+          <div class="sb-subitem" onclick="filterCatSidebar('Voitures',this)">Voitures</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Motos',this)">Motos</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Caravaning',this)">Caravaning</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Utilitaires',this)">Utilitaires</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Nautisme',this)">Nautisme</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Équipement auto',this)">Équipement auto</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Équipement moto',this)">Équipement moto</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Équipement caravaning',this)">Équipement caravaning</div>
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-services')">
+          <span class="icon">🛠️</span><span class="sb-group-label">Services</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-services"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-services">
+          <div class="sb-subitem" onclick="filterCatSidebar('Cours particuliers',this)">Cours particuliers</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Prestations de services',this)">Prestations de services</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Services événementiels',this)">Services événementiels</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Service à la personne',this)">Service à la personne</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Baby-sitting',this)">Baby-sitting</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Déménagement',this)">Déménagement</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Jardinage & Bricolage',this)">Jardinage & Bricolage</div>
+        </div>
+      </div>
+
+      <!-- MATÉRIEL PRO -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-pro')">
+          <span class="icon">🏭</span><span class="sb-group-label">Matériel Pro</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-pro"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-pro">
+          <div class="sb-subitem" onclick="filterCatSidebar('Matériel agricole',this)">Matériel agricole</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Tracteurs',this)">Tracteurs</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Poids lourds',this)">Poids lourds</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('BTP - Chantier gros-oeuvre',this)">BTP - Chantier</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Manutention - levage',this)">Manutention - levage</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Équipements industriels',this)">Équipements industriels</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Restauration - Hôtellerie',this)">Restauration - Hôtellerie</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Fournitures de bureau',this)">Fournitures de bureau</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Matériel médical',this)">Matériel médical</div>
+        </div>
+      </div>
 
       <!-- Ville filter -->
       <p class="sidebar-section-title">Localisation</p>
@@ -366,12 +493,18 @@ header .i-wrapper{gap:2px;margin:0 2px}
       <!-- Mobile only: category pills -->
       <div class="cat-pills md:hidden">
         <button class="cat-pill on" onclick="filterCat('all',this)">Tout</button>
-        <button class="cat-pill" onclick="filterCat('High-Tech',this)">📱 High-Tech</button>
-        <button class="cat-pill" onclick="filterCat('Jeux video',this)">🎮 Jeux vidéo</button>
-        <button class="cat-pill" onclick="filterCat('Informatique',this)">💻 Informatique</button>
-        <button class="cat-pill" onclick="filterCat('Mode',this)">👕 Mode</button>
-        <button class="cat-pill" onclick="filterCat('Maison',this)">🏠 Maison</button>
-        <button class="cat-pill" onclick="filterCat('Sport',this)">⚽ Sport</button>
+        <button class="cat-pill" onclick="filterCat('Téléphones',this)">📱 Téléphones</button>
+        <button class="cat-pill" onclick="filterCat('Ordinateurs',this)">💻 Ordinateurs</button>
+        <button class="cat-pill" onclick="filterCat('Consoles',this)">🎮 Consoles</button>
+        <button class="cat-pill" onclick="filterCat('Jeux vidéo',this)">🕹 Jeux vidéo</button>
+        <button class="cat-pill" onclick="filterCat('Vêtements',this)">👕 Vêtements</button>
+        <button class="cat-pill" onclick="filterCat('Chaussures',this)">👟 Chaussures</button>
+        <button class="cat-pill" onclick="filterCat('Ameublement',this)">🛋 Ameublement</button>
+        <button class="cat-pill" onclick="filterCat('Électroménager',this)">🔌 Électroménager</button>
+        <button class="cat-pill" onclick="filterCat('Vélos',this)">🚲 Vélos</button>
+        <button class="cat-pill" onclick="filterCat('Livres',this)">📚 Livres</button>
+        <button class="cat-pill" onclick="filterCat('Voitures',this)">🚗 Voitures</button>
+        <button class="cat-pill" onclick="filterCat('Motos',this)">🏍 Motos</button>
       </div>
 
       <!-- Section title -->
@@ -569,10 +702,85 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <p class="text-[9px] text-slate-400 uppercase font-bold mb-1">Prix</p>
             <p id="ai-price" class="text-sm font-extrabold text-sky-500">-</p>
           </div>
-          <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30">
-            <p class="text-[9px] text-slate-400 uppercase font-bold mb-1">Categorie</p>
-            <p id="ai-cat" class="text-xs font-extrabold text-white">-</p>
-          </div>
+      <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30">
+          <p class="text-[9px] text-slate-400 uppercase font-bold mb-1.5">Catégorie</p>
+          <select id="ai-cat-select" class="inp" style="cursor:pointer;font-size:12px">
+            <optgroup label="📱 Électronique">
+              <option>Téléphones & objets connectés</option>
+              <option>Accessoires téléphones</option>
+              <option>Ordinateurs</option>
+              <option>Accessoires informatique</option>
+              <option>Tablettes & liseuses</option>
+              <option>Photo, audio & vidéo</option>
+              <option>Consoles</option>
+              <option>Jeux vidéo</option>
+            </optgroup>
+            <optgroup label="👗 Mode">
+              <option>Vêtements</option>
+              <option>Chaussures</option>
+              <option>Accessoires & Bagagerie</option>
+              <option>Montres & Bijoux</option>
+              <option>Vêtements bébé & enfant</option>
+              <option>Équipement bébé</option>
+              <option>Mobilier enfant</option>
+            </optgroup>
+            <optgroup label="🏠 Maison & Jardin">
+              <option>Ameublement</option>
+              <option>Électroménager</option>
+              <option>Arts de la table</option>
+              <option>Décoration</option>
+              <option>Linge de maison</option>
+              <option>Bricolage</option>
+              <option>Jardin & Plantes</option>
+              <option>Papeterie & fournitures</option>
+            </optgroup>
+            <optgroup label="🎭 Loisirs">
+              <option>Livres</option>
+              <option>DVD - Films</option>
+              <option>CD - Musique</option>
+              <option>Instruments de musique</option>
+              <option>Vélos</option>
+              <option>Équipements vélos</option>
+              <option>Sports & Hobbies</option>
+              <option>Jeux & Jouets</option>
+              <option>Collection</option>
+              <option>Vins & Gastronomie</option>
+              <option>Loisirs créatifs</option>
+              <option>Antiquités</option>
+              <option>Modélisme</option>
+            </optgroup>
+            <optgroup label="🚗 Véhicules">
+              <option>Voitures</option>
+              <option>Motos</option>
+              <option>Caravaning</option>
+              <option>Utilitaires</option>
+              <option>Nautisme</option>
+              <option>Équipement auto</option>
+              <option>Équipement moto</option>
+              <option>Équipement caravaning</option>
+            </optgroup>
+            <optgroup label="🛠️ Services">
+              <option>Cours particuliers</option>
+              <option>Prestations de services</option>
+              <option>Services événementiels</option>
+              <option>Service à la personne</option>
+              <option>Baby-sitting</option>
+              <option>Déménagement</option>
+              <option>Jardinage & Bricolage</option>
+            </optgroup>
+            <optgroup label="🏭 Matériel Pro">
+              <option>Matériel agricole</option>
+              <option>Tracteurs</option>
+              <option>Poids lourds</option>
+              <option>BTP - Chantier gros-oeuvre</option>
+              <option>Manutention - levage</option>
+              <option>Équipements industriels</option>
+              <option>Restauration - Hôtellerie</option>
+              <option>Fournitures de bureau</option>
+              <option>Matériel médical</option>
+            </optgroup>
+          </select>
+        </div>
           <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30">
             <p class="text-[9px] text-slate-400 uppercase font-bold mb-1">Etat</p>
             <p id="ai-cond" class="text-xs font-extrabold text-green-400">-</p>
@@ -797,10 +1005,82 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <option>Neuf</option><option>Tres bon etat</option><option>Bon etat</option><option>Etat correct</option>
           </select></div>
       </div>
-      <div class="mb-3"><p class="text-[9px] text-slate-400 uppercase font-bold mb-1.5">Categorie</p>
-        <select id="edit-cat" class="inp" style="cursor:pointer">
-          <option>High-Tech</option><option>Jeux video</option><option>Informatique</option>
-          <option>Mode</option><option>Maison</option><option>Sport</option><option>Divers</option>
+      <div class="mb-3"><p class="text-[9px] text-slate-400 uppercase font-bold mb-1.5">Catégorie</p>
+        <select id="edit-cat" class="inp" style="cursor:pointer;font-size:12px">
+          <optgroup label="📱 Électronique">
+            <option>Téléphones & objets connectés</option>
+            <option>Accessoires téléphones</option>
+            <option>Ordinateurs</option>
+            <option>Accessoires informatique</option>
+            <option>Tablettes & liseuses</option>
+            <option>Photo, audio & vidéo</option>
+            <option>Consoles</option>
+            <option>Jeux vidéo</option>
+          </optgroup>
+          <optgroup label="👗 Mode">
+            <option>Vêtements</option>
+            <option>Chaussures</option>
+            <option>Accessoires & Bagagerie</option>
+            <option>Montres & Bijoux</option>
+            <option>Vêtements bébé & enfant</option>
+            <option>Équipement bébé</option>
+            <option>Mobilier enfant</option>
+          </optgroup>
+          <optgroup label="🏠 Maison & Jardin">
+            <option>Ameublement</option>
+            <option>Électroménager</option>
+            <option>Arts de la table</option>
+            <option>Décoration</option>
+            <option>Linge de maison</option>
+            <option>Bricolage</option>
+            <option>Jardin & Plantes</option>
+            <option>Papeterie & fournitures</option>
+          </optgroup>
+          <optgroup label="🎭 Loisirs">
+            <option>Livres</option>
+            <option>DVD - Films</option>
+            <option>CD - Musique</option>
+            <option>Instruments de musique</option>
+            <option>Vélos</option>
+            <option>Équipements vélos</option>
+            <option>Sports & Hobbies</option>
+            <option>Jeux & Jouets</option>
+            <option>Collection</option>
+            <option>Vins & Gastronomie</option>
+            <option>Loisirs créatifs</option>
+            <option>Antiquités</option>
+            <option>Modélisme</option>
+          </optgroup>
+          <optgroup label="🚗 Véhicules">
+            <option>Voitures</option>
+            <option>Motos</option>
+            <option>Caravaning</option>
+            <option>Utilitaires</option>
+            <option>Nautisme</option>
+            <option>Équipement auto</option>
+            <option>Équipement moto</option>
+            <option>Équipement caravaning</option>
+          </optgroup>
+          <optgroup label="🛠️ Services">
+            <option>Cours particuliers</option>
+            <option>Prestations de services</option>
+            <option>Services événementiels</option>
+            <option>Service à la personne</option>
+            <option>Baby-sitting</option>
+            <option>Déménagement</option>
+            <option>Jardinage & Bricolage</option>
+          </optgroup>
+          <optgroup label="🏭 Matériel Pro">
+            <option>Matériel agricole</option>
+            <option>Tracteurs</option>
+            <option>Poids lourds</option>
+            <option>BTP - Chantier gros-oeuvre</option>
+            <option>Manutention - levage</option>
+            <option>Équipements industriels</option>
+            <option>Restauration - Hôtellerie</option>
+            <option>Fournitures de bureau</option>
+            <option>Matériel médical</option>
+          </optgroup>
         </select></div>
       <div class="mb-4"><p class="text-[9px] text-slate-400 uppercase font-bold mb-1.5">Description</p>
         <textarea id="edit-desc" rows="3" class="inp resize-none"></textarea></div>
@@ -1035,14 +1315,23 @@ window.filterCat=function(cat,btn){
   if(t) t.innerText=titles[cat]||cat;
 };
 
+window.toggleGroup=function(id){
+  var list=document.getElementById(id);
+  var arrow=document.getElementById("arrow-"+id);
+  if(!list) return;
+  var isHidden=list.classList.contains("hidden");
+  list.classList.toggle("hidden");
+  if(arrow) arrow.classList.toggle("open",isHidden);
+};
+
 window.filterCatSidebar=function(cat,el){
   activeCat=cat;
-  document.querySelectorAll(".sidebar-nav-item").forEach(function(b){if(b.getAttribute("onclick")&&b.getAttribute("onclick").indexOf("filterCat")>=0)b.classList.remove("active");});
+  // Clear all active states
+  document.querySelectorAll(".sidebar-nav-item,.sb-subitem").forEach(function(b){b.classList.remove("active");});
   el.classList.add("active");
   applyFilters();
-  var titles={"all":"Pour toi","High-Tech":"High-Tech","Jeux video":"Jeux vidéo","Informatique":"Informatique","Mode":"Mode","Maison":"Maison","Sport":"Sport","Divers":"Divers"};
   var t=document.getElementById("feed-section-title");
-  if(t) t.innerText=titles[cat]||cat;
+  if(t) t.innerText=cat==="all"?"Pour toi":cat;
   switchView("home");
 };
 
@@ -1216,8 +1505,14 @@ function showResult(d,img){
   document.getElementById("scan-line").classList.add("hidden");
   document.getElementById("res-thumb").src=img;
   document.getElementById("ai-name").value=d.title||"";
-  document.getElementById("ai-price").innerText=(d.price||0)+"euro";
-  document.getElementById("ai-cat").innerText=d.category||"";
+  document.getElementById("ai-price").innerText=(d.price||0)+"€";
+  // Set the category select - find closest match
+  var catSel=document.getElementById("ai-cat-select");
+  if(catSel&&d.category){
+    var opts=Array.from(catSel.options);
+    var match=opts.find(function(o){return o.value.toLowerCase().indexOf((d.category||"").toLowerCase())>=0||(d.category||"").toLowerCase().indexOf(o.value.toLowerCase())>=0;});
+    if(match) catSel.value=match.value;
+  }
   document.getElementById("ai-desc").value=d.description||"";
   document.getElementById("ai-cond").innerText=d.condition||"";
   document.getElementById("ai-brand").innerText=d.brand||"-";
@@ -1248,7 +1543,7 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
       userId:me.uid,
       itemName:document.getElementById("ai-name").value,
       price:scanData.price,
-      category:scanData.category,
+      category:document.getElementById("ai-cat-select").value||scanData.category,
       condition:scanData.condition,
       description:document.getElementById("ai-desc").value,
       brand:scanData.brand,
