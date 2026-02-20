@@ -350,19 +350,36 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
 
-      <!-- MODE -->
+      <!-- MODE (adulte uniquement) -->
       <div class="sb-group">
         <div class="sb-group-header" onclick="toggleGroup('g-mode')">
           <span class="icon">👗</span><span class="sb-group-label">Mode</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-mode"></i>
         </div>
         <div class="sb-sublist hidden" id="g-mode">
-          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements',this)">Vêtements</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('Chaussures',this)">Chaussures</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements homme',this)">Vêtements homme</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements femme',this)">Vêtements femme</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Chaussures homme',this)">Chaussures homme</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Chaussures femme',this)">Chaussures femme</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Accessoires & Bagagerie',this)">Accessoires & Bagagerie</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Montres & Bijoux',this)">Montres & Bijoux</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements bébé & enfant',this)">Vêtements bébé & enfant</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Lunettes',this)">Lunettes</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Beauté & Bien-être',this)">Beauté & Bien-être</div>
+        </div>
+      </div>
+
+      <!-- FAMILLE / ENFANTS -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-famille')">
+          <span class="icon">👶</span><span class="sb-group-label">Famille</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-famille"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-famille">
+          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements bébé',this)">Vêtements bébé (0–2 ans)</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Vêtements enfant',this)">Vêtements enfant (2–14 ans)</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Chaussures enfant',this)">Chaussures enfant</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Équipement bébé',this)">Équipement bébé</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Mobilier enfant',this)">Mobilier enfant</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Jeux & Jouets',this)">Jeux & Jouets</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Puériculture',this)">Puériculture</div>
         </div>
       </div>
 
@@ -378,6 +395,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <div class="sb-subitem" onclick="filterCatSidebar('Décoration',this)">Décoration</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Linge de maison',this)">Linge de maison</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Bricolage',this)">Bricolage</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Outillage',this)">Outillage</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Jardin & Plantes',this)">Jardin & Plantes</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Papeterie & fournitures',this)">Papeterie & fournitures</div>
         </div>
@@ -395,13 +413,32 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <div class="sb-subitem" onclick="filterCatSidebar('Instruments de musique',this)">Instruments de musique</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Vélos',this)">Vélos</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Équipements vélos',this)">Équipements vélos</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('Sports & Hobbies',this)">Sports & Hobbies</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('Jeux & Jouets',this)">Jeux & Jouets</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Sport & Hobbies',this)">Sport & Hobbies</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Chasse & Pêche',this)">Chasse & Pêche</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Collection',this)">Collection</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Vins & Gastronomie',this)">Vins & Gastronomie</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Loisirs créatifs',this)">Loisirs créatifs</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Antiquités',this)">Antiquités</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Modélisme',this)">Modélisme</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Camping & Plein air',this)">Camping & Plein air</div>
+        </div>
+      </div>
+
+      <!-- ANIMAUX -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-animaux')">
+          <span class="icon">🐾</span><span class="sb-group-label">Animaux</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-animaux"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-animaux">
+          <div class="sb-subitem" onclick="filterCatSidebar('Chiens',this)">Chiens</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Chats',this)">Chats</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Chevaux & Équidés',this)">Chevaux & Équidés</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Oiseaux',this)">Oiseaux</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Rongeurs & Lapins',this)">Rongeurs & Lapins</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Reptiles & Amphibiens',this)">Reptiles & Amphibiens</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Poissons',this)">Poissons</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Accessoires animaux',this)">Accessoires animaux</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Alimentation animaux',this)">Alimentation animaux</div>
         </div>
       </div>
 
@@ -413,12 +450,29 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div class="sb-sublist hidden" id="g-vehicules">
           <div class="sb-subitem" onclick="filterCatSidebar('Voitures',this)">Voitures</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Motos',this)">Motos</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('Caravaning',this)">Caravaning</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Scooters & Vélos électriques',this)">Scooters & Vélos élec.</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Utilitaires',this)">Utilitaires</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Caravaning',this)">Caravaning</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Nautisme',this)">Nautisme</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Équipement auto',this)">Équipement auto</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Équipement moto',this)">Équipement moto</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Équipement caravaning',this)">Équipement caravaning</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Pièces détachées auto',this)">Pièces détachées auto</div>
+        </div>
+      </div>
+
+      <!-- IMMOBILIER -->
+      <div class="sb-group">
+        <div class="sb-group-header" onclick="toggleGroup('g-immo')">
+          <span class="icon">🏢</span><span class="sb-group-label">Immobilier</span><i class="fa-solid fa-chevron-right sb-arrow" id="arrow-g-immo"></i>
+        </div>
+        <div class="sb-sublist hidden" id="g-immo">
+          <div class="sb-subitem" onclick="filterCatSidebar('Ventes immobilières',this)">Ventes immobilières</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Locations',this)">Locations</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Colocations',this)">Colocations</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Bureaux & Commerces',this)">Bureaux & Commerces</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Terrains & Propriétés',this)">Terrains & Propriétés</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Locations de vacances',this)">Locations de vacances</div>
         </div>
       </div>
 
@@ -429,12 +483,15 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
         <div class="sb-sublist hidden" id="g-services">
           <div class="sb-subitem" onclick="filterCatSidebar('Cours particuliers',this)">Cours particuliers</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Formation professionnelle',this)">Formation professionnelle</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Covoiturage',this)">Covoiturage</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Prestations de services',this)">Prestations de services</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Services événementiels',this)">Services événementiels</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Service à la personne',this)">Service à la personne</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Baby-sitting',this)">Baby-sitting</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Déménagement',this)">Déménagement</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('Jardinage & Bricolage',this)">Jardinage & Bricolage</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Jardinage',this)">Jardinage</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Bricolage & Réparation',this)">Bricolage & Réparation</div>
         </div>
       </div>
 
@@ -447,12 +504,13 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <div class="sb-subitem" onclick="filterCatSidebar('Matériel agricole',this)">Matériel agricole</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Tracteurs',this)">Tracteurs</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Poids lourds',this)">Poids lourds</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('BTP - Chantier gros-oeuvre',this)">BTP - Chantier</div>
-          <div class="sb-subitem" onclick="filterCatSidebar('Manutention - levage',this)">Manutention - levage</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('BTP - Chantier',this)">BTP - Chantier</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Manutention - Levage',this)">Manutention - Levage</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Équipements industriels',this)">Équipements industriels</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Restauration - Hôtellerie',this)">Restauration - Hôtellerie</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Fournitures de bureau',this)">Fournitures de bureau</div>
           <div class="sb-subitem" onclick="filterCatSidebar('Matériel médical',this)">Matériel médical</div>
+          <div class="sb-subitem" onclick="filterCatSidebar('Équipements commerces',this)">Équipements commerces</div>
         </div>
       </div>
 
@@ -497,14 +555,22 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <button class="cat-pill" onclick="filterCat('Ordinateurs',this)">💻 Ordinateurs</button>
         <button class="cat-pill" onclick="filterCat('Consoles',this)">🎮 Consoles</button>
         <button class="cat-pill" onclick="filterCat('Jeux vidéo',this)">🕹 Jeux vidéo</button>
-        <button class="cat-pill" onclick="filterCat('Vêtements',this)">👕 Vêtements</button>
+        <button class="cat-pill" onclick="filterCat('Vêtements',this)">👗 Vêtements</button>
         <button class="cat-pill" onclick="filterCat('Chaussures',this)">👟 Chaussures</button>
+        <button class="cat-pill" onclick="filterCat('Montres',this)">⌚ Montres & Bijoux</button>
         <button class="cat-pill" onclick="filterCat('Ameublement',this)">🛋 Ameublement</button>
         <button class="cat-pill" onclick="filterCat('Électroménager',this)">🔌 Électroménager</button>
+        <button class="cat-pill" onclick="filterCat('Bricolage',this)">🔧 Bricolage</button>
+        <button class="cat-pill" onclick="filterCat('Jardin',this)">🌿 Jardin</button>
         <button class="cat-pill" onclick="filterCat('Vélos',this)">🚲 Vélos</button>
+        <button class="cat-pill" onclick="filterCat('Sport',this)">⚽ Sport</button>
         <button class="cat-pill" onclick="filterCat('Livres',this)">📚 Livres</button>
+        <button class="cat-pill" onclick="filterCat('Chiens',this)">🐶 Chiens</button>
+        <button class="cat-pill" onclick="filterCat('Chats',this)">🐱 Chats</button>
         <button class="cat-pill" onclick="filterCat('Voitures',this)">🚗 Voitures</button>
         <button class="cat-pill" onclick="filterCat('Motos',this)">🏍 Motos</button>
+        <button class="cat-pill" onclick="filterCat('Jeux & Jouets',this)">🧸 Jouets</button>
+        <button class="cat-pill" onclick="filterCat('Équipement bébé',this)">👶 Bébé</button>
       </div>
 
       <!-- Section title -->
@@ -716,13 +782,23 @@ header .i-wrapper{gap:2px;margin:0 2px}
               <option>Jeux vidéo</option>
             </optgroup>
             <optgroup label="👗 Mode">
-              <option>Vêtements</option>
-              <option>Chaussures</option>
+              <option>Vêtements homme</option>
+              <option>Vêtements femme</option>
+              <option>Chaussures homme</option>
+              <option>Chaussures femme</option>
               <option>Accessoires & Bagagerie</option>
               <option>Montres & Bijoux</option>
-              <option>Vêtements bébé & enfant</option>
+              <option>Lunettes</option>
+              <option>Beauté & Bien-être</option>
+            </optgroup>
+            <optgroup label="👶 Famille">
+              <option>Vêtements bébé</option>
+              <option>Vêtements enfant</option>
+              <option>Chaussures enfant</option>
               <option>Équipement bébé</option>
               <option>Mobilier enfant</option>
+              <option>Jeux & Jouets</option>
+              <option>Puériculture</option>
             </optgroup>
             <optgroup label="🏠 Maison & Jardin">
               <option>Ameublement</option>
@@ -731,6 +807,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
               <option>Décoration</option>
               <option>Linge de maison</option>
               <option>Bricolage</option>
+              <option>Outillage</option>
               <option>Jardin & Plantes</option>
               <option>Papeterie & fournitures</option>
             </optgroup>
@@ -741,43 +818,69 @@ header .i-wrapper{gap:2px;margin:0 2px}
               <option>Instruments de musique</option>
               <option>Vélos</option>
               <option>Équipements vélos</option>
-              <option>Sports & Hobbies</option>
-              <option>Jeux & Jouets</option>
+              <option>Sport & Hobbies</option>
+              <option>Chasse & Pêche</option>
               <option>Collection</option>
               <option>Vins & Gastronomie</option>
               <option>Loisirs créatifs</option>
               <option>Antiquités</option>
               <option>Modélisme</option>
+              <option>Camping & Plein air</option>
+            </optgroup>
+            <optgroup label="🐾 Animaux">
+              <option>Chiens</option>
+              <option>Chats</option>
+              <option>Chevaux & Équidés</option>
+              <option>Oiseaux</option>
+              <option>Rongeurs & Lapins</option>
+              <option>Reptiles & Amphibiens</option>
+              <option>Poissons</option>
+              <option>Accessoires animaux</option>
+              <option>Alimentation animaux</option>
             </optgroup>
             <optgroup label="🚗 Véhicules">
               <option>Voitures</option>
               <option>Motos</option>
-              <option>Caravaning</option>
+              <option>Scooters & Vélos électriques</option>
               <option>Utilitaires</option>
+              <option>Caravaning</option>
               <option>Nautisme</option>
               <option>Équipement auto</option>
               <option>Équipement moto</option>
               <option>Équipement caravaning</option>
+              <option>Pièces détachées auto</option>
+            </optgroup>
+            <optgroup label="🏢 Immobilier">
+              <option>Ventes immobilières</option>
+              <option>Locations</option>
+              <option>Colocations</option>
+              <option>Bureaux & Commerces</option>
+              <option>Terrains & Propriétés</option>
+              <option>Locations de vacances</option>
             </optgroup>
             <optgroup label="🛠️ Services">
               <option>Cours particuliers</option>
+              <option>Formation professionnelle</option>
+              <option>Covoiturage</option>
               <option>Prestations de services</option>
               <option>Services événementiels</option>
               <option>Service à la personne</option>
               <option>Baby-sitting</option>
               <option>Déménagement</option>
-              <option>Jardinage & Bricolage</option>
+              <option>Jardinage</option>
+              <option>Bricolage & Réparation</option>
             </optgroup>
             <optgroup label="🏭 Matériel Pro">
               <option>Matériel agricole</option>
               <option>Tracteurs</option>
               <option>Poids lourds</option>
-              <option>BTP - Chantier gros-oeuvre</option>
-              <option>Manutention - levage</option>
+              <option>BTP - Chantier</option>
+              <option>Manutention - Levage</option>
               <option>Équipements industriels</option>
               <option>Restauration - Hôtellerie</option>
               <option>Fournitures de bureau</option>
               <option>Matériel médical</option>
+              <option>Équipements commerces</option>
             </optgroup>
           </select>
         </div>
@@ -1018,13 +1121,23 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <option>Jeux vidéo</option>
           </optgroup>
           <optgroup label="👗 Mode">
-            <option>Vêtements</option>
-            <option>Chaussures</option>
+            <option>Vêtements homme</option>
+            <option>Vêtements femme</option>
+            <option>Chaussures homme</option>
+            <option>Chaussures femme</option>
             <option>Accessoires & Bagagerie</option>
             <option>Montres & Bijoux</option>
-            <option>Vêtements bébé & enfant</option>
+            <option>Lunettes</option>
+            <option>Beauté & Bien-être</option>
+          </optgroup>
+          <optgroup label="👶 Famille">
+            <option>Vêtements bébé</option>
+            <option>Vêtements enfant</option>
+            <option>Chaussures enfant</option>
             <option>Équipement bébé</option>
             <option>Mobilier enfant</option>
+            <option>Jeux & Jouets</option>
+            <option>Puériculture</option>
           </optgroup>
           <optgroup label="🏠 Maison & Jardin">
             <option>Ameublement</option>
@@ -1033,6 +1146,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <option>Décoration</option>
             <option>Linge de maison</option>
             <option>Bricolage</option>
+            <option>Outillage</option>
             <option>Jardin & Plantes</option>
             <option>Papeterie & fournitures</option>
           </optgroup>
@@ -1043,43 +1157,69 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <option>Instruments de musique</option>
             <option>Vélos</option>
             <option>Équipements vélos</option>
-            <option>Sports & Hobbies</option>
-            <option>Jeux & Jouets</option>
+            <option>Sport & Hobbies</option>
+            <option>Chasse & Pêche</option>
             <option>Collection</option>
             <option>Vins & Gastronomie</option>
             <option>Loisirs créatifs</option>
             <option>Antiquités</option>
             <option>Modélisme</option>
+            <option>Camping & Plein air</option>
+          </optgroup>
+          <optgroup label="🐾 Animaux">
+            <option>Chiens</option>
+            <option>Chats</option>
+            <option>Chevaux & Équidés</option>
+            <option>Oiseaux</option>
+            <option>Rongeurs & Lapins</option>
+            <option>Reptiles & Amphibiens</option>
+            <option>Poissons</option>
+            <option>Accessoires animaux</option>
+            <option>Alimentation animaux</option>
           </optgroup>
           <optgroup label="🚗 Véhicules">
             <option>Voitures</option>
             <option>Motos</option>
-            <option>Caravaning</option>
+            <option>Scooters & Vélos électriques</option>
             <option>Utilitaires</option>
+            <option>Caravaning</option>
             <option>Nautisme</option>
             <option>Équipement auto</option>
             <option>Équipement moto</option>
             <option>Équipement caravaning</option>
+            <option>Pièces détachées auto</option>
+          </optgroup>
+          <optgroup label="🏢 Immobilier">
+            <option>Ventes immobilières</option>
+            <option>Locations</option>
+            <option>Colocations</option>
+            <option>Bureaux & Commerces</option>
+            <option>Terrains & Propriétés</option>
+            <option>Locations de vacances</option>
           </optgroup>
           <optgroup label="🛠️ Services">
             <option>Cours particuliers</option>
+            <option>Formation professionnelle</option>
+            <option>Covoiturage</option>
             <option>Prestations de services</option>
             <option>Services événementiels</option>
             <option>Service à la personne</option>
             <option>Baby-sitting</option>
             <option>Déménagement</option>
-            <option>Jardinage & Bricolage</option>
+            <option>Jardinage</option>
+            <option>Bricolage & Réparation</option>
           </optgroup>
           <optgroup label="🏭 Matériel Pro">
             <option>Matériel agricole</option>
             <option>Tracteurs</option>
             <option>Poids lourds</option>
-            <option>BTP - Chantier gros-oeuvre</option>
-            <option>Manutention - levage</option>
+            <option>BTP - Chantier</option>
+            <option>Manutention - Levage</option>
             <option>Équipements industriels</option>
             <option>Restauration - Hôtellerie</option>
             <option>Fournitures de bureau</option>
             <option>Matériel médical</option>
+            <option>Équipements commerces</option>
           </optgroup>
         </select></div>
       <div class="mb-4"><p class="text-[9px] text-slate-400 uppercase font-bold mb-1.5">Description</p>
