@@ -56,6 +56,14 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .bme{background:#22d3ee;color:#000;border-radius:18px 18px 4px 18px}
 .bthem{background:#1e293b;border:1px solid rgba(148,163,184,.12);border-radius:18px 18px 18px 4px}
 #dbg{display:none;position:fixed;top:12px;left:50%;transform:translateX(-50%);background:#ef4444;color:#fff;padding:7px 18px;border-radius:99px;font-size:11px;font-weight:700;z-index:9999;max-width:90%;text-align:center}
+@keyframes dotBounce{0%,100%{transform:translateY(0);animation-timing-function:cubic-bezier(.8,0,1,1)}50%{transform:translateY(-6px);animation-timing-function:cubic-bezier(0,0,.2,1)}}
+.yb-marker{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .15s}
+.yb-marker:hover{transform:scale(1.2)}
+.yb-marker:hover .yb-dot{animation:dotBounce .7s infinite}
+.yb-stem{width:5px;height:18px;background:#22d3ee;border-radius:2px;box-shadow:0 0 8px rgba(34,211,238,.6)}
+.yb-dot{width:5px;height:5px;background:#22d3ee;border-radius:2px;margin-bottom:2px;box-shadow:0 0 8px rgba(34,211,238,.6)}
+.yb-price{background:#0f172a;color:#22d3ee;font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px;border:1px solid rgba(34,211,238,.4);white-space:nowrap;margin-top:3px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.yb-pin{display:flex;flex-direction:column;align-items:center}
 </style>
 </head>
 <body>
@@ -1257,8 +1265,9 @@ function addItemMarker(item,lat,lng){
   }
   var icon=L.divIcon({
     className:"",
-    html:'<div style="background:#22d3ee;color:#000;font-size:11px;font-weight:900;padding:4px 10px;border-radius:99px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.4);cursor:pointer">'+(item.price||0)+"e</div>",
-    iconAnchor:[20,12]
+    html:'<div class="yb-marker"><div class="yb-pin"><div class="yb-dot"></div><div class="yb-stem"></div></div><div class="yb-price">'+(item.price||0)+"e</div></div>",
+    iconSize:[40,44],
+    iconAnchor:[20,26]
   });
   var marker=L.marker([lat,lng],{icon:icon});
   marker.on("click",function(){
