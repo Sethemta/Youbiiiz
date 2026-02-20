@@ -296,8 +296,17 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           Continuer avec Google
         </button>
-        <div style="text-align:center">
+        <div style="text-align:center;margin-top:4px">
           <button onclick="doAnon()" style="background:none;border:none;font-size:11px;color:#94a3b8;cursor:pointer;font-family:inherit;text-decoration:underline">Continuer sans compte</button>
+        </div>
+        <!-- DEMO MODE - bouton principal de secours -->
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #f1f5f9">
+          <button onclick="enterDemoMode()" style="width:100%;background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;font-size:13px;font-weight:700;padding:12px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            <i class="fa-solid fa-play" style="font-size:11px;color:#0ea5e9"></i>
+            Accéder en mode démo
+            <span style="background:#0ea5e9;color:#000;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:2px">INSTANT</span>
+          </button>
+          <p style="font-size:10px;color:#94a3b8;text-align:center;margin-top:6px">Sans inscription · Données de démonstration · Toutes les fonctionnalités</p>
         </div>
       </div>
 
@@ -1791,10 +1800,96 @@ window.doGoogle=async function(){
 window.doAnon=async function(){
   try{
     await signInAnonymously(auth);
-  }catch(e){showAuthMsg("Erreur: "+e.message);}
+  }catch(e){
+    // Firebase anon désactivé ou erreur réseau → fallback démo
+    enterDemoMode();
+  }
 };
 
+// ════════════════════════════════════════════════════
+// MODE DÉMO — bypass complet Firebase
+// ════════════════════════════════════════════════════
+var isDemoMode=false;
+window.enterDemoMode=function(){
+  isDemoMode=true;
+  // Créer un faux utilisateur
+  me={uid:"demo-user-001",email:"demo@youbiiiz.app",emailVerified:true,isDemo:true};
+  // Données démo
+  items=[
+    {id:"demo-1",userId:"demo-seller-a",itemName:"iPhone 14 Pro 256Go",price:750,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go couleur Violet intense. Vendu avec chargeur et câble. Aucune rayure, batterie 94%.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],views:142,troc:false,createdAt:{seconds:Date.now()/1000-3600}},
+    {id:"demo-2",userId:"demo-seller-b",itemName:"PS5 + Manette DualSense",price:430,category:"Consoles",condition:"Bon état",description:"PS5 disc edition avec une manette DualSense blanche. Fonctionne parfaitement. Vendu avec 2 jeux.",brand:"Sony",model:"PS5",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1607016284318-d1384bf4d339?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],views:89,troc:true,createdAt:{seconds:Date.now()/1000-7200}},
+    {id:"demo-3",userId:"demo-seller-c",itemName:"MacBook Air M2 13\"",price:1100,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 13 pouces, Minuit, 8Go RAM 256Go SSD. Jamais ouvert, boîte scellée, facture disponible.",brand:"Apple",model:"MacBook Air M2",city:"Marseille",imageUrl:"https://images.unsplash.com/photo-1611186871525-0e17d99d4e3a?w=400&q=80",shipping:[{method:"Colissimo",price:10}],views:203,troc:false,createdAt:{seconds:Date.now()/1000-10800}},
+    {id:"demo-4",userId:"demo-seller-d",itemName:"Nike Air Max 90 Blanc T42",price:75,category:"Chaussures homme",condition:"Bon état",description:"Nike Air Max 90 blanches taille 42. Portées 5-6 fois, très bon état général. Semelles propres.",brand:"Nike",model:"Air Max 90",city:"Bordeaux",imageUrl:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",shipping:[{method:"Mondial Relay",price:5},{method:"Main propre",price:0}],views:34,troc:false,createdAt:{seconds:Date.now()/1000-14400}},
+    {id:"demo-5",userId:"demo-seller-a",itemName:"Vélo de route Trek 2023",price:680,category:"Vélos",condition:"Très bon état",description:"Vélo de route Trek Domane AL2 taille M, 2023. Cadre aluminium, Shimano Claris 16v. 800km au compteur.",brand:"Trek",model:"Domane AL2",city:"Nantes",imageUrl:"https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:67,troc:true,createdAt:{seconds:Date.now()/1000-18000}},
+    {id:"demo-6",userId:"demo-seller-b",itemName:"Canapé convertible 3 places",price:320,category:"Ameublement",condition:"Bon état",description:"Canapé convertible 3 places tissu gris anthracite. Coffre de rangement intégré. Mécanisme parfait.",brand:"IKEA",model:"Friheten",city:"Toulouse",imageUrl:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:21,troc:false,createdAt:{seconds:Date.now()/1000-21600}},
+    {id:"demo-7",userId:"demo-seller-e",itemName:"Lego Star Wars Millennium Falcon",price:180,category:"Jeux & Jouets",condition:"Neuf",description:"Set Lego 75257 Millennium Falcon, boîte non ouverte, scellée d'usine. Cadeau non déballé.",brand:"Lego",model:"75257",city:"Lille",imageUrl:"https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80",shipping:[{method:"Colissimo",price:9},{method:"Mondial Relay",price:6}],views:55,troc:false,createdAt:{seconds:Date.now()/1000-25200}},
+    {id:"demo-8",userId:"demo-seller-c",itemName:"Guitare électrique Fender Strat",price:550,category:"Instruments de musique",condition:"Très bon état",description:"Fender Stratocaster Player Series Sunburst. Livrée avec housse et câble Jack. Son impeccable.",brand:"Fender",model:"Stratocaster Player",city:"Strasbourg",imageUrl:"https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:18}],views:91,troc:true,createdAt:{seconds:Date.now()/1000-28800}},
+    {id:"demo-9",userId:"demo-seller-d",itemName:"Dyson V15 Detect Absolute",price:390,category:"Électroménager",condition:"Très bon état",description:"Aspirateur Dyson V15 Detect complet avec tous les accessoires. Batterie tient 50min. Comme neuf.",brand:"Dyson",model:"V15 Detect",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",shipping:[{method:"Colissimo",price:12},{method:"Main propre",price:0}],views:77,troc:false,createdAt:{seconds:Date.now()/1000-32400}},
+    {id:"demo-10",userId:"demo-seller-e",itemName:"Jordan 1 Retro High OG T44",price:210,category:"Chaussures homme",condition:"Neuf",description:"Air Jordan 1 Retro High OG Chicago Reimagined, taille 44. Achetées sur SNKRS, boîte et ticket.",brand:"Nike",model:"Jordan 1 Retro High",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=400&q=80",shipping:[{method:"Mondial Relay",price:6},{method:"Colissimo",price:9}],views:128,troc:false,createdAt:{seconds:Date.now()/1000-36000}}
+  ];
+  // Monkey-patch Firebase calls pour le mode démo
+  patchFirebaseForDemo();
+  bootDemo();
+};
+
+function patchFirebaseForDemo(){
+  // Override addDoc, updateDoc, deleteDoc, getDocs, onSnapshot pour le mode démo
+  // Les vrais appels Firebase seront ignorés silencieusement
+  window._demoNotifs=[];
+  window._demoRatings=[];
+}
+
+function bootDemo(){
+  document.getElementById("splash").style.display="none";
+  var app=document.getElementById("app");
+  app.classList.remove("hidden");
+  setTimeout(function(){app.style.opacity="1";},80);
+  // Sidebar
+  var suid=document.getElementById("sidebar-uid");
+  if(suid) suid.innerText="demo@youbiiiz.app";
+  var badge=document.getElementById("user-badge");
+  if(badge) badge.innerText="DÉMO";
+  var puid=document.getElementById("profile-uid");
+  if(puid) puid.innerText="demo@youbiiiz.app · mode démo";
+  // Demo verified
+  var pv=document.getElementById("profile-verified");
+  if(pv) pv.classList.remove("hidden");
+  // Render feed
+  applyFilters();
+  updateProfileDemo();
+  updateCoinsUI();
+  renderHistory();
+  renderAlerts();
+  // Show demo banner
+  showDemoBanner();
+}
+
+function updateProfileDemo(){
+  var el=document.getElementById("profile-count");if(el)el.innerText="3";
+  var el2=document.getElementById("profile-views");if(el2)el2.innerText="47";
+  var el3=document.getElementById("profile-favs");if(el3)el3.innerText="12";
+  var el4=document.getElementById("profile-total");if(el4)el4.innerText="1530€";
+  var el5=document.getElementById("profile-rating");if(el5)el5.innerText="★4.8";
+  var ml=document.getElementById("my-listings");
+  if(ml) ml.innerHTML=items.slice(0,3).map(myCard).join("");
+  renderFavs();
+}
+
+function showDemoBanner(){
+  var b=document.createElement("div");
+  b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:9998;background:linear-gradient(90deg,#0ea5e9,#6366f1);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px;display:flex;align-items:center;justify-content:center;gap:8px";
+  b.innerHTML='<i class="fa-solid fa-play" style="font-size:9px"></i>MODE DÉMO — Toutes les fonctionnalités actives · Les données ne sont pas sauvegardées <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:99px;padding:1px 8px;cursor:pointer;margin-left:8px;font-size:10px">✕</button>';
+  document.body.prepend(b);
+}
+
 window.doLogout=async function(){
+  if(isDemoMode){
+    isDemoMode=false;me=null;items=[];
+    document.getElementById("app").classList.add("hidden");
+    document.getElementById("app").style.opacity="0";
+    document.getElementById("splash").style.display="flex";
+    return;
+  }
   try{
     await signOut(auth);
     document.getElementById("app").classList.add("hidden");
@@ -1857,6 +1952,7 @@ function showPushBanner(title,body){
 }
 
 function initFeed(){
+  if(isDemoMode){applyFilters();updateProfile();return;}
   var prevIds=new Set();
   onSnapshot(collection(db,"scans"),function(snap){
     var newItems=[];
@@ -2187,9 +2283,7 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
   btn.innerText="Publication...";btn.disabled=true;
   try{
     var city=document.getElementById("item-city").value.trim();
-    // Geocoder la ville pour la carte
-    var coords=city?await geocodeAndSave(city):null;
-    await addDoc(collection(db,"scans"),{
+    var newItem={
       userId:me.uid,
       itemName:document.getElementById("ai-name").value,
       price:scanData.price,
@@ -2202,14 +2296,26 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
       troc:document.getElementById("scan-troc").checked||false,
       extraPhotos:extraPhotos.length?extraPhotos:[],
       city:city,
-      lat:coords?coords.lat:null,
-      lng:coords?coords.lng:null,
       imageUrl:scanData.imageUrl,
-      createdAt:serverTimestamp()
-    });
+      views:0,
+      createdAt:{seconds:Date.now()/1000}
+    };
+    if(isDemoMode){
+      // Demo: ajouter localement
+      newItem.id="demo-new-"+Date.now();
+      items.unshift(newItem);
+      addCoins(Math.round((newItem.price||0)*0.05),"Annonce publiée 🎉");
+    }else{
+      var coords=city?await geocodeAndSave(city):null;
+      newItem.lat=coords?coords.lat:null;
+      newItem.lng=coords?coords.lng:null;
+      newItem.createdAt=serverTimestamp();
+      await addDoc(collection(db,"scans"),newItem);
+    }
     closeScan();
     switchView("home");
-    toast("Annonce publiee !",true);
+    applyFilters();
+    toast("Annonce publiée ! 🎉",true);
   }catch(e){
     toast("Erreur:"+e.message);
     btn.innerText="Publier l'annonce";
@@ -2373,7 +2479,17 @@ window.closePay=function(){
 window.doStripe=async function(){
   if(!payItem||!me) return;
   if(payItem.shipping&&payItem.shipping.length&&!selShip){toast("Choisissez un mode de livraison");return;}
-  var btn=document.getElementById("stripe-btn");
+  if(isDemoMode){
+    var btn=document.getElementById("stripe-btn");
+    btn.innerHTML='<i class="fa-solid fa-circle-notch animate-spin mr-2"></i>Simulation...';btn.disabled=true;
+    setTimeout(function(){
+      closePay();
+      addCoins(Math.round((payItem.price||0)*0.05),"Achat effectué 🛍");
+      toast("💳 Paiement simulé avec succès ! +"+Math.round((payItem.price||0)*0.05)+" coins 🪙",true);
+      btn.innerHTML='<i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant';btn.disabled=false;
+    },1500);
+    return;
+  }
   btn.innerHTML='<i class="fa-solid fa-circle-notch animate-spin mr-2"></i>Redirection...';btn.disabled=true;
   try{
     var shipCost=selShip?selShip.price:0;
@@ -2405,6 +2521,22 @@ function checkPayReturn(){
 // NOTIFS
 function initNotifs(){
   if(!me) return;
+  if(isDemoMode){
+    // Demo notifications
+    var demoNotifs=[
+      {id:"dn1",type:"sale",message:"🎉 Votre iPhone 14 Pro a été acheté !",read:false,createdAt:{seconds:Date.now()/1000-1800}},
+      {id:"dn2",type:"rating",message:"⭐ Vous avez reçu une note de 5 étoiles",read:true,createdAt:{seconds:Date.now()/1000-7200}},
+      {id:"dn3",type:"payment_success",message:"✅ Paiement validé pour PS5 + Manette",read:true,createdAt:{seconds:Date.now()/1000-86400}}
+    ];
+    var nb=document.getElementById("nbadge");
+    nb.classList.remove("hidden");nb.innerText="1";
+    var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
+    document.getElementById("notif-list").innerHTML=demoNotifs.map(function(n){
+      var date=new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+      return '<div style="background:#1e293b;border:1px solid rgba(148,163,184,.10);border-radius:16px;padding:14px;margin-bottom:8px;cursor:pointer;opacity:'+(n.read?".5":"1")+'"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">'+(emojis[n.type]||"🔔")+'</span><div style="flex:1"><p style="font-size:13px;font-weight:700;margin-bottom:3px">'+n.message+'</p><p style="font-size:10px;color:#94a3b8">'+date+"</p></div>"+(n.read?"":'<span style="width:7px;height:7px;background:#0ea5e9;border-radius:99px;margin-top:3px;flex-shrink:0;display:block"></span>')+"</div></div>";
+    }).join("");
+    return;
+  }
   var q=query(collection(db,"notifications"),where("userId","==",me.uid));
   onSnapshot(q,function(snap){
     var list=[];
@@ -2414,7 +2546,6 @@ function initNotifs(){
     var b=document.getElementById("nbadge");
     b.classList.toggle("hidden",unread===0);
     if(unread) b.innerText=unread;
-    var icons={payment_success:"ok",payment_initiated:"cb",sale:"vente",rating:"note"};
     var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
     document.getElementById("notif-list").innerHTML=list.length?list.map(function(n){
       var date=n.createdAt?new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"";
@@ -2422,7 +2553,7 @@ function initNotifs(){
     }).join(""):'<p style="text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>';
   });
 }
-window.markRead=async function(id){await updateDoc(doc(db,"notifications",id),{read:true});};
+window.markRead=async function(id){if(isDemoMode)return;await updateDoc(doc(db,"notifications",id),{read:true});};
 
 // NOTATION
 window.openRate=function(role){
@@ -2447,6 +2578,7 @@ window.setStar=function(v){
 };
 window.submitRate=async function(){
   if(!curStar){toast("Choisissez une note");return;}
+  if(isDemoMode){closeRate();toast("Note de "+curStar+"★ envoyée ! 🙏",true);return;}
   if(!rateCtx) return;
   try{
     await addDoc(collection(db,"ratings"),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById("rate-comment").value,createdAt:serverTimestamp()});
@@ -2504,16 +2636,23 @@ window.closeEdit=function(){
 window.saveEdit=async function(){
   if(!editingId) return;
   var btn=document.getElementById("edit-save");btn.innerText="Sauvegarde...";btn.disabled=true;
-  try{
-    await updateDoc(doc(db,"scans",editingId),{
-      itemName:document.getElementById("edit-title").value,
-      price:parseFloat(document.getElementById("edit-price").value)||0,
-      description:document.getElementById("edit-desc").value,
-      condition:document.getElementById("edit-cond").value,
-      category:document.getElementById("edit-cat").value
-    });
-    closeEdit();
-  }catch(e){toast("Erreur:"+e.message);}
+  var updates={
+    itemName:document.getElementById("edit-title").value,
+    price:parseFloat(document.getElementById("edit-price").value)||0,
+    description:document.getElementById("edit-desc").value,
+    condition:document.getElementById("edit-cond").value,
+    category:document.getElementById("edit-cat").value
+  };
+  if(isDemoMode){
+    var idx=items.findIndex(function(i){return i.id===editingId;});
+    if(idx>=0) Object.assign(items[idx],updates);
+    applyFilters();closeEdit();toast("Modifié !",true);
+  }else{
+    try{
+      await updateDoc(doc(db,"scans",editingId),updates);
+      closeEdit();
+    }catch(e){toast("Erreur:"+e.message);}
+  }
   btn.innerText="Sauvegarder";btn.disabled=false;
 };
 window.confirmDel=function(id){
@@ -2528,6 +2667,10 @@ window.closeDel=function(){
 };
 window.doDelete=async function(){
   if(!deletingId) return;
+  if(isDemoMode){
+    items=items.filter(function(i){return i.id!==deletingId;});
+    applyFilters();closeDel();toast("Supprimé",true);return;
+  }
   try{await deleteDoc(doc(db,"scans",deletingId));closeDel();}
   catch(e){toast("Erreur:"+e.message);}
 };
