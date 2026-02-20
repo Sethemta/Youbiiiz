@@ -12,6 +12,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 *{box-sizing:border-box}
@@ -138,18 +141,38 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <!-- CARTE -->
     <div id="view-map" class="hidden" style="position:absolute;inset:0;top:60px;bottom:64px;">
       <div id="map-el" style="width:100%;height:100%;"></div>
-      <div id="map-popup" class="hidden" style="position:absolute;bottom:16px;left:12px;right:12px;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:20px;padding:12px;z-index:1000;display:flex;align-items:center;gap:12px;">
-        <img id="map-pop-img" style="width:48px;height:48px;border-radius:12px;object-fit:cover;border:1px solid rgba(148,163,184,.15);flex-shrink:0">
-        <div style="flex:1;min-width:0">
-          <p id="map-pop-name" style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></p>
-          <p id="map-pop-price" style="font-size:15px;font-weight:900;color:#22d3ee"></p>
-          <p id="map-pop-city" style="font-size:10px;color:#94a3b8;margin-top:2px"></p>
-        </div>
-        <button id="map-pop-btn" style="flex-shrink:0;background:#22d3ee;color:#000;font-size:12px;font-weight:700;padding:8px 12px;border-radius:12px;border:none;cursor:pointer">Voir</button>
+
+      <!-- Compteur -->
+      <div id="map-count" style="position:absolute;top:12px;left:12px;z-index:1000;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:12px;padding:6px 12px;font-size:11px;font-weight:700;color:#94a3b8;pointer-events:none;">
+        <i class="fa-solid fa-circle" style="color:#22d3ee;font-size:7px;margin-right:5px"></i><span id="map-count-txt">0 annonce</span>
       </div>
+
+      <!-- Centrer -->
       <button onclick="centerMap()" style="position:absolute;top:12px;right:12px;z-index:1000;width:40px;height:40px;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.5)">
         <i class="fa-solid fa-location-crosshairs" style="color:#22d3ee"></i>
       </button>
+
+      <!-- Filtre rayon -->
+      <div style="position:absolute;top:60px;right:12px;z-index:1000;display:flex;flex-direction:column;gap:6px;">
+        <button onclick="setRadius(5)" id="r5" style="background:#22d3ee;color:#000;border:none;border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer">5km</button>
+        <button onclick="setRadius(20)" id="r20" style="background:#0f172a;color:#94a3b8;border:1px solid rgba(148,163,184,.15);border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer">20km</button>
+        <button onclick="setRadius(50)" id="r50" style="background:#0f172a;color:#94a3b8;border:1px solid rgba(148,163,184,.15);border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer">50km</button>
+        <button onclick="setRadius(0)" id="r0" style="background:#0f172a;color:#94a3b8;border:1px solid rgba(148,163,184,.15);border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer">Tout</button>
+      </div>
+
+      <!-- Popup annonce -->
+      <div id="map-popup" class="hidden" style="position:absolute;bottom:16px;left:12px;right:12px;background:#1e293b;border:1px solid rgba(148,163,184,.15);border-radius:20px;padding:12px;z-index:1000;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+        <img id="map-pop-img" style="width:56px;height:56px;border-radius:12px;object-fit:contain;background:#f8f8f8;flex-shrink:0">
+        <div style="flex:1;min-width:0">
+          <p id="map-pop-name" style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px"></p>
+          <p id="map-pop-price" style="font-size:16px;font-weight:900;color:#22d3ee;margin-bottom:2px"></p>
+          <p style="font-size:10px;color:#94a3b8"><i class="fa-solid fa-location-dot" style="color:#22d3ee;margin-right:3px;font-size:9px"></i><span id="map-pop-city-txt"></span></p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <button id="map-pop-btn" style="background:#22d3ee;color:#000;font-size:12px;font-weight:700;padding:8px 14px;border-radius:12px;border:none;cursor:pointer">Voir</button>
+          <button onclick="document.getElementById('map-popup').classList.add('hidden')" style="background:transparent;color:#94a3b8;font-size:10px;border:none;cursor:pointer">Fermer</button>
+        </div>
+      </div>
     </div>
 
     <!-- NOTIFICATIONS -->
@@ -863,6 +886,8 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
   btn.innerText="Publication...";btn.disabled=true;
   try{
     var city=document.getElementById("item-city").value.trim();
+    // Geocoder la ville pour la carte
+    var coords=city?await geocodeAndSave(city):null;
     await addDoc(collection(db,"scans"),{
       userId:me.uid,
       itemName:document.getElementById("ai-name").value,
@@ -874,6 +899,8 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
       model:scanData.model,
       shipping:scanData.shipping,
       city:city,
+      lat:coords?coords.lat:null,
+      lng:coords?coords.lng:null,
       imageUrl:scanData.imageUrl,
       createdAt:serverTimestamp()
     });
@@ -1146,44 +1173,123 @@ window.doDelete=async function(){
 };
 
 // CARTE
+var clusterGroup=null,userMarker=null,activeRadius=5;
+
 function initMap(){
   if(map) return;
-  var lat=userLat||46.2276,lng=userLng||2.2137,zoom=userLat?12:5;
+  var lat=userLat||46.2276,lng=userLng||2.2137,zoom=userLat?13:6;
   map=L.map("map-el",{zoomControl:false}).setView([lat,lng],zoom);
   L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{attribution:"CartoDB",maxZoom:19}).addTo(map);
-  if(userLat){
-    L.circleMarker([userLat,userLng],{radius:10,fillColor:"#22d3ee",color:"#fff",weight:2,fillOpacity:0.9}).addTo(map);
-  }
-}
-function renderMapMarkers(){
-  if(!map) return;
-  mapMarkers.forEach(function(m){m.remove();});mapMarkers=[];
-  var withCity=items.filter(function(i){return i.city&&i.city.trim();});
-  withCity.forEach(async function(item){
-    try{
-      var r=await fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(item.city+",France")+"&format=json&limit=1");
-      var d=await r.json();
-      if(!d.length) return;
-      var lat=parseFloat(d[0].lat),lng=parseFloat(d[0].lon);
-      var icon=L.divIcon({
+  clusterGroup=L.markerClusterGroup({
+    maxClusterRadius:50,
+    iconCreateFunction:function(cluster){
+      return L.divIcon({
         className:"",
-        html:'<div style="background:#22d3ee;color:#000;font-size:11px;font-weight:900;padding:4px 8px;border-radius:99px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.5)">'+(item.price||0)+"euro</div>",
-        iconAnchor:[20,12]
+        html:'<div style="background:#22d3ee;color:#000;font-size:12px;font-weight:900;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.5)">'+cluster.getChildCount()+"</div>",
+        iconSize:[36,36],iconAnchor:[18,18]
       });
-      var marker=L.marker([lat,lng],{icon:icon}).addTo(map);
-      marker.on("click",function(){
-        document.getElementById("map-pop-img").src=item.imageUrl||"";
-        document.getElementById("map-pop-name").innerText=item.itemName||"";
-        document.getElementById("map-pop-price").innerText=(item.price||0)+"euro";
-        document.getElementById("map-pop-city").innerText=item.city||"";
-        document.getElementById("map-pop-btn").onclick=function(){openDetail(item.id);};
-        var p=document.getElementById("map-popup");
-        p.classList.remove("hidden");p.style.display="flex";
-      });
-      mapMarkers.push(marker);
-    }catch(e){}
+    }
+  });
+  map.addLayer(clusterGroup);
+  if(userLat) addUserMarker();
+}
+
+function addUserMarker(){
+  if(userMarker) userMarker.remove();
+  userMarker=L.circleMarker([userLat,userLng],{radius:10,fillColor:"#22d3ee",color:"#fff",weight:3,fillOpacity:1}).addTo(map);
+  // Cercle de rayon
+  if(activeRadius>0) drawRadiusCircle();
+}
+
+var radiusCircle=null;
+function drawRadiusCircle(){
+  if(radiusCircle) radiusCircle.remove();
+  if(!userLat||activeRadius===0) return;
+  radiusCircle=L.circle([userLat,userLng],{
+    radius:activeRadius*1000,
+    color:"#22d3ee",fillColor:"#22d3ee",fillOpacity:0.04,weight:1.5,dashArray:"6,6"
+  }).addTo(map);
+}
+
+function getDistanceKm(lat1,lng1,lat2,lng2){
+  var R=6371;
+  var dLat=(lat2-lat1)*Math.PI/180;
+  var dLng=(lng2-lng1)*Math.PI/180;
+  var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+async function geocodeCity(city){
+  try{
+    var r=await fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(city+",France")+"&format=json&limit=1");
+    var d=await r.json();
+    if(!d.length) return null;
+    return{lat:parseFloat(d[0].lat),lng:parseFloat(d[0].lon)};
+  }catch(e){return null;}
+}
+
+function renderMapMarkers(){
+  if(!map||!clusterGroup) return;
+  clusterGroup.clearLayers();
+  mapMarkers=[];
+
+  var withCoords=items.filter(function(i){return i.lat&&i.lng;});
+  var withCityOnly=items.filter(function(i){return i.city&&i.city.trim()&&!i.lat;});
+
+  // Annonces avec coordonnees GPS directes
+  withCoords.forEach(function(item){
+    addItemMarker(item,item.lat,item.lng);
+  });
+
+  // Annonces avec ville seulement - geocoder
+  withCityOnly.forEach(async function(item){
+    var coords=await geocodeCity(item.city);
+    if(!coords) return;
+    addItemMarker(item,coords.lat,coords.lng);
   });
 }
+
+function addItemMarker(item,lat,lng){
+  // Filtre par rayon
+  if(activeRadius>0&&userLat){
+    var dist=getDistanceKm(userLat,userLng,lat,lng);
+    if(dist>activeRadius) return;
+  }
+  var icon=L.divIcon({
+    className:"",
+    html:'<div style="background:#22d3ee;color:#000;font-size:11px;font-weight:900;padding:4px 10px;border-radius:99px;border:2px solid #fff;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.4);cursor:pointer">'+(item.price||0)+"e</div>",
+    iconAnchor:[20,12]
+  });
+  var marker=L.marker([lat,lng],{icon:icon});
+  marker.on("click",function(){
+    document.getElementById("map-pop-img").src=item.imageUrl||"";
+    document.getElementById("map-pop-name").innerText=item.itemName||"";
+    document.getElementById("map-pop-price").innerText=(item.price||0)+"euro";
+    document.getElementById("map-pop-city-txt").innerText=item.city||"";
+    document.getElementById("map-pop-btn").onclick=function(){openDetail(item.id);};
+    var p=document.getElementById("map-popup");
+    p.classList.remove("hidden");p.style.display="flex";
+  });
+  clusterGroup.addLayer(marker);
+  mapMarkers.push(marker);
+  // Mettre a jour le compteur
+  var count=clusterGroup.getLayers().length;
+  document.getElementById("map-count-txt").innerText=count+(count>1?" annonces":" annonce");
+}
+
+window.setRadius=function(km){
+  activeRadius=km;
+  ["r5","r20","r50","r0"].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){el.style.background="#0f172a";el.style.color="#94a3b8";el.style.border="1px solid rgba(148,163,184,.15)";}
+  });
+  var activeBtn=document.getElementById("r"+km);
+  if(activeBtn){activeBtn.style.background="#22d3ee";activeBtn.style.color="#000";activeBtn.style.border="none";}
+  drawRadiusCircle();
+  renderMapMarkers();
+  if(map&&userLat&&km>0) map.setView([userLat,userLng],km<=5?13:km<=20?11:10);
+};
+
 function askGeo(){
   if(!navigator.geolocation){toast("Geolocalisation non supportee");return;}
   navigator.geolocation.getCurrentPosition(
@@ -1191,17 +1297,24 @@ function askGeo(){
       userLat=pos.coords.latitude;userLng=pos.coords.longitude;
       if(map){
         map.setView([userLat,userLng],13);
-        L.circleMarker([userLat,userLng],{radius:10,fillColor:"#22d3ee",color:"#fff",weight:2,fillOpacity:.9}).addTo(map);
+        addUserMarker();
+        renderMapMarkers();
       }
       toast("Position obtenue !",true);
     },
-    function(){toast("Position refusee ou non disponible");}
+    function(){toast("Position refusee - affichage de toute la France");}
   );
 }
 window.centerMap=function(){
   if(map&&userLat) map.setView([userLat,userLng],13);
   else askGeo();
 };
+
+// Sauvegarder lat/lng lors de la publication
+async function geocodeAndSave(city){
+  if(!city) return null;
+  return await geocodeCity(city);
+}
 </script>
 </body>
 </html>
