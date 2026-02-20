@@ -176,6 +176,35 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .yb-dot{width:5px;height:5px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;box-shadow:0 0 8px rgba(14,165,233,.5)}
 .yb-price{background:#fff;color:#0ea5e9;font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px;border:1.5px solid #0ea5e9;white-space:nowrap;margin-top:3px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .yb-pin{display:flex;flex-direction:column;align-items:center}
+/* CARROUSEL PHOTOS */
+.photo-dot{width:6px;height:6px;border-radius:50%;background:#cbd5e1;transition:all .2s;cursor:pointer}
+.photo-dot.on{background:#0ea5e9;width:18px;border-radius:3px}
+/* SOCIAL SHARE */
+.share-btn{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:transform .12s}
+.share-btn:active{transform:scale(.88)}
+.share-btn .sb-icon{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.share-btn span{font-size:10px;font-weight:700;color:#64748b}
+/* COINS */
+.coins-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;border:1px solid #fcd34d}
+/* OFFER */
+.offer-input{font-size:28px;font-weight:900;color:#0ea5e9;text-align:center;background:none;border:none;outline:none;width:100%;font-family:inherit}
+/* HISTORY */
+.hist-item{display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:10px;cursor:pointer;margin-bottom:6px;border:1px solid #e8ecf0;transition:background .12s}
+.hist-item:hover{background:#eff9ff}
+/* SELLER SHEET */
+.sp-stat{text-align:center;background:#f8fafc;border-radius:12px;padding:10px;flex:1;border:1px solid #e8ecf0}
+/* REPORT */
+.report-reason{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8fafc;border:1px solid #e8ecf0;border-radius:10px;cursor:pointer;margin-bottom:6px;font-size:13px;font-weight:600;transition:all .12s}
+.report-reason:hover{background:#fef2f2;border-color:#fecaca;color:#dc2626}
+/* PHOTO THUMBS */
+.photo-thumb{width:60px;height:60px;border-radius:10px;object-fit:cover;border:2px solid #e2e8f0;cursor:pointer;flex-shrink:0;transition:border-color .12s}
+.photo-thumb.active{border-color:#0ea5e9;box-shadow:0 0 0 2px rgba(14,165,233,.3)}
+/* PAY 3X */
+.pay3x-option{border:1.5px solid #e2e8f0;border-radius:12px;padding:10px 12px;cursor:pointer;transition:all .12s;margin-bottom:6px}
+.pay3x-option.selected{border-color:#0ea5e9;background:#eff9ff}
+/* SEARCH PHOTO BTN */
+.search-photo-btn{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9,#6366f1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .12s}
+.search-photo-btn:hover{opacity:.85}
 </style>
 </head>
 <body>
@@ -322,6 +351,10 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <div class="yb-search" style="flex:1;max-width:520px">
       <i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:12px;flex-shrink:0"></i>
       <input id="header-search" type="text" placeholder='Recherche IA : "iPhone 300€ Lyon bon état"...' oninput="applyFilters()">
+      <button class="search-photo-btn" onclick="openSearchByPhoto()" title="Rechercher par photo">
+        <i class="fa-solid fa-camera" style="color:#fff;font-size:11px"></i>
+      </button>
+      <input type="file" id="search-photo-inp" accept="image/*" class="hidden" onchange="onSearchPhoto(this)">
     </div>
 
     <div style="flex:1"></div>
@@ -721,7 +754,37 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
 
-      <!-- Alertes sauvegardées -->
+      <!-- Coins + Historique -->
+      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">🪙</span>
+            <div>
+              <p style="font-size:13px;font-weight:800;color:#0f172a">Youbiiiz Coins</p>
+              <p id="profile-coins-val" style="font-size:20px;font-weight:900;color:#f59e0b;line-height:1.2">0</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p style="font-size:9px;color:#94a3b8;font-weight:700;text-transform:uppercase">Valeur estimée</p>
+            <p id="profile-coins-eur" style="font-size:13px;font-weight:800;color:#f59e0b">0.00€</p>
+          </div>
+        </div>
+        <p style="font-size:10px;color:#94a3b8;margin-bottom:8px">🎁 Gagner des coins : vendre un article (+10), recevoir un avis 5★ (+5), parrainer (+20)</p>
+        <div style="background:#fefce8;border:1px solid #fef08a;border-radius:10px;padding:8px 10px;font-size:11px;color:#713f12;font-weight:600">
+          1 Coin = 0.01€ de réduction sur votre prochain achat
+        </div>
+      </div>
+
+      <!-- Historique de navigation -->
+      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+        <div class="flex items-center justify-between mb-3">
+          <p style="font-size:13px;font-weight:800;color:#0f172a"><i class="fa-solid fa-clock-rotate-left" style="color:#8b5cf6;margin-right:6px;font-size:11px"></i>Récemment consultées</p>
+          <button onclick="clearHistory()" style="font-size:11px;color:#94a3b8;background:none;border:none;cursor:pointer;font-family:inherit">Effacer</button>
+        </div>
+        <div id="history-list">
+          <p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune annonce consultée</p>
+        </div>
+      </div>
       <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
         <div class="flex items-center justify-between mb-3">
           <p style="font-size:13px;font-weight:800;color:#0f172a"><i class="fa-solid fa-bell text-sky-500 mr-1.5" style="font-size:11px"></i>Mes alertes</p>
@@ -788,6 +851,171 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <div class="flex gap-2">
       <button onclick="closeAlertes()" class="flex-1 bg-slate-700 font-bold py-3 rounded-xl text-sm">Annuler</button>
       <button onclick="saveAlert()" class="flex-1 bg-sky-500 text-black font-bold py-3 rounded-xl text-sm">Créer l'alerte</button>
+    </div>
+  </div>
+</div>
+
+<!-- PARTAGE RÉSEAUX SOCIAUX -->
+<div id="share-modal" class="fixed inset-0 z-[900] hidden items-end justify-center">
+  <div class="mover absolute inset-0" onclick="closeShareModal()"></div>
+  <div class="relative msheet su w-full max-w-lg p-5 pb-8 bg-white">
+    <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-200 rounded-full"></div></div>
+    <div class="flex items-center justify-between mb-5">
+      <p class="font-extrabold text-base">Partager l'annonce</p>
+      <button onclick="closeShareModal()" class="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-slate-500 text-sm"></i></button>
+    </div>
+    <!-- Preview -->
+    <div id="share-preview" class="flex gap-3 bg-slate-50 border border-slate-100 rounded-2xl p-3 mb-5">
+      <img id="share-prev-img" class="w-14 h-14 rounded-xl object-contain bg-white border border-slate-100 shrink-0">
+      <div class="flex-1 min-w-0">
+        <p id="share-prev-title" class="font-bold text-sm leading-tight truncate"></p>
+        <p id="share-prev-price" class="text-sky-500 font-black text-base mt-0.5"></p>
+        <p class="text-[10px] text-slate-400 mt-0.5">youbiiiz.app</p>
+      </div>
+    </div>
+    <!-- Réseaux -->
+    <div class="grid grid-cols-4 gap-3 mb-5">
+      <div class="share-btn" onclick="shareTo('whatsapp')">
+        <div class="sb-icon" style="background:#dcfce7"><i class="fa-brands fa-whatsapp" style="color:#25D366;font-size:22px"></i></div>
+        <span>WhatsApp</span>
+      </div>
+      <div class="share-btn" onclick="shareTo('facebook')">
+        <div class="sb-icon" style="background:#dbeafe"><i class="fa-brands fa-facebook" style="color:#1877F2;font-size:22px"></i></div>
+        <span>Facebook</span>
+      </div>
+      <div class="share-btn" onclick="shareTo('twitter')">
+        <div class="sb-icon" style="background:#f1f5f9"><i class="fa-brands fa-x-twitter" style="color:#000;font-size:20px"></i></div>
+        <span>X / Twitter</span>
+      </div>
+      <div class="share-btn" onclick="shareTo('telegram')">
+        <div class="sb-icon" style="background:#e0f2fe"><i class="fa-brands fa-telegram" style="color:#0088CC;font-size:22px"></i></div>
+        <span>Telegram</span>
+      </div>
+      <div class="share-btn" onclick="shareTo('instagram')">
+        <div class="sb-icon" style="background:linear-gradient(135deg,#fcebfa,#fce8d5,#fde68a)"><i class="fa-brands fa-instagram" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:22px"></i></div>
+        <span>Instagram</span>
+      </div>
+      <div class="share-btn" onclick="shareTo('tiktok')">
+        <div class="sb-icon" style="background:#f1f5f9"><i class="fa-brands fa-tiktok" style="color:#000;font-size:20px"></i></div>
+        <span>TikTok</span>
+      </div>
+      <div class="share-btn" onclick="shareTo('messenger')">
+        <div class="sb-icon" style="background:#dbeafe"><i class="fa-brands fa-facebook-messenger" style="color:#0099FF;font-size:22px"></i></div>
+        <span>Messenger</span>
+      </div>
+      <div class="share-btn" onclick="shareTo('sms')">
+        <div class="sb-icon" style="background:#dcfce7"><i class="fa-solid fa-message" style="color:#22c55e;font-size:19px"></i></div>
+        <span>SMS</span>
+      </div>
+    </div>
+    <!-- Copier lien -->
+    <div class="flex gap-2">
+      <input id="share-link-val" class="inp flex-1 text-sm text-slate-500 bg-slate-50" readonly style="font-family:monospace">
+      <button onclick="copyShareLink()" class="px-4 py-2.5 bg-sky-500 text-black font-bold text-sm rounded-xl active:scale-95 transition-transform whitespace-nowrap">
+        <i class="fa-solid fa-copy mr-1"></i>Copier
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FAIRE UNE OFFRE -->
+<div id="offer-modal" class="fixed inset-0 z-[800] hidden items-center justify-center px-5">
+  <div class="mover absolute inset-0" onclick="closeOffer()"></div>
+  <div class="relative bg-white rounded-3xl p-6 w-full max-w-sm su text-center">
+    <button onclick="closeOffer()" class="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-slate-500 text-sm"></i></button>
+    <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-3">
+      <i class="fa-solid fa-handshake text-amber-400 text-xl"></i>
+    </div>
+    <h3 class="font-extrabold text-base mb-1">Faire une offre</h3>
+    <p id="offer-sub" class="text-slate-400 text-xs mb-5">Prix demandé : <span id="offer-asked" class="font-bold text-sky-500"></span></p>
+    <div class="flex items-center justify-center gap-2 mb-2">
+      <span class="text-3xl font-black text-slate-300">€</span>
+      <input id="offer-amount" type="number" class="offer-input" placeholder="0" style="width:120px">
+    </div>
+    <div id="offer-hint" class="text-[10px] text-slate-400 mb-5"></div>
+    <!-- Suggestions rapides -->
+    <div class="flex justify-center gap-2 mb-5" id="offer-quick"></div>
+    <button onclick="sendOffer()" class="w-full bg-amber-400 text-black font-extrabold py-4 rounded-2xl text-[15px] active:scale-95 transition-transform">
+      Envoyer l'offre
+    </button>
+  </div>
+</div>
+
+<!-- SIGNALER -->
+<div id="report-modal" class="fixed inset-0 z-[800] hidden items-end justify-center">
+  <div class="mover absolute inset-0" onclick="closeReport()"></div>
+  <div class="relative msheet su w-full max-w-lg p-5 pb-8 bg-white">
+    <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-200 rounded-full"></div></div>
+    <p class="font-extrabold text-base mb-4"><i class="fa-solid fa-flag text-red-500 mr-2"></i>Signaler cette annonce</p>
+    <div id="report-reasons">
+      <div class="report-reason" onclick="submitReport('Arnaque / phishing')"><i class="fa-solid fa-skull-crossbones text-red-400 w-5 text-center"></i>Arnaque / phishing</div>
+      <div class="report-reason" onclick="submitReport('Prix abusif / offre irréaliste')"><i class="fa-solid fa-tag text-orange-400 w-5 text-center"></i>Prix abusif ou irréaliste</div>
+      <div class="report-reason" onclick="submitReport('Contenu interdit ou dangereux')"><i class="fa-solid fa-ban text-red-400 w-5 text-center"></i>Contenu interdit ou dangereux</div>
+      <div class="report-reason" onclick="submitReport('Annonce dupliquée / spam')"><i class="fa-solid fa-clone text-slate-400 w-5 text-center"></i>Annonce dupliquée / spam</div>
+      <div class="report-reason" onclick="submitReport('Photos volées / trompeuses')"><i class="fa-solid fa-image text-slate-400 w-5 text-center"></i>Photos volées ou trompeuses</div>
+      <div class="report-reason" onclick="submitReport('Autre raison')"><i class="fa-solid fa-ellipsis text-slate-400 w-5 text-center"></i>Autre raison</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFIL VENDEUR -->
+<div id="seller-profile-modal" class="fixed inset-0 z-[700] bg-white hidden flex-col sr">
+  <div class="flex items-center gap-3 px-4 pt-5 pb-4 border-b border-slate-100 shrink-0">
+    <button onclick="closeSellerProfile()" class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center active:scale-90 transition-transform">
+      <i class="fa-solid fa-arrow-left text-slate-600 text-sm"></i>
+    </button>
+    <p class="font-extrabold text-base text-slate-900 flex-1">Profil vendeur</p>
+  </div>
+  <div class="flex-1 overflow-y-auto no-sb px-4 pt-5 pb-12">
+    <div class="flex items-center gap-4 mb-5">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
+        <i class="fa-solid fa-user text-xl text-white"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <p id="sp-name" class="font-extrabold text-lg text-slate-900"></p>
+          <span id="sp-verified" class="verified-badge hidden"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
+        </div>
+        <p id="sp-since" class="text-xs text-slate-400 mt-0.5"></p>
+      </div>
+    </div>
+    <div class="flex gap-3 mb-5">
+      <div class="sp-stat"><p id="sp-count" class="text-xl font-black text-sky-500">0</p><p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Annonces</p></div>
+      <div class="sp-stat"><p id="sp-rating-val" class="text-xl font-black text-amber-400">—</p><p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Note</p></div>
+      <div class="sp-stat"><p id="sp-coins" class="text-xl font-black text-amber-500">0 🪙</p><p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Coins</p></div>
+    </div>
+    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-3">Annonces actives</p>
+    <div id="sp-listings" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
+  </div>
+</div>
+
+<!-- RECHERCHE PAR PHOTO -->
+<div id="search-photo-modal" class="fixed inset-0 z-[900] hidden items-center justify-center px-5">
+  <div class="mover absolute inset-0" onclick="closeSearchPhoto()"></div>
+  <div class="relative bg-white rounded-3xl p-6 w-full max-w-sm su text-center">
+    <button onclick="closeSearchPhoto()" class="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-slate-500 text-sm"></i></button>
+    <div id="sph-idle">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center mx-auto mb-3">
+        <i class="fa-solid fa-camera-retro text-white text-2xl"></i>
+      </div>
+      <h3 class="font-extrabold text-base mb-1">Recherche par photo</h3>
+      <p class="text-slate-400 text-xs mb-5">Prends ou importe une photo d'un objet — l'IA trouve les annonces similaires</p>
+      <button onclick="document.getElementById('search-photo-inp').click()" class="w-full bg-gradient-to-r from-sky-500 to-indigo-500 text-white font-bold py-3.5 rounded-2xl mb-2 active:scale-95 transition-transform">
+        <i class="fa-solid fa-upload mr-2"></i>Importer une photo
+      </button>
+    </div>
+    <div id="sph-loading" class="hidden">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center mx-auto mb-3">
+        <i class="fa-solid fa-circle-notch animate-spin text-white text-2xl"></i>
+      </div>
+      <p class="font-bold text-sm mb-1">Analyse en cours...</p>
+      <p class="text-slate-400 text-xs">L'IA identifie l'objet et cherche des annonces similaires</p>
+    </div>
+    <div id="sph-results" class="hidden text-left">
+      <p class="font-extrabold text-sm mb-1">Résultats pour :</p>
+      <p id="sph-detected" class="text-sky-500 font-bold text-xs mb-3"></p>
+      <div id="sph-list" class="flex flex-col gap-2 max-h-64 overflow-y-auto no-sb"></div>
+      <button onclick="closeSearchPhoto()" class="w-full bg-slate-100 text-slate-600 font-bold py-3 rounded-xl mt-3 text-sm">Fermer</button>
     </div>
   </div>
 </div>
@@ -1000,6 +1228,19 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <span id="price-verdict" class="text-[9px] font-bold px-2 py-0.5 rounded-full"></span>
           </div>
         </div>
+        <!-- Photos supplémentaires -->
+        <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30 mb-2">
+          <div class="flex items-center justify-between mb-2">
+            <p class="text-[9px] text-slate-400 uppercase font-bold">Photos (max 5)</p>
+            <button onclick="document.getElementById('extra-photos-inp').click()" class="text-[10px] text-sky-400 font-bold bg-sky-500/10 px-2 py-1 rounded-lg">
+              <i class="fa-solid fa-plus mr-1"></i>Ajouter
+            </button>
+          </div>
+          <input type="file" id="extra-photos-inp" accept="image/*" multiple class="hidden" onchange="addExtraPhotos(this)">
+          <div id="extra-photos-list" class="flex gap-2 overflow-x-auto no-sb pb-1 min-h-[40px]">
+            <p class="text-[10px] text-slate-500 self-center">Aucune photo supplémentaire</p>
+          </div>
+        </div>
         <!-- Troc -->
         <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30 mb-2">
           <label class="flex items-center gap-3 cursor-pointer">
@@ -1052,31 +1293,43 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
 <!-- DETAIL -->
 <div id="detail-modal" class="fixed inset-0 z-[500] bg-[#0f172a] hidden flex-col sr">
-  <div class="flex items-center gap-3 px-3 pt-4 pb-3 bg-[#0f172a] border-b border-slate-600/30 shrink-0">
+  <div class="flex items-center gap-2 px-3 pt-4 pb-3 bg-[#0f172a] border-b border-slate-600/30 shrink-0">
     <button onclick="closeDetail()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform">
       <i class="fa-solid fa-arrow-left text-sm"></i>
     </button>
     <p class="font-bold text-sm flex-1">Détail de l'annonce</p>
-    <button onclick="shareItem()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform" title="Partager">
+    <button onclick="openShareModal()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform" title="Partager">
       <i class="fa-solid fa-share-nodes text-sm text-sky-400"></i>
     </button>
     <button onclick="toggleFavDetail()" id="det-fav-btn" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform">
       <i id="det-fav-icon" class="fa-regular fa-heart text-sm text-slate-400"></i>
     </button>
+    <button onclick="openReport()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform" title="Signaler">
+      <i class="fa-solid fa-flag text-sm text-slate-500"></i>
+    </button>
   </div>
   <div class="flex-1 overflow-y-auto no-sb">
-    <div class="px-3 pt-3 pb-2 relative">
-      <div style="width:100%;height:340px;background:#f8f8f8;border-radius:16px;overflow:hidden;">
-        <img id="det-img" style="width:100%;height:100%;object-fit:contain;display:block;">
+    <!-- CARROUSEL -->
+    <div class="px-3 pt-3 pb-1 relative">
+      <div id="det-carousel-wrap" style="width:100%;height:300px;border-radius:16px;overflow:hidden;background:#f8f8f8;position:relative">
+        <div id="det-carousel-track" style="display:flex;height:100%;transition:transform .3s cubic-bezier(.16,1,.3,1)"></div>
+        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:rgba(15,23,42,.65);border:none;border-radius:50%;color:#fff;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="det-next" onclick="carNav(1)" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:rgba(15,23,42,.65);border:none;border-radius:50%;color:#fff;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-right"></i></button>
+        <div id="det-views-badge" class="hidden" style="position:absolute;bottom:8px;left:8px;background:rgba(15,23,42,.72);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
+          <i class="fa-solid fa-eye" style="font-size:8px"></i><span id="det-views-count">0</span> vues
+        </div>
       </div>
-      <div id="det-views-badge" class="hidden" style="position:absolute;bottom:18px;left:18px;background:rgba(15,23,42,.72);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:99px;display:flex;align-items:center;gap:4px">
-        <i class="fa-solid fa-eye" style="font-size:8px"></i><span id="det-views-count">0</span> vues
-      </div>
+      <div id="det-dots" class="flex justify-center gap-1.5 mt-2 min-h-[10px]"></div>
+      <!-- Thumbs multi-photos -->
+      <div id="det-thumbs" class="flex gap-2 overflow-x-auto no-sb mt-2"></div>
     </div>
     <div class="px-4 pb-8">
-      <div class="flex items-start justify-between gap-2 mt-3 mb-1">
+      <div class="flex items-start justify-between gap-2 mt-2 mb-1">
         <h2 id="det-title" class="font-extrabold text-xl leading-tight flex-1"></h2>
-        <p id="det-price" class="text-sky-500 font-black text-xl shrink-0"></p>
+        <div class="text-right shrink-0">
+          <p id="det-price" class="text-sky-500 font-black text-xl"></p>
+          <div id="det-coins-earn" class="hidden text-[9px] text-amber-600 font-bold mt-0.5"></div>
+        </div>
       </div>
       <div id="det-price-range" class="hidden mb-2"></div>
       <div class="flex flex-wrap gap-2 mb-3">
@@ -1088,25 +1341,14 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <span id="det-troc-tag" class="hidden troc-badge">🔄 Échange OK</span>
       </div>
       <p id="det-brand" class="text-xs text-slate-500 font-mono mb-3"></p>
-
-      <!-- Alerte fraude (conditionnelle) -->
       <div id="det-fraud-warn" class="fraud-warn hidden">
         <i class="fa-solid fa-triangle-exclamation text-red-500 text-sm shrink-0 mt-0.5"></i>
-        <div>
-          <p class="text-xs font-bold text-red-700">Prix inhabituel</p>
-          <p class="text-[10px] text-red-600 mt-0.5">Le prix de cette annonce est très bas par rapport au marché. Soyez vigilant et préférez la remise en main propre.</p>
-        </div>
+        <div><p class="text-xs font-bold text-red-700">Prix inhabituel</p><p class="text-[10px] text-red-600 mt-0.5">Prix très bas par rapport au marché. Préférez la remise en main propre.</p></div>
       </div>
-
-      <!-- Garantie acheteur -->
       <div class="garantie-banner mb-3">
         <i class="fa-solid fa-shield-halved text-green-500 text-lg shrink-0"></i>
-        <div>
-          <p class="text-xs font-bold text-green-800">Garantie acheteur Youbiiiz</p>
-          <p class="text-[10px] text-green-700 mt-0.5">Paiement sécurisé · Remboursement si l'objet ne correspond pas · Support 7j/7</p>
-        </div>
+        <div><p class="text-xs font-bold text-green-800">Garantie acheteur Youbiiiz</p><p class="text-[10px] text-green-700 mt-0.5">Paiement sécurisé · Remboursement si non conforme · Support 7j/7</p></div>
       </div>
-
       <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30">
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-widest">Description</p>
         <p id="det-desc" class="text-sm text-slate-200 leading-relaxed"></p>
@@ -1115,8 +1357,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-widest">Livraison</p>
         <div id="det-ship" class="flex flex-wrap gap-2"></div>
       </div>
-
-      <!-- Score de confiance -->
       <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30">
         <div class="flex items-center justify-between mb-2">
           <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Score de confiance</p>
@@ -1125,30 +1365,40 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div class="trust-bar"><div id="det-trust-fill" class="trust-fill" style="width:0%"></div></div>
         <div id="det-trust-details" class="flex gap-2 flex-wrap mt-2"></div>
       </div>
-
-      <div class="bg-slate-800 rounded-xl p-4 mb-5 border border-slate-600/30">
+      <!-- Vendeur cliquable → profil -->
+      <div id="det-seller-card" onclick="openSellerProfile()" class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30 cursor-pointer active:scale-[.98] transition-transform">
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-3 tracking-widest">Vendeur</p>
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-user text-xs text-white"></i>
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-user text-sm text-white"></i>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
+          <div class="flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
               <p id="det-seller" class="font-bold text-sm"></p>
               <span id="det-verified" class="verified-badge hidden"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
             </div>
             <p id="det-rating" class="text-[10px] text-yellow-400 mt-0.5">Nouveau vendeur</p>
           </div>
+          <i class="fa-solid fa-chevron-right text-slate-500 text-xs shrink-0"></i>
         </div>
       </div>
-      <div class="flex gap-3">
+      <!-- Annonces similaires -->
+      <div class="mb-5">
+        <p class="text-[9px] text-slate-400 uppercase font-bold mb-3 tracking-widest">Annonces similaires</p>
+        <div id="det-similar" class="flex gap-3 overflow-x-auto no-sb pb-1"></div>
+      </div>
+      <!-- Boutons action -->
+      <div class="flex gap-2 mb-2">
         <button id="contact-btn" class="flex-1 bg-slate-800 border border-slate-600/40 rounded-2xl py-3.5 text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
           <i class="fa-solid fa-message text-xs"></i> Contacter
         </button>
-        <button id="buy-btn" class="flex-1 bg-sky-500 text-black rounded-2xl py-3.5 text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
-          <i class="fa-brands fa-stripe text-base"></i> Acheter
+        <button onclick="openOffer()" class="flex-1 bg-amber-500/10 border border-amber-500/30 rounded-2xl py-3.5 text-sm font-bold flex items-center justify-center gap-2 text-amber-400 active:scale-95 transition-transform">
+          <i class="fa-solid fa-handshake text-xs"></i> Faire offre
         </button>
       </div>
+      <button id="buy-btn" class="w-full bg-sky-500 text-black rounded-2xl py-4 text-[15px] font-extrabold flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-[0_0_20px_rgba(14,165,233,.4)]">
+        <i class="fa-brands fa-stripe text-lg"></i> Acheter maintenant
+      </button>
     </div>
   </div>
 </div>
@@ -1218,10 +1468,42 @@ header .i-wrapper{gap:2px;margin:0 2px}
       <p class="text-[9px] text-slate-400 uppercase font-bold mb-2">Choisir la livraison</p>
       <div id="pay-ship-list" class="flex flex-col gap-2"></div>
     </div>
-    <div class="bg-slate-800 rounded-xl p-4 mb-4 border border-slate-600/30 text-sm">
+    <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30 text-sm">
       <div class="flex justify-between mb-2"><span class="text-slate-300">Article</span><span id="pay-sub" class="font-bold"></span></div>
-      <div class="flex justify-between mb-3"><span class="text-slate-300">Livraison</span><span id="pay-shipcost" class="font-bold">-</span></div>
+      <div class="flex justify-between mb-2"><span class="text-slate-300">Livraison</span><span id="pay-shipcost" class="font-bold">-</span></div>
+      <div id="pay-coins-row" class="hidden flex justify-between mb-2 items-center"><span class="text-slate-300">Youbiiiz Coins</span><span id="pay-coins-discount" class="font-bold text-amber-400"></span></div>
       <div class="flex justify-between border-t border-slate-600/30 pt-3"><span class="font-bold">Total</span><span id="pay-total" class="font-extrabold text-sky-500 text-base"></span></div>
+    </div>
+    <!-- Paiement en plusieurs fois -->
+    <div class="mb-4">
+      <p class="text-[9px] text-slate-400 uppercase font-bold mb-2">Mode de paiement</p>
+      <div id="pay-mode-1x" class="pay3x-option selected" onclick="selectPayMode('1x')">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-bold">Paiement comptant</span>
+          <span id="pay-1x-amount" class="text-sm font-extrabold text-sky-400"></span>
+        </div>
+      </div>
+      <div id="pay-mode-3x" class="pay3x-option" onclick="selectPayMode('3x')">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-sm font-bold">Paiement en 3×</span>
+            <span class="text-[10px] text-green-400 font-bold ml-2">Sans frais</span>
+          </div>
+          <span id="pay-3x-amount" class="text-sm font-extrabold text-sky-400"></span>
+        </div>
+        <p id="pay-3x-detail" class="text-[10px] text-slate-400 mt-1"></p>
+      </div>
+    </div>
+    <!-- Coins dispo -->
+    <div id="pay-use-coins" class="hidden mb-3 flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl p-3">
+      <div class="flex items-center gap-2">
+        <span class="text-lg">🪙</span>
+        <div><p class="text-xs font-bold text-amber-800">Utiliser mes Coins</p><p id="pay-coins-avail" class="text-[10px] text-amber-600"></p></div>
+      </div>
+      <label class="toggle-sw" style="filter:hue-rotate(30deg)">
+        <input type="checkbox" id="use-coins-toggle" onchange="toggleCoinsDiscount()">
+        <div class="toggle-track"></div>
+      </label>
     </div>
     <button id="stripe-btn" onclick="doStripe()" class="w-full bg-[#635bff] text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
       <i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant
@@ -1409,6 +1691,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
   </div>
 </div>
 
+<input type="file" id="search-photo-inp" accept="image/*" class="hidden" onchange="onSearchPhoto(this)">
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1421,6 +1704,7 @@ const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
 let me=null,items=[],curItem=null,scanData=null,camStream=null;
 let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
 let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
+var extraPhotos=[];
 // FAVORITES (localStorage)
 var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
 
@@ -1769,6 +2053,7 @@ window.resetScan=function(){
   if(ps) ps.classList.add("hidden");
   var st=document.getElementById("scan-troc");
   if(st) st.checked=false;
+  extraPhotos=[];renderExtraPhotos();
   ["sh-hand","sh-relay","sh-colis"].forEach(function(id){
     var el=document.getElementById(id);
     if(el) el.checked=false;
@@ -1915,6 +2200,7 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
       model:scanData.model,
       shipping:scanData.shipping,
       troc:document.getElementById("scan-troc").checked||false,
+      extraPhotos:extraPhotos.length?extraPhotos:[],
       city:city,
       lat:coords?coords.lat:null,
       lng:coords?coords.lng:null,
@@ -1936,7 +2222,9 @@ window.openDetail=function(id){
   var i=items.find(function(x){return x.id===id;});
   if(!i) return;
   curItem=i;
-  document.getElementById("det-img").src=i.imageUrl||"";
+  // det-img kept for legacy compatibility, carousel will override
+  var legacyImg=document.getElementById("det-img");
+  if(legacyImg) legacyImg.src=i.imageUrl||"";
   document.getElementById("det-title").innerText=i.itemName||"";
   document.getElementById("det-price").innerText=(i.price||0)+"€";
   document.getElementById("det-cat").innerText=i.category||"";
@@ -2628,6 +2916,440 @@ setTimeout(function(){
   var bt=document.getElementById("boost-toggle");
   if(bt) bt.checked=!!localStorage.getItem("yb_boost");
 },500);
+
+// ════════════════════════════════════════════════════════
+// CARROUSEL PHOTOS
+// ════════════════════════════════════════════════════════
+var carPhotos=[],carIdx=0;
+function buildCarousel(photos){
+  carPhotos=photos&&photos.length?photos:[""];
+  carIdx=0;
+  var track=document.getElementById("det-carousel-track");
+  var dots=document.getElementById("det-dots");
+  var thumbs=document.getElementById("det-thumbs");
+  if(!track) return;
+  track.innerHTML=carPhotos.map(function(src){
+    return '<div style="width:100%;height:100%;flex-shrink:0;background:#f8f8f8"><img src="'+src+'" style="width:100%;height:100%;object-fit:contain;display:block;"></div>';
+  }).join("");
+  // Dots
+  if(carPhotos.length>1){
+    dots.innerHTML=carPhotos.map(function(_,i){return '<div class="photo-dot'+(i===0?' on':'')+'" onclick="goSlide('+i+')"></div>';}).join("");
+    document.getElementById("det-prev").style.display="flex";
+    document.getElementById("det-next").style.display="flex";
+  }else{
+    dots.innerHTML="";
+    document.getElementById("det-prev").style.display="none";
+    document.getElementById("det-next").style.display="none";
+  }
+  // Thumbs
+  if(carPhotos.length>1){
+    thumbs.innerHTML=carPhotos.map(function(src,i){
+      return '<img class="photo-thumb'+(i===0?' active':'')+'" src="'+src+'" onclick="goSlide('+i+')">';
+    }).join("");
+  }else{thumbs.innerHTML="";}
+  goSlide(0);
+}
+window.carNav=function(dir){goSlide((carIdx+dir+carPhotos.length)%carPhotos.length);};
+window.goSlide=function(idx){
+  carIdx=idx;
+  var track=document.getElementById("det-carousel-track");
+  if(track) track.style.transform="translateX(-"+(idx*100)+"%)";
+  document.querySelectorAll(".photo-dot").forEach(function(d,i){d.classList.toggle("on",i===idx);});
+  document.querySelectorAll(".photo-thumb").forEach(function(t,i){t.classList.toggle("active",i===idx);});
+};
+
+// ════════════════════════════════════════════════════════
+// EXTRA PHOTOS (scan form)
+// ════════════════════════════════════════════════════════
+var extraPhotos=[];
+window.addExtraPhotos=function(inp){
+  var files=Array.from(inp.files||[]);
+  files.forEach(function(f){
+    if(extraPhotos.length>=4) return;// max 4 extra (+ 1 main = 5)
+    var r=new FileReader();
+    r.onload=function(ev){
+      extraPhotos.push(ev.target.result);
+      renderExtraPhotos();
+    };
+    r.readAsDataURL(f);
+  });
+  inp.value="";
+};
+function renderExtraPhotos(){
+  var el=document.getElementById("extra-photos-list");
+  if(!el) return;
+  if(!extraPhotos.length){el.innerHTML='<p class="text-[10px] text-slate-500 self-center">Aucune photo supplémentaire</p>';return;}
+  el.innerHTML=extraPhotos.map(function(src,i){
+    return '<div style="position:relative;flex-shrink:0"><img src="'+src+'" class="photo-thumb active"><div class="photo-thumb-del" onclick="removeExtraPhoto('+i+')">×</div></div>';
+  }).join("");
+}
+window.removeExtraPhoto=function(i){extraPhotos.splice(i,1);renderExtraPhotos();};
+
+// ════════════════════════════════════════════════════════
+// PARTAGE RÉSEAUX SOCIAUX
+// ════════════════════════════════════════════════════════
+window.openShareModal=function(){
+  if(!curItem) return;
+  document.getElementById("share-prev-img").src=curItem.imageUrl||"";
+  document.getElementById("share-prev-title").innerText=curItem.itemName||"";
+  document.getElementById("share-prev-price").innerText=(curItem.price||0)+"€";
+  var url="https://youbiiiz.app/item/"+curItem.id;
+  document.getElementById("share-link-val").value=url;
+  var m=document.getElementById("share-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeShareModal=function(){
+  var m=document.getElementById("share-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.shareTo=function(net){
+  if(!curItem) return;
+  var item=curItem;
+  var title=encodeURIComponent(item.itemName+" — "+(item.price||0)+"€");
+  var url=encodeURIComponent("https://youbiiiz.app/item/"+item.id);
+  var text=encodeURIComponent("🛍 "+item.itemName+" — "+(item.price||0)+"€\nDispo sur Youbiiiz 👉 ");
+  var links={
+    whatsapp:"https://wa.me/?text="+text+url,
+    facebook:"https://www.facebook.com/sharer/sharer.php?u="+url,
+    twitter:"https://twitter.com/intent/tweet?text="+text+"&url="+url,
+    telegram:"https://t.me/share/url?url="+url+"&text="+text,
+    messenger:"https://www.facebook.com/dialog/send?link="+url+"&app_id=123456789",
+    sms:"sms:?body="+text+url
+  };
+  if(net==="instagram"){
+    // Instagram ne permet pas le partage URL direct → copie + instruction
+    navigator.clipboard.writeText("🛍 "+item.itemName+" — "+(item.price||0)+"€\nhttps://youbiiiz.app/item/"+item.id).then(function(){
+      toast("Texte copié ! Colle-le dans ta story Instagram 📸",true);
+    });
+    closeShareModal();
+    return;
+  }
+  if(net==="tiktok"){
+    navigator.clipboard.writeText("🛍 "+item.itemName+" — "+(item.price||0)+"€\nhttps://youbiiiz.app/item/"+item.id).then(function(){
+      toast("Lien copié ! Colle-le dans ta bio TikTok 🎵",true);
+    });
+    closeShareModal();
+    return;
+  }
+  if(links[net]) window.open(links[net],"_blank","noopener,width=600,height=500");
+  closeShareModal();
+};
+window.copyShareLink=function(){
+  var inp=document.getElementById("share-link-val");
+  navigator.clipboard.writeText(inp.value).then(function(){toast("Lien copié ! 📋",true);}).catch(function(){inp.select();document.execCommand("copy");toast("Lien copié !",true);});
+};
+
+// ════════════════════════════════════════════════════════
+// FAIRE UNE OFFRE
+// ════════════════════════════════════════════════════════
+window.openOffer=function(){
+  if(!curItem) return;
+  var price=parseFloat(curItem.price)||0;
+  document.getElementById("offer-asked").innerText=price+"€";
+  document.getElementById("offer-amount").value="";
+  document.getElementById("offer-amount").placeholder=Math.round(price*0.85);
+  // Hint
+  document.getElementById("offer-hint").innerText="Conseil : proposez entre "+Math.round(price*0.75)+"€ et "+Math.round(price*0.92)+"€ pour maximiser vos chances";
+  // Quick suggestions
+  var percs=[90,80,70];
+  document.getElementById("offer-quick").innerHTML=percs.map(function(p){
+    var v=Math.round(price*p/100);
+    return '<button onclick="document.getElementById(\'offer-amount\').value='+v+'" style="background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#0f172a">'+v+'€ <span style="color:#94a3b8;font-size:9px">(-'+Math.round(100-p)+'%)</span></button>';
+  }).join("");
+  var m=document.getElementById("offer-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeOffer=function(){
+  var m=document.getElementById("offer-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.sendOffer=function(){
+  var amt=parseFloat(document.getElementById("offer-amount").value);
+  if(!amt||amt<=0){toast("Entrez un montant valide");return;}
+  var price=parseFloat(curItem?curItem.price:0)||0;
+  if(amt>=price){toast("Votre offre doit être inférieure au prix demandé");return;}
+  closeOffer();
+  // Open chat with pre-filled offer message
+  openChat(curItem);
+  setTimeout(function(){
+    document.getElementById("chat-inp").value="Bonjour, je vous propose "+amt+"€ pour cet article. Est-ce que ce prix vous convient ?";
+    sendMsg();
+  },500);
+  toast("Offre envoyée : "+amt+"€ 🤝",true);
+};
+
+// ════════════════════════════════════════════════════════
+// SIGNALEMENT
+// ════════════════════════════════════════════════════════
+window.openReport=function(){
+  var m=document.getElementById("report-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeReport=function(){
+  var m=document.getElementById("report-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.submitReport=async function(reason){
+  closeReport();
+  if(!me||!curItem) return;
+  try{
+    await addDoc(collection(db,"reports"),{itemId:curItem.id,userId:me.uid,reason:reason,createdAt:serverTimestamp()});
+    toast("Signalement envoyé. Merci ! 🙏",true);
+  }catch(e){toast("Erreur signalement");}
+};
+
+// ════════════════════════════════════════════════════════
+// PROFIL VENDEUR PUBLIC
+// ════════════════════════════════════════════════════════
+window.openSellerProfile=function(){
+  if(!curItem) return;
+  var sellerId=curItem.userId;
+  var sellerItems=items.filter(function(i){return i.userId===sellerId;});
+  document.getElementById("sp-name").innerText="Vendeur #"+sellerId.slice(0,8);
+  document.getElementById("sp-count").innerText=sellerItems.length;
+  document.getElementById("sp-coins").innerText=Math.floor(Math.random()*200+50)+" 🪙";
+  var since=sellerItems.length?new Date((sellerItems[sellerItems.length-1].createdAt?sellerItems[sellerItems.length-1].createdAt.seconds*1000:Date.now())).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Récemment";
+  document.getElementById("sp-since").innerText="Membre depuis "+since;
+  // Rating
+  getDoc(doc(db,"users",sellerId)).then(function(d){
+    var rv=document.getElementById("sp-rating-val");
+    if(d.exists()&&d.data().rating){rv.innerText="★"+d.data().rating;}
+    else{rv.innerText="—";}
+    // Verified
+    var spv=document.getElementById("sp-verified");
+    if(spv) spv.classList.add("hidden");
+  }).catch(function(){});
+  // Listings grid
+  var el=document.getElementById("sp-listings");
+  el.innerHTML=sellerItems.map(function(i){
+    return '<div onclick="closeSellerProfile();openDetail(\''+i.id+'\')" style="cursor:pointer;background:#f8fafc;border:1px solid #e8ecf0;border-radius:14px;overflow:hidden"><div style="height:90px;background:#f1f5f9"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain;background:#f8f8f8;display:block"></div><div style="padding:8px"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div></div>';
+  }).join("")||'<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;padding:24px">Aucune annonce active</p>';
+  var m=document.getElementById("seller-profile-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeSellerProfile=function(){
+  var m=document.getElementById("seller-profile-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+
+// ════════════════════════════════════════════════════════
+// ANNONCES SIMILAIRES
+// ════════════════════════════════════════════════════════
+function renderSimilar(item){
+  var el=document.getElementById("det-similar");
+  if(!el) return;
+  var cat=item.category||"";
+  var price=parseFloat(item.price)||0;
+  var similar=items.filter(function(i){
+    return i.id!==item.id&&(i.category||"").toLowerCase()===cat.toLowerCase()&&Math.abs((parseFloat(i.price)||0)-price)<price*0.8;
+  }).slice(0,6);
+  if(!similar.length){
+    el.innerHTML='<p style="font-size:11px;color:#94a3b8;padding:8px 0">Aucune annonce similaire pour l\'instant</p>';
+    return;
+  }
+  el.innerHTML=similar.map(function(i){
+    return '<div onclick="openDetail(\''+i.id+'\')" style="flex-shrink:0;width:110px;cursor:pointer"><div style="width:110px;height:90px;background:#1e293b;border-radius:12px;overflow:hidden;border:1px solid rgba(148,163,184,.1);margin-bottom:5px"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain;display:block;background:#f8f8f8"></div><p style="font-size:11px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div>';
+  }).join("");
+}
+
+// ════════════════════════════════════════════════════════
+// HISTORIQUE DE NAVIGATION
+// ════════════════════════════════════════════════════════
+var browseHistory=JSON.parse(localStorage.getItem("yb_history")||"[]");
+function addToHistory(item){
+  browseHistory=browseHistory.filter(function(h){return h.id!==item.id;});
+  browseHistory.unshift({id:item.id,name:item.itemName,price:item.price,img:item.imageUrl,ts:Date.now()});
+  if(browseHistory.length>20) browseHistory=browseHistory.slice(0,20);
+  localStorage.setItem("yb_history",JSON.stringify(browseHistory));
+}
+function renderHistory(){
+  var el=document.getElementById("history-list");
+  if(!el) return;
+  var valid=browseHistory.filter(function(h){return items.find(function(i){return i.id===h.id;});});
+  if(!valid.length){el.innerHTML='<p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune annonce consultée</p>';return;}
+  el.innerHTML=valid.slice(0,8).map(function(h){
+    var ago=timeSince(h.ts);
+    return '<div class="hist-item" onclick="openDetail(\''+h.id+'\')"><img src="'+(h.img||"")+'" style="width:44px;height:44px;border-radius:10px;object-fit:contain;background:#f8fafc;border:1px solid #e8ecf0;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(h.name||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(h.price||0)+'€</p></div><p style="font-size:10px;color:#94a3b8;flex-shrink:0">'+ago+'</p></div>';
+  }).join("");
+}
+function timeSince(ts){
+  var s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return "à l'instant";
+  if(s<3600) return Math.floor(s/60)+"min";
+  if(s<86400) return Math.floor(s/3600)+"h";
+  return Math.floor(s/86400)+"j";
+}
+window.clearHistory=function(){browseHistory=[];localStorage.removeItem("yb_history");renderHistory();};
+
+// ════════════════════════════════════════════════════════
+// YOUBIIIZ COINS
+// ════════════════════════════════════════════════════════
+function getCoins(){return parseInt(localStorage.getItem("yb_coins")||"0");}
+function addCoins(n,reason){
+  var c=getCoins()+n;
+  localStorage.setItem("yb_coins",c);
+  showPushBanner("🪙 +"+n+" Coins gagnés !",reason||"Youbiiiz Coins");
+  updateCoinsUI();
+}
+function updateCoinsUI(){
+  var c=getCoins();
+  var cv=document.getElementById("profile-coins-val");
+  var ce=document.getElementById("profile-coins-eur");
+  if(cv) cv.innerText=c;
+  if(ce) ce.innerText=(c*0.01).toFixed(2)+"€";
+}
+// Coins dans paiement
+var payMode="1x";
+window.selectPayMode=function(mode){
+  payMode=mode;
+  document.getElementById("pay-mode-1x").className="pay3x-option"+(mode==="1x"?" selected":"");
+  document.getElementById("pay-mode-3x").className="pay3x-option"+(mode==="3x"?" selected":"");
+};
+window.toggleCoinsDiscount=function(){
+  var cb=document.getElementById("use-coins-toggle");
+  var row=document.getElementById("pay-coins-row");
+  var tot=parseFloat((payItem?payItem.price:0)||0)+(selShip?selShip.price:0);
+  var coins=getCoins();
+  var discount=Math.min(coins*0.01,tot*0.1);// max 10% de réduction
+  if(cb.checked){
+    row.style.display="flex";
+    document.getElementById("pay-coins-discount").innerText="-"+discount.toFixed(2)+"€";
+    document.getElementById("pay-total").innerText=(tot-discount).toFixed(2)+"€";
+  }else{
+    row.style.display="none";
+    document.getElementById("pay-total").innerText=tot.toFixed(2)+"€";
+  }
+};
+
+// Override openPay to init coins UI
+var _origOpenPay=window.openPay;
+window.openPay=function(i){
+  _origOpenPay(i);
+  payMode="1x";
+  var tot=parseFloat(i.price||0);
+  var per3=Math.ceil(tot/3*100)/100;
+  document.getElementById("pay-1x-amount").innerText=tot+"€";
+  document.getElementById("pay-3x-amount").innerText=per3+"€/mois";
+  document.getElementById("pay-3x-detail").innerText="3 prélèvements de "+per3+"€ · Total "+tot+"€ · 0% de frais";
+  // Coins
+  var coins=getCoins();
+  var payCoins=document.getElementById("pay-use-coins");
+  if(coins>0&&payCoins){
+    payCoins.classList.remove("hidden");
+    document.getElementById("pay-coins-avail").innerText=coins+" coins disponibles (-"+(coins*0.01).toFixed(2)+"€ max)";
+  }else if(payCoins){payCoins.classList.add("hidden");}
+};
+
+// ════════════════════════════════════════════════════════
+// RECHERCHE PAR PHOTO (IA)
+// ════════════════════════════════════════════════════════
+window.openSearchByPhoto=function(){
+  document.getElementById("sph-idle").classList.remove("hidden");
+  document.getElementById("sph-loading").classList.add("hidden");
+  document.getElementById("sph-results").classList.add("hidden");
+  var m=document.getElementById("search-photo-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeSearchPhoto=function(){
+  var m=document.getElementById("search-photo-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.onSearchPhoto=function(inp){
+  var f=inp.files[0];if(!f)return;
+  document.getElementById("sph-idle").classList.add("hidden");
+  document.getElementById("sph-loading").classList.remove("hidden");
+  var r=new FileReader();
+  r.onload=function(ev){
+    analyzeSearchPhoto(ev.target.result);
+  };
+  r.readAsDataURL(f);
+  inp.value="";
+};
+async function analyzeSearchPhoto(b64){
+  try{
+    var mime=b64.indexOf("data:image/png")===0?"image/png":"image/jpeg";
+    var resp=await fetch("https://analyzeimage-xjtnixfrra-uc.a.run.app",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({imageBase64:b64.split(",")[1],mimeType:mime})
+    });
+    var d=await resp.json();
+    var detected=d.title||d.category||"Objet inconnu";
+    document.getElementById("sph-loading").classList.add("hidden");
+    document.getElementById("sph-results").classList.remove("hidden");
+    document.getElementById("sph-detected").innerText=detected;
+    // Find matching items
+    var keywords=(detected+" "+(d.category||"")).toLowerCase().split(/[\s,]+/).filter(function(w){return w.length>3;});
+    var matches=items.filter(function(i){
+      var text=((i.itemName||"")+" "+(i.category||"")+" "+(i.description||"")).toLowerCase();
+      return keywords.some(function(k){return text.indexOf(k)>=0;});
+    }).slice(0,5);
+    var el=document.getElementById("sph-list");
+    if(!matches.length){el.innerHTML='<p style="font-size:12px;color:#94a3b8;text-align:center;padding:16px">Aucune annonce similaire trouvée</p>';return;}
+    el.innerHTML=matches.map(function(i){
+      return '<div onclick="closeSearchPhoto();openDetail(\''+i.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0"><img src="'+(i.imageUrl||"")+'" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:#fff;flex-shrink:0;border:1px solid #e8ecf0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div><i class="fa-solid fa-chevron-right" style="color:#94a3b8;font-size:11px;flex-shrink:0"></i></div>';
+    }).join("");
+  }catch(e){
+    document.getElementById("sph-loading").classList.add("hidden");
+    document.getElementById("sph-idle").classList.remove("hidden");
+    toast("Erreur analyse: "+e.message);
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE openDetail pour ajouter : historique, coins, carousel, similar
+// ════════════════════════════════════════════════════════
+var _origOpenDetail=window.openDetail;
+window.openDetail=function(id){
+  _origOpenDetail(id);
+  var i=items.find(function(x){return x.id===id;});
+  if(!i) return;
+  // Carrousel
+  var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
+  buildCarousel(photos);
+  // Annonces similaires
+  renderSimilar(i);
+  // Historique
+  addToHistory(i);
+  // Coins
+  var price=parseFloat(i.price)||0;
+  var coinsEarn=Math.round(price*0.05);
+  var coinsEl=document.getElementById("det-coins-earn");
+  if(coinsEl&&coinsEarn>0){
+    coinsEl.classList.remove("hidden");
+    coinsEl.innerText="🪙 +"+coinsEarn+" coins si tu achètes";
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// STATS PAR ANNONCE (myCard upgrade)
+// ════════════════════════════════════════════════════════
+function myCard(i){
+  var favCount=0;// simulated
+  var viewCount=i.views||0;
+  return '<div class="card fi" style="background:#fff"><div class="sq"><img src="'+(i.imageUrl||"")+'">'+(i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+"</span>":"")+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9;margin-bottom:4px">'+(i.price||0)+'€</p><div style="display:flex;gap:6px;margin-bottom:6px"><span style="font-size:9px;color:#8b5cf6;font-weight:700;background:#f5f3ff;padding:1px 6px;border-radius:99px"><i class="fa-solid fa-eye" style="font-size:8px"></i> '+viewCount+'</span></div><div style="display:flex;gap:5px"><button onclick="event.stopPropagation();openEdit(\''+i.id+'\')" style="flex:1;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:5px;font-size:10px;font-weight:700;cursor:pointer;color:#0f172a">Modifier</button><button onclick="event.stopPropagation();confirmDel(\''+i.id+'\')" style="flex:1;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:9px;padding:5px;font-size:10px;font-weight:700;color:#f87171;cursor:pointer">Supp.</button></div></div></div>';
+}
+
+// ════════════════════════════════════════════════════════
+// INIT PROFILE : coins + historique
+// ════════════════════════════════════════════════════════
+var _origUpdateProfile=window.updateProfile||function(){};
+// Patch pour appeler renderHistory et updateCoinsUI
+var _origBoot=boot;
+boot=function(){
+  _origBoot();
+  setTimeout(function(){updateCoinsUI();renderHistory();renderAlerts();},1000);
+};
+// Also call on switchView profile
+var _origSwitchView=window.switchView;
+window.switchView=function(v){
+  _origSwitchView(v);
+  if(v==="profile"){updateCoinsUI();renderHistory();renderAlerts();renderFavs();}
+};
+
+// Gain de coins lors d'une vente réussie (après paiement retour)
+var _origCheckPayReturn=checkPayReturn;
+
+
 
 </script>
 </body>
