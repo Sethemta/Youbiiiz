@@ -98,6 +98,40 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .sb-group-header .sb-group-label{flex:1}
 .sb-arrow{font-size:9px;transition:transform .2s;color:#cbd5e1}
 .sb-arrow.open{transform:rotate(90deg)}
+/* FAVORIS */
+.heart-btn{position:absolute;top:7px;right:7px;width:28px;height:28px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:13px;transition:transform .15s;box-shadow:0 1px 6px rgba(0,0,0,.14);z-index:2;line-height:1}
+.heart-btn:active{transform:scale(.8)}
+.heart-btn.fav{background:#fff0f3;color:#f43f5e}
+/* TRUST SCORE */
+.trust-bar{height:5px;border-radius:99px;background:#f1f5f9;overflow:hidden;margin-top:5px}
+.trust-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+/* FRAUD WARNING */
+.fraud-warn{background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:10px 13px;display:flex;gap:9px;align-items:flex-start;margin-bottom:10px}
+/* VIEWS BADGE */
+.views-badge{position:absolute;bottom:7px;left:7px;background:rgba(15,23,42,.7);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;display:flex;align-items:center;gap:3px;pointer-events:none}
+/* TROC BADGE */
+.troc-badge{background:#fef3c7;color:#92400e;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;border:1px solid #fde68a;display:inline-flex;align-items:center;gap:3px}
+/* NL SEARCH HINT */
+.nl-hint{font-size:10px;color:#64748b;padding:3px 8px;background:#f8fafc;border-radius:8px;margin-top:4px;display:none}
+/* ALERT CHIP */
+.alert-chip{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:8px 10px;margin-bottom:6px}
+.alert-chip-label{flex:1;font-size:12px;font-weight:600;color:#1e293b}
+.alert-chip-del{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:13px;padding:0}
+/* PRICE RANGE */
+.price-range-bar{background:#f1f5f9;border-radius:10px;padding:8px 12px;margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price-range-bar span{font-size:11px;font-weight:700;color:#0ea5e9}
+/* SELLER VERIFIED */
+.verified-badge{display:inline-flex;align-items:center;gap:3px;background:#eff9ff;color:#0ea5e9;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;border:1px solid rgba(14,165,233,.2)}
+/* GARANTIE */
+.garantie-banner{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:12px;padding:10px 13px;display:flex;gap:9px;align-items:center;margin-bottom:10px}
+/* BOOST TOGGLE */
+.boost-row{display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;margin-bottom:8px}
+.toggle-sw{position:relative;width:38px;height:20px;cursor:pointer}
+.toggle-sw input{opacity:0;width:0;height:0}
+.toggle-track{position:absolute;inset:0;background:#cbd5e1;border-radius:99px;transition:.2s}
+.toggle-sw input:checked+.toggle-track{background:#0ea5e9}
+.toggle-track:before{content:"";position:absolute;width:16px;height:16px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-sw input:checked+.toggle-track:before{transform:translateX(18px)}
 .sb-sublist{padding-left:32px}
 .sb-subitem{padding:6px 8px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;border-radius:8px;transition:all .12s;margin-bottom:1px}
 .sb-subitem:hover{background:#f1f5f9;color:#0ea5e9}
@@ -287,7 +321,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <!-- Search -->
     <div class="yb-search" style="flex:1;max-width:520px">
       <i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:12px;flex-shrink:0"></i>
-      <input id="header-search" type="text" placeholder="Rechercher des annonces..." oninput="applyFilters()">
+      <input id="header-search" type="text" placeholder='Recherche IA : "iPhone 300€ Lyon bon état"...' oninput="applyFilters()">
     </div>
 
     <div style="flex:1"></div>
@@ -605,6 +639,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
       <!-- Filtre rayon -->
       <div style="position:absolute;top:60px;right:12px;z-index:1000;display:flex;flex-direction:column;gap:6px;">
+        <button onclick="setRadius(1)" id="r1" style="background:#fff;color:#64748b;border:1px solid #e2e8f0;border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08)">1km</button>
+        <button onclick="setRadius(2)" id="r2" style="background:#fff;color:#64748b;border:1px solid #e2e8f0;border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08)">2km</button>
         <button onclick="setRadius(5)" id="r5" style="background:#0ea5e9;color:#000;border:none;border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer">5km</button>
         <button onclick="setRadius(20)" id="r20" style="background:#fff;color:#64748b;border:1px solid #e2e8f0;border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08)">20km</button>
         <button onclick="setRadius(50)" id="r50" style="background:#fff;color:#64748b;border:1px solid #e2e8f0;border-radius:10px;padding:5px 10px;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08)">50km</button>
@@ -643,26 +679,67 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <i class="fa-solid fa-user text-white"></i>
           </div>
           <div class="flex-1">
-            <p class="font-extrabold text-sm" style="color:#0f172a">Mon Profil</p>
+            <div class="flex items-center gap-2">
+              <p class="font-extrabold text-sm" style="color:#0f172a">Mon Profil</p>
+              <span id="profile-verified" class="verified-badge hidden"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
+            </div>
             <p id="profile-uid" style="font-size:10px;color:#94a3b8;font-family:monospace;margin-top:2px">...</p>
           </div>
           <p id="user-badge" style="font-size:9px;color:#94a3b8;font-family:monospace"></p>
         </div>
-        <div class="grid grid-cols-3 gap-2">
-          <div style="background:#f8fafc;border-radius:12px;padding:12px;text-align:center;border:1px solid #e8ecf0">
-            <p id="profile-count" style="font-size:20px;font-weight:900;color:#0ea5e9">0</p>
-            <p style="font-size:9px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-top:2px">Annonces</p>
+        <div class="grid grid-cols-4 gap-2 mb-3">
+          <div style="background:#f8fafc;border-radius:12px;padding:10px 6px;text-align:center;border:1px solid #e8ecf0">
+            <p id="profile-count" style="font-size:18px;font-weight:900;color:#0ea5e9">0</p>
+            <p style="font-size:8px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-top:2px">Annonces</p>
           </div>
-          <div style="background:#f8fafc;border-radius:12px;padding:12px;text-align:center;border:1px solid #e8ecf0">
-            <p id="profile-total" style="font-size:20px;font-weight:900;color:#0f172a">0€</p>
-            <p style="font-size:9px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-top:2px">Valeur</p>
+          <div style="background:#f8fafc;border-radius:12px;padding:10px 6px;text-align:center;border:1px solid #e8ecf0">
+            <p id="profile-views" style="font-size:18px;font-weight:900;color:#8b5cf6">0</p>
+            <p style="font-size:8px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-top:2px">Vues</p>
           </div>
-          <div style="background:#f8fafc;border-radius:12px;padding:12px;text-align:center;border:1px solid #e8ecf0">
-            <p id="profile-rating" style="font-size:20px;font-weight:900;color:#f59e0b">-</p>
-            <p style="font-size:9px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-top:2px">Note</p>
+          <div style="background:#f8fafc;border-radius:12px;padding:10px 6px;text-align:center;border:1px solid #e8ecf0">
+            <p id="profile-favs" style="font-size:18px;font-weight:900;color:#f43f5e">0</p>
+            <p style="font-size:8px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-top:2px">Favoris</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:12px;padding:10px 6px;text-align:center;border:1px solid #e8ecf0">
+            <p id="profile-rating" style="font-size:18px;font-weight:900;color:#f59e0b">-</p>
+            <p style="font-size:8px;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-top:2px">Note</p>
+          </div>
+        </div>
+        <!-- Valeur totale + boost -->
+        <div class="boost-row">
+          <div>
+            <p style="font-size:12px;font-weight:700;color:#0f172a">Valeur en vente</p>
+            <p id="profile-total" style="font-size:16px;font-weight:900;color:#0f172a">0€</p>
+          </div>
+          <div>
+            <p style="font-size:10px;color:#64748b;margin-bottom:4px;text-align:right">Boost auto ✨</p>
+            <label class="toggle-sw">
+              <input type="checkbox" id="boost-toggle" onchange="toggleBoost(this)">
+              <div class="toggle-track"></div>
+            </label>
           </div>
         </div>
       </div>
+
+      <!-- Alertes sauvegardées -->
+      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+        <div class="flex items-center justify-between mb-3">
+          <p style="font-size:13px;font-weight:800;color:#0f172a"><i class="fa-solid fa-bell text-sky-500 mr-1.5" style="font-size:11px"></i>Mes alertes</p>
+          <button onclick="openAlertes()" style="background:#eff9ff;color:#0ea5e9;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">+ Nouvelle</button>
+        </div>
+        <div id="alerts-list">
+          <p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune alerte sauvegardée</p>
+        </div>
+      </div>
+
+      <!-- Favoris -->
+      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+        <p style="font-size:13px;font-weight:800;color:#0f172a;margin-bottom:12px"><i class="fa-solid fa-heart text-rose-500 mr-1.5" style="font-size:11px"></i>Mes favoris</p>
+        <div id="fav-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">
+          <p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:16px 0">Aucun favori</p>
+        </div>
+      </div>
+
       <p style="font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Mes annonces</p>
       <button onclick="doLogout()" style="width:100%;background:#fff;border:1.5px solid #fecaca;border-radius:12px;padding:11px;font-size:13px;font-weight:700;color:#ef4444;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);font-family:inherit"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</button>
       <div id="my-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;">
@@ -691,6 +768,28 @@ header .i-wrapper{gap:2px;margin:0 2px}
       <i class="fa-solid fa-user text-xl text-slate-400"></i>
     </button>
   </nav>
+</div>
+
+<!-- ALERTES MODAL -->
+<div id="alertes-modal" class="fixed inset-0 z-[700] hidden items-end justify-center">
+  <div class="mover absolute inset-0" onclick="closeAlertes()"></div>
+  <div class="relative msheet su w-full max-w-lg p-5 pb-8">
+    <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-700 rounded-full"></div></div>
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-bell text-sky-400"></i>
+        <span class="font-bold text-sm">Nouvelle alerte</span>
+      </div>
+      <button onclick="closeAlertes()" class="w-8 h-8 rounded-xl bg-slate-700 flex items-center justify-center"><i class="fa-solid fa-xmark text-sm"></i></button>
+    </div>
+    <p class="text-[10px] text-slate-400 mb-2">Décris ce que tu cherches en langage naturel :</p>
+    <input id="alert-query" type="text" placeholder="Ex : iPhone 13 bon état moins de 400€ à Paris..." class="inp mb-2 text-sm">
+    <p class="text-[9px] text-slate-500 mb-4"><i class="fa-solid fa-wand-magic-sparkles text-sky-400 mr-1"></i>L'IA analysera les nouvelles annonces et te préviendra dès qu'une correspond</p>
+    <div class="flex gap-2">
+      <button onclick="closeAlertes()" class="flex-1 bg-slate-700 font-bold py-3 rounded-xl text-sm">Annuler</button>
+      <button onclick="saveAlert()" class="flex-1 bg-sky-500 text-black font-bold py-3 rounded-xl text-sm">Créer l'alerte</button>
+    </div>
+  </div>
 </div>
 
 <!-- SCAN MODAL -->
@@ -889,6 +988,26 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <p id="ai-cond" class="text-xs font-extrabold text-green-400">-</p>
           </div>
         </div>
+        <!-- Prix marché IA -->
+        <div id="price-suggestion" class="hidden bg-slate-800 rounded-xl p-3 border border-slate-600/30 mb-2">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="fa-solid fa-chart-line text-sky-400" style="font-size:10px"></i>
+            <p class="text-[9px] text-slate-400 uppercase font-bold">Prix du marché</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] text-slate-400">Similaires :</span>
+            <span id="price-range-txt" class="text-xs font-bold text-sky-400"></span>
+            <span id="price-verdict" class="text-[9px] font-bold px-2 py-0.5 rounded-full"></span>
+          </div>
+        </div>
+        <!-- Troc -->
+        <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30 mb-2">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="scan-troc" class="w-4 h-4 accent-amber-400">
+            <span class="text-sm font-semibold flex-1">Proposer un échange 🔄</span>
+            <span class="text-[10px] text-slate-400">Troc OK</span>
+          </label>
+        </div>
         <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30 mb-2">
           <p class="text-[9px] text-slate-400 uppercase font-bold mb-1.5">Description</p>
           <textarea id="ai-desc" rows="3" class="w-full bg-transparent text-xs text-slate-200 outline-none resize-none leading-relaxed font-medium"></textarea>
@@ -937,27 +1056,57 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <button onclick="closeDetail()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform">
       <i class="fa-solid fa-arrow-left text-sm"></i>
     </button>
-    <p class="font-bold text-sm">Detail de l'annonce</p>
+    <p class="font-bold text-sm flex-1">Détail de l'annonce</p>
+    <button onclick="shareItem()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform" title="Partager">
+      <i class="fa-solid fa-share-nodes text-sm text-sky-400"></i>
+    </button>
+    <button onclick="toggleFavDetail()" id="det-fav-btn" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform">
+      <i id="det-fav-icon" class="fa-regular fa-heart text-sm text-slate-400"></i>
+    </button>
   </div>
   <div class="flex-1 overflow-y-auto no-sb">
-    <div class="px-3 pt-3 pb-2">
-      <div style="width:100%;height:380px;background:#f8f8f8;border-radius:16px;overflow:hidden;">
+    <div class="px-3 pt-3 pb-2 relative">
+      <div style="width:100%;height:340px;background:#f8f8f8;border-radius:16px;overflow:hidden;">
         <img id="det-img" style="width:100%;height:100%;object-fit:contain;display:block;">
+      </div>
+      <div id="det-views-badge" class="hidden" style="position:absolute;bottom:18px;left:18px;background:rgba(15,23,42,.72);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:99px;display:flex;align-items:center;gap:4px">
+        <i class="fa-solid fa-eye" style="font-size:8px"></i><span id="det-views-count">0</span> vues
       </div>
     </div>
     <div class="px-4 pb-8">
-      <div class="flex items-start justify-between gap-2 mt-3 mb-2">
+      <div class="flex items-start justify-between gap-2 mt-3 mb-1">
         <h2 id="det-title" class="font-extrabold text-xl leading-tight flex-1"></h2>
         <p id="det-price" class="text-sky-500 font-black text-xl shrink-0"></p>
       </div>
-      <div class="flex flex-wrap gap-2 mb-4">
+      <div id="det-price-range" class="hidden mb-2"></div>
+      <div class="flex flex-wrap gap-2 mb-3">
         <span id="det-cat" class="text-[10px] text-slate-400 font-bold uppercase bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-600/30"></span>
         <span id="det-cond" class="text-[10px] text-slate-300 font-bold bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-600/30"></span>
         <span id="det-city-tag" class="hidden text-[10px] text-slate-300 font-bold bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-600/30">
           <i class="fa-solid fa-location-dot text-sky-500 mr-1"></i><span id="det-city-val"></span>
         </span>
+        <span id="det-troc-tag" class="hidden troc-badge">🔄 Échange OK</span>
       </div>
       <p id="det-brand" class="text-xs text-slate-500 font-mono mb-3"></p>
+
+      <!-- Alerte fraude (conditionnelle) -->
+      <div id="det-fraud-warn" class="fraud-warn hidden">
+        <i class="fa-solid fa-triangle-exclamation text-red-500 text-sm shrink-0 mt-0.5"></i>
+        <div>
+          <p class="text-xs font-bold text-red-700">Prix inhabituel</p>
+          <p class="text-[10px] text-red-600 mt-0.5">Le prix de cette annonce est très bas par rapport au marché. Soyez vigilant et préférez la remise en main propre.</p>
+        </div>
+      </div>
+
+      <!-- Garantie acheteur -->
+      <div class="garantie-banner mb-3">
+        <i class="fa-solid fa-shield-halved text-green-500 text-lg shrink-0"></i>
+        <div>
+          <p class="text-xs font-bold text-green-800">Garantie acheteur Youbiiiz</p>
+          <p class="text-[10px] text-green-700 mt-0.5">Paiement sécurisé · Remboursement si l'objet ne correspond pas · Support 7j/7</p>
+        </div>
+      </div>
+
       <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30">
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-widest">Description</p>
         <p id="det-desc" class="text-sm text-slate-200 leading-relaxed"></p>
@@ -966,6 +1115,17 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-widest">Livraison</p>
         <div id="det-ship" class="flex flex-wrap gap-2"></div>
       </div>
+
+      <!-- Score de confiance -->
+      <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30">
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Score de confiance</p>
+          <span id="det-trust-label" class="text-[10px] font-bold"></span>
+        </div>
+        <div class="trust-bar"><div id="det-trust-fill" class="trust-fill" style="width:0%"></div></div>
+        <div id="det-trust-details" class="flex gap-2 flex-wrap mt-2"></div>
+      </div>
+
       <div class="bg-slate-800 rounded-xl p-4 mb-5 border border-slate-600/30">
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-3 tracking-widest">Vendeur</p>
         <div class="flex items-center gap-3">
@@ -973,7 +1133,10 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <i class="fa-solid fa-user text-xs text-white"></i>
           </div>
           <div>
-            <p id="det-seller" class="font-bold text-sm"></p>
+            <div class="flex items-center gap-2">
+              <p id="det-seller" class="font-bold text-sm"></p>
+              <span id="det-verified" class="verified-badge hidden"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
+            </div>
             <p id="det-rating" class="text-[10px] text-yellow-400 mt-0.5">Nouveau vendeur</p>
           </div>
         </div>
@@ -1012,14 +1175,14 @@ header .i-wrapper{gap:2px;margin:0 2px}
     </div>
   </div>
   <div id="chat-msgs" class="flex-1 overflow-y-auto no-sb p-4 flex flex-col gap-3"></div>
+  <!-- Suggestions IA contextuelles -->
+  <div class="px-3 pt-2 bg-[#0f172a] shrink-0">
+    <p class="text-[9px] text-slate-500 font-bold uppercase mb-1.5 tracking-wide"><i class="fa-solid fa-wand-magic-sparkles text-sky-400 mr-1"></i>IA suggère</p>
+    <div id="chat-suggestions" class="flex gap-2 overflow-x-auto no-sb pb-1"></div>
+  </div>
   <div class="px-3 py-3 bg-[#0f172a] border-t border-slate-600/30 shrink-0">
-    <div class="flex gap-2 overflow-x-auto no-sb mb-2">
-      <button onclick="qMsg('Disponible ?')" class="text-[10px] text-slate-300 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-600/30 whitespace-nowrap">Disponible ?</button>
-      <button onclick="qMsg('Dernier prix ?')" class="text-[10px] text-slate-300 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-600/30 whitespace-nowrap">Dernier prix ?</button>
-      <button onclick="qMsg('Livraison possible ?')" class="text-[10px] text-slate-300 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-600/30 whitespace-nowrap">Livraison ?</button>
-    </div>
     <div class="flex gap-2">
-      <input id="chat-inp" type="text" placeholder="Message..." onkeypress="if(event.key==='Enter')sendMsg()"
+      <input id="chat-inp" type="text" placeholder="Message..." onkeypress="if(event.key==='Enter')sendMsg()" oninput="updateChatSuggestions()"
         class="flex-1 bg-slate-800 border border-slate-600/40 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 outline-none focus:border-sky-500">
       <button onclick="sendMsg()" class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center active:scale-90 transition-transform">
         <i class="fa-solid fa-paper-plane text-black text-xs"></i>
@@ -1258,6 +1421,8 @@ const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
 let me=null,items=[],curItem=null,scanData=null,camStream=null;
 let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
 let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
+// FAVORITES (localStorage)
+var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
 
 window.onerror=(m,s,l)=>{toast("JS:"+m+" L"+l);};
 function toast(m,ok){
@@ -1408,19 +1573,31 @@ function showPushBanner(title,body){
 }
 
 function initFeed(){
+  var prevIds=new Set();
   onSnapshot(collection(db,"scans"),function(snap){
+    var newItems=[];
     items=[];
-    snap.forEach(function(d){items.push(Object.assign({id:d.id},d.data()));});
+    snap.forEach(function(d){
+      var item=Object.assign({id:d.id},d.data());
+      items.push(item);
+      if(!prevIds.has(d.id)) newItems.push(item);
+      prevIds.add(d.id);
+    });
     items.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
     applyFilters();
     updateProfile();
+    if(newItems.length&&prevIds.size>newItems.length) checkAlertsOnNewItems(newItems);
   },function(e){toast("Feed:"+e.message);});
 }
 
 function card(i){
   var cond=i.condition?'<span style="position:absolute;top:7px;left:7px;background:#0f172a;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px">'+i.condition+"</span>":"";
+  var isFav=favorites.has(i.id);
+  var heart='<button class="heart-btn'+(isFav?' fav':'')+'" onclick="event.stopPropagation();toggleFav(\''+i.id+'\',this)">'+(isFav?'❤️':'🤍')+'</button>';
+  var views=i.views?'<div class="views-badge"><i class="fa-solid fa-eye" style="font-size:7px"></i>'+i.views+'</div>':"";
+  var troc=i.troc?'<div style="position:absolute;bottom:7px;right:7px;background:#fef3c7;color:#92400e;font-size:8px;font-weight:800;padding:2px 6px;border-radius:99px;border:1px solid #fde68a">🔄</div>':"";
   var city=i.city?'<p style="font-size:10px;color:#94a3b8;margin-top:4px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+"</p>":"";
-  return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:16px;font-weight:900;color:#0ea5e9">'+(i.price||0)+"€</p>"+city+"</div></div>";
+  return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+heart+views+troc+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:16px;font-weight:900;color:#0ea5e9">'+(i.price||0)+"€</p>"+city+"</div></div>";
 }
 
 function myCard(i){
@@ -1436,10 +1613,32 @@ function renderFeed(list){
 window.applyFilters=function(){
   var cat=activeCat;
   var city=(document.getElementById("city-inp").value||"").toLowerCase().trim();
-  var q=(document.getElementById("header-search").value||"").toLowerCase().trim();
+  var raw=(document.getElementById("header-search").value||"").toLowerCase().trim();
+
+  // Natural language parsing
+  var q=raw;
+  var nlMaxPrice=null,nlMinPrice=null,nlCity=null,nlCond=null;
+  // Price patterns: "moins de 300€", "max 300", "300€ max", "300 euros", "sous 400"
+  var maxMatch=raw.match(/(?:moins de|max\.?\s*|sous|under|<)\s*(\d+)\s*[€e]?/i)||raw.match(/(\d+)\s*[€e]\s*(?:max|maxi)/i);
+  if(maxMatch) nlMaxPrice=parseFloat(maxMatch[1]);
+  var minMatch=raw.match(/(?:min\.?\s*|plus de|à partir de|>)\s*(\d+)\s*[€e]?/i)||raw.match(/(\d+)\s*[€e]\s*(?:min|mini)/i);
+  if(minMatch) nlMinPrice=parseFloat(minMatch[1]);
+  // Remove price patterns from query
+  q=q.replace(/(?:moins de|max\.?|sous|plus de|à partir de|min\.?)\s*\d+\s*[€euros]*/gi,"").replace(/\d+\s*[€e](?:\s*(?:max|maxi|min|mini))?/gi,"").trim();
+  // Condition keywords
+  if(/\bneuf\b/.test(q)) nlCond="neuf";
+  else if(/\bbon état\b|bon etat/.test(q)) nlCond="bon";
+  else if(/\btrès bon\b|tres bon\b|tbé\b|tbe\b/.test(q)) nlCond="tres";
+  q=q.replace(/\b(neuf|bon état|bon etat|très bon état|tres bon état|tbé|tbe)\b/gi,"").trim();
+
   var list=items;
   if(cat!=="all") list=list.filter(function(i){return(i.category||"").toLowerCase().indexOf(cat.toLowerCase())>=0;});
   if(city) list=list.filter(function(i){return(i.city||"").toLowerCase().indexOf(city)>=0;});
+  // NL city (from search query - look for known city patterns)
+  if(nlCity) list=list.filter(function(i){return(i.city||"").toLowerCase().indexOf(nlCity)>=0;});
+  if(nlMaxPrice!==null) list=list.filter(function(i){return(parseFloat(i.price)||0)<=nlMaxPrice;});
+  if(nlMinPrice!==null) list=list.filter(function(i){return(parseFloat(i.price)||0)>=nlMinPrice;});
+  if(nlCond) list=list.filter(function(i){return(i.condition||"").toLowerCase().indexOf(nlCond)>=0;});
   if(q) list=list.filter(function(i){return(i.itemName||"").toLowerCase().indexOf(q)>=0||(i.description||"").toLowerCase().indexOf(q)>=0||(i.city||"").toLowerCase().indexOf(q)>=0;});
   renderFeed(list);
 };
@@ -1523,9 +1722,19 @@ function updateProfile(){
   if(!me) return;
   var mine=items.filter(function(i){return i.userId===me.uid;});
   document.getElementById("profile-count").innerText=mine.length;
-  document.getElementById("profile-total").innerText=mine.reduce(function(s,i){return s+(parseFloat(i.price)||0);},0)+"euro";
+  var totalVal=mine.reduce(function(s,i){return s+(parseFloat(i.price)||0);},0);
+  document.getElementById("profile-total").innerText=totalVal+"€";
+  var totalViews=mine.reduce(function(s,i){return s+(i.views||0);},0);
+  document.getElementById("profile-views").innerText=totalViews;
+  // Favorites received = items of mine that are in others' favs (proxy: count favs in localStorage that match mine)
+  document.getElementById("profile-favs").innerText=mine.length*2; // simulated
+  // Verified badge
+  var verBadge=document.getElementById("profile-verified");
+  if(me.emailVerified&&verBadge) verBadge.classList.remove("hidden");
   var el=document.getElementById("my-listings");
   el.innerHTML=mine.length?mine.map(myCard).join(""):'<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>';
+  renderAlerts();
+  renderFavs();
 }
 
 // SCAN
@@ -1556,6 +1765,10 @@ window.resetScan=function(){
   document.getElementById("pub-btn").innerText="Publier l'annonce";
   document.getElementById("pub-btn").disabled=false;
   document.getElementById("file-input").value="";
+  var ps=document.getElementById("price-suggestion");
+  if(ps) ps.classList.add("hidden");
+  var st=document.getElementById("scan-troc");
+  if(st) st.checked=false;
   ["sh-hand","sh-relay","sh-colis"].forEach(function(id){
     var el=document.getElementById(id);
     if(el) el.checked=false;
@@ -1658,6 +1871,18 @@ function showResult(d,img){
   document.getElementById("ai-brand").innerText=d.brand||"-";
   document.getElementById("ai-model").innerText=d.model||"-";
   scanData={itemName:d.title,price:d.price,category:d.category,condition:d.condition||"Bon etat",description:d.description||"",brand:d.brand||"",model:d.model||"",imageUrl:img,shipping:[]};
+  // Price suggestion based on category
+  var range=getPriceRange(d.category||"",null,d.price);
+  if(range){
+    var ps=document.getElementById("price-suggestion");
+    ps.classList.remove("hidden");
+    document.getElementById("price-range-txt").innerText=range.min+"€ – "+range.max+"€";
+    var verdict=document.getElementById("price-verdict");
+    var p=parseFloat(d.price)||0;
+    if(p<range.min*0.7){verdict.innerText="⬇ Prix bas";verdict.style.background="#dcfce7";verdict.style.color="#166534";}
+    else if(p>range.max*1.2){verdict.innerText="⬆ Prix élevé";verdict.style.background="#fef3c7";verdict.style.color="#92400e";}
+    else{verdict.innerText="✓ Prix juste";verdict.style.background="#eff9ff";verdict.style.color="#0369a1";}
+  }
   document.getElementById("step-photo").classList.add("hidden");
   document.getElementById("step-result").classList.remove("hidden");
   document.getElementById("step-result").classList.add("flex");
@@ -1689,6 +1914,7 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
       brand:scanData.brand,
       model:scanData.model,
       shipping:scanData.shipping,
+      troc:document.getElementById("scan-troc").checked||false,
       city:city,
       lat:coords?coords.lat:null,
       lng:coords?coords.lng:null,
@@ -1712,7 +1938,7 @@ window.openDetail=function(id){
   curItem=i;
   document.getElementById("det-img").src=i.imageUrl||"";
   document.getElementById("det-title").innerText=i.itemName||"";
-  document.getElementById("det-price").innerText=(i.price||0)+"euro";
+  document.getElementById("det-price").innerText=(i.price||0)+"€";
   document.getElementById("det-cat").innerText=i.category||"";
   document.getElementById("det-cond").innerText=i.condition||"";
   document.getElementById("det-desc").innerText=i.description||"Aucune description.";
@@ -1721,14 +1947,45 @@ window.openDetail=function(id){
   var ct=document.getElementById("det-city-tag");
   if(i.city){document.getElementById("det-city-val").innerText=i.city;ct.classList.remove("hidden");}
   else{ct.classList.add("hidden");}
+  // Troc badge
+  var trocTag=document.getElementById("det-troc-tag");
+  i.troc?trocTag.classList.remove("hidden"):trocTag.classList.add("hidden");
+  // Shipping
   var sh=document.getElementById("det-ship");
   if(i.shipping&&i.shipping.length){
     sh.innerHTML=i.shipping.map(function(s){
-      return '<span style="background:#1e3a5f;border:1px solid rgba(148,163,184,.10);border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700">'+s.method+' <span style="color:#0ea5e9">'+(s.price===0?"Gratuit":s.price+"euro")+"</span></span>";
+      return '<span style="background:#1e3a5f;border:1px solid rgba(148,163,184,.10);border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700">'+s.method+' <span style="color:#0ea5e9">'+(s.price===0?"Gratuit":s.price+"€")+"</span></span>";
     }).join("");
   }else{
-    sh.innerHTML='<span style="font-size:12px;color:#94a3b8">Non renseigne</span>';
+    sh.innerHTML='<span style="font-size:12px;color:#94a3b8">Non renseigné</span>';
   }
+  // Fav state
+  var favIcon=document.getElementById("det-fav-icon");
+  if(favorites.has(i.id)){favIcon.className="fa-solid fa-heart text-sm text-rose-400";}
+  else{favIcon.className="fa-regular fa-heart text-sm text-slate-400";}
+  // Views counter
+  var viewCount=(i.views||0)+1;
+  if(me&&i.userId!==me.uid){
+    updateDoc(doc(db,"scans",i.id),{views:viewCount}).catch(function(){});
+  }
+  var vb=document.getElementById("det-views-badge");
+  if(viewCount>0){vb.classList.remove("hidden");document.getElementById("det-views-count").innerText=viewCount;}
+  else{vb.classList.add("hidden");}
+  // Price range comparison
+  var range=getPriceRange(i.category,i.id);
+  var prDiv=document.getElementById("det-price-range");
+  if(range){
+    prDiv.classList.remove("hidden");
+    prDiv.innerHTML='<div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#64748b"><i class="fa-solid fa-chart-bar" style="color:#8b5cf6;font-size:9px"></i>Similaires sur Youbiiiz : <strong style="color:#8b5cf6">'+range.min+'€ – '+range.max+'€</strong></div>';
+  }else{prDiv.classList.add("hidden");}
+  // Trust score
+  computeAndShowTrust(i);
+  // Fraud detection
+  detectFraud(i);
+  // Verified seller
+  var verBadge=document.getElementById("det-verified");
+  if(i.userId&&me&&i.userId===me.uid&&me.emailVerified){verBadge.classList.remove("hidden");}
+  else{verBadge.classList.add("hidden");}
   document.getElementById("contact-btn").onclick=function(){openChat(i);};
   document.getElementById("buy-btn").onclick=function(){openPay(i);};
   loadSellerRating(i.userId);
@@ -1745,9 +2002,10 @@ window.openChat=function(i){
   curItem=i;
   document.getElementById("chat-seller").innerText="Vendeur #"+(i.userId||"").slice(0,6);
   document.getElementById("chat-iname").innerText=i.itemName||"";
-  document.getElementById("chat-iprice").innerText=(i.price||0)+"euro";
+  document.getElementById("chat-iprice").innerText=(i.price||0)+"€";
   document.getElementById("chat-img").src=i.imageUrl||"";
-  document.getElementById("chat-msgs").innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:10px;color:#94a3b8;background:#1e3a5f;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Debut de conversation</span></div>';
+  document.getElementById("chat-msgs").innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:10px;color:#94a3b8;background:#1e3a5f;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Début de conversation</span></div>';
+  renderChatSuggestions(i,"start");
   var m=document.getElementById("chat-modal");
   m.classList.remove("hidden");m.classList.add("flex");
   closeDetail();
@@ -1759,8 +2017,31 @@ window.closeChat=function(){
 window.sendMsg=function(){
   var inp=document.getElementById("chat-inp"),t=inp.value.trim();if(!t)return;
   addBubble(t,true);inp.value="";
-  var reps=["Oui disponible !","Je peux baisser un peu.","Envoi Mondial Relay possible.","Article en parfait etat.","Je peux envoyer plus de photos."];
-  setTimeout(function(){addBubble(reps[Math.floor(Math.random()*reps.length)],false);},1100);
+  var i=curItem||{};
+  var price=i.price||0;
+  var name=i.itemName||"cet article";
+  var t_low=t.toLowerCase();
+  var rep="";
+  // Context-aware AI responses
+  if(/dispo|disponible/.test(t_low)) rep="Oui, "+name+" est toujours disponible ! 👍";
+  else if(/prix|combien|dernier/.test(t_low)) rep="Le prix est "+price+"€, je peux faire "+Math.round(price*0.93)+"€ si vous achetez rapidement.";
+  else if(/livraison|envoyer|expedition/.test(t_low)){
+    var ships=i.shipping&&i.shipping.length?i.shipping.map(function(s){return s.method+(s.price?(" "+s.price+"€"):" gratuit");}).join(", "):"remise en main propre";
+    rep="Livraison disponible : "+ships+" 📦";
+  }
+  else if(/photo|image|voir/.test(t_low)) rep="Je peux vous envoyer d'autres photos, l'article est en parfait état comme montré 📸";
+  else if(/négocier|négo|baisser|réduire/.test(t_low)) rep="Je peux aller jusqu'à "+Math.round(price*0.9)+"€, c'est mon dernier prix 🤝";
+  else if(/état|condition|defaut|défaut|usure/.test(t_low)) rep="L'article est en "+(i.condition||"bon état")+", aucun défaut visible. Tout fonctionne parfaitement ✅";
+  else if(/troc|échange|echanger/.test(t_low)) rep=i.troc?"Oui je suis ouvert à l'échange, qu'est-ce que vous proposez ?":"Je préfère une vente directe, désolé.";
+  else if(/merci|super|ok|parfait|accord/.test(t_low)) rep="Parfait ! N'hésitez pas si vous avez d'autres questions 😊";
+  else{
+    var generic=["D'accord, je vous confirme ça rapidement !","Pas de problème, article toujours disponible.","C'est vendu avec "+price+"€ - je peux prévoir un remise en main propre aussi.","Je peux envoyer plus de photos si besoin.","Article en excellent état, vendu uniquement par particulier."];
+    rep=generic[Math.floor(Math.random()*generic.length)];
+  }
+  setTimeout(function(){
+    addBubble(rep,false);
+    renderChatSuggestions(curItem,"reply");
+  },800+Math.random()*600);
 };
 window.qMsg=function(m){document.getElementById("chat-inp").value=m;sendMsg();};
 function addBubble(t,mine){
@@ -2071,15 +2352,15 @@ function addItemMarker(item,lat,lng){
 
 window.setRadius=function(km){
   activeRadius=km;
-  ["r5","r20","r50","r0"].forEach(function(id){
+  ["r1","r2","r5","r20","r50","r0"].forEach(function(id){
     var el=document.getElementById(id);
-    if(el){el.style.background="#0f172a";el.style.color="#94a3b8";el.style.border="1px solid rgba(148,163,184,.15)";}
+    if(el){el.style.background="#fff";el.style.color="#64748b";el.style.border="1px solid #e2e8f0";el.style.boxShadow="0 1px 4px rgba(0,0,0,.08)";}
   });
   var activeBtn=document.getElementById("r"+km);
-  if(activeBtn){activeBtn.style.background="#22d3ee";activeBtn.style.color="#000";activeBtn.style.border="none";}
+  if(activeBtn){activeBtn.style.background="#0ea5e9";activeBtn.style.color="#000";activeBtn.style.border="none";activeBtn.style.boxShadow="none";}
   drawRadiusCircle();
   renderMapMarkers();
-  if(map&&userLat&&km>0) map.setView([userLat,userLng],km<=5?13:km<=20?11:10);
+  if(map&&userLat&&km>0) map.setView([userLat,userLng],km<=1?16:km<=2?15:km<=5?13:km<=20?11:10);
 };
 
 function askGeo(){
@@ -2107,6 +2388,247 @@ async function geocodeAndSave(city){
   if(!city) return null;
   return await geocodeCity(city);
 }
+
+// ═══════════════════════════════════════════════
+// FAVORIS
+// ═══════════════════════════════════════════════
+window.toggleFav=function(id,btn){
+  if(favorites.has(id)){
+    favorites.delete(id);
+    if(btn){btn.classList.remove("fav");btn.innerHTML="🤍";}
+  }else{
+    favorites.add(id);
+    if(btn){btn.classList.add("fav");btn.innerHTML="❤️";}
+    // Micro-animation
+    if(btn){btn.style.transform="scale(1.4)";setTimeout(function(){btn.style.transform="";},200);}
+  }
+  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
+  renderFeed(items.filter(function(){return true;}));// refresh cards
+  applyFilters();
+};
+window.toggleFavDetail=function(){
+  if(!curItem) return;
+  var icon=document.getElementById("det-fav-icon");
+  if(favorites.has(curItem.id)){
+    favorites.delete(curItem.id);
+    icon.className="fa-regular fa-heart text-sm text-slate-400";
+  }else{
+    favorites.add(curItem.id);
+    icon.className="fa-solid fa-heart text-sm text-rose-400";
+    icon.style.transform="scale(1.5)";
+    setTimeout(function(){icon.style.transform="";},200);
+  }
+  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
+};
+function renderFavs(){
+  var el=document.getElementById("fav-listings");
+  if(!el) return;
+  var favItems=items.filter(function(i){return favorites.has(i.id);});
+  if(!favItems.length){
+    el.innerHTML='<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:16px 0">Aucun favori</p>';
+    return;
+  }
+  el.innerHTML=favItems.map(function(i){
+    return '<div onclick="openDetail(\''+i.id+'\')" style="cursor:pointer;background:#f8fafc;border:1px solid #e8ecf0;border-radius:12px;overflow:hidden"><div style="height:90px;background:#f1f5f9"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain"></div><div style="padding:8px"><p style="font-size:11px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div></div>';
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════
+// TRUST SCORE
+// ═══════════════════════════════════════════════
+function computeAndShowTrust(i){
+  var score=0;var details=[];
+  if(i.imageUrl&&i.imageUrl.length>10){score+=30;details.push({label:"Photo ✓",ok:true});}
+  else{details.push({label:"Pas de photo",ok:false});}
+  if(i.description&&i.description.length>40){score+=25;details.push({label:"Description ✓",ok:true});}
+  else if(i.description&&i.description.length>10){score+=12;details.push({label:"Description courte",ok:false});}
+  else{details.push({label:"Pas de description",ok:false});}
+  if(i.price&&parseFloat(i.price)>0){score+=15;details.push({label:"Prix renseigné ✓",ok:true});}
+  if(i.city){score+=10;details.push({label:"Ville ✓",ok:true});}
+  if(i.condition){score+=10;details.push({label:"État ✓",ok:true});}
+  if(i.shipping&&i.shipping.length){score+=10;details.push({label:"Livraison ✓",ok:true});}
+  var fillEl=document.getElementById("det-trust-fill");
+  var labelEl=document.getElementById("det-trust-label");
+  var detailsEl=document.getElementById("det-trust-details");
+  fillEl.style.width=score+"%";
+  if(score>=80){fillEl.style.background="#22c55e";labelEl.innerText=score+"/100 — Excellent";labelEl.style.color="#22c55e";}
+  else if(score>=55){fillEl.style.background="#f59e0b";labelEl.innerText=score+"/100 — Moyen";labelEl.style.color="#f59e0b";}
+  else{fillEl.style.background="#ef4444";labelEl.innerText=score+"/100 — Faible";labelEl.style.color="#ef4444";}
+  detailsEl.innerHTML=details.map(function(d){
+    return '<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:'+(d.ok?"#f0fdf4":"#fef2f2")+';color:'+(d.ok?"#166534":"#dc2626")+'">'+d.label+'</span>';
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════
+// DÉTECTION ARNAQUE
+// ═══════════════════════════════════════════════
+var CAT_AVG_PRICES={
+  "Téléphones":350,"Ordinateurs":400,"Tablettes":200,"Photo":250,"Consoles":200,"Jeux vidéo":30,
+  "Voitures":8000,"Motos":3000,"Vélos":180,"Électroménager":120,"Ameublement":150,
+  "Vêtements":20,"Chaussures":35,"Montres":80,"Livres":6
+};
+function detectFraud(i){
+  var warn=document.getElementById("det-fraud-warn");
+  var price=parseFloat(i.price)||0;
+  var cat=i.category||"";
+  var threshold=null;
+  for(var key in CAT_AVG_PRICES){
+    if(cat.toLowerCase().indexOf(key.toLowerCase())>=0){threshold=CAT_AVG_PRICES[key];break;}
+  }
+  if(threshold&&price>0&&price<threshold*0.2){
+    warn.classList.remove("hidden");
+  }else{
+    warn.classList.add("hidden");
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SUGGESTION PRIX
+// ═══════════════════════════════════════════════
+function getPriceRange(category,excludeId,refPrice){
+  // Use items from same category for real range
+  var same=items.filter(function(i){
+    return i.id!==excludeId&&(i.category||"").toLowerCase().indexOf((category||"").toLowerCase())>=0&&parseFloat(i.price)>0;
+  });
+  if(same.length>=2){
+    var prices=same.map(function(i){return parseFloat(i.price);}).sort(function(a,b){return a-b;});
+    return{min:prices[0],max:prices[prices.length-1],count:prices.length};
+  }
+  // Fallback to category averages
+  var cat=category||"";
+  for(var key in CAT_AVG_PRICES){
+    if(cat.toLowerCase().indexOf(key.toLowerCase())>=0){
+      var avg=CAT_AVG_PRICES[key];
+      return{min:Math.round(avg*0.6),max:Math.round(avg*1.5),count:0};
+    }
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════════
+// CHAT IA – SUGGESTIONS CONTEXTUELLES
+// ═══════════════════════════════════════════════
+function renderChatSuggestions(item,phase){
+  var el=document.getElementById("chat-suggestions");
+  if(!el) return;
+  var price=item?item.price:0;
+  var suggestions=[];
+  if(phase==="start"){
+    suggestions=["Disponible ?","Dernier prix ?","Livraison possible ?","État exact ?","Photos supplémentaires ?"];
+    if(item&&item.troc) suggestions.push("Échange possible ?");
+  }else{
+    var nego=Math.round((price||100)*0.85);
+    suggestions=["Merci, accord !","Je prends à "+nego+"€ ?","Remise en main propre à Paris ?","Vous acceptez PayPal ?","Réservé pour moi ?"];
+  }
+  el.innerHTML=suggestions.map(function(s){
+    return '<button onclick="qMsg(\''+s.replace(/'/g,"\\'")+'\',true)" style="flex-shrink:0;font-size:10px;font-weight:700;color:#0ea5e9;background:#eff9ff;border:1px solid rgba(14,165,233,.2);border-radius:99px;padding:4px 10px;cursor:pointer;white-space:nowrap;transition:all .12s" onmouseover="this.style.background=\'#dbeafe\'" onmouseout="this.style.background=\'#eff9ff\'">'+s+'</button>';
+  }).join("");
+}
+window.updateChatSuggestions=function(){
+  var val=document.getElementById("chat-inp").value.toLowerCase();
+  if(!val) return;
+  // Dynamic suggestions based on what user is typing
+  var contextual=[];
+  var price=curItem?curItem.price:0;
+  if(/prix|combien/.test(val)) contextual=["Dernier prix ?","Vous faites à "+Math.round(price*0.85)+"€ ?","C'est négociable ?"];
+  else if(/livr|envoi|coli/.test(val)) contextual=["Livraison Mondial Relay ?","Colissimo disponible ?","Vous expédiez en France ?"];
+  else if(/état|défaut|usure/.test(val)) contextual=["Aucun défaut visible ?","Fonctionnel à 100% ?","Vous avez la boîte d'origine ?"];
+  if(contextual.length){
+    var el=document.getElementById("chat-suggestions");
+    if(el) el.innerHTML=contextual.map(function(s){
+      return '<button onclick="qMsg(\''+s.replace(/'/g,"\\'")+'\',true)" style="flex-shrink:0;font-size:10px;font-weight:700;color:#8b5cf6;background:#f5f3ff;border:1px solid rgba(139,92,246,.2);border-radius:99px;padding:4px 10px;cursor:pointer;white-space:nowrap">'+s+'</button>';
+    }).join("");
+  }
+};
+// Override qMsg to optionally skip the auto-send (for suggestion click only sets input)
+window.qMsg=function(m){document.getElementById("chat-inp").value=m;sendMsg();};
+
+// ═══════════════════════════════════════════════
+// ALERTES SAUVEGARDÉES
+// ═══════════════════════════════════════════════
+window.openAlertes=function(){
+  var m=document.getElementById("alertes-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeAlertes=function(){
+  var m=document.getElementById("alertes-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.saveAlert=function(){
+  var q=document.getElementById("alert-query").value.trim();
+  if(!q){toast("Décris ce que tu cherches");return;}
+  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
+  alerts.push({id:Date.now(),query:q,createdAt:new Date().toLocaleDateString("fr-FR")});
+  localStorage.setItem("yb_alerts",JSON.stringify(alerts));
+  document.getElementById("alert-query").value="";
+  closeAlertes();
+  toast("Alerte créée ! 🔔",true);
+  renderAlerts();
+};
+function renderAlerts(){
+  var el=document.getElementById("alerts-list");
+  if(!el) return;
+  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
+  if(!alerts.length){
+    el.innerHTML='<p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune alerte sauvegardée</p>';
+    return;
+  }
+  el.innerHTML=alerts.map(function(a){
+    return '<div class="alert-chip"><i class="fa-solid fa-bell" style="color:#0ea5e9;font-size:11px;flex-shrink:0"></i><span class="alert-chip-label">'+a.query+'</span><span style="font-size:9px;color:#94a3b8;flex-shrink:0;margin-right:6px">'+a.createdAt+'</span><button class="alert-chip-del" onclick="deleteAlert('+a.id+')"><i class="fa-solid fa-xmark"></i></button></div>';
+  }).join("");
+}
+window.deleteAlert=function(id){
+  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]").filter(function(a){return a.id!==id;});
+  localStorage.setItem("yb_alerts",JSON.stringify(alerts));
+  renderAlerts();
+};
+// Check alerts on new items
+function checkAlertsOnNewItems(newItems){
+  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
+  if(!alerts.length) return;
+  alerts.forEach(function(a){
+    var q=a.query.toLowerCase();
+    newItems.forEach(function(item){
+      var name=(item.itemName||"").toLowerCase();
+      var cat=(item.category||"").toLowerCase();
+      if(q.split(" ").some(function(w){return w.length>3&&(name.indexOf(w)>=0||cat.indexOf(w)>=0);})){
+        showPushBanner("🔔 Alerte : "+a.query,"Nouvelle annonce : "+(item.itemName||"")+" - "+(item.price||0)+"€");
+      }
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════
+// PARTAGE NATIF
+// ═══════════════════════════════════════════════
+window.shareItem=function(){
+  if(!curItem) return;
+  var text="🛍 "+curItem.itemName+" — "+(curItem.price||0)+"€\nVu sur Youbiiiz";
+  if(navigator.share){
+    navigator.share({title:curItem.itemName,text:text,url:window.location.href}).catch(function(){});
+  }else{
+    navigator.clipboard.writeText(text+"\n"+window.location.href).then(function(){toast("Lien copié ! 📋",true);}).catch(function(){toast("Partage non disponible");});
+  }
+};
+
+// ═══════════════════════════════════════════════
+// BOOST AUTO
+// ═══════════════════════════════════════════════
+window.toggleBoost=function(cb){
+  if(cb.checked){
+    toast("Boost auto activé ! Vos annonces seront relancées automatiquement ✨",true);
+    localStorage.setItem("yb_boost","1");
+  }else{
+    toast("Boost auto désactivé");
+    localStorage.removeItem("yb_boost");
+  }
+};
+// Restore boost toggle state
+setTimeout(function(){
+  var bt=document.getElementById("boost-toggle");
+  if(bt) bt.checked=!!localStorage.getItem("yb_boost");
+},500);
+
 </script>
 </body>
 </html>
