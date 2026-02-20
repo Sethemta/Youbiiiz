@@ -1187,7 +1187,7 @@ function initMap(){
   if(map) return;
   var lat=userLat||46.2276,lng=userLng||2.2137,zoom=userLat?13:6;
   map=L.map("map-el",{zoomControl:false}).setView([lat,lng],zoom);
-  L.tileLayer("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",{attribution:"Stadia Maps",maxZoom:20}).addTo(map);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_matter_no_labels/{z}/{x}/{y}{r}.png",{attribution:"CartoDB",maxZoom:19}).addTo(map);L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_matter_only_labels/{z}/{x}/{y}{r}.png",{attribution:"CartoDB",maxZoom:19}).addTo(map);
   clusterGroup=L.markerClusterGroup({
     maxClusterRadius:50,
     iconCreateFunction:function(cluster){
