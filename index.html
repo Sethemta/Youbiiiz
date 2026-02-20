@@ -1701,11 +1701,54 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <input type="file" id="search-photo-inp" accept="image/*" class="hidden" onchange="onSearchPhoto(this)">
+
+<!-- DEMO MODE — plain script, toujours disponible même si Firebase crash -->
+<script>
+var isDemoMode=false;
+var _demoItems=[
+  {id:"demo-1",userId:"demo-seller-a",itemName:"iPhone 14 Pro 256Go",price:750,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go couleur Violet intense. Vendu avec chargeur et câble. Aucune rayure, batterie 94%.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],views:142,troc:false,createdAt:{seconds:Date.now()/1000-3600}},
+  {id:"demo-2",userId:"demo-seller-b",itemName:"PS5 + Manette DualSense",price:430,category:"Consoles",condition:"Bon état",description:"PS5 disc edition avec une manette DualSense blanche. Fonctionne parfaitement. Vendu avec 2 jeux.",brand:"Sony",model:"PS5",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1607016284318-d1384bf4d339?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],views:89,troc:true,createdAt:{seconds:Date.now()/1000-7200}},
+  {id:"demo-3",userId:"demo-seller-c",itemName:'MacBook Air M2 13"',price:1100,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 13 pouces, Minuit, 8Go RAM 256Go SSD. Jamais ouvert, boîte scellée.",brand:"Apple",model:"MacBook Air M2",city:"Marseille",imageUrl:"https://images.unsplash.com/photo-1611186871525-0e17d99d4e3a?w=400&q=80",shipping:[{method:"Colissimo",price:10}],views:203,troc:false,createdAt:{seconds:Date.now()/1000-10800}},
+  {id:"demo-4",userId:"demo-seller-d",itemName:"Nike Air Max 90 Blanc T42",price:75,category:"Chaussures homme",condition:"Bon état",description:"Nike Air Max 90 blanches taille 42. Portées 5-6 fois. Semelles propres.",brand:"Nike",model:"Air Max 90",city:"Bordeaux",imageUrl:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",shipping:[{method:"Mondial Relay",price:5},{method:"Main propre",price:0}],views:34,troc:false,createdAt:{seconds:Date.now()/1000-14400}},
+  {id:"demo-5",userId:"demo-seller-a",itemName:"Vélo de route Trek 2023",price:680,category:"Vélos",condition:"Très bon état",description:"Vélo de route Trek Domane AL2 taille M, 2023. Cadre aluminium, Shimano Claris 16v. 800km.",brand:"Trek",model:"Domane AL2",city:"Nantes",imageUrl:"https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:67,troc:true,createdAt:{seconds:Date.now()/1000-18000}},
+  {id:"demo-6",userId:"demo-seller-b",itemName:"Canapé convertible 3 places",price:320,category:"Ameublement",condition:"Bon état",description:"Canapé convertible 3 places tissu gris anthracite. Coffre de rangement intégré.",brand:"IKEA",model:"Friheten",city:"Toulouse",imageUrl:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:21,troc:false,createdAt:{seconds:Date.now()/1000-21600}},
+  {id:"demo-7",userId:"demo-seller-e",itemName:"Lego Star Wars Millennium Falcon",price:180,category:"Jeux & Jouets",condition:"Neuf",description:"Set Lego 75257 Millennium Falcon, boîte non ouverte, scellée d'usine.",brand:"Lego",model:"75257",city:"Lille",imageUrl:"https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80",shipping:[{method:"Colissimo",price:9},{method:"Mondial Relay",price:6}],views:55,troc:false,createdAt:{seconds:Date.now()/1000-25200}},
+  {id:"demo-8",userId:"demo-seller-c",itemName:"Guitare Fender Stratocaster",price:550,category:"Instruments de musique",condition:"Très bon état",description:"Fender Stratocaster Player Series Sunburst. Livrée avec housse et câble Jack.",brand:"Fender",model:"Stratocaster Player",city:"Strasbourg",imageUrl:"https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:18}],views:91,troc:true,createdAt:{seconds:Date.now()/1000-28800}},
+  {id:"demo-9",userId:"demo-seller-d",itemName:"Dyson V15 Detect Absolute",price:390,category:"Électroménager",condition:"Très bon état",description:"Aspirateur Dyson V15 Detect complet avec tous les accessoires. Batterie 50min.",brand:"Dyson",model:"V15 Detect",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",shipping:[{method:"Colissimo",price:12},{method:"Main propre",price:0}],views:77,troc:false,createdAt:{seconds:Date.now()/1000-32400}},
+  {id:"demo-10",userId:"demo-seller-e",itemName:"Jordan 1 Retro High OG T44",price:210,category:"Chaussures homme",condition:"Neuf",description:"Air Jordan 1 Retro High OG Chicago, taille 44. Achetées sur SNKRS, boîte et ticket.",brand:"Nike",model:"Jordan 1 Retro High",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=400&q=80",shipping:[{method:"Mondial Relay",price:6},{method:"Colissimo",price:9}],views:128,troc:false,createdAt:{seconds:Date.now()/1000-36000}}
+];
+
+window.enterDemoMode=function(){
+  isDemoMode=true;
+  // Si le module Firebase est chargé, utiliser ses variables, sinon bootstrapper seul
+  if(typeof _moduleBootDemo==="function"){
+    _moduleBootDemo();
+  }else{
+    // Le module n'est pas encore prêt — attendre puis réessayer
+    var attempts=0;
+    var check=setInterval(function(){
+      attempts++;
+      if(typeof _moduleBootDemo==="function"){
+        clearInterval(check);
+        _moduleBootDemo();
+      } else if(attempts>20){
+        clearInterval(check);
+        // Bootstrap minimal sans module
+        document.getElementById("splash").style.display="none";
+        var app=document.getElementById("app");
+        app.classList.remove("hidden");
+        app.style.opacity="1";
+        alert("Mode démo: rechargez la page et cliquez sur Accéder en mode démo");
+      }
+    },100);
+  }
+};
+</script>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,where,orderBy,query,getDocs,deleteDoc,updateDoc,getDoc}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-import{getMessaging,getToken,onMessage}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-messaging.js";
 
 const FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
 const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
@@ -1714,8 +1757,55 @@ let me=null,items=[],curItem=null,scanData=null,camStream=null;
 let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
 let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
 var extraPhotos=[];
-// FAVORITES (localStorage)
 var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
+
+// Expose boot function for demo mode (called from plain script)
+window._moduleBootDemo=function(){
+  // Copier les données démo dans items
+  items=_demoItems.map(function(i){return Object.assign({},i);});
+  me={uid:"demo-user-001",email:"demo@youbiiiz.app",emailVerified:true,isDemo:true};
+  // Boot
+  document.getElementById("splash").style.display="none";
+  var app=document.getElementById("app");
+  app.classList.remove("hidden");
+  setTimeout(function(){app.style.opacity="1";},60);
+  var suid=document.getElementById("sidebar-uid");
+  if(suid) suid.innerText="demo@youbiiiz.app";
+  var badge=document.getElementById("user-badge");
+  if(badge) badge.innerText="DÉMO";
+  var puid=document.getElementById("profile-uid");
+  if(puid) puid.innerText="demo@youbiiiz.app · mode démo";
+  var pv=document.getElementById("profile-verified");
+  if(pv) pv.classList.remove("hidden");
+  applyFilters();
+  updateProfile();
+  updateCoinsUI();
+  renderHistory();
+  renderAlerts();
+  initNotifsDemo();
+  // Bannière démo
+  var b=document.createElement("div");
+  b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:9998;background:linear-gradient(90deg,#0ea5e9,#6366f1);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:6px 12px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap";
+  b.innerHTML='<i class="fa-solid fa-play" style="font-size:9px"></i>MODE DÉMO — Toutes les features actives, données non sauvegardées <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:99px;padding:1px 10px;cursor:pointer;font-size:11px;font-weight:800">✕</button>';
+  document.body.prepend(b);
+};
+
+function initNotifsDemo(){
+  var demoNotifs=[
+    {id:"dn1",type:"sale",message:"🎉 Votre iPhone 14 Pro a été acheté !",read:false,createdAt:{seconds:Date.now()/1000-1800}},
+    {id:"dn2",type:"rating",message:"⭐ Vous avez reçu une note de 5 étoiles",read:true,createdAt:{seconds:Date.now()/1000-7200}},
+    {id:"dn3",type:"payment_success",message:"✅ Paiement validé — 430€ reçus",read:true,createdAt:{seconds:Date.now()/1000-86400}}
+  ];
+  var nb=document.getElementById("nbadge");
+  if(nb){nb.classList.remove("hidden");nb.innerText="1";}
+  var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
+  var nl=document.getElementById("notif-list");
+  if(!nl) return;
+  nl.innerHTML=demoNotifs.map(function(n){
+    var date=new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+    return '<div style="background:#1e293b;border:1px solid rgba(148,163,184,.10);border-radius:16px;padding:14px;margin-bottom:8px;opacity:'+(n.read?.55:1)+'"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">'+(emojis[n.type]||"🔔")+'</span><div style="flex:1"><p style="font-size:13px;font-weight:700;margin-bottom:3px">'+n.message+'</p><p style="font-size:10px;color:#94a3b8">'+date+"</p></div>"+(n.read?"":'<span style="width:7px;height:7px;background:#0ea5e9;border-radius:99px;margin-top:3px;flex-shrink:0;display:block"></span>')+"</div></div>";
+  }).join("");
+}
 
 window.onerror=(m,s,l)=>{toast("JS:"+m+" L"+l);};
 function toast(m,ok){
@@ -1806,81 +1896,6 @@ window.doAnon=async function(){
   }
 };
 
-// ════════════════════════════════════════════════════
-// MODE DÉMO — bypass complet Firebase
-// ════════════════════════════════════════════════════
-var isDemoMode=false;
-window.enterDemoMode=function(){
-  isDemoMode=true;
-  // Créer un faux utilisateur
-  me={uid:"demo-user-001",email:"demo@youbiiiz.app",emailVerified:true,isDemo:true};
-  // Données démo
-  items=[
-    {id:"demo-1",userId:"demo-seller-a",itemName:"iPhone 14 Pro 256Go",price:750,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go couleur Violet intense. Vendu avec chargeur et câble. Aucune rayure, batterie 94%.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],views:142,troc:false,createdAt:{seconds:Date.now()/1000-3600}},
-    {id:"demo-2",userId:"demo-seller-b",itemName:"PS5 + Manette DualSense",price:430,category:"Consoles",condition:"Bon état",description:"PS5 disc edition avec une manette DualSense blanche. Fonctionne parfaitement. Vendu avec 2 jeux.",brand:"Sony",model:"PS5",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1607016284318-d1384bf4d339?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],views:89,troc:true,createdAt:{seconds:Date.now()/1000-7200}},
-    {id:"demo-3",userId:"demo-seller-c",itemName:"MacBook Air M2 13\"",price:1100,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 13 pouces, Minuit, 8Go RAM 256Go SSD. Jamais ouvert, boîte scellée, facture disponible.",brand:"Apple",model:"MacBook Air M2",city:"Marseille",imageUrl:"https://images.unsplash.com/photo-1611186871525-0e17d99d4e3a?w=400&q=80",shipping:[{method:"Colissimo",price:10}],views:203,troc:false,createdAt:{seconds:Date.now()/1000-10800}},
-    {id:"demo-4",userId:"demo-seller-d",itemName:"Nike Air Max 90 Blanc T42",price:75,category:"Chaussures homme",condition:"Bon état",description:"Nike Air Max 90 blanches taille 42. Portées 5-6 fois, très bon état général. Semelles propres.",brand:"Nike",model:"Air Max 90",city:"Bordeaux",imageUrl:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",shipping:[{method:"Mondial Relay",price:5},{method:"Main propre",price:0}],views:34,troc:false,createdAt:{seconds:Date.now()/1000-14400}},
-    {id:"demo-5",userId:"demo-seller-a",itemName:"Vélo de route Trek 2023",price:680,category:"Vélos",condition:"Très bon état",description:"Vélo de route Trek Domane AL2 taille M, 2023. Cadre aluminium, Shimano Claris 16v. 800km au compteur.",brand:"Trek",model:"Domane AL2",city:"Nantes",imageUrl:"https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:67,troc:true,createdAt:{seconds:Date.now()/1000-18000}},
-    {id:"demo-6",userId:"demo-seller-b",itemName:"Canapé convertible 3 places",price:320,category:"Ameublement",condition:"Bon état",description:"Canapé convertible 3 places tissu gris anthracite. Coffre de rangement intégré. Mécanisme parfait.",brand:"IKEA",model:"Friheten",city:"Toulouse",imageUrl:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:21,troc:false,createdAt:{seconds:Date.now()/1000-21600}},
-    {id:"demo-7",userId:"demo-seller-e",itemName:"Lego Star Wars Millennium Falcon",price:180,category:"Jeux & Jouets",condition:"Neuf",description:"Set Lego 75257 Millennium Falcon, boîte non ouverte, scellée d'usine. Cadeau non déballé.",brand:"Lego",model:"75257",city:"Lille",imageUrl:"https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80",shipping:[{method:"Colissimo",price:9},{method:"Mondial Relay",price:6}],views:55,troc:false,createdAt:{seconds:Date.now()/1000-25200}},
-    {id:"demo-8",userId:"demo-seller-c",itemName:"Guitare électrique Fender Strat",price:550,category:"Instruments de musique",condition:"Très bon état",description:"Fender Stratocaster Player Series Sunburst. Livrée avec housse et câble Jack. Son impeccable.",brand:"Fender",model:"Stratocaster Player",city:"Strasbourg",imageUrl:"https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:18}],views:91,troc:true,createdAt:{seconds:Date.now()/1000-28800}},
-    {id:"demo-9",userId:"demo-seller-d",itemName:"Dyson V15 Detect Absolute",price:390,category:"Électroménager",condition:"Très bon état",description:"Aspirateur Dyson V15 Detect complet avec tous les accessoires. Batterie tient 50min. Comme neuf.",brand:"Dyson",model:"V15 Detect",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",shipping:[{method:"Colissimo",price:12},{method:"Main propre",price:0}],views:77,troc:false,createdAt:{seconds:Date.now()/1000-32400}},
-    {id:"demo-10",userId:"demo-seller-e",itemName:"Jordan 1 Retro High OG T44",price:210,category:"Chaussures homme",condition:"Neuf",description:"Air Jordan 1 Retro High OG Chicago Reimagined, taille 44. Achetées sur SNKRS, boîte et ticket.",brand:"Nike",model:"Jordan 1 Retro High",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=400&q=80",shipping:[{method:"Mondial Relay",price:6},{method:"Colissimo",price:9}],views:128,troc:false,createdAt:{seconds:Date.now()/1000-36000}}
-  ];
-  // Monkey-patch Firebase calls pour le mode démo
-  patchFirebaseForDemo();
-  bootDemo();
-};
-
-function patchFirebaseForDemo(){
-  // Override addDoc, updateDoc, deleteDoc, getDocs, onSnapshot pour le mode démo
-  // Les vrais appels Firebase seront ignorés silencieusement
-  window._demoNotifs=[];
-  window._demoRatings=[];
-}
-
-function bootDemo(){
-  document.getElementById("splash").style.display="none";
-  var app=document.getElementById("app");
-  app.classList.remove("hidden");
-  setTimeout(function(){app.style.opacity="1";},80);
-  // Sidebar
-  var suid=document.getElementById("sidebar-uid");
-  if(suid) suid.innerText="demo@youbiiiz.app";
-  var badge=document.getElementById("user-badge");
-  if(badge) badge.innerText="DÉMO";
-  var puid=document.getElementById("profile-uid");
-  if(puid) puid.innerText="demo@youbiiiz.app · mode démo";
-  // Demo verified
-  var pv=document.getElementById("profile-verified");
-  if(pv) pv.classList.remove("hidden");
-  // Render feed
-  applyFilters();
-  updateProfileDemo();
-  updateCoinsUI();
-  renderHistory();
-  renderAlerts();
-  // Show demo banner
-  showDemoBanner();
-}
-
-function updateProfileDemo(){
-  var el=document.getElementById("profile-count");if(el)el.innerText="3";
-  var el2=document.getElementById("profile-views");if(el2)el2.innerText="47";
-  var el3=document.getElementById("profile-favs");if(el3)el3.innerText="12";
-  var el4=document.getElementById("profile-total");if(el4)el4.innerText="1530€";
-  var el5=document.getElementById("profile-rating");if(el5)el5.innerText="★4.8";
-  var ml=document.getElementById("my-listings");
-  if(ml) ml.innerHTML=items.slice(0,3).map(myCard).join("");
-  renderFavs();
-}
-
-function showDemoBanner(){
-  var b=document.createElement("div");
-  b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:9998;background:linear-gradient(90deg,#0ea5e9,#6366f1);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px;display:flex;align-items:center;justify-content:center;gap:8px";
-  b.innerHTML='<i class="fa-solid fa-play" style="font-size:9px"></i>MODE DÉMO — Toutes les fonctionnalités actives · Les données ne sont pas sauvegardées <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:99px;padding:1px 8px;cursor:pointer;margin-left:8px;font-size:10px">✕</button>';
-  document.body.prepend(b);
-}
 
 window.doLogout=async function(){
   if(isDemoMode){
@@ -1913,34 +1928,8 @@ function boot(){
 }
 
 async function initPush(){
-  try{
-    if(!("Notification" in window)) return;
-    // Enregistrer le service worker
-    if("serviceWorker" in navigator){
-      await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-    }
-    // Demander permission si pas encore fait
-    var perm=await Notification.requestPermission();
-    if(perm!=="granted") return;
-    // Obtenir le token FCM
-    var messaging=getMessaging(fb);
-    var token=await getToken(messaging,{vapidKey:"BFF7R8CFoHmggVoEN0l0wrWb202z2yz4n0CELTxEZIAXWJ_GmWwpDRqs9X-X_s7lFTxxnl4svix3-tTg5WVbqRk"});
-    if(token&&me){
-      // Sauvegarder le token dans Firestore
-      await updateDoc(doc(db,"users",me.uid),{fcmToken:token,updatedAt:serverTimestamp()}).catch(async function(){
-        await addDoc(collection(db,"users"),{userId:me.uid,fcmToken:token,updatedAt:serverTimestamp()});
-      });
-      console.log("FCM token enregistre");
-    }
-    // Notifications en premier plan (app ouverte)
-    onMessage(messaging,function(payload){
-      var title=payload.notification?payload.notification.title:"Youbiiiz";
-      var body=payload.notification?payload.notification.body:"Nouvelle notification";
-      showPushBanner(title,body);
-    });
-  }catch(e){
-    console.log("Push non disponible:",e.message);
-  }
+  // Firebase Messaging désactivé (service worker non disponible en dev)
+  // Les notifications push sont gérées via showPushBanner() en fallback
 }
 
 function showPushBanner(title,body){
