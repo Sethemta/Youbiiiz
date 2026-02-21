@@ -1761,33 +1761,52 @@ var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
 
 // Expose boot function for demo mode (called from plain script)
 window._moduleBootDemo=function(){
-  // Copier les données démo dans items
-  items=_demoItems.map(function(i){return Object.assign({},i);});
-  me={uid:"demo-user-001",email:"demo@youbiiiz.app",emailVerified:true,isDemo:true};
-  // Boot
-  document.getElementById("splash").style.display="none";
-  var app=document.getElementById("app");
-  app.classList.remove("hidden");
-  setTimeout(function(){app.style.opacity="1";},60);
-  var suid=document.getElementById("sidebar-uid");
-  if(suid) suid.innerText="demo@youbiiiz.app";
-  var badge=document.getElementById("user-badge");
-  if(badge) badge.innerText="DÉMO";
-  var puid=document.getElementById("profile-uid");
-  if(puid) puid.innerText="demo@youbiiiz.app · mode démo";
-  var pv=document.getElementById("profile-verified");
-  if(pv) pv.classList.remove("hidden");
-  applyFilters();
-  updateProfile();
-  updateCoinsUI();
-  renderHistory();
-  renderAlerts();
-  initNotifsDemo();
-  // Bannière démo
-  var b=document.createElement("div");
-  b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:9998;background:linear-gradient(90deg,#0ea5e9,#6366f1);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:6px 12px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap";
-  b.innerHTML='<i class="fa-solid fa-play" style="font-size:9px"></i>MODE DÉMO — Toutes les features actives, données non sauvegardées <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:99px;padding:1px 10px;cursor:pointer;font-size:11px;font-weight:800">✕</button>';
-  document.body.prepend(b);
+  try{
+    // 1. Charger les données démo
+    items=_demoItems.map(function(i){return Object.assign({},i);});
+    me={uid:"demo-user-001",email:"demo@youbiiiz.app",emailVerified:true,isDemo:true};
+
+    // 2. Cacher le splash définitivement
+    var splash=document.getElementById("splash");
+    if(splash){splash.style.display="none";splash.style.pointerEvents="none";splash.style.visibility="hidden";}
+
+    // 3. Montrer l'app
+    var app=document.getElementById("app");
+    app.classList.remove("hidden");
+    app.classList.remove("opacity-0");
+    app.style.opacity="1";
+    app.style.pointerEvents="auto";
+
+    // 4. Remplir le feed
+    try{applyFilters();}catch(e){console.error("applyFilters",e);}
+
+    // 5. UI sidebar/header
+    var suid=document.getElementById("sidebar-uid");
+    if(suid) suid.innerText="demo@youbiiiz.app";
+    var badge=document.getElementById("user-badge");
+    if(badge) badge.innerText="DÉMO";
+
+    // 6. Notifs démo
+    try{initNotifsDemo();}catch(e){}
+
+    // 7. Bannière démo (fine, en haut)
+    var existing=document.getElementById("demo-banner");
+    if(!existing){
+      var b=document.createElement("div");
+      b.id="demo-banner";
+      b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(90deg,#0ea5e9,#6366f1);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 12px;display:flex;align-items:center;justify-content:center;gap:8px";
+      b.innerHTML='🎮 MODE DÉMO — <span style="font-weight:500">10 annonces de test · Toutes les features actives</span> <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:99px;padding:0 8px;cursor:pointer;font-size:13px;line-height:20px;margin-left:6px">✕</button>';
+      document.body.prepend(b);
+      // Décaler le header pour ne pas cacher sous la bannière
+      var header=document.querySelector(".yb-header");
+      if(header) header.style.marginTop="30px";
+    }
+
+  }catch(e){
+    console.error("Demo boot error:",e);
+    // Fallback ultime
+    alert("Erreur démo: "+e.message+"\n\nRechargez la page.");
+  }
 };
 
 function initNotifsDemo(){
@@ -2079,11 +2098,12 @@ window.switchView=function(v){
       if(map) map.invalidateSize();
     },250);
   }
-  if(v==="notifications"&&me){
+  if(v==="notifications"&&me&&!isDemoMode){
     getDocs(query(collection(db,"notifications"),where("userId","==",me.uid),where("read","==",false))).then(function(s){
       s.forEach(function(d){updateDoc(doc(db,"notifications",d.id),{read:true});});
     });
   }
+  if(v==="notifications"&&isDemoMode) initNotifsDemo();
   if(v==="profile") loadMyRating();
 };
 
@@ -2348,7 +2368,7 @@ window.openDetail=function(id){
   else{favIcon.className="fa-regular fa-heart text-sm text-slate-400";}
   // Views counter
   var viewCount=(i.views||0)+1;
-  if(me&&i.userId!==me.uid){
+  if(me&&i.userId!==me.uid&&!isDemoMode){
     updateDoc(doc(db,"scans",i.id),{views:viewCount}).catch(function(){});
   }
   var vb=document.getElementById("det-views-badge");
@@ -2586,9 +2606,10 @@ async function updUserRating(uid){
   }catch(e){}
 }
 async function loadSellerRating(uid){
+  var el=document.getElementById("det-rating");
+  if(isDemoMode){if(el)el.innerText="★4.8 / 5 (12 avis)";return;}
   try{
     var d=await getDoc(doc(db,"users",uid));
-    var el=document.getElementById("det-rating");
     if(d.exists()&&d.data().rating){
       var r=d.data().rating,n=d.data().ratingCount||0;
       var stars="";
@@ -2599,6 +2620,7 @@ async function loadSellerRating(uid){
 }
 async function loadMyRating(){
   if(!me) return;
+  if(isDemoMode){var el=document.getElementById("profile-rating");if(el)el.innerText="★4.8";return;}
   try{
     var d=await getDoc(doc(db,"users",me.uid));
     if(d.exists()&&d.data().rating) document.getElementById("profile-rating").innerText="★"+d.data().rating;
@@ -3223,6 +3245,7 @@ window.closeReport=function(){
 };
 window.submitReport=async function(reason){
   closeReport();
+  if(isDemoMode){toast("Signalement envoyé ! Merci 🙏",true);return;}
   if(!me||!curItem) return;
   try{
     await addDoc(collection(db,"reports"),{itemId:curItem.id,userId:me.uid,reason:reason,createdAt:serverTimestamp()});
