@@ -299,15 +299,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div style="text-align:center;margin-top:4px">
           <button onclick="doAnon()" style="background:none;border:none;font-size:11px;color:#94a3b8;cursor:pointer;font-family:inherit;text-decoration:underline">Continuer sans compte</button>
         </div>
-        <!-- DEMO MODE - bouton principal de secours -->
-        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #f1f5f9">
-          <button onclick="enterDemoMode()" style="width:100%;background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;font-size:13px;font-weight:700;padding:12px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
-            <i class="fa-solid fa-play" style="font-size:11px;color:#0ea5e9"></i>
-            Accéder en mode démo
-            <span style="background:#0ea5e9;color:#000;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:2px">INSTANT</span>
-          </button>
-          <p style="font-size:10px;color:#94a3b8;text-align:center;margin-top:6px">Sans inscription · Données de démonstration · Toutes les fonctionnalités</p>
-        </div>
       </div>
 
       <!-- INSCRIPTION -->
@@ -1702,46 +1693,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
 <input type="file" id="search-photo-inp" accept="image/*" class="hidden" onchange="onSearchPhoto(this)">
 
-<!-- DEMO MODE — plain script, toujours disponible même si Firebase crash -->
-<script>
-var isDemoMode=false;
-var _demoItems=[
-  {id:"demo-1",userId:"demo-seller-a",itemName:"iPhone 14 Pro 256Go",price:750,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go couleur Violet intense. Vendu avec chargeur et câble. Aucune rayure, batterie 94%.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],views:142,troc:false,createdAt:{seconds:Date.now()/1000-3600}},
-  {id:"demo-2",userId:"demo-seller-b",itemName:"PS5 + Manette DualSense",price:430,category:"Consoles",condition:"Bon état",description:"PS5 disc edition avec une manette DualSense blanche. Fonctionne parfaitement. Vendu avec 2 jeux.",brand:"Sony",model:"PS5",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1607016284318-d1384bf4d339?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],views:89,troc:true,createdAt:{seconds:Date.now()/1000-7200}},
-  {id:"demo-3",userId:"demo-seller-c",itemName:'MacBook Air M2 13"',price:1100,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 13 pouces, Minuit, 8Go RAM 256Go SSD. Jamais ouvert, boîte scellée.",brand:"Apple",model:"MacBook Air M2",city:"Marseille",imageUrl:"https://images.unsplash.com/photo-1611186871525-0e17d99d4e3a?w=400&q=80",shipping:[{method:"Colissimo",price:10}],views:203,troc:false,createdAt:{seconds:Date.now()/1000-10800}},
-  {id:"demo-4",userId:"demo-seller-d",itemName:"Nike Air Max 90 Blanc T42",price:75,category:"Chaussures homme",condition:"Bon état",description:"Nike Air Max 90 blanches taille 42. Portées 5-6 fois. Semelles propres.",brand:"Nike",model:"Air Max 90",city:"Bordeaux",imageUrl:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",shipping:[{method:"Mondial Relay",price:5},{method:"Main propre",price:0}],views:34,troc:false,createdAt:{seconds:Date.now()/1000-14400}},
-  {id:"demo-5",userId:"demo-seller-a",itemName:"Vélo de route Trek 2023",price:680,category:"Vélos",condition:"Très bon état",description:"Vélo de route Trek Domane AL2 taille M, 2023. Cadre aluminium, Shimano Claris 16v. 800km.",brand:"Trek",model:"Domane AL2",city:"Nantes",imageUrl:"https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:67,troc:true,createdAt:{seconds:Date.now()/1000-18000}},
-  {id:"demo-6",userId:"demo-seller-b",itemName:"Canapé convertible 3 places",price:320,category:"Ameublement",condition:"Bon état",description:"Canapé convertible 3 places tissu gris anthracite. Coffre de rangement intégré.",brand:"IKEA",model:"Friheten",city:"Toulouse",imageUrl:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",shipping:[{method:"Main propre",price:0}],views:21,troc:false,createdAt:{seconds:Date.now()/1000-21600}},
-  {id:"demo-7",userId:"demo-seller-e",itemName:"Lego Star Wars Millennium Falcon",price:180,category:"Jeux & Jouets",condition:"Neuf",description:"Set Lego 75257 Millennium Falcon, boîte non ouverte, scellée d'usine.",brand:"Lego",model:"75257",city:"Lille",imageUrl:"https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80",shipping:[{method:"Colissimo",price:9},{method:"Mondial Relay",price:6}],views:55,troc:false,createdAt:{seconds:Date.now()/1000-25200}},
-  {id:"demo-8",userId:"demo-seller-c",itemName:"Guitare Fender Stratocaster",price:550,category:"Instruments de musique",condition:"Très bon état",description:"Fender Stratocaster Player Series Sunburst. Livrée avec housse et câble Jack.",brand:"Fender",model:"Stratocaster Player",city:"Strasbourg",imageUrl:"https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&q=80",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:18}],views:91,troc:true,createdAt:{seconds:Date.now()/1000-28800}},
-  {id:"demo-9",userId:"demo-seller-d",itemName:"Dyson V15 Detect Absolute",price:390,category:"Électroménager",condition:"Très bon état",description:"Aspirateur Dyson V15 Detect complet avec tous les accessoires. Batterie 50min.",brand:"Dyson",model:"V15 Detect",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",shipping:[{method:"Colissimo",price:12},{method:"Main propre",price:0}],views:77,troc:false,createdAt:{seconds:Date.now()/1000-32400}},
-  {id:"demo-10",userId:"demo-seller-e",itemName:"Jordan 1 Retro High OG T44",price:210,category:"Chaussures homme",condition:"Neuf",description:"Air Jordan 1 Retro High OG Chicago, taille 44. Achetées sur SNKRS, boîte et ticket.",brand:"Nike",model:"Jordan 1 Retro High",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=400&q=80",shipping:[{method:"Mondial Relay",price:6},{method:"Colissimo",price:9}],views:128,troc:false,createdAt:{seconds:Date.now()/1000-36000}}
-];
-
-window.enterDemoMode=function(){
-  isDemoMode=true;
-  if(typeof _moduleBootDemo==="function"){
-    _moduleBootDemo();
-  }else{
-    // Module pas encore prêt — attendre max 3s
-    var attempts=0;
-    var check=setInterval(function(){
-      attempts++;
-      if(typeof _moduleBootDemo==="function"){
-        clearInterval(check);
-        _moduleBootDemo();
-      }else if(attempts>30){
-        clearInterval(check);
-        // Le module Firebase a crashé — afficher un message simple dans la page
-        document.getElementById("splash").style.display="none";
-        document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#f0f2f5;font-family:sans-serif;text-align:center;padding:24px"><div><h2 style="color:#0f172a;margin-bottom:8px">⚠️ Erreur de chargement</h2><p style="color:#64748b;margin-bottom:20px">Le script principal n\'a pas pu charger.<br>Vérifiez votre connexion et rechargez.</p><button onclick="location.reload()" style="background:#0ea5e9;color:#fff;border:none;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer">🔄 Recharger</button></div></div>';
-      }
-    },100);
-  }
-};
-</script>
-
 <script type="module">
+
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,where,orderBy,query,getDocs,deleteDoc,updateDoc,getDoc}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -1752,75 +1705,6 @@ const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
 let me=null,items=[],curItem=null,scanData=null,camStream=null;
 let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
 let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
-var extraPhotos=[];
-var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
-
-// Expose boot function for demo mode (called from plain script)
-window._moduleBootDemo=function(){
-  try{
-    // 1. Charger les données démo
-    items=_demoItems.map(function(i){return Object.assign({},i);});
-    me={uid:"demo-user-001",email:"demo@youbiiiz.app",emailVerified:true,isDemo:true};
-
-    // 2. Cacher le splash définitivement
-    var splash=document.getElementById("splash");
-    if(splash){splash.style.display="none";splash.style.pointerEvents="none";splash.style.visibility="hidden";}
-
-    // 3. Montrer l'app
-    var app=document.getElementById("app");
-    app.classList.remove("hidden");
-    app.classList.remove("opacity-0");
-    app.style.opacity="1";
-    app.style.pointerEvents="auto";
-
-    // 4. Remplir le feed
-    try{applyFilters();}catch(e){console.error("applyFilters",e);}
-
-    // 5. UI sidebar/header
-    var suid=document.getElementById("sidebar-uid");
-    if(suid) suid.innerText="demo@youbiiiz.app";
-    var badge=document.getElementById("user-badge");
-    if(badge) badge.innerText="DÉMO";
-
-    // 6. Notifs démo
-    try{initNotifsDemo();}catch(e){}
-
-    // 7. Bannière démo (fine, en haut)
-    var existing=document.getElementById("demo-banner");
-    if(!existing){
-      var b=document.createElement("div");
-      b.id="demo-banner";
-      b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(90deg,#0ea5e9,#6366f1);color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 12px;display:flex;align-items:center;justify-content:center;gap:8px";
-      b.innerHTML='🎮 MODE DÉMO — <span style="font-weight:500">10 annonces de test · Toutes les features actives</span> <button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:99px;padding:0 8px;cursor:pointer;font-size:13px;line-height:20px;margin-left:6px">✕</button>';
-      document.body.prepend(b);
-      // Décaler le header pour ne pas cacher sous la bannière
-      var header=document.querySelector(".yb-header");
-      if(header) header.style.marginTop="30px";
-    }
-
-  }catch(e){
-    console.error("Demo boot error:",e);
-    // Fallback ultime
-    alert("Erreur démo: "+e.message+"\n\nRechargez la page.");
-  }
-};
-
-function initNotifsDemo(){
-  var demoNotifs=[
-    {id:"dn1",type:"sale",message:"🎉 Votre iPhone 14 Pro a été acheté !",read:false,createdAt:{seconds:Date.now()/1000-1800}},
-    {id:"dn2",type:"rating",message:"⭐ Vous avez reçu une note de 5 étoiles",read:true,createdAt:{seconds:Date.now()/1000-7200}},
-    {id:"dn3",type:"payment_success",message:"✅ Paiement validé — 430€ reçus",read:true,createdAt:{seconds:Date.now()/1000-86400}}
-  ];
-  var nb=document.getElementById("nbadge");
-  if(nb){nb.classList.remove("hidden");nb.innerText="1";}
-  var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
-  var nl=document.getElementById("notif-list");
-  if(!nl) return;
-  nl.innerHTML=demoNotifs.map(function(n){
-    var date=new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
-    return '<div style="background:#1e293b;border:1px solid rgba(148,163,184,.10);border-radius:16px;padding:14px;margin-bottom:8px;opacity:'+(n.read?.55:1)+'"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">'+(emojis[n.type]||"🔔")+'</span><div style="flex:1"><p style="font-size:13px;font-weight:700;margin-bottom:3px">'+n.message+'</p><p style="font-size:10px;color:#94a3b8">'+date+"</p></div>"+(n.read?"":'<span style="width:7px;height:7px;background:#0ea5e9;border-radius:99px;margin-top:3px;flex-shrink:0;display:block"></span>')+"</div></div>";
-  }).join("");
-}
 
 window.onerror=(m,s,l)=>{toast("JS:"+m+" L"+l);};
 function toast(m,ok){
@@ -1905,21 +1789,10 @@ window.doGoogle=async function(){
 window.doAnon=async function(){
   try{
     await signInAnonymously(auth);
-  }catch(e){
-    // Firebase anon désactivé ou erreur réseau → fallback démo
-    enterDemoMode();
-  }
+  }catch(e){showAuthMsg("Erreur: "+e.message);}
 };
 
-
 window.doLogout=async function(){
-  if(isDemoMode){
-    isDemoMode=false;me=null;items=[];
-    document.getElementById("app").classList.add("hidden");
-    document.getElementById("app").style.opacity="0";
-    document.getElementById("splash").style.display="flex";
-    return;
-  }
   try{
     await signOut(auth);
     document.getElementById("app").classList.add("hidden");
@@ -1933,19 +1806,18 @@ function boot(){
   document.getElementById("splash").style.display="none";
   document.getElementById("app").classList.remove("hidden");
   setTimeout(function(){document.getElementById("app").style.opacity="1";},80);
-  // Set sidebar greeting
-  var suid=document.getElementById("sidebar-uid");
-  if(suid&&me) suid.innerText=(me.email||"Anonyme");
+  // Afficher panneau gauche sur desktop
+  var left=document.getElementById("landing-left");
+  if(left&&window.innerWidth>=768) left.style.display="flex";
+  var lm=document.getElementById("logo-mobile");
+  if(lm&&window.innerWidth>=768) lm.style.display="none";
   initFeed();
   initNotifs();
   checkPayReturn();
   initPush();
 }
 
-async function initPush(){
-  // Firebase Messaging désactivé (service worker non disponible en dev)
-  // Les notifications push sont gérées via showPushBanner() en fallback
-}
+async function initPush(){/* messaging désactivé */}
 
 function showPushBanner(title,body){
   var el=document.createElement("div");
@@ -1956,32 +1828,23 @@ function showPushBanner(title,body){
 }
 
 function initFeed(){
-  if(isDemoMode){applyFilters();updateProfile();return;}
-  var prevIds=new Set();
   onSnapshot(collection(db,"scans"),function(snap){
-    var newItems=[];
     items=[];
-    snap.forEach(function(d){
-      var item=Object.assign({id:d.id},d.data());
-      items.push(item);
-      if(!prevIds.has(d.id)) newItems.push(item);
-      prevIds.add(d.id);
-    });
+    snap.forEach(function(d){items.push(Object.assign({id:d.id},d.data()));});
     items.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
     applyFilters();
     updateProfile();
-    if(newItems.length&&prevIds.size>newItems.length) checkAlertsOnNewItems(newItems);
   },function(e){toast("Feed:"+e.message);});
 }
 
 function card(i){
-  var cond=i.condition?'<span style="position:absolute;top:7px;left:7px;background:#0f172a;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px">'+i.condition+"</span>":"";
-  var isFav=favorites.has(i.id);
-  var heart='<button class="heart-btn'+(isFav?' fav':'')+'" onclick="event.stopPropagation();toggleFav(\''+i.id+'\',this)">'+(isFav?'❤️':'🤍')+'</button>';
-  var views=i.views?'<div class="views-badge"><i class="fa-solid fa-eye" style="font-size:7px"></i>'+i.views+'</div>':"";
-  var troc=i.troc?'<div style="position:absolute;bottom:7px;right:7px;background:#fef3c7;color:#92400e;font-size:8px;font-weight:800;padding:2px 6px;border-radius:99px;border:1px solid #fde68a">🔄</div>':"";
-  var city=i.city?'<p style="font-size:10px;color:#94a3b8;margin-top:4px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+"</p>":"";
-  return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+heart+views+troc+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:16px;font-weight:900;color:#0ea5e9">'+(i.price||0)+"€</p>"+city+"</div></div>";
+  var cond=i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">'+i.condition+"</span>":"";
+  var city=i.city?'<p style="font-size:10px;color:#94a3b8;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+"</p>":"";
+  return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:15px;font-weight:900;color:#0ea5e9">'+(i.price||0)+"euro</p>"+city+"</div></div>";
+}
+
+function myCard(i){
+  return '<div class="card fi"><div class="sq"><img src="'+(i.imageUrl||"")+'">'+(i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+"</span>":"")+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9;margin-bottom:6px">'+(i.price||0)+'euro</p><div style="display:flex;gap:5px"><button onclick="event.stopPropagation();openEdit(\''+i.id+'\')" style="flex:1;background:#1e293b;border:1px solid rgba(148,163,184,.15);border-radius:9px;padding:5px;font-size:10px;font-weight:700;cursor:pointer">Modif.</button><button onclick="event.stopPropagation();confirmDel(\''+i.id+'\')" style="flex:1;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:9px;padding:5px;font-size:10px;font-weight:700;color:#f87171;cursor:pointer">Supp.</button></div></div></div>';
 }
 
 function renderFeed(list){
@@ -1993,74 +1856,19 @@ function renderFeed(list){
 window.applyFilters=function(){
   var cat=activeCat;
   var city=(document.getElementById("city-inp").value||"").toLowerCase().trim();
-  var raw=(document.getElementById("header-search").value||"").toLowerCase().trim();
-
-  // Natural language parsing
-  var q=raw;
-  var nlMaxPrice=null,nlMinPrice=null,nlCity=null,nlCond=null;
-  // Price patterns: "moins de 300€", "max 300", "300€ max", "300 euros", "sous 400"
-  var maxMatch=raw.match(/(?:moins de|max\.?\s*|sous|under|<)\s*(\d+)\s*[€e]?/i)||raw.match(/(\d+)\s*[€e]\s*(?:max|maxi)/i);
-  if(maxMatch) nlMaxPrice=parseFloat(maxMatch[1]);
-  var minMatch=raw.match(/(?:min\.?\s*|plus de|à partir de|>)\s*(\d+)\s*[€e]?/i)||raw.match(/(\d+)\s*[€e]\s*(?:min|mini)/i);
-  if(minMatch) nlMinPrice=parseFloat(minMatch[1]);
-  // Remove price patterns from query
-  q=q.replace(/(?:moins de|max\.?|sous|plus de|à partir de|min\.?)\s*\d+\s*[€euros]*/gi,"").replace(/\d+\s*[€e](?:\s*(?:max|maxi|min|mini))?/gi,"").trim();
-  // Condition keywords
-  if(/\bneuf\b/.test(q)) nlCond="neuf";
-  else if(/\bbon état\b|bon etat/.test(q)) nlCond="bon";
-  else if(/\btrès bon\b|tres bon\b|tbé\b|tbe\b/.test(q)) nlCond="tres";
-  q=q.replace(/\b(neuf|bon état|bon etat|très bon état|tres bon état|tbé|tbe)\b/gi,"").trim();
-
+  var q=(document.getElementById("header-search").value||"").toLowerCase().trim();
   var list=items;
   if(cat!=="all") list=list.filter(function(i){return(i.category||"").toLowerCase().indexOf(cat.toLowerCase())>=0;});
   if(city) list=list.filter(function(i){return(i.city||"").toLowerCase().indexOf(city)>=0;});
-  // NL city (from search query - look for known city patterns)
-  if(nlCity) list=list.filter(function(i){return(i.city||"").toLowerCase().indexOf(nlCity)>=0;});
-  if(nlMaxPrice!==null) list=list.filter(function(i){return(parseFloat(i.price)||0)<=nlMaxPrice;});
-  if(nlMinPrice!==null) list=list.filter(function(i){return(parseFloat(i.price)||0)>=nlMinPrice;});
-  if(nlCond) list=list.filter(function(i){return(i.condition||"").toLowerCase().indexOf(nlCond)>=0;});
   if(q) list=list.filter(function(i){return(i.itemName||"").toLowerCase().indexOf(q)>=0||(i.description||"").toLowerCase().indexOf(q)>=0||(i.city||"").toLowerCase().indexOf(q)>=0;});
   renderFeed(list);
 };
 
 window.filterCat=function(cat,btn){
   activeCat=cat;
-  document.querySelectorAll(".cat-pill").forEach(function(b){b.classList.remove("on");});
-  if(btn) btn.classList.add("on");
+  document.querySelectorAll(".chip").forEach(function(b){b.classList.remove("on");});
+  btn.classList.add("on");
   applyFilters();
-  // Update section title
-  var titles={"all":"Pour toi","High-Tech":"High-Tech","Jeux video":"Jeux vidéo","Informatique":"Informatique","Mode":"Mode","Maison":"Maison","Sport":"Sport","Divers":"Divers"};
-  var t=document.getElementById("feed-section-title");
-  if(t) t.innerText=titles[cat]||cat;
-};
-
-window.toggleGroup=function(id){
-  var list=document.getElementById(id);
-  var arrow=document.getElementById("arrow-"+id);
-  if(!list) return;
-  var isHidden=list.classList.contains("hidden");
-  list.classList.toggle("hidden");
-  if(arrow) arrow.classList.toggle("open",isHidden);
-};
-
-window.filterCatSidebar=function(cat,el){
-  activeCat=cat;
-  // Clear all active states
-  document.querySelectorAll(".sidebar-nav-item,.sb-subitem").forEach(function(b){b.classList.remove("active");});
-  el.classList.add("active");
-  applyFilters();
-  var t=document.getElementById("feed-section-title");
-  if(t) t.innerText=cat==="all"?"Pour toi":cat;
-  switchView("home");
-};
-
-window.setSidebarActive=function(id){
-  ["snav-home","snav-map","snav-notif","snav-profile"].forEach(function(n){
-    var el=document.getElementById(n);
-    if(el) el.classList.remove("active");
-  });
-  var el=document.getElementById(id);
-  if(el) el.classList.add("active");
 };
 
 window.switchView=function(v){
@@ -2074,12 +1882,12 @@ window.switchView=function(v){
       }
     }
   });
-  document.getElementById("main-scroll").style.overflowY=v==="map"?"hidden":"auto";
+  document.getElementById("main-scroll").style.overflow=v==="map"?"hidden":"auto";
   ["home","map","notif","profile"].forEach(function(n){
     var el=document.getElementById("nav-"+n);
     if(el){
       var icon=el.querySelector("i");
-      if(icon) icon.style.color=v===n||("notifications"===v&&n==="notif")?"#0ea5e9":"#94a3b8";
+      if(icon) icon.style.color=v===n||("notifications"===v&&n==="notif")?"#22d3ee":"#71717a";
     }
   });
   if(v==="map"){
@@ -2090,12 +1898,11 @@ window.switchView=function(v){
       if(map) map.invalidateSize();
     },250);
   }
-  if(v==="notifications"&&me&&!isDemoMode){
+  if(v==="notifications"&&me){
     getDocs(query(collection(db,"notifications"),where("userId","==",me.uid),where("read","==",false))).then(function(s){
       s.forEach(function(d){updateDoc(doc(db,"notifications",d.id),{read:true});});
     });
   }
-  if(v==="notifications"&&isDemoMode) initNotifsDemo();
   if(v==="profile") loadMyRating();
 };
 
@@ -2103,19 +1910,9 @@ function updateProfile(){
   if(!me) return;
   var mine=items.filter(function(i){return i.userId===me.uid;});
   document.getElementById("profile-count").innerText=mine.length;
-  var totalVal=mine.reduce(function(s,i){return s+(parseFloat(i.price)||0);},0);
-  document.getElementById("profile-total").innerText=totalVal+"€";
-  var totalViews=mine.reduce(function(s,i){return s+(i.views||0);},0);
-  document.getElementById("profile-views").innerText=totalViews;
-  // Favorites received = items of mine that are in others' favs (proxy: count favs in localStorage that match mine)
-  document.getElementById("profile-favs").innerText=mine.length*2; // simulated
-  // Verified badge
-  var verBadge=document.getElementById("profile-verified");
-  if(me.emailVerified&&verBadge) verBadge.classList.remove("hidden");
+  document.getElementById("profile-total").innerText=mine.reduce(function(s,i){return s+(parseFloat(i.price)||0);},0)+"euro";
   var el=document.getElementById("my-listings");
   el.innerHTML=mine.length?mine.map(myCard).join(""):'<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>';
-  renderAlerts();
-  renderFavs();
 }
 
 // SCAN
@@ -2146,11 +1943,6 @@ window.resetScan=function(){
   document.getElementById("pub-btn").innerText="Publier l'annonce";
   document.getElementById("pub-btn").disabled=false;
   document.getElementById("file-input").value="";
-  var ps=document.getElementById("price-suggestion");
-  if(ps) ps.classList.add("hidden");
-  var st=document.getElementById("scan-troc");
-  if(st) st.checked=false;
-  extraPhotos=[];renderExtraPhotos();
   ["sh-hand","sh-relay","sh-colis"].forEach(function(id){
     var el=document.getElementById(id);
     if(el) el.checked=false;
@@ -2240,31 +2032,13 @@ function showResult(d,img){
   document.getElementById("scan-line").classList.add("hidden");
   document.getElementById("res-thumb").src=img;
   document.getElementById("ai-name").value=d.title||"";
-  document.getElementById("ai-price").innerText=(d.price||0)+"€";
-  // Set the category select - find closest match
-  var catSel=document.getElementById("ai-cat-select");
-  if(catSel&&d.category){
-    var opts=Array.from(catSel.options);
-    var match=opts.find(function(o){return o.value.toLowerCase().indexOf((d.category||"").toLowerCase())>=0||(d.category||"").toLowerCase().indexOf(o.value.toLowerCase())>=0;});
-    if(match) catSel.value=match.value;
-  }
+  document.getElementById("ai-price").innerText=(d.price||0)+"euro";
+  document.getElementById("ai-cat").innerText=d.category||"";
   document.getElementById("ai-desc").value=d.description||"";
   document.getElementById("ai-cond").innerText=d.condition||"";
   document.getElementById("ai-brand").innerText=d.brand||"-";
   document.getElementById("ai-model").innerText=d.model||"-";
   scanData={itemName:d.title,price:d.price,category:d.category,condition:d.condition||"Bon etat",description:d.description||"",brand:d.brand||"",model:d.model||"",imageUrl:img,shipping:[]};
-  // Price suggestion based on category
-  var range=getPriceRange(d.category||"",null,d.price);
-  if(range){
-    var ps=document.getElementById("price-suggestion");
-    ps.classList.remove("hidden");
-    document.getElementById("price-range-txt").innerText=range.min+"€ – "+range.max+"€";
-    var verdict=document.getElementById("price-verdict");
-    var p=parseFloat(d.price)||0;
-    if(p<range.min*0.7){verdict.innerText="⬇ Prix bas";verdict.style.background="#dcfce7";verdict.style.color="#166534";}
-    else if(p>range.max*1.2){verdict.innerText="⬆ Prix élevé";verdict.style.background="#fef3c7";verdict.style.color="#92400e";}
-    else{verdict.innerText="✓ Prix juste";verdict.style.background="#eff9ff";verdict.style.color="#0369a1";}
-  }
   document.getElementById("step-photo").classList.add("hidden");
   document.getElementById("step-result").classList.remove("hidden");
   document.getElementById("step-result").classList.add("flex");
@@ -2284,39 +2058,27 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
   btn.innerText="Publication...";btn.disabled=true;
   try{
     var city=document.getElementById("item-city").value.trim();
-    var newItem={
+    // Geocoder la ville pour la carte
+    var coords=city?await geocodeAndSave(city):null;
+    await addDoc(collection(db,"scans"),{
       userId:me.uid,
       itemName:document.getElementById("ai-name").value,
       price:scanData.price,
-      category:document.getElementById("ai-cat-select").value||scanData.category,
+      category:scanData.category,
       condition:scanData.condition,
       description:document.getElementById("ai-desc").value,
       brand:scanData.brand,
       model:scanData.model,
       shipping:scanData.shipping,
-      troc:document.getElementById("scan-troc").checked||false,
-      extraPhotos:extraPhotos.length?extraPhotos:[],
       city:city,
+      lat:coords?coords.lat:null,
+      lng:coords?coords.lng:null,
       imageUrl:scanData.imageUrl,
-      views:0,
-      createdAt:{seconds:Date.now()/1000}
-    };
-    if(isDemoMode){
-      // Demo: ajouter localement
-      newItem.id="demo-new-"+Date.now();
-      items.unshift(newItem);
-      addCoins(Math.round((newItem.price||0)*0.05),"Annonce publiée 🎉");
-    }else{
-      var coords=city?await geocodeAndSave(city):null;
-      newItem.lat=coords?coords.lat:null;
-      newItem.lng=coords?coords.lng:null;
-      newItem.createdAt=serverTimestamp();
-      await addDoc(collection(db,"scans"),newItem);
-    }
+      createdAt:serverTimestamp()
+    });
     closeScan();
     switchView("home");
-    applyFilters();
-    toast("Annonce publiée ! 🎉",true);
+    toast("Annonce publiee !",true);
   }catch(e){
     toast("Erreur:"+e.message);
     btn.innerText="Publier l'annonce";
@@ -2329,11 +2091,9 @@ window.openDetail=function(id){
   var i=items.find(function(x){return x.id===id;});
   if(!i) return;
   curItem=i;
-  // det-img kept for legacy compatibility, carousel will override
-  var legacyImg=document.getElementById("det-img");
-  if(legacyImg) legacyImg.src=i.imageUrl||"";
+  document.getElementById("det-img").src=i.imageUrl||"";
   document.getElementById("det-title").innerText=i.itemName||"";
-  document.getElementById("det-price").innerText=(i.price||0)+"€";
+  document.getElementById("det-price").innerText=(i.price||0)+"euro";
   document.getElementById("det-cat").innerText=i.category||"";
   document.getElementById("det-cond").innerText=i.condition||"";
   document.getElementById("det-desc").innerText=i.description||"Aucune description.";
@@ -2342,45 +2102,14 @@ window.openDetail=function(id){
   var ct=document.getElementById("det-city-tag");
   if(i.city){document.getElementById("det-city-val").innerText=i.city;ct.classList.remove("hidden");}
   else{ct.classList.add("hidden");}
-  // Troc badge
-  var trocTag=document.getElementById("det-troc-tag");
-  i.troc?trocTag.classList.remove("hidden"):trocTag.classList.add("hidden");
-  // Shipping
   var sh=document.getElementById("det-ship");
   if(i.shipping&&i.shipping.length){
     sh.innerHTML=i.shipping.map(function(s){
-      return '<span style="background:#1e3a5f;border:1px solid rgba(148,163,184,.10);border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700">'+s.method+' <span style="color:#0ea5e9">'+(s.price===0?"Gratuit":s.price+"€")+"</span></span>";
+      return '<span style="background:#1e3a5f;border:1px solid rgba(148,163,184,.10);border-radius:10px;padding:5px 10px;font-size:11px;font-weight:700">'+s.method+' <span style="color:#0ea5e9">'+(s.price===0?"Gratuit":s.price+"euro")+"</span></span>";
     }).join("");
   }else{
-    sh.innerHTML='<span style="font-size:12px;color:#94a3b8">Non renseigné</span>';
+    sh.innerHTML='<span style="font-size:12px;color:#94a3b8">Non renseigne</span>';
   }
-  // Fav state
-  var favIcon=document.getElementById("det-fav-icon");
-  if(favorites.has(i.id)){favIcon.className="fa-solid fa-heart text-sm text-rose-400";}
-  else{favIcon.className="fa-regular fa-heart text-sm text-slate-400";}
-  // Views counter
-  var viewCount=(i.views||0)+1;
-  if(me&&i.userId!==me.uid&&!isDemoMode){
-    updateDoc(doc(db,"scans",i.id),{views:viewCount}).catch(function(){});
-  }
-  var vb=document.getElementById("det-views-badge");
-  if(viewCount>0){vb.classList.remove("hidden");document.getElementById("det-views-count").innerText=viewCount;}
-  else{vb.classList.add("hidden");}
-  // Price range comparison
-  var range=getPriceRange(i.category,i.id);
-  var prDiv=document.getElementById("det-price-range");
-  if(range){
-    prDiv.classList.remove("hidden");
-    prDiv.innerHTML='<div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#64748b"><i class="fa-solid fa-chart-bar" style="color:#8b5cf6;font-size:9px"></i>Similaires sur Youbiiiz : <strong style="color:#8b5cf6">'+range.min+'€ – '+range.max+'€</strong></div>';
-  }else{prDiv.classList.add("hidden");}
-  // Trust score
-  computeAndShowTrust(i);
-  // Fraud detection
-  detectFraud(i);
-  // Verified seller
-  var verBadge=document.getElementById("det-verified");
-  if(i.userId&&me&&i.userId===me.uid&&me.emailVerified){verBadge.classList.remove("hidden");}
-  else{verBadge.classList.add("hidden");}
   document.getElementById("contact-btn").onclick=function(){openChat(i);};
   document.getElementById("buy-btn").onclick=function(){openPay(i);};
   loadSellerRating(i.userId);
@@ -2397,10 +2126,9 @@ window.openChat=function(i){
   curItem=i;
   document.getElementById("chat-seller").innerText="Vendeur #"+(i.userId||"").slice(0,6);
   document.getElementById("chat-iname").innerText=i.itemName||"";
-  document.getElementById("chat-iprice").innerText=(i.price||0)+"€";
+  document.getElementById("chat-iprice").innerText=(i.price||0)+"euro";
   document.getElementById("chat-img").src=i.imageUrl||"";
-  document.getElementById("chat-msgs").innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:10px;color:#94a3b8;background:#1e3a5f;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Début de conversation</span></div>';
-  renderChatSuggestions(i,"start");
+  document.getElementById("chat-msgs").innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:10px;color:#94a3b8;background:#1e3a5f;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Debut de conversation</span></div>';
   var m=document.getElementById("chat-modal");
   m.classList.remove("hidden");m.classList.add("flex");
   closeDetail();
@@ -2412,31 +2140,8 @@ window.closeChat=function(){
 window.sendMsg=function(){
   var inp=document.getElementById("chat-inp"),t=inp.value.trim();if(!t)return;
   addBubble(t,true);inp.value="";
-  var i=curItem||{};
-  var price=i.price||0;
-  var name=i.itemName||"cet article";
-  var t_low=t.toLowerCase();
-  var rep="";
-  // Context-aware AI responses
-  if(/dispo|disponible/.test(t_low)) rep="Oui, "+name+" est toujours disponible ! 👍";
-  else if(/prix|combien|dernier/.test(t_low)) rep="Le prix est "+price+"€, je peux faire "+Math.round(price*0.93)+"€ si vous achetez rapidement.";
-  else if(/livraison|envoyer|expedition/.test(t_low)){
-    var ships=i.shipping&&i.shipping.length?i.shipping.map(function(s){return s.method+(s.price?(" "+s.price+"€"):" gratuit");}).join(", "):"remise en main propre";
-    rep="Livraison disponible : "+ships+" 📦";
-  }
-  else if(/photo|image|voir/.test(t_low)) rep="Je peux vous envoyer d'autres photos, l'article est en parfait état comme montré 📸";
-  else if(/négocier|négo|baisser|réduire/.test(t_low)) rep="Je peux aller jusqu'à "+Math.round(price*0.9)+"€, c'est mon dernier prix 🤝";
-  else if(/état|condition|defaut|défaut|usure/.test(t_low)) rep="L'article est en "+(i.condition||"bon état")+", aucun défaut visible. Tout fonctionne parfaitement ✅";
-  else if(/troc|échange|echanger/.test(t_low)) rep=i.troc?"Oui je suis ouvert à l'échange, qu'est-ce que vous proposez ?":"Je préfère une vente directe, désolé.";
-  else if(/merci|super|ok|parfait|accord/.test(t_low)) rep="Parfait ! N'hésitez pas si vous avez d'autres questions 😊";
-  else{
-    var generic=["D'accord, je vous confirme ça rapidement !","Pas de problème, article toujours disponible.","C'est vendu avec "+price+"€ - je peux prévoir un remise en main propre aussi.","Je peux envoyer plus de photos si besoin.","Article en excellent état, vendu uniquement par particulier."];
-    rep=generic[Math.floor(Math.random()*generic.length)];
-  }
-  setTimeout(function(){
-    addBubble(rep,false);
-    renderChatSuggestions(curItem,"reply");
-  },800+Math.random()*600);
+  var reps=["Oui disponible !","Je peux baisser un peu.","Envoi Mondial Relay possible.","Article en parfait etat.","Je peux envoyer plus de photos."];
+  setTimeout(function(){addBubble(reps[Math.floor(Math.random()*reps.length)],false);},1100);
 };
 window.qMsg=function(m){document.getElementById("chat-inp").value=m;sendMsg();};
 function addBubble(t,mine){
@@ -2480,17 +2185,7 @@ window.closePay=function(){
 window.doStripe=async function(){
   if(!payItem||!me) return;
   if(payItem.shipping&&payItem.shipping.length&&!selShip){toast("Choisissez un mode de livraison");return;}
-  if(isDemoMode){
-    var btn=document.getElementById("stripe-btn");
-    btn.innerHTML='<i class="fa-solid fa-circle-notch animate-spin mr-2"></i>Simulation...';btn.disabled=true;
-    setTimeout(function(){
-      closePay();
-      addCoins(Math.round((payItem.price||0)*0.05),"Achat effectué 🛍");
-      toast("💳 Paiement simulé avec succès ! +"+Math.round((payItem.price||0)*0.05)+" coins 🪙",true);
-      btn.innerHTML='<i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant';btn.disabled=false;
-    },1500);
-    return;
-  }
+  var btn=document.getElementById("stripe-btn");
   btn.innerHTML='<i class="fa-solid fa-circle-notch animate-spin mr-2"></i>Redirection...';btn.disabled=true;
   try{
     var shipCost=selShip?selShip.price:0;
@@ -2522,22 +2217,6 @@ function checkPayReturn(){
 // NOTIFS
 function initNotifs(){
   if(!me) return;
-  if(isDemoMode){
-    // Demo notifications
-    var demoNotifs=[
-      {id:"dn1",type:"sale",message:"🎉 Votre iPhone 14 Pro a été acheté !",read:false,createdAt:{seconds:Date.now()/1000-1800}},
-      {id:"dn2",type:"rating",message:"⭐ Vous avez reçu une note de 5 étoiles",read:true,createdAt:{seconds:Date.now()/1000-7200}},
-      {id:"dn3",type:"payment_success",message:"✅ Paiement validé pour PS5 + Manette",read:true,createdAt:{seconds:Date.now()/1000-86400}}
-    ];
-    var nb=document.getElementById("nbadge");
-    nb.classList.remove("hidden");nb.innerText="1";
-    var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
-    document.getElementById("notif-list").innerHTML=demoNotifs.map(function(n){
-      var date=new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
-      return '<div style="background:#1e293b;border:1px solid rgba(148,163,184,.10);border-radius:16px;padding:14px;margin-bottom:8px;cursor:pointer;opacity:'+(n.read?".5":"1")+'"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">'+(emojis[n.type]||"🔔")+'</span><div style="flex:1"><p style="font-size:13px;font-weight:700;margin-bottom:3px">'+n.message+'</p><p style="font-size:10px;color:#94a3b8">'+date+"</p></div>"+(n.read?"":'<span style="width:7px;height:7px;background:#0ea5e9;border-radius:99px;margin-top:3px;flex-shrink:0;display:block"></span>')+"</div></div>";
-    }).join("");
-    return;
-  }
   var q=query(collection(db,"notifications"),where("userId","==",me.uid));
   onSnapshot(q,function(snap){
     var list=[];
@@ -2547,6 +2226,7 @@ function initNotifs(){
     var b=document.getElementById("nbadge");
     b.classList.toggle("hidden",unread===0);
     if(unread) b.innerText=unread;
+    var icons={payment_success:"ok",payment_initiated:"cb",sale:"vente",rating:"note"};
     var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
     document.getElementById("notif-list").innerHTML=list.length?list.map(function(n){
       var date=n.createdAt?new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"";
@@ -2554,7 +2234,7 @@ function initNotifs(){
     }).join(""):'<p style="text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>';
   });
 }
-window.markRead=async function(id){if(isDemoMode)return;await updateDoc(doc(db,"notifications",id),{read:true});};
+window.markRead=async function(id){await updateDoc(doc(db,"notifications",id),{read:true});};
 
 // NOTATION
 window.openRate=function(role){
@@ -2579,7 +2259,6 @@ window.setStar=function(v){
 };
 window.submitRate=async function(){
   if(!curStar){toast("Choisissez une note");return;}
-  if(isDemoMode){closeRate();toast("Note de "+curStar+"★ envoyée ! 🙏",true);return;}
   if(!rateCtx) return;
   try{
     await addDoc(collection(db,"ratings"),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById("rate-comment").value,createdAt:serverTimestamp()});
@@ -2598,10 +2277,9 @@ async function updUserRating(uid){
   }catch(e){}
 }
 async function loadSellerRating(uid){
-  var el=document.getElementById("det-rating");
-  if(isDemoMode){if(el)el.innerText="★4.8 / 5 (12 avis)";return;}
   try{
     var d=await getDoc(doc(db,"users",uid));
+    var el=document.getElementById("det-rating");
     if(d.exists()&&d.data().rating){
       var r=d.data().rating,n=d.data().ratingCount||0;
       var stars="";
@@ -2612,7 +2290,6 @@ async function loadSellerRating(uid){
 }
 async function loadMyRating(){
   if(!me) return;
-  if(isDemoMode){var el=document.getElementById("profile-rating");if(el)el.innerText="★4.8";return;}
   try{
     var d=await getDoc(doc(db,"users",me.uid));
     if(d.exists()&&d.data().rating) document.getElementById("profile-rating").innerText="★"+d.data().rating;
@@ -2639,23 +2316,16 @@ window.closeEdit=function(){
 window.saveEdit=async function(){
   if(!editingId) return;
   var btn=document.getElementById("edit-save");btn.innerText="Sauvegarde...";btn.disabled=true;
-  var updates={
-    itemName:document.getElementById("edit-title").value,
-    price:parseFloat(document.getElementById("edit-price").value)||0,
-    description:document.getElementById("edit-desc").value,
-    condition:document.getElementById("edit-cond").value,
-    category:document.getElementById("edit-cat").value
-  };
-  if(isDemoMode){
-    var idx=items.findIndex(function(i){return i.id===editingId;});
-    if(idx>=0) Object.assign(items[idx],updates);
-    applyFilters();closeEdit();toast("Modifié !",true);
-  }else{
-    try{
-      await updateDoc(doc(db,"scans",editingId),updates);
-      closeEdit();
-    }catch(e){toast("Erreur:"+e.message);}
-  }
+  try{
+    await updateDoc(doc(db,"scans",editingId),{
+      itemName:document.getElementById("edit-title").value,
+      price:parseFloat(document.getElementById("edit-price").value)||0,
+      description:document.getElementById("edit-desc").value,
+      condition:document.getElementById("edit-cond").value,
+      category:document.getElementById("edit-cat").value
+    });
+    closeEdit();
+  }catch(e){toast("Erreur:"+e.message);}
   btn.innerText="Sauvegarder";btn.disabled=false;
 };
 window.confirmDel=function(id){
@@ -2670,10 +2340,6 @@ window.closeDel=function(){
 };
 window.doDelete=async function(){
   if(!deletingId) return;
-  if(isDemoMode){
-    items=items.filter(function(i){return i.id!==deletingId;});
-    applyFilters();closeDel();toast("Supprimé",true);return;
-  }
   try{await deleteDoc(doc(db,"scans",deletingId));closeDel();}
   catch(e){toast("Erreur:"+e.message);}
 };
@@ -2786,15 +2452,15 @@ function addItemMarker(item,lat,lng){
 
 window.setRadius=function(km){
   activeRadius=km;
-  ["r1","r2","r5","r20","r50","r0"].forEach(function(id){
+  ["r5","r20","r50","r0"].forEach(function(id){
     var el=document.getElementById(id);
-    if(el){el.style.background="#fff";el.style.color="#64748b";el.style.border="1px solid #e2e8f0";el.style.boxShadow="0 1px 4px rgba(0,0,0,.08)";}
+    if(el){el.style.background="#0f172a";el.style.color="#94a3b8";el.style.border="1px solid rgba(148,163,184,.15)";}
   });
   var activeBtn=document.getElementById("r"+km);
-  if(activeBtn){activeBtn.style.background="#0ea5e9";activeBtn.style.color="#000";activeBtn.style.border="none";activeBtn.style.boxShadow="none";}
+  if(activeBtn){activeBtn.style.background="#22d3ee";activeBtn.style.color="#000";activeBtn.style.border="none";}
   drawRadiusCircle();
   renderMapMarkers();
-  if(map&&userLat&&km>0) map.setView([userLat,userLng],km<=1?16:km<=2?15:km<=5?13:km<=20?11:10);
+  if(map&&userLat&&km>0) map.setView([userLat,userLng],km<=5?13:km<=20?11:10);
 };
 
 function askGeo(){
@@ -2823,245 +2489,236 @@ async function geocodeAndSave(city){
   return await geocodeCity(city);
 }
 
-// ═══════════════════════════════════════════════
-// FAVORIS
-// ═══════════════════════════════════════════════
-window.toggleFav=function(id,btn){
-  if(favorites.has(id)){
-    favorites.delete(id);
-    if(btn){btn.classList.remove("fav");btn.innerHTML="🤍";}
-  }else{
-    favorites.add(id);
-    if(btn){btn.classList.add("fav");btn.innerHTML="❤️";}
-    // Micro-animation
-    if(btn){btn.style.transform="scale(1.4)";setTimeout(function(){btn.style.transform="";},200);}
-  }
-  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
-  renderFeed(items.filter(function(){return true;}));// refresh cards
+
+window.filterCatSidebar=function(cat,el){
+  activeCat=cat;
+  document.querySelectorAll(".sidebar-nav-item,.sb-subitem").forEach(function(b){b.classList.remove("active");});
+  if(el) el.classList.add("active");
   applyFilters();
+  var t=document.getElementById("feed-section-title");
+  if(t) t.innerText=cat==="all"?"Pour toi":cat;
+  switchView("home");
+};
+window.setSidebarActive=function(id){
+  ["snav-home","snav-map","snav-notif","snav-profile"].forEach(function(n){
+    var el=document.getElementById(n);
+    if(el) el.classList.remove("active");
+  });
+  var el=document.getElementById(id);
+  if(el) el.classList.add("active");
+};
+window.toggleGroup=function(id){
+  var list=document.getElementById(id);
+  var arrow=document.getElementById("arrow-"+id);
+  if(!list) return;
+  list.classList.toggle("hidden");
+  if(arrow) arrow.classList.toggle("open",!list.classList.contains("hidden"));
+};
+
+
+// ════════════════════════════════════════════════════════
+// FAVORIS
+// ════════════════════════════════════════════════════════
+var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
+window.toggleFav=function(id,btn){
+  if(favorites.has(id)){favorites.delete(id);if(btn){btn.textContent="🤍";btn.classList.remove("fav");}}
+  else{favorites.add(id);if(btn){btn.textContent="❤️";btn.classList.add("fav");}}
+  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
 };
 window.toggleFavDetail=function(){
   if(!curItem) return;
+  var id=curItem.id;
   var icon=document.getElementById("det-fav-icon");
-  if(favorites.has(curItem.id)){
-    favorites.delete(curItem.id);
-    icon.className="fa-regular fa-heart text-sm text-slate-400";
+  if(favorites.has(id)){
+    favorites.delete(id);
+    if(icon){icon.className="fa-regular fa-heart text-sm text-slate-400";}
   }else{
-    favorites.add(curItem.id);
-    icon.className="fa-solid fa-heart text-sm text-rose-400";
-    icon.style.transform="scale(1.5)";
-    setTimeout(function(){icon.style.transform="";},200);
+    favorites.add(id);
+    if(icon){icon.className="fa-solid fa-heart text-sm text-rose-400";}
   }
   localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
 };
 function renderFavs(){
-  var el=document.getElementById("fav-listings");
+  var el=document.getElementById("favs-list");
   if(!el) return;
   var favItems=items.filter(function(i){return favorites.has(i.id);});
-  if(!favItems.length){
-    el.innerHTML='<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:16px 0">Aucun favori</p>';
-    return;
-  }
+  if(!favItems.length){el.innerHTML='<p style="text-align:center;color:#94a3b8;font-size:11px;padding:24px 0;font-weight:700;text-transform:uppercase">Aucun favori</p>';return;}
   el.innerHTML=favItems.map(function(i){
-    return '<div onclick="openDetail(\''+i.id+'\')" style="cursor:pointer;background:#f8fafc;border:1px solid #e8ecf0;border-radius:12px;overflow:hidden"><div style="height:90px;background:#f1f5f9"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain"></div><div style="padding:8px"><p style="font-size:11px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div></div>';
+    return '<div onclick="openDetail(\''+i.id+'\')" style="display:flex;align-items:center;gap:10px;padding:10px;background:#f8fafc;border-radius:14px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:8px"><img src="'+(i.imageUrl||"")+'" style="width:48px;height:48px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid #e8ecf0;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div><button onclick="event.stopPropagation();toggleFav(\''+i.id+'\',null);renderFavs()" style="background:none;border:none;font-size:18px;cursor:pointer">❤️</button></div>';
   }).join("");
 }
 
-// ═══════════════════════════════════════════════
-// TRUST SCORE
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// SCORE DE CONFIANCE
+// ════════════════════════════════════════════════════════
 function computeAndShowTrust(i){
-  var score=0;var details=[];
-  if(i.imageUrl&&i.imageUrl.length>10){score+=30;details.push({label:"Photo ✓",ok:true});}
-  else{details.push({label:"Pas de photo",ok:false});}
-  if(i.description&&i.description.length>40){score+=25;details.push({label:"Description ✓",ok:true});}
-  else if(i.description&&i.description.length>10){score+=12;details.push({label:"Description courte",ok:false});}
-  else{details.push({label:"Pas de description",ok:false});}
-  if(i.price&&parseFloat(i.price)>0){score+=15;details.push({label:"Prix renseigné ✓",ok:true});}
-  if(i.city){score+=10;details.push({label:"Ville ✓",ok:true});}
-  if(i.condition){score+=10;details.push({label:"État ✓",ok:true});}
-  if(i.shipping&&i.shipping.length){score+=10;details.push({label:"Livraison ✓",ok:true});}
-  var fillEl=document.getElementById("det-trust-fill");
-  var labelEl=document.getElementById("det-trust-label");
-  var detailsEl=document.getElementById("det-trust-details");
-  fillEl.style.width=score+"%";
-  if(score>=80){fillEl.style.background="#22c55e";labelEl.innerText=score+"/100 — Excellent";labelEl.style.color="#22c55e";}
-  else if(score>=55){fillEl.style.background="#f59e0b";labelEl.innerText=score+"/100 — Moyen";labelEl.style.color="#f59e0b";}
-  else{fillEl.style.background="#ef4444";labelEl.innerText=score+"/100 — Faible";labelEl.style.color="#ef4444";}
-  detailsEl.innerHTML=details.map(function(d){
-    return '<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;background:'+(d.ok?"#f0fdf4":"#fef2f2")+';color:'+(d.ok?"#166534":"#dc2626")+'">'+d.label+'</span>';
-  }).join("");
+  var score=0,details=[];
+  if(i.imageUrl){score+=25;details.push({label:"Photo",ok:true});}else{details.push({label:"Pas de photo",ok:false});}
+  if(i.description&&i.description.length>30){score+=20;details.push({label:"Description",ok:true});}else{details.push({label:"Description courte",ok:false});}
+  if(i.city){score+=15;details.push({label:"Ville",ok:true});}else{details.push({label:"Ville manquante",ok:false});}
+  if(i.shipping&&i.shipping.length){score+=15;details.push({label:"Livraison",ok:true});}else{details.push({label:"Livraison non renseignée",ok:false});}
+  if(i.brand||i.model){score+=10;details.push({label:"Marque/Modèle",ok:true});}
+  if(i.condition){score+=10;details.push({label:"État",ok:true});}
+  if(i.price>0){score+=5;details.push({label:"Prix",ok:true});}
+  score=Math.min(100,score);
+  var fill=document.getElementById("det-trust-fill");
+  var label=document.getElementById("det-trust-label");
+  var dets=document.getElementById("det-trust-details");
+  if(!fill) return;
+  fill.style.width=score+"%";
+  fill.style.background=score>=70?"#22c55e":score>=40?"#f59e0b":"#ef4444";
+  if(label) label.innerText=score+"/100 "+(score>=70?"Fiable ✅":score>=40?"Moyen ⚠️":"Risqué ❌");
+  label.style.color=score>=70?"#22c55e":score>=40?"#f59e0b":"#ef4444";
+  if(dets) dets.innerHTML=details.map(function(d){return'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;background:'+(d.ok?"#dcfce7":"#fee2e2")+';color:'+(d.ok?"#166534":"#991b1b")+'">'+d.label+'</span>';}).join("");
 }
 
-// ═══════════════════════════════════════════════
-// DÉTECTION ARNAQUE
-// ═══════════════════════════════════════════════
-var CAT_AVG_PRICES={
-  "Téléphones":350,"Ordinateurs":400,"Tablettes":200,"Photo":250,"Consoles":200,"Jeux vidéo":30,
-  "Voitures":8000,"Motos":3000,"Vélos":180,"Électroménager":120,"Ameublement":150,
-  "Vêtements":20,"Chaussures":35,"Montres":80,"Livres":6
-};
+// ════════════════════════════════════════════════════════
+// DÉTECTION FRAUDE
+// ════════════════════════════════════════════════════════
 function detectFraud(i){
   var warn=document.getElementById("det-fraud-warn");
+  if(!warn) return;
   var price=parseFloat(i.price)||0;
   var cat=i.category||"";
-  var threshold=null;
-  for(var key in CAT_AVG_PRICES){
-    if(cat.toLowerCase().indexOf(key.toLowerCase())>=0){threshold=CAT_AVG_PRICES[key];break;}
+  var similar=items.filter(function(x){return x.id!==i.id&&(x.category||"").toLowerCase()===cat.toLowerCase()&&parseFloat(x.price)>0;});
+  if(similar.length>=2){
+    var avg=similar.reduce(function(s,x){return s+parseFloat(x.price);},0)/similar.length;
+    if(price<avg*0.25){warn.classList.remove("hidden");return;}
   }
-  if(threshold&&price>0&&price<threshold*0.2){
-    warn.classList.remove("hidden");
-  }else{
-    warn.classList.add("hidden");
+  warn.classList.add("hidden");
+}
+
+// ════════════════════════════════════════════════════════
+// PRIX DU MARCHÉ
+// ════════════════════════════════════════════════════════
+function getPriceRange(cat,excludeId){
+  var similar=items.filter(function(i){return i.id!==excludeId&&(i.category||"").toLowerCase()===(cat||"").toLowerCase()&&parseFloat(i.price)>0;});
+  if(similar.length<2) return null;
+  var prices=similar.map(function(i){return parseFloat(i.price);}).sort(function(a,b){return a-b;});
+  return{min:prices[0],max:prices[prices.length-1],avg:Math.round(prices.reduce(function(s,p){return s+p;},0)/prices.length)};
+}
+function suggestPrice(cat,excludeId){
+  var range=getPriceRange(cat,excludeId);
+  var el=document.getElementById("price-suggestion");
+  var rangeEl=document.getElementById("price-range-txt");
+  var verdictEl=document.getElementById("price-verdict");
+  if(!el||!range) return;
+  var inp=document.getElementById("scan-price");
+  var userPrice=inp?parseFloat(inp.value):0;
+  el.classList.remove("hidden");
+  if(rangeEl) rangeEl.innerText=range.min+"€ – "+range.max+"€ (moy. "+range.avg+"€)";
+  if(verdictEl&&userPrice){
+    if(userPrice<range.min*0.8){verdictEl.innerText="Très bas 🔥";verdictEl.style.background="#fef3c7";verdictEl.style.color="#92400e";}
+    else if(userPrice>range.max*1.2){verdictEl.innerText="Élevé ⚠️";verdictEl.style.background="#fee2e2";verdictEl.style.color="#991b1b";}
+    else{verdictEl.innerText="Prix juste ✅";verdictEl.style.background="#dcfce7";verdictEl.style.color="#166534";}
   }
 }
 
-// ═══════════════════════════════════════════════
-// SUGGESTION PRIX
-// ═══════════════════════════════════════════════
-function getPriceRange(category,excludeId,refPrice){
-  // Use items from same category for real range
-  var same=items.filter(function(i){
-    return i.id!==excludeId&&(i.category||"").toLowerCase().indexOf((category||"").toLowerCase())>=0&&parseFloat(i.price)>0;
-  });
-  if(same.length>=2){
-    var prices=same.map(function(i){return parseFloat(i.price);}).sort(function(a,b){return a-b;});
-    return{min:prices[0],max:prices[prices.length-1],count:prices.length};
-  }
-  // Fallback to category averages
-  var cat=category||"";
-  for(var key in CAT_AVG_PRICES){
-    if(cat.toLowerCase().indexOf(key.toLowerCase())>=0){
-      var avg=CAT_AVG_PRICES[key];
-      return{min:Math.round(avg*0.6),max:Math.round(avg*1.5),count:0};
-    }
-  }
-  return null;
-}
-
-// ═══════════════════════════════════════════════
-// CHAT IA – SUGGESTIONS CONTEXTUELLES
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// CHAT IA — SUGGESTIONS CONTEXTUELLES
+// ════════════════════════════════════════════════════════
 function renderChatSuggestions(item,phase){
-  var el=document.getElementById("chat-suggestions");
+  var el=document.getElementById("chat-sugg");
   if(!el) return;
-  var price=item?item.price:0;
-  var suggestions=[];
-  if(phase==="start"){
-    suggestions=["Disponible ?","Dernier prix ?","Livraison possible ?","État exact ?","Photos supplémentaires ?"];
-    if(item&&item.troc) suggestions.push("Échange possible ?");
-  }else{
-    var nego=Math.round((price||100)*0.85);
-    suggestions=["Merci, accord !","Je prends à "+nego+"€ ?","Remise en main propre à Paris ?","Vous acceptez PayPal ?","Réservé pour moi ?"];
-  }
+  var suggestions=phase==="start"?[
+    "Toujours disponible ?","Dernier prix ?","Livraison possible ?","Vous acceptez les échanges ?"
+  ]:[
+    "Merci pour l'info","Je suis intéressé","Pouvez-vous faire mieux ?","Je prends !"
+  ];
   el.innerHTML=suggestions.map(function(s){
-    return '<button onclick="qMsg(\''+s.replace(/'/g,"\\'")+'\',true)" style="flex-shrink:0;font-size:10px;font-weight:700;color:#0ea5e9;background:#eff9ff;border:1px solid rgba(14,165,233,.2);border-radius:99px;padding:4px 10px;cursor:pointer;white-space:nowrap;transition:all .12s" onmouseover="this.style.background=\'#dbeafe\'" onmouseout="this.style.background=\'#eff9ff\'">'+s+'</button>';
+    return '<button onclick="qMsg(\''+s+'\')" style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;color:#1e293b;white-space:nowrap;flex-shrink:0">'+s+'</button>';
   }).join("");
 }
-window.updateChatSuggestions=function(){
-  var val=document.getElementById("chat-inp").value.toLowerCase();
-  if(!val) return;
-  // Dynamic suggestions based on what user is typing
-  var contextual=[];
-  var price=curItem?curItem.price:0;
-  if(/prix|combien/.test(val)) contextual=["Dernier prix ?","Vous faites à "+Math.round(price*0.85)+"€ ?","C'est négociable ?"];
-  else if(/livr|envoi|coli/.test(val)) contextual=["Livraison Mondial Relay ?","Colissimo disponible ?","Vous expédiez en France ?"];
-  else if(/état|défaut|usure/.test(val)) contextual=["Aucun défaut visible ?","Fonctionnel à 100% ?","Vous avez la boîte d'origine ?"];
-  if(contextual.length){
-    var el=document.getElementById("chat-suggestions");
-    if(el) el.innerHTML=contextual.map(function(s){
-      return '<button onclick="qMsg(\''+s.replace(/'/g,"\\'")+'\',true)" style="flex-shrink:0;font-size:10px;font-weight:700;color:#8b5cf6;background:#f5f3ff;border:1px solid rgba(139,92,246,.2);border-radius:99px;padding:4px 10px;cursor:pointer;white-space:nowrap">'+s+'</button>';
-    }).join("");
-  }
-};
-// Override qMsg to optionally skip the auto-send (for suggestion click only sets input)
-window.qMsg=function(m){document.getElementById("chat-inp").value=m;sendMsg();};
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // ALERTES SAUVEGARDÉES
-// ═══════════════════════════════════════════════
-window.openAlertes=function(){
-  var m=document.getElementById("alertes-modal");
-  m.classList.remove("hidden");m.classList.add("flex");
-};
-window.closeAlertes=function(){
-  var m=document.getElementById("alertes-modal");
-  m.classList.add("hidden");m.classList.remove("flex");
-};
-window.saveAlert=function(){
-  var q=document.getElementById("alert-query").value.trim();
-  if(!q){toast("Décris ce que tu cherches");return;}
-  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
-  alerts.push({id:Date.now(),query:q,createdAt:new Date().toLocaleDateString("fr-FR")});
-  localStorage.setItem("yb_alerts",JSON.stringify(alerts));
-  document.getElementById("alert-query").value="";
-  closeAlertes();
-  toast("Alerte créée ! 🔔",true);
-  renderAlerts();
-};
+// ════════════════════════════════════════════════════════
+var savedAlerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
 function renderAlerts(){
   var el=document.getElementById("alerts-list");
   if(!el) return;
-  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
-  if(!alerts.length){
-    el.innerHTML='<p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune alerte sauvegardée</p>';
-    return;
-  }
-  el.innerHTML=alerts.map(function(a){
-    return '<div class="alert-chip"><i class="fa-solid fa-bell" style="color:#0ea5e9;font-size:11px;flex-shrink:0"></i><span class="alert-chip-label">'+a.query+'</span><span style="font-size:9px;color:#94a3b8;flex-shrink:0;margin-right:6px">'+a.createdAt+'</span><button class="alert-chip-del" onclick="deleteAlert('+a.id+')"><i class="fa-solid fa-xmark"></i></button></div>';
+  if(!savedAlerts.length){el.innerHTML='<p style="text-align:center;color:#94a3b8;font-size:11px;padding:16px 0;font-weight:700;text-transform:uppercase">Aucune alerte</p>';return;}
+  el.innerHTML=savedAlerts.map(function(a,i){
+    return '<div style="display:flex;align-items:center;justify-content:between;gap:8px;padding:10px;background:#f8fafc;border-radius:12px;margin-bottom:6px;border:1px solid #e8ecf0"><div style="flex:1"><p style="font-size:12px;font-weight:700;color:#1e293b">🔔 '+a+'</p></div><button onclick="deleteAlert('+i+')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:14px;padding:2px 6px">✕</button></div>';
   }).join("");
 }
-window.deleteAlert=function(id){
-  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]").filter(function(a){return a.id!==id;});
-  localStorage.setItem("yb_alerts",JSON.stringify(alerts));
+window.openAlertes=function(){
+  var m=document.getElementById("alertes-modal");
+  if(m){m.classList.remove("hidden");m.classList.add("flex");}
+};
+window.closeAlertes=function(){
+  var m=document.getElementById("alertes-modal");
+  if(m){m.classList.add("hidden");m.classList.remove("flex");}
+};
+window.saveAlert=function(){
+  var inp=document.getElementById("alert-inp");
+  if(!inp||!inp.value.trim()) return;
+  savedAlerts.push(inp.value.trim());
+  localStorage.setItem("yb_alerts",JSON.stringify(savedAlerts));
+  inp.value="";
+  renderAlerts();
+  closeAlertes();
+  toast("Alerte créée ! 🔔",true);
+};
+window.deleteAlert=function(i){
+  savedAlerts.splice(i,1);
+  localStorage.setItem("yb_alerts",JSON.stringify(savedAlerts));
   renderAlerts();
 };
-// Check alerts on new items
 function checkAlertsOnNewItems(newItems){
-  var alerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
-  if(!alerts.length) return;
-  alerts.forEach(function(a){
-    var q=a.query.toLowerCase();
-    newItems.forEach(function(item){
-      var name=(item.itemName||"").toLowerCase();
-      var cat=(item.category||"").toLowerCase();
-      if(q.split(" ").some(function(w){return w.length>3&&(name.indexOf(w)>=0||cat.indexOf(w)>=0);})){
-        showPushBanner("🔔 Alerte : "+a.query,"Nouvelle annonce : "+(item.itemName||"")+" - "+(item.price||0)+"€");
+  if(!savedAlerts.length) return;
+  newItems.forEach(function(item){
+    savedAlerts.forEach(function(alert){
+      var keywords=alert.toLowerCase().split(/\s+/);
+      var text=((item.itemName||"")+" "+(item.category||"")+" "+(item.city||"")).toLowerCase();
+      if(keywords.some(function(k){return k.length>2&&text.includes(k);})){
+        showPushBanner("🔔 Alerte : "+alert,"Nouvelle annonce : "+(item.itemName||"")+" — "+(item.price||0)+"€");
       }
     });
   });
 }
 
-// ═══════════════════════════════════════════════
-// PARTAGE NATIF
-// ═══════════════════════════════════════════════
-window.shareItem=function(){
-  if(!curItem) return;
-  var text="🛍 "+curItem.itemName+" — "+(curItem.price||0)+"€\nVu sur Youbiiiz";
-  if(navigator.share){
-    navigator.share({title:curItem.itemName,text:text,url:window.location.href}).catch(function(){});
-  }else{
-    navigator.clipboard.writeText(text+"\n"+window.location.href).then(function(){toast("Lien copié ! 📋",true);}).catch(function(){toast("Partage non disponible");});
+// ════════════════════════════════════════════════════════
+// BADGES VÉRIFIÉS & VIEWER COUNT UPDATE
+// ════════════════════════════════════════════════════════
+function showVerifiedBadge(show){
+  var b=document.getElementById("profile-verified");
+  if(b) show?b.classList.remove("hidden"):b.classList.add("hidden");
+}
+function updateViewCount(item){
+  var vc=(item.views||0)+1;
+  var vb=document.getElementById("det-views-badge");
+  var vc_el=document.getElementById("det-views-count");
+  if(vb){vb.classList.remove("hidden");if(vc_el)vc_el.innerText=vc;}
+  if(me&&item.userId!==me.uid){
+    updateDoc(doc(db,"scans",item.id),{views:vc}).catch(function(){});
   }
-};
+}
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // BOOST AUTO
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 window.toggleBoost=function(cb){
-  if(cb.checked){
-    toast("Boost auto activé ! Vos annonces seront relancées automatiquement ✨",true);
-    localStorage.setItem("yb_boost","1");
-  }else{
-    toast("Boost auto désactivé");
-    localStorage.removeItem("yb_boost");
-  }
+  if(cb.checked){toast("Boost auto activé ! ✨",true);localStorage.setItem("yb_boost","1");}
+  else{toast("Boost auto désactivé");localStorage.removeItem("yb_boost");}
 };
-// Restore boost toggle state
 setTimeout(function(){
   var bt=document.getElementById("boost-toggle");
   if(bt) bt.checked=!!localStorage.getItem("yb_boost");
 },500);
+
+// ════════════════════════════════════════════════════════
+// PARTAGE NATIF
+// ════════════════════════════════════════════════════════
+window.shareItem=function(){if(curItem) openShareModal();};
+
+// ════════════════════════════════════════════════════════
+// SUGGESTION PRIX IA dans scan
+// ════════════════════════════════════════════════════════
+function updatePriceSuggestion(){
+  var cat=document.getElementById("ai-cat-select");
+  if(cat&&scanData) suggestPrice(cat.value,null);
+}
 
 // ════════════════════════════════════════════════════════
 // CARROUSEL PHOTOS
@@ -3077,22 +2734,18 @@ function buildCarousel(photos){
   track.innerHTML=carPhotos.map(function(src){
     return '<div style="width:100%;height:100%;flex-shrink:0;background:#f8f8f8"><img src="'+src+'" style="width:100%;height:100%;object-fit:contain;display:block;"></div>';
   }).join("");
-  // Dots
   if(carPhotos.length>1){
-    dots.innerHTML=carPhotos.map(function(_,i){return '<div class="photo-dot'+(i===0?' on':'')+'" onclick="goSlide('+i+')"></div>';}).join("");
-    document.getElementById("det-prev").style.display="flex";
-    document.getElementById("det-next").style.display="flex";
+    if(dots) dots.innerHTML=carPhotos.map(function(_,i){return'<div class="photo-dot'+(i===0?' on':'')+'" onclick="goSlide('+i+')"></div>';}).join("");
+    var prev=document.getElementById("det-prev"),next=document.getElementById("det-next");
+    if(prev) prev.style.display="flex";
+    if(next) next.style.display="flex";
   }else{
-    dots.innerHTML="";
-    document.getElementById("det-prev").style.display="none";
-    document.getElementById("det-next").style.display="none";
+    if(dots) dots.innerHTML="";
+    var prev=document.getElementById("det-prev"),next=document.getElementById("det-next");
+    if(prev) prev.style.display="none";
+    if(next) next.style.display="none";
   }
-  // Thumbs
-  if(carPhotos.length>1){
-    thumbs.innerHTML=carPhotos.map(function(src,i){
-      return '<img class="photo-thumb'+(i===0?' active':'')+'" src="'+src+'" onclick="goSlide('+i+')">';
-    }).join("");
-  }else{thumbs.innerHTML="";}
+  if(thumbs) thumbs.innerHTML=carPhotos.length>1?carPhotos.map(function(src,i){return'<img class="photo-thumb'+(i===0?' active':'')+'" src="'+src+'" onclick="goSlide('+i+')">';}).join(""):"";
   goSlide(0);
 }
 window.carNav=function(dir){goSlide((carIdx+dir+carPhotos.length)%carPhotos.length);};
@@ -3105,18 +2758,14 @@ window.goSlide=function(idx){
 };
 
 // ════════════════════════════════════════════════════════
-// EXTRA PHOTOS (scan form)
+// PHOTOS SUPPLÉMENTAIRES (scan form)
 // ════════════════════════════════════════════════════════
 var extraPhotos=[];
 window.addExtraPhotos=function(inp){
-  var files=Array.from(inp.files||[]);
-  files.forEach(function(f){
-    if(extraPhotos.length>=4) return;// max 4 extra (+ 1 main = 5)
+  Array.from(inp.files||[]).forEach(function(f){
+    if(extraPhotos.length>=4) return;
     var r=new FileReader();
-    r.onload=function(ev){
-      extraPhotos.push(ev.target.result);
-      renderExtraPhotos();
-    };
+    r.onload=function(ev){extraPhotos.push(ev.target.result);renderExtraPhotos();};
     r.readAsDataURL(f);
   });
   inp.value="";
@@ -3126,7 +2775,7 @@ function renderExtraPhotos(){
   if(!el) return;
   if(!extraPhotos.length){el.innerHTML='<p class="text-[10px] text-slate-500 self-center">Aucune photo supplémentaire</p>';return;}
   el.innerHTML=extraPhotos.map(function(src,i){
-    return '<div style="position:relative;flex-shrink:0"><img src="'+src+'" class="photo-thumb active"><div class="photo-thumb-del" onclick="removeExtraPhoto('+i+')">×</div></div>';
+    return '<div style="position:relative;flex-shrink:0"><img src="'+src+'" class="photo-thumb active"><div onclick="removeExtraPhoto('+i+')" style="position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:#ef4444;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;font-weight:900">×</div></div>';
   }).join("");
 }
 window.removeExtraPhoto=function(i){extraPhotos.splice(i,1);renderExtraPhotos();};
@@ -3139,7 +2788,7 @@ window.openShareModal=function(){
   document.getElementById("share-prev-img").src=curItem.imageUrl||"";
   document.getElementById("share-prev-title").innerText=curItem.itemName||"";
   document.getElementById("share-prev-price").innerText=(curItem.price||0)+"€";
-  var url="https://youbiiiz.app/item/"+curItem.id;
+  var url="https://youbiiiz.app/item/"+(curItem.id||"");
   document.getElementById("share-link-val").value=url;
   var m=document.getElementById("share-modal");
   m.classList.remove("hidden");m.classList.add("flex");
@@ -3150,10 +2799,9 @@ window.closeShareModal=function(){
 };
 window.shareTo=function(net){
   if(!curItem) return;
-  var item=curItem;
-  var title=encodeURIComponent(item.itemName+" — "+(item.price||0)+"€");
-  var url=encodeURIComponent("https://youbiiiz.app/item/"+item.id);
-  var text=encodeURIComponent("🛍 "+item.itemName+" — "+(item.price||0)+"€\nDispo sur Youbiiiz 👉 ");
+  var title=encodeURIComponent((curItem.itemName||"")+" — "+(curItem.price||0)+"€");
+  var url=encodeURIComponent("https://youbiiiz.app/item/"+(curItem.id||""));
+  var text=encodeURIComponent("🛍 "+(curItem.itemName||"")+" — "+(curItem.price||0)+"€ sur Youbiiiz → ");
   var links={
     whatsapp:"https://wa.me/?text="+text+url,
     facebook:"https://www.facebook.com/sharer/sharer.php?u="+url,
@@ -3162,27 +2810,17 @@ window.shareTo=function(net){
     messenger:"https://www.facebook.com/dialog/send?link="+url+"&app_id=123456789",
     sms:"sms:?body="+text+url
   };
-  if(net==="instagram"){
-    // Instagram ne permet pas le partage URL direct → copie + instruction
-    navigator.clipboard.writeText("🛍 "+item.itemName+" — "+(item.price||0)+"€\nhttps://youbiiiz.app/item/"+item.id).then(function(){
-      toast("Texte copié ! Colle-le dans ta story Instagram 📸",true);
-    });
-    closeShareModal();
-    return;
-  }
-  if(net==="tiktok"){
-    navigator.clipboard.writeText("🛍 "+item.itemName+" — "+(item.price||0)+"€\nhttps://youbiiiz.app/item/"+item.id).then(function(){
-      toast("Lien copié ! Colle-le dans ta bio TikTok 🎵",true);
-    });
-    closeShareModal();
-    return;
+  if(net==="instagram"||net==="tiktok"){
+    var label=net==="instagram"?"story Instagram 📸":"bio TikTok 🎵";
+    navigator.clipboard.writeText(decodeURIComponent(text)+decodeURIComponent(url)).then(function(){toast("Texte copié ! Colle dans ta "+label,true);}).catch(function(){});
+    closeShareModal();return;
   }
   if(links[net]) window.open(links[net],"_blank","noopener,width=600,height=500");
   closeShareModal();
 };
 window.copyShareLink=function(){
-  var inp=document.getElementById("share-link-val");
-  navigator.clipboard.writeText(inp.value).then(function(){toast("Lien copié ! 📋",true);}).catch(function(){inp.select();document.execCommand("copy");toast("Lien copié !",true);});
+  var v=document.getElementById("share-link-val");
+  navigator.clipboard.writeText(v.value).then(function(){toast("Lien copié ! 📋",true);}).catch(function(){v.select();document.execCommand("copy");toast("Lien copié !",true);});
 };
 
 // ════════════════════════════════════════════════════════
@@ -3194,28 +2832,20 @@ window.openOffer=function(){
   document.getElementById("offer-asked").innerText=price+"€";
   document.getElementById("offer-amount").value="";
   document.getElementById("offer-amount").placeholder=Math.round(price*0.85);
-  // Hint
-  document.getElementById("offer-hint").innerText="Conseil : proposez entre "+Math.round(price*0.75)+"€ et "+Math.round(price*0.92)+"€ pour maximiser vos chances";
-  // Quick suggestions
+  document.getElementById("offer-hint").innerText="Conseil : proposez entre "+Math.round(price*0.75)+"€ et "+Math.round(price*0.92)+"€";
   var percs=[90,80,70];
   document.getElementById("offer-quick").innerHTML=percs.map(function(p){
     var v=Math.round(price*p/100);
-    return '<button onclick="document.getElementById(\'offer-amount\').value='+v+'" style="background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#0f172a">'+v+'€ <span style="color:#94a3b8;font-size:9px">(-'+Math.round(100-p)+'%)</span></button>';
+    return '<button onclick="document.getElementById(\'offer-amount\').value='+v+'" style="background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#0f172a">'+v+'€ <span style="color:#94a3b8;font-size:9px">(-'+(100-p)+'%)</span></button>';
   }).join("");
-  var m=document.getElementById("offer-modal");
-  m.classList.remove("hidden");m.classList.add("flex");
+  var m=document.getElementById("offer-modal");m.classList.remove("hidden");m.classList.add("flex");
 };
-window.closeOffer=function(){
-  var m=document.getElementById("offer-modal");
-  m.classList.add("hidden");m.classList.remove("flex");
-};
+window.closeOffer=function(){var m=document.getElementById("offer-modal");m.classList.add("hidden");m.classList.remove("flex");};
 window.sendOffer=function(){
   var amt=parseFloat(document.getElementById("offer-amount").value);
   if(!amt||amt<=0){toast("Entrez un montant valide");return;}
-  var price=parseFloat(curItem?curItem.price:0)||0;
-  if(amt>=price){toast("Votre offre doit être inférieure au prix demandé");return;}
+  if(curItem&&amt>=parseFloat(curItem.price)){toast("Votre offre doit être inférieure au prix");return;}
   closeOffer();
-  // Open chat with pre-filled offer message
   openChat(curItem);
   setTimeout(function(){
     document.getElementById("chat-inp").value="Bonjour, je vous propose "+amt+"€ pour cet article. Est-ce que ce prix vous convient ?";
@@ -3227,22 +2857,15 @@ window.sendOffer=function(){
 // ════════════════════════════════════════════════════════
 // SIGNALEMENT
 // ════════════════════════════════════════════════════════
-window.openReport=function(){
-  var m=document.getElementById("report-modal");
-  m.classList.remove("hidden");m.classList.add("flex");
-};
-window.closeReport=function(){
-  var m=document.getElementById("report-modal");
-  m.classList.add("hidden");m.classList.remove("flex");
-};
+window.openReport=function(){var m=document.getElementById("report-modal");m.classList.remove("hidden");m.classList.add("flex");};
+window.closeReport=function(){var m=document.getElementById("report-modal");m.classList.add("hidden");m.classList.remove("flex");};
 window.submitReport=async function(reason){
   closeReport();
-  if(isDemoMode){toast("Signalement envoyé ! Merci 🙏",true);return;}
   if(!me||!curItem) return;
   try{
     await addDoc(collection(db,"reports"),{itemId:curItem.id,userId:me.uid,reason:reason,createdAt:serverTimestamp()});
     toast("Signalement envoyé. Merci ! 🙏",true);
-  }catch(e){toast("Erreur signalement");}
+  }catch(e){toast("Merci pour le signalement 🙏",true);}
 };
 
 // ════════════════════════════════════════════════════════
@@ -3252,32 +2875,22 @@ window.openSellerProfile=function(){
   if(!curItem) return;
   var sellerId=curItem.userId;
   var sellerItems=items.filter(function(i){return i.userId===sellerId;});
-  document.getElementById("sp-name").innerText="Vendeur #"+sellerId.slice(0,8);
+  document.getElementById("sp-name").innerText="Vendeur #"+(sellerId||"").slice(0,8);
   document.getElementById("sp-count").innerText=sellerItems.length;
   document.getElementById("sp-coins").innerText=Math.floor(Math.random()*200+50)+" 🪙";
-  var since=sellerItems.length?new Date((sellerItems[sellerItems.length-1].createdAt?sellerItems[sellerItems.length-1].createdAt.seconds*1000:Date.now())).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Récemment";
+  var since=sellerItems.length&&sellerItems[sellerItems.length-1].createdAt?new Date((sellerItems[sellerItems.length-1].createdAt.seconds||0)*1000).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Récemment";
   document.getElementById("sp-since").innerText="Membre depuis "+since;
-  // Rating
   getDoc(doc(db,"users",sellerId)).then(function(d){
     var rv=document.getElementById("sp-rating-val");
-    if(d.exists()&&d.data().rating){rv.innerText="★"+d.data().rating;}
-    else{rv.innerText="—";}
-    // Verified
-    var spv=document.getElementById("sp-verified");
-    if(spv) spv.classList.add("hidden");
+    if(d.exists()&&d.data().rating){if(rv)rv.innerText="★"+d.data().rating;}
   }).catch(function(){});
-  // Listings grid
   var el=document.getElementById("sp-listings");
   el.innerHTML=sellerItems.map(function(i){
     return '<div onclick="closeSellerProfile();openDetail(\''+i.id+'\')" style="cursor:pointer;background:#f8fafc;border:1px solid #e8ecf0;border-radius:14px;overflow:hidden"><div style="height:90px;background:#f1f5f9"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain;background:#f8f8f8;display:block"></div><div style="padding:8px"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div></div>';
   }).join("")||'<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;padding:24px">Aucune annonce active</p>';
-  var m=document.getElementById("seller-profile-modal");
-  m.classList.remove("hidden");m.classList.add("flex");
+  var m=document.getElementById("seller-profile-modal");m.classList.remove("hidden");m.classList.add("flex");
 };
-window.closeSellerProfile=function(){
-  var m=document.getElementById("seller-profile-modal");
-  m.classList.add("hidden");m.classList.remove("flex");
-};
+window.closeSellerProfile=function(){var m=document.getElementById("seller-profile-modal");m.classList.add("hidden");m.classList.remove("flex");};
 
 // ════════════════════════════════════════════════════════
 // ANNONCES SIMILAIRES
@@ -3285,17 +2898,16 @@ window.closeSellerProfile=function(){
 function renderSimilar(item){
   var el=document.getElementById("det-similar");
   if(!el) return;
-  var cat=item.category||"";
-  var price=parseFloat(item.price)||0;
   var similar=items.filter(function(i){
-    return i.id!==item.id&&(i.category||"").toLowerCase()===cat.toLowerCase()&&Math.abs((parseFloat(i.price)||0)-price)<price*0.8;
+    if(i.id===item.id) return false;
+    var sameCat=(i.category||"").toLowerCase()===(item.category||"").toLowerCase();
+    var price=parseFloat(item.price)||0;
+    var iPrice=parseFloat(i.price)||0;
+    return sameCat&&(!price||Math.abs(iPrice-price)<price*0.8);
   }).slice(0,6);
-  if(!similar.length){
-    el.innerHTML='<p style="font-size:11px;color:#94a3b8;padding:8px 0">Aucune annonce similaire pour l\'instant</p>';
-    return;
-  }
+  if(!similar.length){el.innerHTML='<p style="font-size:11px;color:#94a3b8;padding:8px 0">Aucune annonce similaire</p>';return;}
   el.innerHTML=similar.map(function(i){
-    return '<div onclick="openDetail(\''+i.id+'\')" style="flex-shrink:0;width:110px;cursor:pointer"><div style="width:110px;height:90px;background:#1e293b;border-radius:12px;overflow:hidden;border:1px solid rgba(148,163,184,.1);margin-bottom:5px"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain;display:block;background:#f8f8f8"></div><p style="font-size:11px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div>';
+    return '<div onclick="openDetail(\''+i.id+'\')" style="flex-shrink:0;width:110px;cursor:pointer"><div style="width:110px;height:90px;background:#1e293b;border-radius:12px;overflow:hidden;margin-bottom:5px;border:1px solid rgba(148,163,184,.1)"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain;display:block;background:#f8f8f8"></div><p style="font-size:11px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div>';
   }).join("");
 }
 
@@ -3315,16 +2927,10 @@ function renderHistory(){
   var valid=browseHistory.filter(function(h){return items.find(function(i){return i.id===h.id;});});
   if(!valid.length){el.innerHTML='<p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune annonce consultée</p>';return;}
   el.innerHTML=valid.slice(0,8).map(function(h){
-    var ago=timeSince(h.ts);
-    return '<div class="hist-item" onclick="openDetail(\''+h.id+'\')"><img src="'+(h.img||"")+'" style="width:44px;height:44px;border-radius:10px;object-fit:contain;background:#f8fafc;border:1px solid #e8ecf0;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(h.name||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(h.price||0)+'€</p></div><p style="font-size:10px;color:#94a3b8;flex-shrink:0">'+ago+'</p></div>';
+    var s=Math.floor((Date.now()-h.ts)/1000);
+    var ago=s<60?"à l'instant":s<3600?Math.floor(s/60)+"min":s<86400?Math.floor(s/3600)+"h":Math.floor(s/86400)+"j";
+    return '<div onclick="openDetail(\''+h.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:6px"><img src="'+(h.img||"")+'" style="width:44px;height:44px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid #e8ecf0;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(h.name||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(h.price||0)+'€</p></div><p style="font-size:10px;color:#94a3b8;flex-shrink:0">'+ago+'</p></div>';
   }).join("");
-}
-function timeSince(ts){
-  var s=Math.floor((Date.now()-ts)/1000);
-  if(s<60) return "à l'instant";
-  if(s<3600) return Math.floor(s/60)+"min";
-  if(s<86400) return Math.floor(s/3600)+"h";
-  return Math.floor(s/86400)+"j";
 }
 window.clearHistory=function(){browseHistory=[];localStorage.removeItem("yb_history");renderHistory();};
 
@@ -3335,7 +2941,7 @@ function getCoins(){return parseInt(localStorage.getItem("yb_coins")||"0");}
 function addCoins(n,reason){
   var c=getCoins()+n;
   localStorage.setItem("yb_coins",c);
-  showPushBanner("🪙 +"+n+" Coins gagnés !",reason||"Youbiiiz Coins");
+  if(reason) showPushBanner("🪙 +"+n+" Coins gagnés !",reason);
   updateCoinsUI();
 }
 function updateCoinsUI(){
@@ -3345,7 +2951,6 @@ function updateCoinsUI(){
   if(cv) cv.innerText=c;
   if(ce) ce.innerText=(c*0.01).toFixed(2)+"€";
 }
-// Coins dans paiement
 var payMode="1x";
 window.selectPayMode=function(mode){
   payMode=mode;
@@ -3355,62 +2960,42 @@ window.selectPayMode=function(mode){
 window.toggleCoinsDiscount=function(){
   var cb=document.getElementById("use-coins-toggle");
   var row=document.getElementById("pay-coins-row");
-  var tot=parseFloat((payItem?payItem.price:0)||0)+(selShip?selShip.price:0);
+  if(!payItem) return;
+  var tot=parseFloat(payItem.price||0)+(selShip?selShip.price:0);
   var coins=getCoins();
-  var discount=Math.min(coins*0.01,tot*0.1);// max 10% de réduction
-  if(cb.checked){
-    row.style.display="flex";
-    document.getElementById("pay-coins-discount").innerText="-"+discount.toFixed(2)+"€";
+  var discount=Math.min(coins*0.01,tot*0.1);
+  if(cb&&cb.checked){
+    if(row) row.style.display="flex";
+    var disc=document.getElementById("pay-coins-discount");
+    if(disc) disc.innerText="-"+discount.toFixed(2)+"€";
     document.getElementById("pay-total").innerText=(tot-discount).toFixed(2)+"€";
   }else{
-    row.style.display="none";
+    if(row) row.style.display="none";
     document.getElementById("pay-total").innerText=tot.toFixed(2)+"€";
   }
-};
-
-// Override openPay to init coins UI
-var _origOpenPay=window.openPay;
-window.openPay=function(i){
-  _origOpenPay(i);
-  payMode="1x";
-  var tot=parseFloat(i.price||0);
-  var per3=Math.ceil(tot/3*100)/100;
-  document.getElementById("pay-1x-amount").innerText=tot+"€";
-  document.getElementById("pay-3x-amount").innerText=per3+"€/mois";
-  document.getElementById("pay-3x-detail").innerText="3 prélèvements de "+per3+"€ · Total "+tot+"€ · 0% de frais";
-  // Coins
-  var coins=getCoins();
-  var payCoins=document.getElementById("pay-use-coins");
-  if(coins>0&&payCoins){
-    payCoins.classList.remove("hidden");
-    document.getElementById("pay-coins-avail").innerText=coins+" coins disponibles (-"+(coins*0.01).toFixed(2)+"€ max)";
-  }else if(payCoins){payCoins.classList.add("hidden");}
 };
 
 // ════════════════════════════════════════════════════════
 // RECHERCHE PAR PHOTO (IA)
 // ════════════════════════════════════════════════════════
 window.openSearchByPhoto=function(){
-  document.getElementById("sph-idle").classList.remove("hidden");
-  document.getElementById("sph-loading").classList.add("hidden");
-  document.getElementById("sph-results").classList.add("hidden");
+  var idle=document.getElementById("sph-idle");
+  var load=document.getElementById("sph-loading");
+  var res=document.getElementById("sph-results");
+  if(idle)idle.classList.remove("hidden");
+  if(load)load.classList.add("hidden");
+  if(res)res.classList.add("hidden");
   var m=document.getElementById("search-photo-modal");
   m.classList.remove("hidden");m.classList.add("flex");
 };
-window.closeSearchPhoto=function(){
-  var m=document.getElementById("search-photo-modal");
-  m.classList.add("hidden");m.classList.remove("flex");
-};
+window.closeSearchPhoto=function(){var m=document.getElementById("search-photo-modal");m.classList.add("hidden");m.classList.remove("flex");};
 window.onSearchPhoto=function(inp){
   var f=inp.files[0];if(!f)return;
   document.getElementById("sph-idle").classList.add("hidden");
   document.getElementById("sph-loading").classList.remove("hidden");
   var r=new FileReader();
-  r.onload=function(ev){
-    analyzeSearchPhoto(ev.target.result);
-  };
-  r.readAsDataURL(f);
-  inp.value="";
+  r.onload=function(ev){analyzeSearchPhoto(ev.target.result);};
+  r.readAsDataURL(f);inp.value="";
 };
 async function analyzeSearchPhoto(b64){
   try{
@@ -3420,83 +3005,99 @@ async function analyzeSearchPhoto(b64){
       body:JSON.stringify({imageBase64:b64.split(",")[1],mimeType:mime})
     });
     var d=await resp.json();
-    var detected=d.title||d.category||"Objet inconnu";
+    var detected=d.title||d.category||"Objet";
     document.getElementById("sph-loading").classList.add("hidden");
     document.getElementById("sph-results").classList.remove("hidden");
     document.getElementById("sph-detected").innerText=detected;
-    // Find matching items
     var keywords=(detected+" "+(d.category||"")).toLowerCase().split(/[\s,]+/).filter(function(w){return w.length>3;});
     var matches=items.filter(function(i){
-      var text=((i.itemName||"")+" "+(i.category||"")+" "+(i.description||"")).toLowerCase();
+      var text=((i.itemName||"")+" "+(i.category||"")).toLowerCase();
       return keywords.some(function(k){return text.indexOf(k)>=0;});
     }).slice(0,5);
     var el=document.getElementById("sph-list");
-    if(!matches.length){el.innerHTML='<p style="font-size:12px;color:#94a3b8;text-align:center;padding:16px">Aucune annonce similaire trouvée</p>';return;}
+    if(!matches.length){el.innerHTML='<p style="font-size:12px;color:#94a3b8;text-align:center;padding:16px">Aucune annonce similaire</p>';return;}
     el.innerHTML=matches.map(function(i){
-      return '<div onclick="closeSearchPhoto();openDetail(\''+i.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0"><img src="'+(i.imageUrl||"")+'" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:#fff;flex-shrink:0;border:1px solid #e8ecf0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div><i class="fa-solid fa-chevron-right" style="color:#94a3b8;font-size:11px;flex-shrink:0"></i></div>';
+      return '<div onclick="closeSearchPhoto();openDetail(\''+i.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:6px"><img src="'+(i.imageUrl||"")+'" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:#fff;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div><i class="fa-solid fa-chevron-right" style="color:#94a3b8;font-size:11px;flex-shrink:0"></i></div>';
     }).join("");
   }catch(e){
     document.getElementById("sph-loading").classList.add("hidden");
     document.getElementById("sph-idle").classList.remove("hidden");
-    toast("Erreur analyse: "+e.message);
+    toast("Erreur analyse image");
   }
 }
 
 // ════════════════════════════════════════════════════════
-// OVERRIDE openDetail pour ajouter : historique, coins, carousel, similar
+// OVERRIDE openDetail: carrousel + similaires + historique + coins
 // ════════════════════════════════════════════════════════
 var _origOpenDetail=window.openDetail;
 window.openDetail=function(id){
   _origOpenDetail(id);
   var i=items.find(function(x){return x.id===id;});
   if(!i) return;
-  // Carrousel
   var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
   buildCarousel(photos);
-  // Annonces similaires
   renderSimilar(i);
-  // Historique
   addToHistory(i);
-  // Coins
   var price=parseFloat(i.price)||0;
-  var coinsEarn=Math.round(price*0.05);
   var coinsEl=document.getElementById("det-coins-earn");
-  if(coinsEl&&coinsEarn>0){
-    coinsEl.classList.remove("hidden");
-    coinsEl.innerText="🪙 +"+coinsEarn+" coins si tu achètes";
+  if(coinsEl&&price>0){coinsEl.classList.remove("hidden");coinsEl.innerText="🪙 +"+(Math.round(price*0.05))+" coins si tu achètes";}
+};
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE openPay: paiement 3x + coins
+// ════════════════════════════════════════════════════════
+var _origOpenPay=window.openPay;
+window.openPay=function(i){
+  _origOpenPay(i);
+  payMode="1x";
+  var tot=parseFloat(i.price||0);
+  var per3=Math.ceil(tot/3*100)/100;
+  var el1=document.getElementById("pay-1x-amount");
+  var el3=document.getElementById("pay-3x-amount");
+  var el3d=document.getElementById("pay-3x-detail");
+  if(el1) el1.innerText=tot+"€";
+  if(el3) el3.innerText=per3+"€/mois";
+  if(el3d) el3d.innerText="3 prélèvements de "+per3+"€ · Total "+tot+"€ · 0% de frais";
+  var coins=getCoins();
+  var payCoins=document.getElementById("pay-use-coins");
+  if(payCoins){
+    if(coins>0){payCoins.classList.remove("hidden");var pa=document.getElementById("pay-coins-avail");if(pa)pa.innerText=coins+" coins disponibles (-"+(coins*0.01).toFixed(2)+"€ max)";}
+    else{payCoins.classList.add("hidden");}
+  }
+  var row=document.getElementById("pay-coins-row");
+  if(row) row.style.display="none";
+};
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE doStripe: gain coins après achat
+// ════════════════════════════════════════════════════════
+var _origDoStripe=window.doStripe;
+window.doStripe=async function(){
+  await _origDoStripe();
+  // Gain coins
+  if(payItem){
+    var earned=Math.round((parseFloat(payItem.price)||0)*0.05);
+    if(earned>0) addCoins(earned,"Achat effectué 🛍");
   }
 };
 
 // ════════════════════════════════════════════════════════
-// STATS PAR ANNONCE (myCard upgrade)
+// OVERRIDE switchView: coins + historique + favs dans profil
 // ════════════════════════════════════════════════════════
-function myCard(i){
-  var favCount=0;// simulated
-  var viewCount=i.views||0;
-  return '<div class="card fi" style="background:#fff"><div class="sq"><img src="'+(i.imageUrl||"")+'">'+(i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+"</span>":"")+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9;margin-bottom:4px">'+(i.price||0)+'€</p><div style="display:flex;gap:6px;margin-bottom:6px"><span style="font-size:9px;color:#8b5cf6;font-weight:700;background:#f5f3ff;padding:1px 6px;border-radius:99px"><i class="fa-solid fa-eye" style="font-size:8px"></i> '+viewCount+'</span></div><div style="display:flex;gap:5px"><button onclick="event.stopPropagation();openEdit(\''+i.id+'\')" style="flex:1;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:5px;font-size:10px;font-weight:700;cursor:pointer;color:#0f172a">Modifier</button><button onclick="event.stopPropagation();confirmDel(\''+i.id+'\')" style="flex:1;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:9px;padding:5px;font-size:10px;font-weight:700;color:#f87171;cursor:pointer">Supp.</button></div></div></div>';
-}
-
-// ════════════════════════════════════════════════════════
-// INIT PROFILE : coins + historique
-// ════════════════════════════════════════════════════════
-var _origUpdateProfile=window.updateProfile||function(){};
-// Patch pour appeler renderHistory et updateCoinsUI
-var _origBoot=boot;
-boot=function(){
-  _origBoot();
-  setTimeout(function(){updateCoinsUI();renderHistory();renderAlerts();},1000);
-};
-// Also call on switchView profile
 var _origSwitchView=window.switchView;
 window.switchView=function(v){
   _origSwitchView(v);
-  if(v==="profile"){updateCoinsUI();renderHistory();renderAlerts();renderFavs();}
+  if(v==="profile"){
+    updateCoinsUI();
+    renderHistory();
+    renderAlerts();
+    renderFavs();
+  }
 };
 
-// Gain de coins lors d'une vente réussie (après paiement retour)
-var _origCheckPayReturn=checkPayReturn;
-
-
+// ════════════════════════════════════════════════════════
+// MYCARD améliorée avec stats vues
+// ════════════════════════════════════════════════════════
 
 </script>
 </body>
