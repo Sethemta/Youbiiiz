@@ -211,7 +211,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 <div id="dbg"></div>
 
 <!-- SPLASH / LANDING -->
-<div id="splash" class="fixed inset-0 z-[999]" style="background:#f0f2f5;display:flex;align-items:stretch">
+<div id="splash" class="fixed inset-0" style="background:#f0f2f5;display:flex;align-items:stretch;z-index:9999">
 
   <!-- GAUCHE: demo visuelle -->
   <div id="landing-left" style="flex:1;background:linear-gradient(150deg,#0f172a 0%,#1e3a5f 55%,#0369a1 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 32px;position:relative;overflow:hidden;min-width:0">
@@ -1840,9 +1840,13 @@ window.doLogout=async function(){
 };
 
 function boot(){
-  document.getElementById("splash").style.display="none";
-  document.getElementById("app").classList.remove("hidden");
-  setTimeout(function(){document.getElementById("app").style.opacity="1";},80);
+  var splash=document.getElementById("splash");
+  if(splash){splash.style.display="none";splash.style.zIndex="-1";}
+  var app=document.getElementById("app");
+  app.classList.remove("hidden");
+  app.style.display="flex";
+  app.style.opacity="0";
+  setTimeout(function(){app.style.opacity="1";},80);
   // Afficher panneau gauche sur desktop
   var left=document.getElementById("landing-left");
   if(left&&window.innerWidth>=768) left.style.display="flex";
