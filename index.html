@@ -1201,7 +1201,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <!-- DETAIL -->
-<div id="detail-modal" class="fixed inset-0 z-[500] hidden flex-col" style="background:#f8fafc">
+<div id="detail-modal" class="fixed inset-0 flex-col" style="display:none;z-index:9999;background:#f8fafc">
 
   <!-- Header -->
   <div style="background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0">
@@ -1729,22 +1729,13 @@ function __renderDemoFeed() {
 }
 
 window.__openDemoItem = function(id) {
-  console.log("[CLICK] __openDemoItem called with id=", id);
-  console.log("[CLICK] window.__pushItem exists:", typeof window.__pushItem);
-  console.log("[CLICK] window.openDetail exists:", typeof window.openDetail);
   if(window.__demoItems && window.__pushItem){
     var current = window.__getItems ? window.__getItems() : [];
     var ids = new Set(current.map(function(x){return x.id;}));
     window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) window.__pushItem(d); });
-    console.log("[CLICK] items after merge:", window.__getItems ? window.__getItems().length : "N/A");
-  } else {
-    console.log("[CLICK] MERGE SKIPPED - __demoItems:", !!window.__demoItems, "__pushItem:", !!window.__pushItem);
   }
   if(typeof window.openDetail === "function"){
-    console.log("[CLICK] calling openDetail...");
     window.openDetail(id);
-  } else {
-    console.log("[CLICK] openDetail NOT DEFINED on window!");
   }
 };
 
@@ -2249,12 +2240,12 @@ window.openDetail=function(id){
   document.getElementById("buy-btn").onclick=function(){if(me&&me.isVisitor){toast("Crée un compte pour acheter !");return;}openPay(i);};
   loadSellerRating(i.userId);
   var m=document.getElementById("detail-modal");
-  console.log("[openDetail orig] showing modal, m=", m);
-  m.classList.remove("hidden");m.classList.add("flex");
+  m.style.display="flex";
+  m.style.zIndex="9999";
 };
 window.closeDetail=function(){
   var m=document.getElementById("detail-modal");
-  m.classList.add("hidden");m.classList.remove("flex");
+  if(m){ m.style.display="none"; m.style.zIndex=""; }
 };
 
 // CHAT
@@ -3158,13 +3149,11 @@ async function analyzeSearchPhoto(b64){
 // ════════════════════════════════════════════════════════
 var _origOpenDetail=window.openDetail;
 window.openDetail=function(id){
-  console.log("[openDetail override] id=", id, "items.length=", items.length);
   if(window.__demoItems){
     var ids=new Set(items.map(function(x){return x.id;}));
     window.__demoItems.forEach(function(d){if(!ids.has(d.id))items.push(d);});
   }
   var i=items.find(function(x){return x.id===id;});
-  console.log("[openDetail override] item found:", !!i);
   if(!i) return;
   _origOpenDetail(id);
   var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
