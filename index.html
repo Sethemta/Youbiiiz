@@ -1770,49 +1770,102 @@ function doLogout() {
 
 // Mode visiteur : 100% sans Firebase
 var __demoItems = [
-  {id:"demo1",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=400"},
-  {id:"demo2",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400"},
-  {id:"demo3",itemName:"MacBook Air M2 13 pouces",price:950,category:"Ordinateurs",condition:"Neuf",city:"Bordeaux",imageUrl:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400"},
-  {id:"demo4",itemName:"Vélo électrique Decathlon",price:680,category:"Vélos",condition:"Bon état",city:"Marseille",imageUrl:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400"},
-  {id:"demo5",itemName:"Nike Air Jordan 1 Retro T42",price:185,category:"Chaussures homme",condition:"Très bon état",city:"Toulouse",imageUrl:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"},
-  {id:"demo6",itemName:"Canapé d angle convertible gris",price:350,category:"Ameublement",condition:"Bon état",city:"Nantes",imageUrl:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400"},
-  {id:"demo7",itemName:"Guitare acoustique Yamaha F310",price:90,category:"Instruments de musique",condition:"Bon état",city:"Strasbourg",imageUrl:"https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400"},
-  {id:"demo8",itemName:"Dyson V11 Aspirateur balai",price:290,category:"Électroménager",condition:"Très bon état",city:"Lille",imageUrl:"https://images.unsplash.com/photo-1558317374-067fb5f30001?w=400"},
-  {id:"demo9",itemName:"Rolex Datejust 36mm Cadran Vert",price:6800,category:"Montres & Bijoux",condition:"Très bon état",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=400"},
-  {id:"demo10",itemName:"Lego Millennium Falcon 75192",price:480,category:"Jeux & Jouets",condition:"Neuf",city:"Nice",imageUrl:"https://images.unsplash.com/photo-1518770660439-4636190af475?w=400"}
+  {id:"demo1",userId:"demo_seller_1",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go Noir Spatial. Batterie 91%, aucune rayure. Vendu avec chargeur MagSafe et coque. Fonctionne parfaitement.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",lat:48.8566,lng:2.3522,imageUrl:"https://picsum.photos/seed/iphone14/400/400",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],createdAt:{seconds:Math.floor(Date.now()/1000)-3600},views:42},
+  {id:"demo2",userId:"demo_seller_2",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",description:"PS5 édition disc avec 2 manettes DualSense. Peu utilisée, parfait état. Câbles et boîte inclus.",brand:"Sony",model:"PS5",city:"Lyon",lat:45.7640,lng:4.8357,imageUrl:"https://picsum.photos/seed/ps5demo/400/400",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],createdAt:{seconds:Math.floor(Date.now()/1000)-7200},views:89},
+  {id:"demo3",userId:"demo_seller_3",itemName:"MacBook Air M2 13 pouces",price:950,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 2022, 8Go RAM, 256Go SSD. Jamais ouvert, offert en cadeau. Facture disponible.",brand:"Apple",model:"MacBook Air M2",city:"Bordeaux",lat:44.8378,lng:-0.5792,imageUrl:"https://picsum.photos/seed/macbookm2/400/400",shipping:[{method:"Colissimo",price:15}],createdAt:{seconds:Math.floor(Date.now()/1000)-10800},views:167},
+  {id:"demo4",userId:"demo_seller_4",itemName:"Vélo électrique Decathlon",price:680,category:"Vélos",condition:"Bon état",description:"Vélo électrique autonomie 60km, frein à disque. 2 saisons d'usage, pneus neufs.",brand:"Decathlon",model:"B Twin E-ST500",city:"Marseille",lat:43.2965,lng:5.3698,imageUrl:"https://picsum.photos/seed/veloelec/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-14400},views:34},
+  {id:"demo5",userId:"demo_seller_5",itemName:"Nike Air Jordan 1 Retro T42",price:185,category:"Chaussures homme",condition:"Très bon état",description:"Jordan 1 Retro High OG Chicago 2022, T42. Portées 3 fois, boîte et lacets originaux.",brand:"Nike",model:"Air Jordan 1",city:"Toulouse",lat:43.6047,lng:1.4442,imageUrl:"https://picsum.photos/seed/jordan1/400/400",shipping:[{method:"Mondial Relay",price:5},{method:"Colissimo",price:8}],createdAt:{seconds:Math.floor(Date.now()/1000)-18000},views:78},
+  {id:"demo6",userId:"demo_seller_6",itemName:"Canapé angle convertible gris",price:350,category:"Ameublement",condition:"Bon état",description:"Canapé d'angle convertible méridienne droite, tissu gris anthracite avec coffre de rangement.",brand:"IKEA",model:"Friheten",city:"Nantes",lat:47.2184,lng:-1.5536,imageUrl:"https://picsum.photos/seed/canape/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-21600},views:55},
+  {id:"demo7",userId:"demo_seller_7",itemName:"Guitare acoustique Yamaha F310",price:90,category:"Instruments de musique",condition:"Bon état",description:"Yamaha F310 taille 4/4, idéale pour débuter. Vendue avec housse et capodastre.",brand:"Yamaha",model:"F310",city:"Strasbourg",lat:48.5734,lng:7.7521,imageUrl:"https://picsum.photos/seed/guitare/400/400",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:12}],createdAt:{seconds:Math.floor(Date.now()/1000)-25200},views:23},
+  {id:"demo8",userId:"demo_seller_8",itemName:"Dyson V11 Aspirateur balai",price:290,category:"Électroménager",condition:"Très bon état",description:"Dyson V11 Absolute Pro, batterie neuve. Livré avec toutes les têtes et support mural.",brand:"Dyson",model:"V11",city:"Lille",lat:50.6292,lng:3.0573,imageUrl:"https://picsum.photos/seed/dysonv11/400/400",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:18}],createdAt:{seconds:Math.floor(Date.now()/1000)-28800},views:91},
+  {id:"demo9",userId:"demo_seller_9",itemName:"Rolex Datejust 36mm Cadran Vert",price:6800,category:"Montres & Bijoux",condition:"Très bon état",description:"Rolex Datejust 36mm, lunette flutée or jaune, cadran vert. Année 2019, boîte et papiers.",brand:"Rolex",model:"Datejust 36",city:"Paris",lat:48.8738,lng:2.2950,imageUrl:"https://picsum.photos/seed/rolex/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-32400},views:203},
+  {id:"demo10",userId:"demo_seller_10",itemName:"Lego Millennium Falcon 75192",price:480,category:"Jeux & Jouets",condition:"Neuf",description:"Lego 75192, 7541 pièces, boîte scellée jamais ouverte. Facture disponible.",brand:"Lego",model:"75192",city:"Nice",lat:43.7102,lng:7.2620,imageUrl:"https://picsum.photos/seed/lego75192/400/400",shipping:[{method:"Colissimo",price:20}],createdAt:{seconds:Math.floor(Date.now()/1000)-36000},views:312}
 ];
+
+function __showView(v) {
+  // Minimal switchView that works without the Firebase module
+  ["home","map","notifications","profile"].forEach(function(n) {
+    var el = document.getElementById("view-" + n);
+    if (!el) return;
+    if (n === "map") {
+      el.style.display = n === v ? "block" : "none";
+    } else {
+      if (n === v) el.classList.remove("hidden");
+      else el.classList.add("hidden");
+    }
+  });
+}
 
 function __renderDemoFeed() {
   var feed = document.getElementById("feed");
   if (!feed) return;
-  feed.innerHTML = __demoItems.map(function(i) {
-    return '<div class="card fi" style="cursor:pointer" onclick="if(window.openDetail)window.openDetail(\"'+i.id+'\")">' +
-      '<div class="sq"><img src="'+i.imageUrl+'" loading="lazy">' +
-      '<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+'</span>' +
-      '</div><div class="inf">' +
-      '<p style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1e293b">'+i.itemName+'</p>' +
-      '<p style="font-size:15px;font-weight:900;color:#0ea5e9">'+i.price+'€</p>' +
-      '<p style="font-size:10px;color:#94a3b8"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+'</p>' +
-      '</div></div>';
+  feed.innerHTML = __demoItems.map(function(item) {
+    var id = item.id;
+    var html = '<div class="card fi" style="cursor:pointer" onclick="__openDemoItem(\"' + id + '\")">';
+    html += '<div class="sq">';
+    html += '<img src="' + item.imageUrl + '" loading="lazy" onerror="this.style.background=\'#f1f5f9\'">';
+    html += '<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;color:#fff">' + item.condition + '</span>';
+    html += '</div>';
+    html += '<div class="inf">';
+    html += '<p style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1e293b">' + item.itemName + '</p>';
+    html += '<p style="font-size:15px;font-weight:900;color:#0ea5e9">' + item.price + '€</p>';
+    html += '<p style="font-size:10px;color:#94a3b8;margin-top:2px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>' + item.city + '</p>';
+    html += '</div></div>';
+    return html;
   }).join("");
 }
+
+window.__openDemoItem = function(idOrEl) {
+  var id = typeof idOrEl === "string" ? idOrEl : idOrEl;
+  if (typeof window.openDetail === "function") {
+    window.openDetail(id);
+  }
+};
 
 function doAnon() {
   __me = { uid: "visitor_" + Math.random().toString(36).slice(2, 8), email: null, isVisitor: true };
   window.__me = __me;
   window.__visitorBooted = true;
+  window.items = __demoItems; // expose to module when it loads
+
+  // Hide splash, show app
   document.getElementById("splash").style.display = "none";
   var app = document.getElementById("app");
   app.classList.remove("hidden");
-  setTimeout(function() { app.style.opacity = "1"; }, 80);
+  app.style.opacity = "1";
+
+  // Show visitor banner
   var vb = document.getElementById("visitor-banner");
   if (vb) vb.style.display = "flex";
-  // Render demo feed immediately (no Firebase needed)
+
+  // Force home view visible, hide profile/notif/map
+  __showView("home");
+
+  // Hide profile nav items (visitor has no account)
+  var navProfile = document.getElementById("nav-profile");
+  if (navProfile) navProfile.style.display = "none";
+  var snavProfile = document.getElementById("snav-profile");
+  if (snavProfile) snavProfile.style.display = "none";
+  var snavNotif = document.getElementById("snav-notif");
+  if (snavNotif) snavNotif.style.display = "none";
+  var navNotif = document.getElementById("nav-notif");
+  if (navNotif) navNotif.style.display = "none";
+
+  // Render demo feed now
   __renderDemoFeed();
-  // Also trigger module inject if available
-  if (typeof window.__injectDemoAndRender === "function") {
-    window.__injectDemoAndRender();
-  }
+
+  // When module loads later, it will also call injectDemoData — allow it
+  window.__injectDemoAndRender = function() {
+    // merge __demoItems into module items array
+    if (typeof items !== "undefined") {
+      var existingIds = new Set(items.map(function(i){ return i.id; }));
+      __demoItems.forEach(function(d) {
+        if (!existingIds.has(d.id)) items.push(d);
+      });
+    }
+    __renderDemoFeed(); // re-render with better card function if available
+    if (typeof applyFilters === "function") applyFilters();
+  };
 }
 </script>
 
@@ -2694,25 +2747,13 @@ function renderFavs(){
 }
 
 window.__injectDemoAndRender = function injectDemoData(){
-  var demoItems=[
-    {id:"demo1",userId:"demo_seller_1",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go coloris Noir Spatial. Batterie à 91%, aucune rayure. Vendu avec chargeur MagSafe et coque d'origine. Fonctionne parfaitement.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",imageUrl:"https://cdn.thewirecutter.com/wp-content/media/2023/09/iphonescomparison-2048px-0889.jpg",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],createdAt:{seconds:Math.floor(Date.now()/1000)-3600},views:42},
-    {id:"demo2",userId:"demo_seller_2",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",description:"PS5 édition disc avec 2 manettes DualSense. Console en parfait état, peu utilisée. Vendue avec câbles d'alimentation et HDMI.",brand:"Sony",model:"PS5",city:"Lyon",imageUrl:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/PS5_Slim_Console_and_Controller.png/1024px-PS5_Slim_Console_and_Controller.png",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],createdAt:{seconds:Math.floor(Date.now()/1000)-7200},views:89},
-    {id:"demo3",userId:"demo_seller_3",itemName:"MacBook Air M2 13\" Gris sidéral",price:950,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 2022, 8Go RAM, 256Go SSD. Jamais sorti de sa boîte, offert en cadeau mais doublons. Facture disponible, garantie Apple jusqu'en 2025.",brand:"Apple",model:"MacBook Air M2",city:"Bordeaux",imageUrl:"https://cdsassets.apple.com/live/7WUAS350-AI/images/mac/macbook-air-m2-gallery1-202206.jpg",shipping:[{method:"Colissimo",price:15}],createdAt:{seconds:Math.floor(Date.now()/1000)-10800},views:167},
-    {id:"demo4",userId:"demo_seller_4",itemName:"Vélo électrique Decathlon B'Twin",price:680,category:"Vélos",condition:"Bon état",description:"Vélo électrique Decathlon, autonomie 60km, frein à disque hydraulique. Utilisé 2 saisons, pneus neufs refaits en septembre. Batterie originale en parfait état.",brand:"Decathlon",model:"B'Twin E-ST500",city:"Marseille",imageUrl:"https://contents.mediadecathlon.com/p1984049/k$ab3073e95a6a58a4af4bb2b9a0abd9e2/e-bike-touring-500-grey.jpg",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-14400},views:34},
-    {id:"demo5",userId:"demo_seller_5",itemName:"Nike Air Jordan 1 Retro High OG 42",price:185,category:"Chaussures homme",condition:"Très bon état",description:"Jordan 1 Retro High OG coloris Chicago 2022. Pointure 42 EU. Portées 3 fois, dans leur boîte d'origine avec tous les lacets. Sans défaut.",brand:"Nike",model:"Air Jordan 1 Retro High OG",city:"Toulouse",imageUrl:"https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a80-b554-571d9b2e8e45,c_scale,fl_relative,w_1.0/i1-665591aa-45dc-48ec-8e04-2b4dfb1c6003/chaussure-air-jordan-1-retro-high-og.png",shipping:[{method:"Mondial Relay",price:5},{method:"Colissimo",price:8}],createdAt:{seconds:Math.floor(Date.now()/1000)-18000},views:78},
-    {id:"demo6",userId:"demo_seller_6",itemName:"Canapé d'angle convertible gris",price:350,category:"Ameublement",condition:"Bon état",description:"Canapé d'angle convertible avec méridienne droite, tissu gris anthracite. Coffre de rangement. Livraison possible dans un rayon de 30km (supplément à négocier).",brand:"IKEA",model:"Friheten",city:"Nantes",imageUrl:"https://www.ikea.com/fr/fr/images/products/friheten-canape-3-places-convertible-avec-rangement-samsala-gris-fonce__0900636_pe798969_s5.jpg",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-21600},views:55},
-    {id:"demo7",userId:"demo_seller_7",itemName:"Guitare acoustique Yamaha F310",price:90,category:"Instruments de musique",condition:"Bon état",description:"Guitare acoustique Yamaha F310, taille 4/4. Idéale pour débuter. Quelques micro-griffures sur la caisse, ne se voient pas en jouant. Vendue avec housse et capodastre.",brand:"Yamaha",model:"F310",city:"Strasbourg",imageUrl:"https://fr.yamaha.com/fr/files/F310-Tobacco-Brown-Sunburst_front_2000x2000_de88e4cb15afde41b78bf15e09d6736e.jpg",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:12}],createdAt:{seconds:Math.floor(Date.now()/1000)-25200},views:23},
-    {id:"demo8",userId:"demo_seller_8",itemName:"Dyson V11 Absolute Pro aspirateur",price:290,category:"Électroménager",condition:"Très bon état",description:"Aspirateur balai Dyson V11 Absolute Pro. Batterie neuve remplacée il y a 3 mois, durée 60min. Livré avec toutes les têtes et le support mural. Fonctionne parfaitement.",brand:"Dyson",model:"V11 Absolute Pro",city:"Lille",imageUrl:"https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/394092-01.png",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:18}],createdAt:{seconds:Math.floor(Date.now()/1000)-28800},views:91},
-    {id:"demo9",userId:"demo_seller_9",itemName:"Rolex Datejust 36mm Cadran Vert",price:6800,category:"Montres & Bijoux",condition:"Très bon état",description:"Rolex Datejust 36mm, lunette flutée or jaune, cadran vert olive, bracelet Jubilé. Année 2019, révisée en 2022. Livrée avec boîte et papiers d'origine.",brand:"Rolex",model:"Datejust 36",city:"Paris",imageUrl:"https://www.rolex.com/content/dam/rolex/en/watches/datejust/m126233-0027.jpg",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-32400},views:203},
-    {id:"demo10",userId:"demo_seller_10",itemName:"Lego Star Wars Millennium Falcon 75192",price:480,category:"Jeux & Jouets",condition:"Neuf",description:"Lego Star Wars Millennium Falcon UCS 75192, 7541 pièces. Boîte jamais ouverte, scellée d'usine. Achetée en cadeau, non souhaité. Facture disponible.",brand:"Lego",model:"75192 Millennium Falcon",city:"Nice",imageUrl:"https://www.lego.com/cdn/cs/set/assets/blt5c6b7e0cf72a5c4f/75192_prod.jpg",shipping:[{method:"Colissimo",price:20}],createdAt:{seconds:Math.floor(Date.now()/1000)-36000},views:312}
-  ];
-  // Merge demo items with real items (demo items go at the end, unless no real items)
+  // Use same __demoItems from pre-script (already defined)
+  if(typeof __demoItems === "undefined") return;
   var realIds=new Set(items.map(function(i){return i.id;}));
-  demoItems.forEach(function(d){if(!realIds.has(d.id)) items.push(d);});
+  __demoItems.forEach(function(d){if(!realIds.has(d.id)) items.push(d);});
   applyFilters();
   updateProfile();
 }
-
 
 function computeAndShowTrust(i){
   var score=0,details=[];
