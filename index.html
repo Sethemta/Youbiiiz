@@ -1365,6 +1365,21 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div id="det-ship" style="display:flex;flex-wrap:wrap;gap:8px"></div>
       </div>
 
+      <!-- Localisation -->
+      <div id="det-loc-block" style="background:#fff;border-radius:18px;padding:16px;margin-bottom:10px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:15px"></i>
+            <p id="det-loc-label" style="font-size:15px;font-weight:800;color:#0f172a">Localisation</p>
+          </div>
+          <p id="det-loc-city" style="font-size:13px;font-weight:700;color:#64748b"></p>
+        </div>
+        <div id="det-map" style="width:100%;height:180px;border-radius:14px;overflow:hidden;background:#e2e8f0"></div>
+        <p style="font-size:11px;color:#94a3b8;margin-top:8px;text-align:center">
+          <i class="fa-solid fa-circle-info" style="margin-right:4px"></i>Localisation approximative — zone de 2 km
+        </p>
+      </div>
+
       <!-- Score de confiance -->
       <div style="background:#fff;border-radius:18px;padding:16px;margin-bottom:10px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.04)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -2595,6 +2610,56 @@ function renderFavs(){
 // ════════════════════════════════════════════════════════
 // SCORE DE CONFIANCE
 // ════════════════════════════════════════════════════════
+function renderDetailMap(i){
+  var block=document.getElementById("det-loc-block");
+  var mapEl=document.getElementById("det-map");
+  var cityEl=document.getElementById("det-loc-city");
+  if(!block||!mapEl) return;
+
+  // Afficher la ville
+  if(cityEl) cityEl.innerText=i.city||"Localisation non renseignée";
+
+  if(!i.lat||!i.lng){
+    block.style.display="none";
+    return;
+  }
+  block.style.display="block";
+
+  // Détruire ancienne carte si elle existe
+  if(mapEl._leaflet_id) {
+    mapEl._leaflet_id=null;
+    mapEl.innerHTML="";
+  }
+
+  // Léger offset aléatoire pour protéger la vie privée (~300m)
+  var offset=function(){return(Math.random()-0.5)*0.006;};
+  var lat=i.lat+offset(), lng=i.lng+offset();
+
+  var m=L.map(mapEl,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false});
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{maxZoom:18}).addTo(m);
+  m.setView([lat,lng],13);
+
+  // Cercle de zone (~2km) au lieu d'un pin précis
+  L.circle([lat,lng],{
+    radius:1500,
+    color:"#0ea5e9",
+    fillColor:"#0ea5e9",
+    fillOpacity:0.12,
+    weight:2,
+    dashArray:"6 4"
+  }).addTo(m);
+
+  // Petit marqueur central
+  var icon=L.divIcon({
+    html:'<div style="width:14px;height:14px;background:#0ea5e9;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(14,165,233,.5)"></div>',
+    iconSize:[14,14],iconAnchor:[7,7],className:""
+  });
+  L.marker([lat,lng],{icon:icon}).addTo(m);
+
+  // Invalider la taille après affichage (le modal était display:none)
+  setTimeout(function(){m.invalidateSize();},100);
+}
+
 function computeAndShowTrust(i){
   var score=0,details=[];
   if(i.imageUrl){score+=25;details.push({label:"Photo",ok:true});}else{details.push({label:"Pas de photo",ok:false});}
@@ -3084,6 +3149,7 @@ window.openDetail=function(id){
   addToHistory(i);
   computeAndShowTrust(i);
   detectFraud(i);
+  renderDetailMap(i);
 };
 
 // ════════════════════════════════════════════════════════
