@@ -1294,8 +1294,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
 <!-- DETAIL -->
 <div id="detail-modal" class="fixed inset-0 flex-col" style="display:none;z-index:9999;background:#f8fafc">
 
-  <!-- Header fin -->
-  <div style="background:#fff;border-bottom:1px solid #e2e8f0;padding:10px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0">
+  <!-- Header -->
+  <div style="background:#fff;border-bottom:1px solid #e2e8f0;padding:10px 24px;display:flex;align-items:center;gap:10px;flex-shrink:0">
     <button onclick="closeDetail()" style="width:34px;height:34px;background:#f1f5f9;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
       <i class="fa-solid fa-arrow-left" style="color:#0f172a;font-size:12px"></i>
     </button>
@@ -1311,48 +1311,43 @@ header .i-wrapper{gap:2px;margin:0 2px}
     </button>
   </div>
 
-  <!-- CORPS : deux colonnes -->
-  <div style="flex:1;display:flex;overflow:hidden;max-width:1100px;width:100%;margin:0 auto;padding:0 20px;gap:0;align-self:stretch">
+  <!-- CORPS 3 COLONNES -->
+  <div style="flex:1;display:flex;overflow:hidden;padding:20px 24px;gap:20px;align-items:stretch">
 
-    <!-- ═══ COLONNE GAUCHE STICKY ═══ -->
-    <div style="width:380px;flex-shrink:0;padding:20px 20px 20px 0;display:flex;flex-direction:column;gap:12px;position:sticky;top:0;height:100%;overflow:hidden">
+    <!-- ══════════════════════════════════
+         COL 1 : GRANDE PHOTO (sticky)
+    ══════════════════════════════════ -->
+    <div style="flex:0 0 42%;display:flex;flex-direction:column;gap:10px;min-width:0">
 
-      <!-- Carrousel carré -->
-      <div style="position:relative;border-radius:20px;overflow:hidden;background:#e2e8f0;aspect-ratio:1/1;box-shadow:0 4px 24px rgba(0,0,0,.10)">
+      <!-- Vignettes miniatures EN HAUT -->
+      <div id="det-thumbs" style="display:flex;gap:8px;flex-shrink:0;overflow-x:auto;padding-bottom:2px"></div>
+
+      <!-- Grand carrousel qui remplit le reste -->
+      <div style="position:relative;border-radius:22px;overflow:hidden;background:#e8edf2;flex:1;min-height:0;box-shadow:0 6px 32px rgba(0,0,0,.12)">
         <div id="det-carousel-track" style="display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.16,1,.3,1)"></div>
-        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.93);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-left"></i></button>
-        <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.93);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-right"></i></button>
-        <div id="det-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2"></div>
-        <div id="det-views-badge" class="hidden" style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
+        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 12px rgba(0,0,0,.18)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 12px rgba(0,0,0,.18)"><i class="fa-solid fa-chevron-right"></i></button>
+        <div id="det-dots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2"></div>
+        <div id="det-views-badge" class="hidden" style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,.48);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
           <i class="fa-solid fa-eye" style="font-size:9px"></i><span id="det-views-count">0</span> vues
-        </div>
-      </div>
-
-      <!-- Miniatures -->
-      <div id="det-thumbs" style="display:flex;gap:6px;overflow-x:auto"></div>
-
-      <!-- Carte -->
-      <div style="border-radius:16px;overflow:hidden;background:#e2e8f0;flex:1;position:relative;min-height:140px;box-shadow:0 2px 12px rgba(0,0,0,.07)">
-        <div id="det-map" style="width:100%;height:100%"></div>
-        <div id="det-loc-badge" style="position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.93);border-radius:99px;padding:4px 10px;display:flex;align-items:center;gap:5px;box-shadow:0 1px 6px rgba(0,0,0,.12);z-index:500">
-          <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:10px"></i>
-          <span id="det-loc-city" style="font-size:11px;font-weight:700;color:#0f172a"></span>
         </div>
       </div>
 
     </div>
 
-    <!-- ═══ COLONNE DROITE SCROLLABLE ═══ -->
-    <div class="no-sb" style="flex:1;overflow-y:auto;padding:20px 0 120px 20px;border-left:1px solid #e2e8f0">
+    <!-- ══════════════════════════════════
+         COL 2 : INFOS (scrollable)
+    ══════════════════════════════════ -->
+    <div class="no-sb" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:16px;min-width:0;padding-right:4px">
 
       <!-- Prix + titre -->
-      <div style="margin-bottom:20px">
-        <p id="det-price" style="color:#0ea5e9;font-weight:900;font-size:36px;line-height:1;margin-bottom:8px"></p>
-        <h2 id="det-title-big" style="font-weight:800;font-size:22px;color:#0f172a;line-height:1.25;margin-bottom:12px"></h2>
+      <div>
+        <p id="det-price" style="color:#0ea5e9;font-weight:900;font-size:38px;line-height:1;margin-bottom:6px"></p>
+        <h2 id="det-title-big" style="font-weight:800;font-size:22px;color:#0f172a;line-height:1.25;margin-bottom:10px"></h2>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
-          <span id="det-cat"  style="font-size:12px;font-weight:700;color:#0ea5e9;background:#e0f2fe;padding:5px 12px;border-radius:99px"></span>
-          <span id="det-cond" style="font-size:12px;font-weight:700;color:#334155;background:#f1f5f9;padding:5px 12px;border-radius:99px;border:1px solid #e2e8f0"></span>
-          <span id="det-city-tag" class="hidden" style="font-size:12px;font-weight:700;color:#475569;background:#f1f5f9;padding:5px 12px;border-radius:99px;border:1px solid #e2e8f0">
+          <span id="det-cat"  style="font-size:12px;font-weight:700;color:#0ea5e9;background:#e0f2fe;padding:5px 13px;border-radius:99px"></span>
+          <span id="det-cond" style="font-size:12px;font-weight:700;color:#334155;background:#f1f5f9;padding:5px 13px;border-radius:99px;border:1px solid #e2e8f0"></span>
+          <span id="det-city-tag" class="hidden" style="font-size:12px;font-weight:700;color:#475569;background:#f1f5f9;padding:5px 13px;border-radius:99px;border:1px solid #e2e8f0">
             <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:9px;margin-right:3px"></i><span id="det-city-val"></span>
           </span>
           <span id="det-troc-tag" class="hidden troc-badge">🔄 Échange OK</span>
@@ -1365,10 +1360,10 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
 
-      <div style="height:1px;background:#e2e8f0;margin-bottom:20px"></div>
+      <div style="height:1px;background:#e2e8f0"></div>
 
-      <!-- Actions -->
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+      <!-- Boutons achat -->
+      <div style="display:flex;flex-direction:column;gap:8px">
         <button id="buy-btn" style="width:100%;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(14,165,233,.3)">
           <i class="fa-brands fa-stripe" style="font-size:18px"></i> Acheter maintenant
         </button>
@@ -1382,22 +1377,22 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
 
-      <div style="height:1px;background:#e2e8f0;margin-bottom:20px"></div>
+      <div style="height:1px;background:#e2e8f0"></div>
 
       <!-- Description -->
-      <div style="margin-bottom:20px">
+      <div>
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Description</p>
         <p id="det-desc" style="font-size:14px;color:#334155;line-height:1.75"></p>
       </div>
 
       <!-- Livraison -->
-      <div style="margin-bottom:20px">
+      <div>
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Livraison</p>
         <div id="det-ship" style="display:flex;flex-wrap:wrap;gap:8px"></div>
       </div>
 
       <!-- Score de confiance -->
-      <div style="background:#fff;border-radius:16px;padding:16px;margin-bottom:20px;border:1px solid #e2e8f0">
+      <div style="background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
           <div style="display:flex;align-items:center;gap:6px">
             <p style="font-size:13px;font-weight:800;color:#0f172a">Score de confiance</p>
@@ -1411,7 +1406,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
       </div>
 
       <!-- Vendeur -->
-      <div id="det-seller-card" onclick="openSellerProfile()" style="background:#fff;border-radius:16px;padding:16px;margin-bottom:20px;border:1px solid #e2e8f0;cursor:pointer">
+      <div id="det-seller-card" onclick="openSellerProfile()" style="background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0;cursor:pointer">
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Vendeur</p>
         <div style="display:flex;align-items:center;gap:12px">
           <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#0ea5e9,#6366f1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -1429,12 +1424,32 @@ header .i-wrapper{gap:2px;margin:0 2px}
       </div>
 
       <!-- Annonces similaires -->
-      <div>
+      <div style="padding-bottom:16px">
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Annonces similaires</p>
         <div id="det-similar" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:6px"></div>
       </div>
 
     </div>
+
+    <!-- ══════════════════════════════════
+         COL 3 : CARTE (sticky)
+    ══════════════════════════════════ -->
+    <div style="flex:0 0 28%;display:flex;flex-direction:column;gap:12px;min-width:0">
+
+      <!-- Carte pleine hauteur -->
+      <div style="border-radius:22px;overflow:hidden;background:#e2e8f0;flex:1;min-height:0;position:relative;box-shadow:0 6px 32px rgba(0,0,0,.10)">
+        <div id="det-map" style="width:100%;height:100%"></div>
+        <div id="det-loc-badge" style="position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.95);border-radius:99px;padding:5px 12px;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:500">
+          <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:11px"></i>
+          <span id="det-loc-city" style="font-size:12px;font-weight:700;color:#0f172a"></span>
+        </div>
+        <div style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,.88);border-radius:10px;padding:4px 10px;font-size:11px;font-weight:700;color:#64748b;z-index:500">
+          <i class="fa-solid fa-circle-info" style="color:#0ea5e9;margin-right:4px"></i>Zone approx. 2km
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
 </div>
@@ -2175,6 +2190,7 @@ window.openDetail=function(id){
   var dtb=document.getElementById("det-title-big");if(dtb)dtb.innerText=i.itemName||"";
   var m=document.getElementById("detail-modal");
   m.style.display="flex";
+  setTimeout(function(){var me=document.getElementById("det-map");if(me&&me._lmap)me._lmap.invalidateSize();},200);
 };
 window.closeDetail=function(){
   var m=document.getElementById("detail-modal");
@@ -2659,7 +2675,8 @@ function renderDetailMap(i){
   L.marker([lat,lng],{icon:icon}).addTo(m);
 
   // Invalider la taille après affichage (le modal était display:none)
-  setTimeout(function(){m.invalidateSize();},100);
+  mapEl._lmap=m;
+  setTimeout(function(){m.invalidateSize();},120);
 }
 
 function computeAndShowTrust(i){
