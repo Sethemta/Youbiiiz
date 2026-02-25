@@ -1997,7 +1997,7 @@ function showPushBanner(title,body){
 
 function initFeed(){
   // Show demo data immediately while Firebase loads
-  injectDemoData();
+  if(typeof window.__injectDemoAndRender==="function") window.__injectDemoAndRender();
   if(!me||!me.isVisitor){
   onSnapshot(collection(db,"scans"),function(snap){
     var realItems=[];
