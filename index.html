@@ -1334,7 +1334,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
     </div>
 
     <!-- ══ COL 2 : INFOS scrollables ══ -->
-    <div id="det-thumbs" class="no-sb" style="overflow-y:auto;display:flex;flex-direction:column;gap:16px;min-height:0;padding-right:4px">
+    <div class="no-sb" style="overflow-y:auto;display:flex;flex-direction:column;gap:16px;min-height:0;padding-right:4px">
 
       <!-- Prix + titre -->
       <div>
@@ -2865,10 +2865,17 @@ function buildCarousel(photos){
     if(next) next.style.display="none";
   }
   if(thumbs) thumbs.innerHTML=carPhotos.length>1?carPhotos.map(function(src,i){return'<img class="photo-thumb'+(i===0?' active':'')+'" src="'+src+'" onclick="goSlide('+i+')">';}).join(""):"";
-  // Vignette principale en haut
+  // Vignette principale en haut (toujours la 1ère photo)
   var tt=document.getElementById("det-thumb-top");
-  if(tt){
-    tt.innerHTML=carPhotos.length?'<img src="'+carPhotos[0]+'" style="height:68px;width:68px;object-fit:cover;border-radius:12px;border:2px solid #0ea5e9;box-shadow:0 2px 8px rgba(0,0,0,.12)">':"";
+  if(tt && carPhotos.length){
+    tt.innerHTML='<img src="'+carPhotos[0]+'" style="width:100%;height:100%;object-fit:cover;display:block">';
+  }
+  // Photos supplémentaires
+  var et=document.getElementById("det-extra-thumbs");
+  if(et){
+    et.innerHTML=carPhotos.length>1?carPhotos.slice(1).map(function(src,i){
+      return '<img src="'+src+'" onclick="goSlide('+(i+1)+')" style="width:56px;height:56px;object-fit:cover;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;flex-shrink:0">';
+    }).join(""):"";
   }
   goSlide(0);
 }
