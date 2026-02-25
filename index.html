@@ -1729,16 +1729,14 @@ function __renderDemoFeed() {
 }
 
 window.__openDemoItem = function(id) {
-  // merge demo items into module items array first
-  if(window.__demoItems && typeof items !== "undefined"){
-    var ids=new Set(items.map(function(x){return x.id;}));
-    window.__demoItems.forEach(function(d){if(!ids.has(d.id))items.push(d);});
+  // Injecter les items démo dans le tableau module via l'API exposée
+  if(window.__demoItems && window.__pushItem){
+    var current = window.__getItems ? window.__getItems() : [];
+    var ids = new Set(current.map(function(x){return x.id;}));
+    window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) window.__pushItem(d); });
   }
   if(typeof window.openDetail === "function"){
     window.openDetail(id);
-  } else {
-    var item = (window.__demoItems||[]).find(function(i){return i.id===id;});
-    if(item) alert(item.itemName+" — "+item.price+"€");
   }
 };
 
@@ -1799,6 +1797,8 @@ const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
 
 var me=null; // synced with window.__me
 let items=[],curItem=null,scanData=null,camStream=null;
+window.__getItems=function(){return items;};
+window.__pushItem=function(d){items.push(d);};
 let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
 let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
 
