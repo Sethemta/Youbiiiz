@@ -1699,6 +1699,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
 <!-- (search-photo-inp already declared in header) -->
 
+<script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,where,orderBy,query,getDocs,deleteDoc,updateDoc,getDoc}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
