@@ -1311,32 +1311,34 @@ header .i-wrapper{gap:2px;margin:0 2px}
     </button>
   </div>
 
-  <!-- CORPS 3 COLONNES fixes -->
+  <!-- CORPS 3 COLONNES -->
   <div style="flex:1;display:grid;grid-template-columns:2fr 2fr 1.2fr;gap:20px;padding:20px 24px;overflow:hidden;min-height:0">
 
-    <!-- ══ COL 1 JAUNE : vignette + grand carrousel ══ -->
-    <div style="display:flex;flex-direction:column;gap:10px;min-height:0;overflow:hidden">
+    <!-- ══ COL 1 : carrousel centré + vignette en haut à droite ══ -->
+    <div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;min-height:0;overflow:hidden">
 
-      <!-- Vignette objet (petite photo en haut = zone bleue) -->
-      <div id="det-thumb-top" style="flex-shrink:0;height:72px;display:flex;gap:6px;overflow-x:auto"></div>
+      <!-- Vignette grande, coin haut droit de la colonne -->
+      <div id="det-thumb-top" style="position:absolute;top:0;right:0;width:110px;height:110px;border-radius:16px;overflow:hidden;border:3px solid #0ea5e9;box-shadow:0 4px 16px rgba(14,165,233,.35);background:#e2e8f0;z-index:10;flex-shrink:0"></div>
+      <div id="det-extra-thumbs" style="position:absolute;top:120px;right:0;display:flex;flex-direction:column;gap:6px;z-index:10"></div>
 
-      <!-- Grand carrousel (occupe tout l'espace restant) -->
-      <div style="position:relative;border-radius:20px;overflow:hidden;background:#e8edf2;flex:1;min-height:0;box-shadow:0 6px 28px rgba(0,0,0,.11)">
+      <!-- Carrousel réduit et centré -->
+      <div style="position:relative;border-radius:20px;overflow:hidden;background:#e8edf2;width:78%;flex:1;min-height:0;box-shadow:0 6px 28px rgba(0,0,0,.11);margin-top:0">
         <div id="det-carousel-track" style="display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.16,1,.3,1)"></div>
-        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-left"></i></button>
-        <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-right"></i></button>
-        <div id="det-dots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2"></div>
-        <div id="det-views-badge" class="hidden" style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
+        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-right"></i></button>
+        <div id="det-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2"></div>
+        <div id="det-views-badge" class="hidden" style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
           <i class="fa-solid fa-eye" style="font-size:9px"></i><span id="det-views-count">0</span> vues
         </div>
       </div>
+      <!-- det-thumbs invisible (requis par buildCarousel) -->
+      <div id="det-thumbs" style="display:none"></div>
 
     </div>
 
     <!-- ══ COL 2 : INFOS scrollables ══ -->
     <div class="no-sb" style="overflow-y:auto;display:flex;flex-direction:column;gap:16px;min-height:0;padding-right:4px">
 
-      <!-- Prix + titre -->
       <div>
         <p id="det-price" style="color:#0ea5e9;font-weight:900;font-size:36px;line-height:1;margin-bottom:6px"></p>
         <h2 id="det-title-big" style="font-weight:800;font-size:20px;color:#0f172a;line-height:1.3;margin-bottom:10px"></h2>
@@ -1358,7 +1360,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
       <div style="height:1px;background:#e2e8f0"></div>
 
-      <!-- Boutons achat -->
       <div style="display:flex;flex-direction:column;gap:8px">
         <button id="buy-btn" style="width:100%;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(14,165,233,.3)">
           <i class="fa-brands fa-stripe" style="font-size:17px"></i> Acheter maintenant
@@ -1375,24 +1376,21 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
       <div style="height:1px;background:#e2e8f0"></div>
 
-      <!-- Description -->
       <div>
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Description</p>
         <p id="det-desc" style="font-size:14px;color:#334155;line-height:1.75"></p>
       </div>
 
-      <!-- Livraison -->
       <div>
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Livraison</p>
         <div id="det-ship" style="display:flex;flex-wrap:wrap;gap:8px"></div>
       </div>
 
-      <!-- Score de confiance -->
       <div style="background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
           <div style="display:flex;align-items:center;gap:6px">
             <p style="font-size:13px;font-weight:800;color:#0f172a">Score de confiance</p>
-            <span title="Analyse automatique : photo, description, ville, livraison, marque, état" style="width:17px;height:17px;background:#e0f2fe;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#0ea5e9;cursor:help">?</span>
+            <span title="Analyse automatique" style="width:17px;height:17px;background:#e0f2fe;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#0ea5e9;cursor:help">?</span>
           </div>
           <span id="det-trust-label" style="font-size:12px;font-weight:800"></span>
         </div>
@@ -1401,7 +1399,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div id="det-trust-details" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"></div>
       </div>
 
-      <!-- Vendeur -->
       <div id="det-seller-card" onclick="openSellerProfile()" style="background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0;cursor:pointer">
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Vendeur</p>
         <div style="display:flex;align-items:center;gap:12px">
@@ -1419,7 +1416,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
 
-      <!-- Annonces similaires -->
       <div style="padding-bottom:12px">
         <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Annonces similaires</p>
         <div id="det-similar" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:6px"></div>
@@ -1427,9 +1423,9 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
     </div>
 
-    <!-- ══ COL 3 ROUGE : CARTE pleine hauteur ══ -->
+    <!-- ══ COL 3 : CARTE pleine hauteur ══ -->
     <div style="display:flex;flex-direction:column;min-height:0;overflow:hidden">
-      <div style="border-radius:20px;overflow:hidden;background:#e2e8f0;flex:1;position:relative;box-shadow:0 4px 24px rgba(0,0,0,.09);min-height:300px">
+      <div style="border-radius:20px;overflow:hidden;background:#e2e8f0;flex:1;position:relative;min-height:300px;box-shadow:0 4px 24px rgba(0,0,0,.09)">
         <div id="det-map" style="width:100%;height:100%;min-height:300px"></div>
         <div id="det-loc-badge" style="position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.95);border-radius:99px;padding:5px 12px;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:500">
           <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:11px"></i>
@@ -2869,7 +2865,7 @@ function buildCarousel(photos){
   // Vignette principale en haut (toujours la 1ère photo)
   var tt=document.getElementById("det-thumb-top");
   if(tt && carPhotos.length){
-    tt.innerHTML='<img src="'+carPhotos[0]+'" style="width:80px;height:80px;object-fit:cover;display:block">';
+    tt.innerHTML='<img src="'+carPhotos[0]+'" style="width:110px;height:110px;object-fit:cover;display:block">';
   }
   // Photos supplémentaires
   var et=document.getElementById("det-extra-thumbs");
