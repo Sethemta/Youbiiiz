@@ -1429,8 +1429,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
     <!-- ══ COL 3 ROUGE : CARTE pleine hauteur ══ -->
     <div style="display:flex;flex-direction:column;min-height:0;overflow:hidden">
-      <div style="border-radius:20px;overflow:hidden;background:#e2e8f0;flex:1;position:relative;box-shadow:0 4px 24px rgba(0,0,0,.09)">
-        <div id="det-map" style="width:100%;height:100%"></div>
+      <div style="border-radius:20px;overflow:hidden;background:#e2e8f0;flex:1;position:relative;box-shadow:0 4px 24px rgba(0,0,0,.09);min-height:300px">
+        <div id="det-map" style="width:100%;height:100%;min-height:300px"></div>
         <div id="det-loc-badge" style="position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.95);border-radius:99px;padding:5px 12px;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:500">
           <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:11px"></i>
           <span id="det-loc-city" style="font-size:12px;font-weight:700;color:#0f172a"></span>
@@ -2666,7 +2666,8 @@ function renderDetailMap(i){
 
   // Invalider la taille après affichage (le modal était display:none)
   mapEl._lmap=m;
-  setTimeout(function(){m.invalidateSize();},120);
+  setTimeout(function(){m.invalidateSize();},200);
+  setTimeout(function(){m.invalidateSize();},600);
 }
 
 function computeAndShowTrust(i){
