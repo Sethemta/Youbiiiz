@@ -2868,7 +2868,7 @@ function buildCarousel(photos){
   // Vignette principale en haut (toujours la 1ère photo)
   var tt=document.getElementById("det-thumb-top");
   if(tt && carPhotos.length){
-    tt.innerHTML='<img src="'+carPhotos[0]+'" style="width:100%;height:100%;object-fit:cover;display:block">';
+    tt.innerHTML='<img src="'+carPhotos[0]+'" style="width:72px;height:72px;object-fit:cover;display:block;flex-shrink:0">';
   }
   // Photos supplémentaires
   var et=document.getElementById("det-extra-thumbs");
