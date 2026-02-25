@@ -1610,9 +1610,17 @@ header .i-wrapper{gap:2px;margin:0 2px}
 <!-- (search-photo-inp already declared in header) -->
 
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
+// ══════════════════════════════════════════════════════════════
+// YOUBIIIZ — Script unifié (pas de module ES, pas de scope split)
+// ══════════════════════════════════════════════════════════════
+
+
 // ── FONCTIONS CRITIQUES UI (indépendantes de Firebase) ──
-var __me = null; // partagé avec le module Firebase
+var me = null; // partagé avec le module Firebase
 
 function showAuthMsg(msg, ok) {
   var el = document.getElementById("auth-msg");
@@ -1643,40 +1651,6 @@ function showTab(tab) {
 }
 
 
-// Fallback si Firebase pas encore chargé
-function doLogin() {
-  if (typeof window.__firebaseLogin === "function") {
-    window.__firebaseLogin();
-  } else {
-    showAuthMsg("Chargement en cours... réessaie dans 2 secondes");
-  }
-}
-function doRegister() {
-  if (typeof window.__firebaseRegister === "function") {
-    window.__firebaseRegister();
-  } else {
-    showAuthMsg("Chargement en cours... réessaie dans 2 secondes");
-  }
-}
-function doGoogle() {
-  if (typeof window.__firebaseGoogle === "function") {
-    window.__firebaseGoogle();
-  } else {
-    showAuthMsg("Chargement en cours... réessaie dans 2 secondes");
-  }
-}
-function doLogout() {
-  if (typeof window.__firebaseLogout === "function") {
-    window.__firebaseLogout();
-  } else {
-    // Visitor logout
-    window.__visitorBooted = false;
-    window.__me = null;
-    document.getElementById("app").classList.add("hidden");
-    document.getElementById("app").style.opacity = "0";
-    document.getElementById("splash").style.display = "flex";
-  }
-}
 
 // Mode visiteur : 100% sans Firebase
 var __demoItems = [
@@ -1710,29 +1684,29 @@ function __renderDemoFeed() {
   var feed = document.getElementById("feed");
   if (!feed) return;
   feed.innerHTML = __demoItems.map(function(item) {
-    var id = item.id;
-    var isFav = typeof favorites !== "undefined" && favorites.has(id);
+    var isFav = typeof favorites !== "undefined" && favorites.has(item.id);
     return [
-      '<div class="card fi" style="cursor:pointer" onclick="__openDemoItem(\"'+id+'\")">',
-      '<div class="sq">',
-      '<img src="'+item.imageUrl+'" loading="lazy" style="width:100%;height:100%;object-fit:cover">',
-      '<span style="position:absolute;top:6px;left:7px;background:rgba(255,255,255,.93);color:#0ea5e9;font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px">'+item.condition+'</span>',
-      '<button onclick="event.stopPropagation();toggleFavCard(this,\"'+id+'\")" style="position:absolute;top:6px;right:7px;width:30px;height:30px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.15);line-height:1">'+(isFav?'❤️':'🤍')+'</button>',
-      '</div>',
-      '<div class="inf">',
-      '<p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#0f172a">'+item.itemName+'</p>',
-      '<p style="font-size:15px;font-weight:900;color:#0ea5e9">'+item.price+'€</p>',
-      '<p style="font-size:10px;color:#64748b;margin-top:2px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+item.city+'</p>',
-      '</div></div>'
+      '<div class="card fi" data-id="' + item.id + '" style="cursor:pointer;position:relative">',
+        '<div class="sq" style="position:relative">',
+          '<img src="' + item.imageUrl + '" loading="lazy" style="width:100%;height:100%;object-fit:cover">',
+          '<span style="position:absolute;top:6px;left:7px;background:rgba(255,255,255,.93);color:#0ea5e9;font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px">' + item.condition + '</span>',
+          '<button class="fav-card-btn" data-fav="' + item.id + '" style="position:absolute;top:6px;right:7px;width:30px;height:30px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.15);line-height:1">' + (isFav ? '❤️' : '🤍') + '</button>',
+        '</div>',
+        '<div class="inf">',
+          '<p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#0f172a">' + item.itemName + '</p>',
+          '<p style="font-size:15px;font-weight:900;color:#0ea5e9">' + item.price + '€</p>',
+          '<p style="font-size:10px;color:#64748b;margin-top:2px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>' + item.city + '</p>',
+        '</div>',
+      '</div>'
     ].join("");
   }).join("");
 }
 
 window.__openDemoItem = function(id) {
-  if(window.__demoItems && window.__pushItem){
-    var current = window.__getItems ? window.__getItems() : [];
+  if(window.__demoItems && items.push){
+    var current = items;
     var ids = new Set(current.map(function(x){return x.id;}));
-    window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) window.__pushItem(d); });
+    window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) items.push(d); });
   }
   if(typeof window.openDetail === "function"){
     window.openDetail(id);
@@ -1740,9 +1714,9 @@ window.__openDemoItem = function(id) {
 };
 
 function doAnon() {
-  __me = { uid: "visitor_" + Math.random().toString(36).slice(2, 8), email: null, isVisitor: true };
-  window.__me = __me;
-  window.__visitorBooted = true;
+  me = { uid: "visitor_" + Math.random().toString(36).slice(2, 8), email: null, isVisitor: true };
+  me = me;
+  
   window.items = __demoItems; // expose to module when it loads
 
   // Hide splash, show app
@@ -1771,35 +1745,59 @@ function doAnon() {
   // Render demo feed now
   __renderDemoFeed();
 
+  // Event delegation: clic sur les cartes du feed
+  var feed = document.getElementById("feed");
+  if (feed && !feed.__listenerAdded) {
+    feed.__listenerAdded = true;
+    feed.addEventListener("click", function(e) {
+      var favBtn = e.target.closest(".fav-card-btn");
+      if (favBtn) {
+        e.stopPropagation();
+        var fid = favBtn.getAttribute("data-fav");
+        if (fid && typeof toggleFavCard !== "undefined") toggleFavCard(favBtn, fid);
+        return;
+      }
+      var card = e.target.closest("[data-id]");
+      if (card) {
+        var cid = card.getAttribute("data-id");
+        if (!cid) return;
+        // Merge demo items
+        if (window.__demoItems) {
+          var ids = new Set(items.map(function(x){return x.id;}));
+          window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) items.push(d); });
+        }
+        openDetail(cid);
+      }
+    });
+  }
+
   // When module loads later, it will also call injectDemoData — allow it
-  window.__injectDemoAndRender = function() {
-    // merge __demoItems into module items array
-    if (typeof items !== "undefined") {
-      var existingIds = new Set(items.map(function(i){ return i.id; }));
-      __demoItems.forEach(function(d) {
-        if (!existingIds.has(d.id)) items.push(d);
-      });
-    }
-    __renderDemoFeed(); // re-render with better card function if available
-    if (typeof applyFilters === "function") applyFilters();
-  };
+  // items is in scope — inject demo items directly
+  if(window.__demoItems){
+    var _dids=new Set(items.map(function(x){return x.id;}));
+    window.__demoItems.forEach(function(d){if(!_dids.has(d.id))items.push(d);});
+  }
 }
-</script>
 
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,where,orderBy,query,getDocs,deleteDoc,updateDoc,getDoc}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-const FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
-const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
+// ── Firebase config ──
+var FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
 
-var me=null; // synced with window.__me
-let items=[],curItem=null,scanData=null,camStream=null;
-window.__getItems=function(){return items;};
-window.__pushItem=function(d){items.push(d);};
-let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
-let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
+// Initialiser Firebase quand le SDK est chargé
+function initFirebase(){
+  if(typeof firebase==="undefined") return setTimeout(initFirebase, 100);
+  var fb=firebase.initializeApp(FB);
+  var auth=firebase.auth();
+  var db=firebase.firestore();
+
+var FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
+var fb=firebase.initializeApp(FB),auth=firebase.auth(),db=firebase.firestore();
+
+var me=null;
+var items=[],curItem=null,scanData=null,camStream=null;
+
+var editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
+var activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
 
 window.onerror=(m,s,l)=>{toast("JS:"+m+" L"+l);};
 function toast(m,ok){
@@ -1810,9 +1808,9 @@ function toast(m,ok){
   setTimeout(function(){e.style.display="none";},3500);
 }
 
-onAuthStateChanged(auth,function(u){
-  if(u && (!window.__me || !window.__me.isVisitor)){
-    me=u; window.__me=u;
+auth.onAuthStateChanged(function(u){
+  if(u && (!me || !me.isVisitor)){
+    me=u; 
     boot();
   }
   // Sinon: landing page reste visible, l'user doit se connecter
@@ -1829,19 +1827,19 @@ function showAuthMsg(msg,ok){
 }
 function hideAuthMsg(){document.getElementById("auth-msg").style.display="none";}
 
-window.__firebaseLogin=async function(){
+window.doLogin=async function(){
   var email=document.getElementById("login-email").value.trim();
   var pass=document.getElementById("login-password").value;
   if(!email||!pass){showAuthMsg("Remplis tous les champs");return;}
   try{
-    await signInWithEmailAndPassword(auth,email,pass);
+    await auth.signInWithEmailAndPassword(email,pass);
   }catch(e){
     var msgs={"auth/user-not-found":"Compte introuvable","auth/wrong-password":"Mot de passe incorrect","auth/invalid-email":"Email invalide","auth/invalid-credential":"Email ou mot de passe incorrect"};
     showAuthMsg(msgs[e.code]||"Erreur: "+e.message);
   }
 };
 
-window.__firebaseRegister=async function(){
+window.doRegister=async function(){
   var email=document.getElementById("reg-email").value.trim();
   var pass=document.getElementById("reg-password").value;
   var conf=document.getElementById("reg-confirm").value;
@@ -1849,17 +1847,17 @@ window.__firebaseRegister=async function(){
   if(pass.length<6){showAuthMsg("Mot de passe trop court (min. 6 car.)");return;}
   if(pass!==conf){showAuthMsg("Les mots de passe ne correspondent pas");return;}
   try{
-    await createUserWithEmailAndPassword(auth,email,pass);
+    await auth.createUserWithEmailAndPassword(email,pass);
   }catch(e){
     var msgs={"auth/email-already-in-use":"Email déjà utilisé","auth/invalid-email":"Email invalide","auth/weak-password":"Mot de passe trop faible"};
     showAuthMsg(msgs[e.code]||"Erreur: "+e.message);
   }
 };
 
-window.__firebaseGoogle=async function(){
+window.doGoogle=async function(){
   try{
-    var provider=new GoogleAuthProvider();
-    await signInWithPopup(auth,provider);
+    var provider=new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
   }catch(e){
     if(e.code!=="auth/popup-closed-by-user") showAuthMsg("Erreur Google: "+e.message);
   }
@@ -1872,9 +1870,9 @@ window.doAnon=function(){
   boot();
 };
 
-window.__firebaseLogout=async function(){
+window.doLogout=async function(){
   try{
-    if(me && !me.isVisitor) await signOut(auth);
+    if(me && !me.isVisitor) await auth.signOut();
   }catch(e){}
   me=null;
   document.getElementById("app").classList.add("hidden");
@@ -1883,7 +1881,7 @@ window.__firebaseLogout=async function(){
 };
 
 function boot(){
-  if(window.__me) me = window.__me; // sync visitor mode
+  if(__me) me = __me;
   document.getElementById("splash").style.display="none";
   var app=document.getElementById("app");
   app.classList.remove("hidden");
@@ -1918,9 +1916,9 @@ function initFeed(){
   // Show demo data immediately while Firebase loads
   if(typeof window.__injectDemoAndRender==="function") window.__injectDemoAndRender();
   if(!me||!me.isVisitor){
-  onSnapshot(collection(db,"scans"),function(snap){
+  onSnapshot(db.collection("scans"),function(snap){
     var realItems=[];
-    snap.forEach(function(d){realItems.push(Object.assign({id:d.id},d.data()));});
+    snap.docs.forEach(function(d){realItems.push(Object.assign({id:d.id},d.data()));});
     realItems.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
     // Keep demo items not replaced by real ones
     var realIds=new Set(realItems.map(function(i){return i.id;}));
@@ -2012,7 +2010,7 @@ window.switchView=function(v){
     },250);
   }
   if(v==="notifications"&&me){
-    getDocs(query(collection(db,"notifications"),where("userId","==",me.uid),where("read","==",false))).then(function(s){
+    getDocs(query(db.collection("notifications"),where("userId","==",me.uid),where("read","==",false))).then(function(s){
       s.forEach(function(d){updateDoc(doc(db,"notifications",d.id),{read:true});});
     });
   }
@@ -2185,7 +2183,7 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
     var selectedCat=document.getElementById("ai-cat-select")?document.getElementById("ai-cat-select").value:scanData.category;
     // Geocoder la ville pour la carte
     var coords=city?await geocodeAndSave(city):null;
-    await addDoc(collection(db,"scans"),{
+    await addDoc(db.collection("scans"),{
       userId:me.uid,
       itemName:document.getElementById("ai-name").value,
       price:scanData.price,
@@ -2199,7 +2197,7 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
       lat:coords?coords.lat:null,
       lng:coords?coords.lng:null,
       imageUrl:scanData.imageUrl,
-      createdAt:serverTimestamp()
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
     closeScan();
     switchView("home");
@@ -2321,7 +2319,7 @@ window.doStripe=async function(){
     var r=await fetch("https://createpayment-xjtnixfrra-uc.a.run.app",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:tot,itemName:payItem.itemName,itemId:payItem.id,buyerId:me.uid,sellerId:payItem.userId})});
     var d=await r.json();
     if(d.error){toast("Stripe:"+d.error);return;}
-    await addDoc(collection(db,"notifications"),{userId:payItem.userId,type:"payment_initiated",message:"Paiement pour "+payItem.itemName,itemId:payItem.id,read:false,createdAt:serverTimestamp()});
+    await addDoc(db.collection("notifications"),{userId:payItem.userId,type:"payment_initiated",message:"Paiement pour "+payItem.itemName,itemId:payItem.id,read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     window.location.href=d.url;
   }catch(e){toast("Erreur:"+e.message);}
   btn.innerHTML='<i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant';btn.disabled=false;
@@ -2334,8 +2332,8 @@ function checkPayReturn(){
   setTimeout(async function(){
     if(!me) return;
     try{
-      await addDoc(collection(db,"notifications"),{userId:me.uid,type:"payment_success",message:"Paiement valide ! Contactez le vendeur.",itemId:iid||"",read:false,createdAt:serverTimestamp()});
-      if(sid) await addDoc(collection(db,"notifications"),{userId:sid,type:"sale",message:"Votre article vient d'etre achete !",itemId:iid||"",read:false,createdAt:serverTimestamp()});
+      await addDoc(db.collection("notifications"),{userId:me.uid,type:"payment_success",message:"Paiement valide ! Contactez le vendeur.",itemId:iid||"",read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      if(sid) await addDoc(db.collection("notifications"),{userId:sid,type:"sale",message:"Votre article vient d'etre achete !",itemId:iid||"",read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
       rateCtx={targetUserId:sid,role:"buyer",itemId:iid||""};
       setTimeout(function(){openRate("vendeur");},2000);
     }catch(e){}
@@ -2345,10 +2343,10 @@ function checkPayReturn(){
 // NOTIFS
 function initNotifs(){
   if(!me) return;
-  var q=query(collection(db,"notifications"),where("userId","==",me.uid));
+  var q=query(db.collection("notifications"),where("userId","==",me.uid));
   onSnapshot(q,function(snap){
     var list=[];
-    snap.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));});
+    snap.docs.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));});
     list.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
     var unread=list.filter(function(n){return !n.read;}).length;
     var b=document.getElementById("nbadge");
@@ -2362,7 +2360,7 @@ function initNotifs(){
     }).join(""):'<p style="text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>';
   });
 }
-window.markRead=async function(id){await updateDoc(doc(db,"notifications",id),{read:true});};
+window.markRead=async function(id){await db.collection("notifications").doc(id).update({read:true});};
 
 // NOTATION
 window.openRate=function(role){
@@ -2389,24 +2387,24 @@ window.submitRate=async function(){
   if(!curStar){toast("Choisissez une note");return;}
   if(!rateCtx) return;
   try{
-    await addDoc(collection(db,"ratings"),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById("rate-comment").value,createdAt:serverTimestamp()});
+    await addDoc(db.collection("ratings"),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById("rate-comment").value,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     await updUserRating(rateCtx.targetUserId);
-    await addDoc(collection(db,"notifications"),{userId:rateCtx.targetUserId,type:"rating",message:"Vous avez recu une note de "+curStar+"★",read:false,createdAt:serverTimestamp()});
+    await addDoc(db.collection("notifications"),{userId:rateCtx.targetUserId,type:"rating",message:"Vous avez recu une note de "+curStar+"★",read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     closeRate();toast("Note envoyee !",true);
   }catch(e){toast("Erreur:"+e.message);}
 };
 async function updUserRating(uid){
   try{
-    var s=await getDocs(query(collection(db,"ratings"),where("targetUserId","==",uid)));
+    var s=await getDocs(query(db.collection("ratings"),where("targetUserId","==",uid)));
     var r=[];s.forEach(function(d){r.push(d.data().rating);});
     if(!r.length) return;
     var avg=(r.reduce(function(a,b){return a+b;},0)/r.length).toFixed(1);
-    await updateDoc(doc(db,"users",uid),{rating:parseFloat(avg),ratingCount:r.length});
+    await db.collection("users").doc(uid).update({rating:parseFloat(avg),ratingCount:r.length});
   }catch(e){}
 }
 async function loadSellerRating(uid){
   try{
-    var d=await getDoc(doc(db,"users",uid));
+    var d=await db.collection("users").doc(uid).get();
     var el=document.getElementById("det-rating");
     if(d.exists()&&d.data().rating){
       var r=d.data().rating,n=d.data().ratingCount||0;
@@ -2419,7 +2417,7 @@ async function loadSellerRating(uid){
 async function loadMyRating(){
   if(!me) return;
   try{
-    var d=await getDoc(doc(db,"users",me.uid));
+    var d=await db.collection("users").doc(me.uid).get();
     if(d.exists()&&d.data().rating) document.getElementById("profile-rating").innerText="★"+d.data().rating;
   }catch(e){}
 }
@@ -2445,7 +2443,7 @@ window.saveEdit=async function(){
   if(!editingId) return;
   var btn=document.getElementById("edit-save");btn.innerText="Sauvegarde...";btn.disabled=true;
   try{
-    await updateDoc(doc(db,"scans",editingId),{
+    await updateDoc(db.collection("scans").doc(editingId),{
       itemName:document.getElementById("edit-title").value,
       price:parseFloat(document.getElementById("edit-price").value)||0,
       description:document.getElementById("edit-desc").value,
@@ -2468,7 +2466,7 @@ window.closeDel=function(){
 };
 window.doDelete=async function(){
   if(!deletingId) return;
-  try{await deleteDoc(doc(db,"scans",deletingId));closeDel();}
+  try{await deleteDoc(db.collection("scans").doc(deletingId));closeDel();}
   catch(e){toast("Erreur:"+e.message);}
 };
 
@@ -2690,7 +2688,7 @@ function renderFavs(){
 
 window.__injectDemoAndRender = function injectDemoData(){
   // Use same __demoItems from pre-script (already defined)
-  if(typeof __demoItems === "undefined") return;
+  if(typeof __demoItems === "undefined" || typeof items === "undefined") return;
   var realIds=new Set(items.map(function(i){return i.id;}));
   __demoItems.forEach(function(d){if(!realIds.has(d.id)) items.push(d);});
   applyFilters();
@@ -2841,7 +2839,7 @@ function updateViewCount(item){
   var vc_el=document.getElementById("det-views-count");
   if(vb){vb.classList.remove("hidden");if(vc_el)vc_el.innerText=vc;}
   if(me&&item.userId!==me.uid){
-    updateDoc(doc(db,"scans",item.id),{views:vc}).catch(function(){});
+    updateDoc(db.collection("scans").doc(item.id),{views:vc}).catch(function(){});
   }
 }
 
@@ -3013,7 +3011,7 @@ window.submitReport=async function(reason){
   closeReport();
   if(!me||!curItem) return;
   try{
-    await addDoc(collection(db,"reports"),{itemId:curItem.id,userId:me.uid,reason:reason,createdAt:serverTimestamp()});
+    await db.collection("reports").add({itemId:curItem.id,userId:me.uid,reason:reason,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     toast("Signalement envoyé. Merci ! 🙏",true);
   }catch(e){toast("Merci pour le signalement 🙏",true);}
 };
@@ -3209,6 +3207,14 @@ window.switchView=function(v){
 // MYCARD améliorée avec stats vues
 // ════════════════════════════════════════════════════════
 
+} // end initFirebase
+
+// Démarrer quand le DOM est prêt
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded", initFirebase);
+} else {
+  initFirebase();
+}
 </script>
 </body>
 </html>
