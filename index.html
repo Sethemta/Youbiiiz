@@ -1729,14 +1729,22 @@ function __renderDemoFeed() {
 }
 
 window.__openDemoItem = function(id) {
-  // Injecter les items démo dans le tableau module via l'API exposée
+  console.log("[CLICK] __openDemoItem called with id=", id);
+  console.log("[CLICK] window.__pushItem exists:", typeof window.__pushItem);
+  console.log("[CLICK] window.openDetail exists:", typeof window.openDetail);
   if(window.__demoItems && window.__pushItem){
     var current = window.__getItems ? window.__getItems() : [];
     var ids = new Set(current.map(function(x){return x.id;}));
     window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) window.__pushItem(d); });
+    console.log("[CLICK] items after merge:", window.__getItems ? window.__getItems().length : "N/A");
+  } else {
+    console.log("[CLICK] MERGE SKIPPED - __demoItems:", !!window.__demoItems, "__pushItem:", !!window.__pushItem);
   }
   if(typeof window.openDetail === "function"){
+    console.log("[CLICK] calling openDetail...");
     window.openDetail(id);
+  } else {
+    console.log("[CLICK] openDetail NOT DEFINED on window!");
   }
 };
 
@@ -2241,6 +2249,7 @@ window.openDetail=function(id){
   document.getElementById("buy-btn").onclick=function(){if(me&&me.isVisitor){toast("Crée un compte pour acheter !");return;}openPay(i);};
   loadSellerRating(i.userId);
   var m=document.getElementById("detail-modal");
+  console.log("[openDetail orig] showing modal, m=", m);
   m.classList.remove("hidden");m.classList.add("flex");
 };
 window.closeDetail=function(){
@@ -3149,12 +3158,13 @@ async function analyzeSearchPhoto(b64){
 // ════════════════════════════════════════════════════════
 var _origOpenDetail=window.openDetail;
 window.openDetail=function(id){
-  // merge demo items if not yet in items array
+  console.log("[openDetail override] id=", id, "items.length=", items.length);
   if(window.__demoItems){
     var ids=new Set(items.map(function(x){return x.id;}));
     window.__demoItems.forEach(function(d){if(!ids.has(d.id))items.push(d);});
   }
   var i=items.find(function(x){return x.id===id;});
+  console.log("[openDetail override] item found:", !!i);
   if(!i) return;
   _origOpenDetail(id);
   var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
