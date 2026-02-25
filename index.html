@@ -1699,6 +1699,123 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
 <!-- (search-photo-inp already declared in header) -->
 
+
+<script>
+// ── FONCTIONS CRITIQUES UI (indépendantes de Firebase) ──
+var __me = null; // partagé avec le module Firebase
+
+function showAuthMsg(msg, ok) {
+  var el = document.getElementById("auth-msg");
+  if (!el) return;
+  el.style.display = "block";
+  el.style.background = ok ? "#f0fdf4" : "#fef2f2";
+  el.style.color = ok ? "#166534" : "#dc2626";
+  el.style.border = ok ? "1px solid #bbf7d0" : "1px solid #fecaca";
+  el.innerText = msg;
+}
+function hideAuthMsg() {
+  var el = document.getElementById("auth-msg");
+  if (el) el.style.display = "none";
+}
+
+function showTab(tab) {
+  document.getElementById("panel-login").style.display = tab === "login" ? "block" : "none";
+  document.getElementById("panel-register").style.display = tab === "register" ? "block" : "none";
+  var tl = document.getElementById("tab-login");
+  var tr = document.getElementById("tab-register");
+  tl.style.background = tab === "login" ? "#fff" : "transparent";
+  tl.style.color = tab === "login" ? "#0f172a" : "#94a3b8";
+  tl.style.boxShadow = tab === "login" ? "0 1px 4px rgba(0,0,0,.1)" : "none";
+  tr.style.background = tab === "register" ? "#fff" : "transparent";
+  tr.style.color = tab === "register" ? "#0f172a" : "#94a3b8";
+  tr.style.boxShadow = tab === "register" ? "0 1px 4px rgba(0,0,0,.1)" : "none";
+  hideAuthMsg();
+}
+
+
+// Fallback si Firebase pas encore chargé
+function doLogin() {
+  if (typeof window.__firebaseLogin === "function") {
+    window.__firebaseLogin();
+  } else {
+    showAuthMsg("Chargement en cours... réessaie dans 2 secondes");
+  }
+}
+function doRegister() {
+  if (typeof window.__firebaseRegister === "function") {
+    window.__firebaseRegister();
+  } else {
+    showAuthMsg("Chargement en cours... réessaie dans 2 secondes");
+  }
+}
+function doGoogle() {
+  if (typeof window.__firebaseGoogle === "function") {
+    window.__firebaseGoogle();
+  } else {
+    showAuthMsg("Chargement en cours... réessaie dans 2 secondes");
+  }
+}
+function doLogout() {
+  if (typeof window.__firebaseLogout === "function") {
+    window.__firebaseLogout();
+  } else {
+    // Visitor logout
+    window.__visitorBooted = false;
+    window.__me = null;
+    document.getElementById("app").classList.add("hidden");
+    document.getElementById("app").style.opacity = "0";
+    document.getElementById("splash").style.display = "flex";
+  }
+}
+
+// Mode visiteur : 100% sans Firebase
+var __demoItems = [
+  {id:"demo1",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=400"},
+  {id:"demo2",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",city:"Lyon",imageUrl:"https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400"},
+  {id:"demo3",itemName:"MacBook Air M2 13"",price:950,category:"Ordinateurs",condition:"Neuf",city:"Bordeaux",imageUrl:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400"},
+  {id:"demo4",itemName:"Vélo électrique Decathlon",price:680,category:"Vélos",condition:"Bon état",city:"Marseille",imageUrl:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400"},
+  {id:"demo5",itemName:"Nike Air Jordan 1 Retro T42",price:185,category:"Chaussures homme",condition:"Très bon état",city:"Toulouse",imageUrl:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"},
+  {id:"demo6",itemName:"Canapé d angle convertible gris",price:350,category:"Ameublement",condition:"Bon état",city:"Nantes",imageUrl:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400"},
+  {id:"demo7",itemName:"Guitare acoustique Yamaha F310",price:90,category:"Instruments de musique",condition:"Bon état",city:"Strasbourg",imageUrl:"https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400"},
+  {id:"demo8",itemName:"Dyson V11 Aspirateur balai",price:290,category:"Électroménager",condition:"Très bon état",city:"Lille",imageUrl:"https://images.unsplash.com/photo-1558317374-067fb5f30001?w=400"},
+  {id:"demo9",itemName:"Rolex Datejust 36mm Cadran Vert",price:6800,category:"Montres & Bijoux",condition:"Très bon état",city:"Paris",imageUrl:"https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=400"},
+  {id:"demo10",itemName:"Lego Millennium Falcon 75192",price:480,category:"Jeux & Jouets",condition:"Neuf",city:"Nice",imageUrl:"https://images.unsplash.com/photo-1518770660439-4636190af475?w=400"}
+];
+
+function __renderDemoFeed() {
+  var feed = document.getElementById("feed");
+  if (!feed) return;
+  feed.innerHTML = __demoItems.map(function(i) {
+    return '<div class="card fi" onclick="if(window.openDetail)window.openDetail(''+i.id+'')">' +
+      '<div class="sq"><img src="'+i.imageUrl+'" loading="lazy">' +
+      '<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+'</span>' +
+      '</div><div class="inf">' +
+      '<p style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#1e293b">'+i.itemName+'</p>' +
+      '<p style="font-size:15px;font-weight:900;color:#0ea5e9">'+i.price+'€</p>' +
+      '<p style="font-size:10px;color:#94a3b8"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+'</p>' +
+      '</div></div>';
+  }).join("");
+}
+
+function doAnon() {
+  __me = { uid: "visitor_" + Math.random().toString(36).slice(2, 8), email: null, isVisitor: true };
+  window.__me = __me;
+  window.__visitorBooted = true;
+  document.getElementById("splash").style.display = "none";
+  var app = document.getElementById("app");
+  app.classList.remove("hidden");
+  setTimeout(function() { app.style.opacity = "1"; }, 80);
+  var vb = document.getElementById("visitor-banner");
+  if (vb) vb.style.display = "flex";
+  // Render demo feed immediately (no Firebase needed)
+  __renderDemoFeed();
+  // Also trigger module inject if available
+  if (typeof window.__injectDemoAndRender === "function") {
+    window.__injectDemoAndRender();
+  }
+}
+</script>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1707,7 +1824,8 @@ import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,where,order
 const FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
 const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
 
-let me=null,items=[],curItem=null,scanData=null,camStream=null;
+var me=null; // synced with window.__me
+let items=[],curItem=null,scanData=null,camStream=null;
 let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
 let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
 
@@ -1721,26 +1839,14 @@ function toast(m,ok){
 }
 
 onAuthStateChanged(auth,function(u){
-  if(u && (!me || !me.isVisitor)){
-    me=u;
+  if(u && (!window.__me || !window.__me.isVisitor)){
+    me=u; window.__me=u;
     boot();
   }
   // Sinon: landing page reste visible, l'user doit se connecter
 });
 
 // AUTH FUNCTIONS
-window.showTab=function(tab){
-  document.getElementById("panel-login").style.display=tab==="login"?"block":"none";
-  document.getElementById("panel-register").style.display=tab==="register"?"block":"none";
-  document.getElementById("tab-login").style.background=tab==="login"?"#fff":"transparent";
-  document.getElementById("tab-login").style.color=tab==="login"?"#0f172a":"#94a3b8";
-  document.getElementById("tab-login").style.boxShadow=tab==="login"?"0 1px 4px rgba(0,0,0,.1)":"none";
-  document.getElementById("tab-register").style.background=tab==="register"?"#fff":"transparent";
-  document.getElementById("tab-register").style.color=tab==="register"?"#0f172a":"#94a3b8";
-  document.getElementById("tab-register").style.boxShadow=tab==="register"?"0 1px 4px rgba(0,0,0,.1)":"none";
-  hideAuthMsg();
-};
-
 function showAuthMsg(msg,ok){
   var el=document.getElementById("auth-msg");
   el.style.display="block";
@@ -1751,7 +1857,7 @@ function showAuthMsg(msg,ok){
 }
 function hideAuthMsg(){document.getElementById("auth-msg").style.display="none";}
 
-window.doLogin=async function(){
+window.__firebaseLogin=async function(){
   var email=document.getElementById("login-email").value.trim();
   var pass=document.getElementById("login-password").value;
   if(!email||!pass){showAuthMsg("Remplis tous les champs");return;}
@@ -1763,7 +1869,7 @@ window.doLogin=async function(){
   }
 };
 
-window.doRegister=async function(){
+window.__firebaseRegister=async function(){
   var email=document.getElementById("reg-email").value.trim();
   var pass=document.getElementById("reg-password").value;
   var conf=document.getElementById("reg-confirm").value;
@@ -1778,7 +1884,7 @@ window.doRegister=async function(){
   }
 };
 
-window.doGoogle=async function(){
+window.__firebaseGoogle=async function(){
   try{
     var provider=new GoogleAuthProvider();
     await signInWithPopup(auth,provider);
@@ -1794,7 +1900,7 @@ window.doAnon=function(){
   boot();
 };
 
-window.doLogout=async function(){
+window.__firebaseLogout=async function(){
   try{
     if(me && !me.isVisitor) await signOut(auth);
   }catch(e){}
@@ -1805,6 +1911,7 @@ window.doLogout=async function(){
 };
 
 function boot(){
+  if(window.__me) me = window.__me; // sync visitor mode
   document.getElementById("splash").style.display="none";
   var app=document.getElementById("app");
   app.classList.remove("hidden");
@@ -2577,7 +2684,7 @@ function renderFavs(){
   }).join("");
 }
 
-function injectDemoData(){
+window.__injectDemoAndRender = function injectDemoData(){
   var demoItems=[
     {id:"demo1",userId:"demo_seller_1",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go coloris Noir Spatial. Batterie à 91%, aucune rayure. Vendu avec chargeur MagSafe et coque d'origine. Fonctionne parfaitement.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",imageUrl:"https://cdn.thewirecutter.com/wp-content/media/2023/09/iphonescomparison-2048px-0889.jpg",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],createdAt:{seconds:Math.floor(Date.now()/1000)-3600},views:42},
     {id:"demo2",userId:"demo_seller_2",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",description:"PS5 édition disc avec 2 manettes DualSense. Console en parfait état, peu utilisée. Vendue avec câbles d'alimentation et HDMI.",brand:"Sony",model:"PS5",city:"Lyon",imageUrl:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/PS5_Slim_Console_and_Controller.png/1024px-PS5_Slim_Console_and_Controller.png",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],createdAt:{seconds:Math.floor(Date.now()/1000)-7200},views:89},
