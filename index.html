@@ -16,9 +16,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap');
 *{box-sizing:border-box}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:#f0f2f5;color:#1a1a2e;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body{font-family:'DM Sans',sans-serif;background:#f0f2f5;color:#1a1a2e;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 
 /* LOGO */
 .brand-logo{display:inline-flex;align-items:baseline;font-weight:800;user-select:none;color:#1a1a2e}
@@ -122,8 +122,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .price-range-bar span{font-size:11px;font-weight:700;color:#0ea5e9}
 /* SELLER VERIFIED */
 .verified-badge{display:inline-flex;align-items:center;gap:3px;background:#eff9ff;color:#0ea5e9;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;border:1px solid rgba(14,165,233,.2)}
-/* GARANTIE */
-.garantie-banner{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:12px;padding:10px 13px;display:flex;gap:9px;align-items:center;margin-bottom:10px}
 /* BOOST TOGGLE */
 .boost-row{display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;margin-bottom:8px}
 .toggle-sw{position:relative;width:38px;height:20px;cursor:pointer}
@@ -159,7 +157,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 /* PILL TABS */
 .cat-pills{display:flex;gap:6px;overflow-x:auto;padding:12px 16px 6px;scrollbar-width:none}
 .cat-pills::-webkit-scrollbar{display:none}
-.cat-pill{padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;border:1.5px solid #e2e8f0;color:#64748b;white-space:nowrap;cursor:pointer;transition:all .12s;background:#fff;flex-shrink:0}
+.cat-pill{padding:7px 16px;border-radius:99px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .18s;background:#fff;color:#475569;border:1.5px solid #e2e8f0;letter-spacing:0.01em}
 .cat-pill.on{background:#0ea5e9;color:#fff;border-color:#0ea5e9;box-shadow:0 2px 8px rgba(14,165,233,.3)}
 
 /* CARD GRID */
@@ -185,7 +183,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .share-btn .sb-icon{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:20px}
 .share-btn span{font-size:10px;font-weight:700;color:#64748b}
 /* COINS */
-.coins-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;border:1px solid #fcd34d}
 /* OFFER */
 .offer-input{font-size:28px;font-weight:900;color:#0ea5e9;text-align:center;background:none;border:none;outline:none;width:100%;font-family:inherit}
 /* HISTORY */
@@ -221,7 +218,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
     <!-- LOGO GRAND BLANC VISIBLE -->
     <div style="margin-bottom:24px">
-      <div style="display:inline-flex;align-items:flex-end;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:48px;color:#ffffff;letter-spacing:-1px;user-select:none;line-height:1">
+      <div style="display:inline-flex;align-items:flex-end;font-family:'DM Sans',sans-serif;font-weight:800;font-size:48px;color:#ffffff;letter-spacing:-1px;user-select:none;line-height:1">
         <span>YOUB</span><span style="display:inline-flex;align-items:flex-end;gap:5px;margin:0 5px 6px 5px;line-height:0"><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:6px;height:6px;background:#fff;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 12px rgba(255,255,255,.9);animation:dribble .9s infinite;--b:-12px"></span><span style="width:6px;height:35px;background:#fff;border-radius:2px;display:block;box-shadow:0 0 8px rgba(255,255,255,.5)"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:6px;height:6px;background:#fff;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 12px rgba(255,255,255,.9);animation:dribble 1.3s infinite .2s;--b:-16px"></span><span style="width:6px;height:35px;background:#fff;border-radius:2px;display:block;box-shadow:0 0 8px rgba(255,255,255,.5)"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:6px;height:6px;background:#fff;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 12px rgba(255,255,255,.9);animation:dribble 1.1s infinite .5s;--b:-14px"></span><span style="width:6px;height:35px;background:#fff;border-radius:2px;display:block;box-shadow:0 0 8px rgba(255,255,255,.5)"></span></span></span>
         <span>Z</span>
       </div>
@@ -265,7 +262,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
     <!-- Logo mobile only -->
     <div id="logo-mobile" style="margin-bottom:28px">
-      <div style="display:inline-flex;align-items:flex-end;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:32px;color:#0f172a;letter-spacing:-1px;line-height:1">
+      <div style="display:inline-flex;align-items:flex-end;font-family:'DM Sans',sans-serif;font-weight:800;font-size:32px;color:#0f172a;letter-spacing:-1px;line-height:1">
         <span>YOUB</span><span style="display:inline-flex;align-items:flex-end;gap:4px;margin:0 4px 4px 4px;line-height:0"><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble .9s infinite;--b:-9px"></span><span style="width:4px;height:23px;background:#0ea5e9;border-radius:2px;display:block"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.3s infinite .2s;--b:-11px"></span><span style="width:4px;height:23px;background:#0ea5e9;border-radius:2px;display:block"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.1s infinite .5s;--b:-10px"></span><span style="width:4px;height:23px;background:#0ea5e9;border-radius:2px;display:block"></span></span></span>
         <span>Z</span>
       </div>
@@ -342,7 +339,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
   <!-- HEADER WHATNOT STYLE -->
   <header class="yb-header shrink-0">
     <!-- Logo -->
-    <div style="display:inline-flex;align-items:flex-end;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:20px;color:#0f172a;letter-spacing:-.5px;line-height:1;cursor:pointer;user-select:none;flex-shrink:0;margin-right:8px" onclick="switchView('home')">
+    <div style="display:inline-flex;align-items:flex-end;font-family:'DM Sans',sans-serif;font-weight:800;font-size:20px;color:#0f172a;letter-spacing:-.5px;line-height:1;cursor:pointer;user-select:none;flex-shrink:0;margin-right:8px" onclick="switchView('home')">
       <span>YOUB</span><span style="display:inline-flex;align-items:flex-end;gap:2px;margin:0 2px 2px 2px;line-height:0"><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:3px;height:3px;background:#0ea5e9;border-radius:1px;margin-bottom:1px;display:block;animation:dribble .9s infinite;--b:-6px"></span><span style="width:3px;height:14px;background:#0ea5e9;border-radius:1px;display:block"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:3px;height:3px;background:#0ea5e9;border-radius:1px;margin-bottom:1px;display:block;animation:dribble 1.3s infinite .2s;--b:-8px"></span><span style="width:3px;height:14px;background:#0ea5e9;border-radius:1px;display:block"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:3px;height:3px;background:#0ea5e9;border-radius:1px;margin-bottom:1px;display:block;animation:dribble 1.1s infinite .5s;--b:-7px"></span><span style="width:3px;height:14px;background:#0ea5e9;border-radius:1px;display:block"></span></span></span>
       <span>Z</span>
     </div>
@@ -765,101 +762,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div class="flex items-center justify-between mb-3">
           <div class="flex items-center gap-2">
             <span class="text-lg">🪙</span>
-            <div>
-              <p style="font-size:13px;font-weight:800;color:#0f172a">Youbiiiz Coins</p>
-              <p id="profile-coins-val" style="font-size:20px;font-weight:900;color:#f59e0b;line-height:1.2">0</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <p style="font-size:9px;color:#94a3b8;font-weight:700;text-transform:uppercase">Valeur estimée</p>
-            <p id="profile-coins-eur" style="font-size:13px;font-weight:800;color:#f59e0b">0.00€</p>
-          </div>
-        </div>
-        <p style="font-size:10px;color:#94a3b8;margin-bottom:8px">🎁 Gagner des coins : vendre un article (+10), recevoir un avis 5★ (+5), parrainer (+20)</p>
-        <div style="background:#fefce8;border:1px solid #fef08a;border-radius:10px;padding:8px 10px;font-size:11px;color:#713f12;font-weight:600">
-          1 Coin = 0.01€ de réduction sur votre prochain achat
-        </div>
-      </div>
-
-      <!-- Historique de navigation -->
-      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-        <div class="flex items-center justify-between mb-3">
-          <p style="font-size:13px;font-weight:800;color:#0f172a"><i class="fa-solid fa-clock-rotate-left" style="color:#8b5cf6;margin-right:6px;font-size:11px"></i>Récemment consultées</p>
-          <button onclick="clearHistory()" style="font-size:11px;color:#94a3b8;background:none;border:none;cursor:pointer;font-family:inherit">Effacer</button>
-        </div>
-        <div id="history-list">
-          <p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune annonce consultée</p>
-        </div>
-      </div>
-      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-        <div class="flex items-center justify-between mb-3">
-          <p style="font-size:13px;font-weight:800;color:#0f172a"><i class="fa-solid fa-bell text-sky-500 mr-1.5" style="font-size:11px"></i>Mes alertes</p>
-          <button onclick="openAlertes()" style="background:#eff9ff;color:#0ea5e9;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">+ Nouvelle</button>
-        </div>
-        <div id="alerts-list">
-          <p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune alerte sauvegardée</p>
-        </div>
-      </div>
-
-      <!-- Favoris -->
-      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-        <p style="font-size:13px;font-weight:800;color:#0f172a;margin-bottom:12px"><i class="fa-solid fa-heart text-rose-500 mr-1.5" style="font-size:11px"></i>Mes favoris</p>
-        <div id="fav-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">
-          <p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:16px 0">Aucun favori</p>
-        </div>
-      </div>
-
-      <p style="font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Mes annonces</p>
-      <button onclick="doLogout()" style="width:100%;background:#fff;border:1.5px solid #fecaca;border-radius:12px;padding:11px;font-size:13px;font-weight:700;color:#ef4444;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);font-family:inherit"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</button>
-      <div id="my-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;">
-        <p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>
-      </div>
-    </div>
-
-    </main><!-- /main-content -->
-  </div><!-- /app-body -->
-
-  <!-- NAV MOBILE ONLY -->
-  <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 h-16 flex items-center justify-around px-6 z-[100]" style="box-shadow:0 -2px 12px rgba(0,0,0,.08)">
-    <button onclick="switchView('home')" id="nav-home">
-      <i class="fa-solid fa-house text-xl text-sky-500"></i>
-    </button>
-    <button onclick="switchView('map')" id="nav-map">
-      <i class="fa-solid fa-map-location-dot text-xl text-slate-400"></i>
-    </button>
-    <button onclick="openScan()" class="w-14 h-14 -mt-5 bg-gradient-to-br from-sky-400 to-blue-600 rounded-[18px] flex items-center justify-center shadow-[0_0_24px_rgba(34,211,238,.5)] border-[3px] border-white active:scale-90 transition-transform">
-      <i class="fa-solid fa-plus text-xl text-white"></i>
-    </button>
-    <button onclick="switchView('notifications')" id="nav-notif">
-      <i class="fa-solid fa-bell text-xl text-slate-400"></i>
-    </button>
-    <button onclick="switchView('profile')" id="nav-profile">
-      <i class="fa-solid fa-user text-xl text-slate-400"></i>
-    </button>
-  </nav>
-</div>
-
-<!-- ALERTES MODAL -->
-<div id="alertes-modal" class="fixed inset-0 z-[700] hidden items-end justify-center">
-  <div class="mover absolute inset-0" onclick="closeAlertes()"></div>
-  <div class="relative msheet su w-full max-w-lg p-5 pb-8">
-    <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-700 rounded-full"></div></div>
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-bell text-sky-400"></i>
-        <span class="font-bold text-sm">Nouvelle alerte</span>
-      </div>
-      <button onclick="closeAlertes()" class="w-8 h-8 rounded-xl bg-slate-700 flex items-center justify-center"><i class="fa-solid fa-xmark text-sm"></i></button>
-    </div>
-    <p class="text-[10px] text-slate-400 mb-2">Décris ce que tu cherches en langage naturel :</p>
-    <input id="alert-query" type="text" placeholder="Ex : iPhone 13 bon état moins de 400€ à Paris..." class="inp mb-2 text-sm">
-    <p class="text-[9px] text-slate-500 mb-4"><i class="fa-solid fa-wand-magic-sparkles text-sky-400 mr-1"></i>L'IA analysera les nouvelles annonces et te préviendra dès qu'une correspond</p>
-    <div class="flex gap-2">
-      <button onclick="closeAlertes()" class="flex-1 bg-slate-700 font-bold py-3 rounded-xl text-sm">Annuler</button>
-      <button onclick="saveAlert()" class="flex-1 bg-sky-500 text-black font-bold py-3 rounded-xl text-sm">Créer l'alerte</button>
-    </div>
-  </div>
-</div>
+            
 
 <!-- PARTAGE RÉSEAUX SOCIAUX -->
 <div id="share-modal" class="fixed inset-0 z-[900] hidden items-end justify-center">
@@ -988,7 +891,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <div class="flex gap-3 mb-5">
       <div class="sp-stat"><p id="sp-count" class="text-xl font-black text-sky-500">0</p><p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Annonces</p></div>
       <div class="sp-stat"><p id="sp-rating-val" class="text-xl font-black text-amber-400">—</p><p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Note</p></div>
-      <div class="sp-stat"><p id="sp-coins" class="text-xl font-black text-amber-500">0 🪙</p><p class="text-[9px] text-slate-400 font-bold uppercase mt-1">Coins</p></div>
+      
     </div>
     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wide mb-3">Annonces actives</p>
     <div id="sp-listings" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
@@ -1029,7 +932,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 <!-- SCAN MODAL -->
 <div id="scan-modal" class="fixed inset-0 z-[400] hidden flex-col justify-end">
   <div class="mover absolute inset-0" onclick="closeScan()"></div>
-  <div class="relative msheet su w-full max-w-lg mx-auto" style="max-height:94vh;display:flex;flex-direction:column;">
+  <div class="relative msheet su w-full max-w-lg mx-auto" style="background:#fff" style="max-height:94vh;display:flex;flex-direction:column;">
     <div class="flex justify-center pt-3 pb-2 shrink-0">
       <div class="w-10 h-1 bg-zinc-700 rounded-full"></div>
     </div>
@@ -1080,7 +983,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <img id="res-thumb" class="w-16 h-16 rounded-xl object-cover border border-slate-600/40 shrink-0">
           <div class="flex-1 min-w-0">
             <p class="text-[10px] text-green-400 font-bold uppercase tracking-wide mb-1"><i class="fa-solid fa-check-circle mr-1"></i>IA terminee</p>
-            <input id="ai-name" class="w-full bg-transparent text-sm font-extrabold text-white outline-none border-b border-white/10 pb-1 focus:border-cyan-400 truncate">
+            <input id="ai-name" class="w-full bg-transparent text-sm font-extrabold text-slate-800 outline-none border-b border-white/10 pb-1 focus:border-cyan-400 truncate">
           </div>
           <button onclick="resetScan()" class="shrink-0 w-8 h-8 rounded-xl bg-slate-700 flex items-center justify-center text-slate-300 active:scale-90 transition-transform">
             <i class="fa-solid fa-rotate-left text-xs"></i>
@@ -1093,7 +996,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
           </div>
           <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30">
             <p class="text-[9px] text-slate-400 uppercase font-bold mb-1">Modele</p>
-            <p id="ai-model" class="text-sm font-extrabold text-white truncate">-</p>
+            <p id="ai-model" class="text-sm font-extrabold text-slate-800 truncate">-</p>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
@@ -1263,7 +1166,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <p class="text-[9px] text-slate-400 uppercase font-bold mb-1.5">Ville</p>
           <div class="relative">
             <i class="fa-solid fa-location-dot absolute left-3 top-1/2 -translate-y-1/2 text-sky-500" style="font-size:10px"></i>
-            <input id="item-city" type="text" placeholder="Ex : Paris, Lyon..." class="inp pl-7 py-2 text-sm" style="background:#0f172a;border-color:rgba(148,163,184,.10)">
+            <input id="item-city" type="text" placeholder="Ex : Paris, Lyon..." class="inp pl-7 py-2 text-sm" style="background:#f8fafc;border-color:rgba(148,163,184,.10)">
           </div>
         </div>
         <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30 mb-4">
@@ -1277,13 +1180,13 @@ header .i-wrapper{gap:2px;margin:0 2px}
             <label class="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" id="sh-relay" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
               <span class="text-sm font-semibold flex-1">Mondial Relay</span>
-              <input type="number" id="sh-relay-p" value="5" class="w-14 bg-[#0f172a] border border-slate-600/40 rounded-lg px-2 py-1 text-xs text-center text-white outline-none">
+              <input type="number" id="sh-relay-p" value="5" class="w-14 bg-white border border-slate-600/40 rounded-lg px-2 py-1 text-xs text-center text-slate-800 outline-none">
               <span class="text-xs text-slate-400">euro</span>
             </label>
             <label class="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" id="sh-colis" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
               <span class="text-sm font-semibold flex-1">Colissimo</span>
-              <input type="number" id="sh-colis-p" value="8" class="w-14 bg-[#0f172a] border border-slate-600/40 rounded-lg px-2 py-1 text-xs text-center text-white outline-none">
+              <input type="number" id="sh-colis-p" value="8" class="w-14 bg-white border border-slate-600/40 rounded-lg px-2 py-1 text-xs text-center text-slate-800 outline-none">
               <span class="text-xs text-slate-400">euro</span>
             </label>
           </div>
@@ -1298,8 +1201,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <!-- DETAIL -->
-<div id="detail-modal" class="fixed inset-0 z-[500] bg-[#0f172a] hidden flex-col sr">
-  <div class="flex items-center gap-2 px-3 pt-4 pb-3 bg-[#0f172a] border-b border-slate-600/30 shrink-0">
+<div id="detail-modal" class="fixed inset-0 z-[500] bg-white hidden flex-col sr">
+  <div class="flex items-center gap-2 px-3 pt-4 pb-3 bg-white border-b border-slate-600/30 shrink-0">
     <button onclick="closeDetail()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center active:scale-90 transition-transform">
       <i class="fa-solid fa-arrow-left text-sm"></i>
     </button>
@@ -1319,9 +1222,9 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <div class="px-3 pt-3 pb-1 relative">
       <div id="det-carousel-wrap" style="width:100%;height:300px;border-radius:16px;overflow:hidden;background:#f8f8f8;position:relative">
         <div id="det-carousel-track" style="display:flex;height:100%;transition:transform .3s cubic-bezier(.16,1,.3,1)"></div>
-        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:rgba(15,23,42,.65);border:none;border-radius:50%;color:#fff;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-left"></i></button>
-        <button id="det-next" onclick="carNav(1)" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:rgba(15,23,42,.65);border:none;border-radius:50%;color:#fff;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-right"></i></button>
-        <div id="det-views-badge" class="hidden" style="position:absolute;bottom:8px;left:8px;background:rgba(15,23,42,.72);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
+        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:rgba(15,23,42,.65);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="det-next" onclick="carNav(1)" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;background:rgba(15,23,42,.65);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-right"></i></button>
+        <div id="det-views-badge" class="hidden" style="position:absolute;bottom:8px;left:8px;background:rgba(15,23,42,.72);color:#0f172a;font-size:9px;font-weight:700;padding:3px 8px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
           <i class="fa-solid fa-eye" style="font-size:8px"></i><span id="det-views-count">0</span> vues
         </div>
       </div>
@@ -1334,7 +1237,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <h2 id="det-title" class="font-extrabold text-xl leading-tight flex-1"></h2>
         <div class="text-right shrink-0">
           <p id="det-price" class="text-sky-500 font-black text-xl"></p>
-          <div id="det-coins-earn" class="hidden text-[9px] text-amber-600 font-bold mt-0.5"></div>
+          
         </div>
       </div>
       <div id="det-price-range" class="hidden mb-2"></div>
@@ -1351,9 +1254,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <i class="fa-solid fa-triangle-exclamation text-red-500 text-sm shrink-0 mt-0.5"></i>
         <div><p class="text-xs font-bold text-red-700">Prix inhabituel</p><p class="text-[10px] text-red-600 mt-0.5">Prix très bas par rapport au marché. Préférez la remise en main propre.</p></div>
       </div>
-      <div class="garantie-banner mb-3">
-        <i class="fa-solid fa-shield-halved text-green-500 text-lg shrink-0"></i>
-        <div><p class="text-xs font-bold text-green-800">Garantie acheteur Youbiiiz</p><p class="text-[10px] text-green-700 mt-0.5">Paiement sécurisé · Remboursement si non conforme · Support 7j/7</p></div>
+      
       </div>
       <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30">
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-widest">Description</p>
@@ -1365,7 +1266,8 @@ header .i-wrapper{gap:2px;margin:0 2px}
       </div>
       <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30">
         <div class="flex items-center justify-between mb-2">
-          <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Score de confiance</p>
+          <p style="font-size:12px;font-weight:800;color:#0f172a">Score de confiance &nbsp;<span title="Analyse automatique : photo, description, ville, livraison, marque, etat" style="display:inline-flex;width:15px;height:15px;background:#e0f2fe;border-radius:50%;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#0ea5e9;cursor:help;vertical-align:middle">?</span></p>
+          <p style="font-size:10px;color:#64748b;margin-bottom:4px">Qualite de l annonce analysee auto.</p>
           <span id="det-trust-label" class="text-[10px] font-bold"></span>
         </div>
         <div class="trust-bar"><div id="det-trust-fill" class="trust-fill" style="width:0%"></div></div>
@@ -1376,7 +1278,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <p class="text-[9px] text-slate-400 uppercase font-bold mb-3 tracking-widest">Vendeur</p>
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-user text-sm text-white"></i>
+            <i class="fa-solid fa-user text-sm text-slate-800"></i>
           </div>
           <div class="flex-1">
             <div class="flex items-center gap-2 flex-wrap">
@@ -1410,13 +1312,13 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <!-- CHAT -->
-<div id="chat-modal" class="fixed inset-0 z-[600] bg-[#0f172a] hidden flex-col sr">
-  <div class="flex items-center gap-3 px-3 pt-4 pb-3 bg-[#0f172a] border-b border-slate-600/30 shrink-0">
+<div id="chat-modal" class="fixed inset-0 z-[600] bg-white hidden flex-col sr">
+  <div class="flex items-center gap-3 px-3 pt-4 pb-3 bg-white border-b border-slate-600/30 shrink-0">
     <button onclick="closeChat()" class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center">
       <i class="fa-solid fa-arrow-left text-sm"></i>
     </button>
     <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
-      <i class="fa-solid fa-user text-xs text-white"></i>
+      <i class="fa-solid fa-user text-xs text-slate-800"></i>
     </div>
     <div class="flex-1">
       <p id="chat-seller" class="font-bold text-sm leading-none"></p>
@@ -1432,14 +1334,14 @@ header .i-wrapper{gap:2px;margin:0 2px}
   </div>
   <div id="chat-msgs" class="flex-1 overflow-y-auto no-sb p-4 flex flex-col gap-3"></div>
   <!-- Suggestions IA contextuelles -->
-  <div class="px-3 pt-2 bg-[#0f172a] shrink-0">
+  <div class="px-3 pt-2 bg-white shrink-0">
     <p class="text-[9px] text-slate-500 font-bold uppercase mb-1.5 tracking-wide"><i class="fa-solid fa-wand-magic-sparkles text-sky-400 mr-1"></i>IA suggère</p>
     <div id="chat-suggestions" class="flex gap-2 overflow-x-auto no-sb pb-1"></div>
   </div>
-  <div class="px-3 py-3 bg-[#0f172a] border-t border-slate-600/30 shrink-0">
+  <div class="px-3 py-3 bg-white border-t border-slate-600/30 shrink-0">
     <div class="flex gap-2">
       <input id="chat-inp" type="text" placeholder="Message..." onkeypress="if(event.key==='Enter')sendMsg()" oninput="updateChatSuggestions()"
-        class="flex-1 bg-slate-800 border border-slate-600/40 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 outline-none focus:border-sky-500">
+        class="flex-1 bg-slate-800 border border-slate-600/40 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder-zinc-600 outline-none focus:border-sky-500">
       <button onclick="sendMsg()" class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center active:scale-90 transition-transform">
         <i class="fa-solid fa-paper-plane text-black text-xs"></i>
       </button>
@@ -1477,7 +1379,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
     <div class="bg-slate-800 rounded-xl p-4 mb-3 border border-slate-600/30 text-sm">
       <div class="flex justify-between mb-2"><span class="text-slate-300">Article</span><span id="pay-sub" class="font-bold"></span></div>
       <div class="flex justify-between mb-2"><span class="text-slate-300">Livraison</span><span id="pay-shipcost" class="font-bold">-</span></div>
-      <div id="pay-coins-row" class="hidden flex justify-between mb-2 items-center"><span class="text-slate-300">Youbiiiz Coins</span><span id="pay-coins-discount" class="font-bold text-amber-400"></span></div>
+      
       <div class="flex justify-between border-t border-slate-600/30 pt-3"><span class="font-bold">Total</span><span id="pay-total" class="font-extrabold text-sky-500 text-base"></span></div>
     </div>
     <!-- Paiement en plusieurs fois -->
@@ -1501,11 +1403,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
       </div>
     </div>
     <!-- Coins dispo -->
-    <div id="pay-use-coins" class="hidden mb-3 flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl p-3">
-      <div class="flex items-center gap-2">
-        <span class="text-lg">🪙</span>
-        <div><p class="text-xs font-bold text-amber-800">Utiliser mes Coins</p><p id="pay-coins-avail" class="text-[10px] text-amber-600"></p></div>
-      </div>
+          </div>
       <label class="toggle-sw" style="filter:hue-rotate(30deg)">
         <input type="checkbox" id="use-coins-toggle" onchange="toggleCoinsDiscount()">
         <div class="toggle-track"></div>
@@ -2014,9 +1912,18 @@ function initFeed(){
 }
 
 function card(i){
-  var cond=i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">'+i.condition+"</span>":"";
-  var city=i.city?'<p style="font-size:10px;color:#94a3b8;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+"</p>":"";
-  return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+'</div><div class="inf"><p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:15px;font-weight:900;color:#0ea5e9">'+(i.price||0)+"€</p>"+city+"</div></div>";
+  var isFav=favorites.has(i.id);
+  var cond=i.condition?'<span style="position:absolute;top:6px;left:7px;background:rgba(255,255,255,.93);color:#0ea5e9;font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px">'+i.condition+'</span>':"";
+  var hrt='<button onclick="event.stopPropagation();toggleFavCard(this,\''+(i.id)+'\''+')" '
+      +'style="position:absolute;top:6px;right:7px;width:30px;height:30px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.15);transition:transform .18s;line-height:1">'
+      +(isFav?'❤️':'🤍')+'</button>';
+  var city=i.city?'<p style="font-size:10px;color:#64748b;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+'</p>':"";
+  return '<div class="card fi" onclick="openDetail(\''+(i.id)+'\''+')">'
+    +'<div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+hrt+'</div>'
+    +'<div class="inf">'
+    +'<p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#0f172a">'+(i.itemName||"Objet")+'</p>'
+    +'<p style="font-size:15px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p>'
+    +city+'</div></div>';
 }
 
 function myCard(i){
@@ -2718,6 +2625,18 @@ window.toggleGroup=function(id){
 // FAVORIS
 // ════════════════════════════════════════════════════════
 var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
+window.toggleFavCard=function(btn,id){
+  if(favorites.has(id)){
+    favorites.delete(id);
+    btn.innerHTML='🤍';
+  }else{
+    favorites.add(id);
+    btn.innerHTML='❤️';
+  }
+  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
+  btn.style.transform='scale(1.3)';
+  setTimeout(function(){btn.style.transform='scale(1)';},180);
+};
 window.toggleFav=function(id,btn){
   if(favorites.has(id)){favorites.delete(id);if(btn){btn.textContent="🤍";btn.classList.remove("fav");}}
   else{favorites.add(id);if(btn){btn.textContent="❤️";btn.classList.add("fav");}}
@@ -3085,7 +3004,6 @@ window.openSellerProfile=function(){
   var sellerItems=items.filter(function(i){return i.userId===sellerId;});
   document.getElementById("sp-name").innerText="Vendeur #"+(sellerId||"").slice(0,8);
   document.getElementById("sp-count").innerText=sellerItems.length;
-  document.getElementById("sp-coins").innerText=Math.floor(Math.random()*200+50)+" 🪙";
   var since=sellerItems.length&&sellerItems[sellerItems.length-1].createdAt?new Date((sellerItems[sellerItems.length-1].createdAt.seconds||0)*1000).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Récemment";
   document.getElementById("sp-since").innerText="Membre depuis "+since;
   getDoc(doc(db,"users",sellerId)).then(function(d){
@@ -3145,42 +3063,11 @@ window.clearHistory=function(){browseHistory=[];localStorage.removeItem("yb_hist
 // ════════════════════════════════════════════════════════
 // YOUBIIIZ COINS
 // ════════════════════════════════════════════════════════
-function getCoins(){return parseInt(localStorage.getItem("yb_coins")||"0");}
-function addCoins(n,reason){
-  var c=getCoins()+n;
-  localStorage.setItem("yb_coins",c);
-  if(reason) showPushBanner("🪙 +"+n+" Coins gagnés !",reason);
-  updateCoinsUI();
-}
-function updateCoinsUI(){
-  var c=getCoins();
-  var cv=document.getElementById("profile-coins-val");
-  var ce=document.getElementById("profile-coins-eur");
-  if(cv) cv.innerText=c;
-  if(ce) ce.innerText=(c*0.01).toFixed(2)+"€";
-}
 var payMode="1x";
 window.selectPayMode=function(mode){
   payMode=mode;
   document.getElementById("pay-mode-1x").className="pay3x-option"+(mode==="1x"?" selected":"");
   document.getElementById("pay-mode-3x").className="pay3x-option"+(mode==="3x"?" selected":"");
-};
-window.toggleCoinsDiscount=function(){
-  var cb=document.getElementById("use-coins-toggle");
-  var row=document.getElementById("pay-coins-row");
-  if(!payItem) return;
-  var tot=parseFloat(payItem.price||0)+(selShip?selShip.price:0);
-  var coins=getCoins();
-  var discount=Math.min(coins*0.01,tot*0.1);
-  if(cb&&cb.checked){
-    if(row) row.style.display="flex";
-    var disc=document.getElementById("pay-coins-discount");
-    if(disc) disc.innerText="-"+discount.toFixed(2)+"€";
-    document.getElementById("pay-total").innerText=(tot-discount).toFixed(2)+"€";
-  }else{
-    if(row) row.style.display="none";
-    document.getElementById("pay-total").innerText=tot.toFixed(2)+"€";
-  }
 };
 
 // ════════════════════════════════════════════════════════
@@ -3246,6 +3133,8 @@ window.openDetail=function(id){
   buildCarousel(photos);
   renderSimilar(i);
   addToHistory(i);
+  computeAndShowTrust(i);
+  detectFraud(i);
   var price=parseFloat(i.price)||0;
   var coinsEl=document.getElementById("det-coins-earn");
   if(coinsEl&&price>0){coinsEl.classList.remove("hidden");coinsEl.innerText="🪙 +"+(Math.round(price*0.05))+" coins si tu achètes";}
@@ -3266,14 +3155,6 @@ window.openPay=function(i){
   if(el1) el1.innerText=tot+"€";
   if(el3) el3.innerText=per3+"€/mois";
   if(el3d) el3d.innerText="3 prélèvements de "+per3+"€ · Total "+tot+"€ · 0% de frais";
-  var coins=getCoins();
-  var payCoins=document.getElementById("pay-use-coins");
-  if(payCoins){
-    if(coins>0){payCoins.classList.remove("hidden");var pa=document.getElementById("pay-coins-avail");if(pa)pa.innerText=coins+" coins disponibles (-"+(coins*0.01).toFixed(2)+"€ max)";}
-    else{payCoins.classList.add("hidden");}
-  }
-  var row=document.getElementById("pay-coins-row");
-  if(row) row.style.display="none";
 };
 
 // ════════════════════════════════════════════════════════
@@ -3282,11 +3163,6 @@ window.openPay=function(i){
 var _origDoStripe=window.doStripe;
 window.doStripe=async function(){
   await _origDoStripe();
-  // Gain coins
-  if(payItem){
-    var earned=Math.round((parseFloat(payItem.price)||0)*0.05);
-    if(earned>0) addCoins(earned,"Achat effectué 🛍");
-  }
 };
 
 // ════════════════════════════════════════════════════════
@@ -3296,7 +3172,6 @@ var _origSwitchView=window.switchView;
 window.switchView=function(v){
   _origSwitchView(v);
   if(v==="profile"){
-    updateCoinsUI();
     renderHistory();
     renderAlerts();
     renderFavs();
