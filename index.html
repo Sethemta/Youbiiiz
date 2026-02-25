@@ -1402,13 +1402,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <p id="pay-3x-detail" class="text-[10px] text-slate-400 mt-1"></p>
       </div>
     </div>
-    <!-- Coins dispo -->
-          </div>
-      <label class="toggle-sw" style="filter:hue-rotate(30deg)">
-        <input type="checkbox" id="use-coins-toggle" onchange="toggleCoinsDiscount()">
-        <div class="toggle-track"></div>
-      </label>
-    </div>
     <button id="stripe-btn" onclick="doStripe()" class="w-full bg-[#635bff] text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
       <i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant
     </button>
@@ -3126,9 +3119,14 @@ async function analyzeSearchPhoto(b64){
 // ════════════════════════════════════════════════════════
 var _origOpenDetail=window.openDetail;
 window.openDetail=function(id){
-  _origOpenDetail(id);
+  // merge demo items if not yet in items array
+  if(window.__demoItems){
+    var ids=new Set(items.map(function(x){return x.id;}));
+    window.__demoItems.forEach(function(d){if(!ids.has(d.id))items.push(d);});
+  }
   var i=items.find(function(x){return x.id===id;});
   if(!i) return;
+  _origOpenDetail(id);
   var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
   buildCarousel(photos);
   renderSimilar(i);
