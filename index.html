@@ -1823,10 +1823,10 @@ window.doGoogle=async function(){
   }
 };
 
-window.doAnon=async function(){
-  try{
-    await signInAnonymously(auth);
-  }catch(e){showAuthMsg("Erreur: "+e.message);}
+window.doAnon=function(){
+  // Mode visiteur instantané — pas besoin de Firebase
+  me={uid:"visitor_"+Math.random().toString(36).slice(2,8),email:null,isVisitor:true};
+  boot();
 };
 
 window.doLogout=async function(){
