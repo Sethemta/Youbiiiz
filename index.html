@@ -856,7 +856,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <!-- PARTAGE RÉSEAUX SOCIAUX -->
-<div id="share-modal" class="fixed inset-0 z-[900] hidden items-end justify-center">
+<div id="share-modal" style="display:none;position:fixed;inset:0;z-index:10000;align-items:flex-end;justify-content:center">
   <div class="mover absolute inset-0" onclick="closeShareModal()"></div>
   <div class="relative msheet su w-full max-w-lg p-5 pb-8 bg-white">
     <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-200 rounded-full"></div></div>
@@ -919,7 +919,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <!-- FAIRE UNE OFFRE -->
-<div id="offer-modal" class="fixed inset-0 z-[800] hidden items-center justify-center px-5">
+<div id="offer-modal" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:0 20px">
   <div class="mover absolute inset-0" onclick="closeOffer()"></div>
   <div class="relative bg-white rounded-3xl p-6 w-full max-w-sm su text-center">
     <button onclick="closeOffer()" class="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-slate-500 text-base"></i></button>
@@ -942,7 +942,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <!-- SIGNALER -->
-<div id="report-modal" class="fixed inset-0 z-[800] hidden items-end justify-center">
+<div id="report-modal" style="display:none;position:fixed;inset:0;z-index:10000;align-items:flex-end;justify-content:center">
   <div class="mover absolute inset-0" onclick="closeReport()"></div>
   <div class="relative msheet su w-full max-w-lg p-5 pb-8 bg-white">
     <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-200 rounded-full"></div></div>
@@ -2919,11 +2919,11 @@ window.openShareModal=function(){
   var url="https://youbiiiz.app/item/"+(curItem.id||"");
   document.getElementById("share-link-val").value=url;
   var m=document.getElementById("share-modal");
-  m.classList.remove("hidden");m.classList.add("flex");
+  m.style.display="flex";
 };
 window.closeShareModal=function(){
   var m=document.getElementById("share-modal");
-  m.classList.add("hidden");m.classList.remove("flex");
+  m.style.display="none";
 };
 window.shareTo=function(net){
   if(!curItem) return;
@@ -2968,7 +2968,7 @@ window.openOffer=function(){
   }).join("");
   var m=document.getElementById("offer-modal");m.classList.remove("hidden");m.classList.add("flex");
 };
-window.closeOffer=function(){var m=document.getElementById("offer-modal");m.classList.add("hidden");m.classList.remove("flex");};
+window.closeOffer=function(){var m=document.getElementById("offer-modal");if(m)m.style.display="none";};
 window.sendOffer=function(){
   var amt=parseFloat(document.getElementById("offer-amount").value);
   if(!amt||amt<=0){toast("Entrez un montant valide");return;}
@@ -2985,8 +2985,8 @@ window.sendOffer=function(){
 // ════════════════════════════════════════════════════════
 // SIGNALEMENT
 // ════════════════════════════════════════════════════════
-window.openReport=function(){var m=document.getElementById("report-modal");m.classList.remove("hidden");m.classList.add("flex");};
-window.closeReport=function(){var m=document.getElementById("report-modal");m.classList.add("hidden");m.classList.remove("flex");};
+window.openReport=function(){var m=document.getElementById("report-modal");m.style.display="flex";};
+window.closeReport=function(){var m=document.getElementById("report-modal");m.style.display="none";};
 window.submitReport=async function(reason){
   closeReport();
   if(!me||!curItem) return;
