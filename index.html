@@ -2115,7 +2115,7 @@ window.openDetail=function(id){
   var i=items.find(function(x){return x.id===id;});
   if(!i) return;
   curItem=i;
-  document.getElementById("det-img").src=i.imageUrl||"";
+  // Image handled by carousel below
   document.getElementById("det-title").innerText=i.itemName||"";
   document.getElementById("det-price").innerText=(i.price||0)+"euro";
   document.getElementById("det-cat").innerText=i.category||"";
@@ -3055,16 +3055,15 @@ async function analyzeSearchPhoto(b64){
 // ════════════════════════════════════════════════════════
 var _origOpenDetail=window.openDetail;
 window.openDetail=function(id){
-  _origOpenDetail(id);
   var i=items.find(function(x){return x.id===id;});
   if(!i) return;
+  _origOpenDetail(id);
   var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
   buildCarousel(photos);
   renderSimilar(i);
   addToHistory(i);
-  var price=parseFloat(i.price)||0;
-  var coinsEl=document.getElementById("det-coins-earn");
-  if(coinsEl&&price>0){coinsEl.classList.remove("hidden");coinsEl.innerText="🪙 +"+(Math.round(price*0.05))+" coins si tu achètes";}
+  computeAndShowTrust(i);
+  detectFraud(i);
 };
 
 // ════════════════════════════════════════════════════════
