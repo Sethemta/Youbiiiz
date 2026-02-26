@@ -1065,6 +1065,69 @@ header .i-wrapper{gap:2px;margin:0 2px}
           <i class="fa-solid fa-circle"></i> Capturer
         </button>
       </div>
+
+      <!-- SÉPARATEUR VIDÉO -->
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <p style="font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px">
+              <span style="background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.3);border-radius:99px;padding:2px 8px;font-size:9px;color:#0ea5e9;font-weight:900;letter-spacing:.08em">NOUVEAU</span>
+              Vidéo de présentation
+            </p>
+            <p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">Filmez l'objet — l'IA génère l'annonce</p>
+          </div>
+        </div>
+        <!-- Zone vidéo -->
+        <input type="file" id="video-input" class="hidden" accept="video/*" onchange="onVideoFile(event)">
+        <div id="video-upload-zone" onclick="document.getElementById('video-input').click()" style="border:2px dashed rgba(14,165,233,.3);border-radius:16px;padding:20px;text-align:center;cursor:pointer;background:rgba(14,165,233,.04);transition:all .2s" onmouseover="this.style.borderColor='rgba(14,165,233,.6)'" onmouseout="this.style.borderColor='rgba(14,165,233,.3)'">
+          <div style="width:44px;height:44px;background:rgba(14,165,233,.12);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
+            <i class="fa-solid fa-video" style="color:#0ea5e9;font-size:18px"></i>
+          </div>
+          <p style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">Ajouter une vidéo</p>
+          <p style="font-size:11px;color:rgba(255,255,255,.35)">MP4 · MOV · max 500Mo · 60 sec recommandées</p>
+        </div>
+        <!-- Preview vidéo + analyse -->
+        <div id="video-preview-zone" style="display:none;margin-top:10px">
+          <div style="position:relative;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:9/16;max-height:240px;margin:0 auto;max-width:135px">
+            <video id="vid-preview" style="width:100%;height:100%;object-fit:cover;display:block" muted playsinline></video>
+            <button onclick="removeVideo()" style="position:absolute;top:8px;right:8px;width:26px;height:26px;background:rgba(0,0,0,.7);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2">
+              <i class="fa-solid fa-xmark" style="color:#fff;font-size:11px"></i>
+            </button>
+            <div id="vid-duration-badge" style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.7);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px"></div>
+          </div>
+          <!-- Statut analyse IA vidéo -->
+          <div id="vid-ai-status" style="margin-top:10px;border-radius:14px;overflow:hidden">
+            <div id="vid-ai-pending" style="display:none;background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);border-radius:14px;padding:12px 14px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:10px;background:rgba(14,165,233,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <i class="fa-solid fa-wand-magic-sparkles" style="color:#0ea5e9;font-size:13px"></i>
+                </div>
+                <div style="flex:1">
+                  <p style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">Analyse IA en cours...</p>
+                  <div style="height:3px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden">
+                    <div id="vid-ai-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#0ea5e9,#6366f1);border-radius:99px;transition:width .4s ease"></div>
+                  </div>
+                  <p id="vid-ai-step-label" style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">Extraction de la première image...</p>
+                </div>
+              </div>
+            </div>
+            <div id="vid-ai-done" style="display:none;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:14px;padding:12px 14px">
+              <div style="display:flex;align-items:flex-start;gap:10px">
+                <div style="width:32px;height:32px;border-radius:10px;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px">
+                  <i class="fa-solid fa-check" style="color:#22c55e;font-size:13px"></i>
+                </div>
+                <div style="flex:1">
+                  <p style="font-size:12px;font-weight:800;color:#22c55e;margin-bottom:6px">Analyse terminée ✓</p>
+                  <div id="vid-ai-results" style="display:flex;flex-direction:column;gap:4px"></div>
+                </div>
+              </div>
+            </div>
+            <div id="vid-ai-error" style="display:none;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:12px 14px">
+              <p style="font-size:12px;font-weight:700;color:#ef4444"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px"></i><span id="vid-ai-error-msg">Erreur analyse</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ETAPE 2: resultats IA -->
@@ -1294,22 +1357,25 @@ header .i-wrapper{gap:2px;margin:0 2px}
 <!-- DETAIL -->
 <div id="detail-modal" class="fixed inset-0 flex-col" style="display:none;z-index:9999;background:#07090f">
 
-  <!-- HEADER PILL FLOTTANT -->
-  <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:8px 16px 8px 10px">
-    <button onclick="closeDetail()" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
-      <i class="fa-solid fa-arrow-left" style="color:#fff;font-size:11px"></i>
+  <!-- HEADER : retour haut-gauche + actions haut-droit -->
+  <div style="position:absolute;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;pointer-events:none">
+    <!-- Bouton retour haut-gauche -->
+    <button onclick="closeDetail()" style="pointer-events:all;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:7px 14px 7px 10px;cursor:pointer;color:#fff;font-size:12px;font-weight:700">
+      <i class="fa-solid fa-arrow-left" style="font-size:11px"></i>
+      Retour
     </button>
-    <span style="color:rgba(255,255,255,.5);font-size:12px;padding:0 4px">Retour</span>
-    <div style="width:1px;height:16px;background:rgba(255,255,255,.15)"></div>
-    <button onclick="toggleFavDetail()" id="det-fav-btn" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
-      <i id="det-fav-icon" class="fa-regular fa-heart" style="color:#fff;font-size:11px"></i>
-    </button>
-    <button onclick="openShareModal()" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
-      <i class="fa-solid fa-share-nodes" style="color:#fff;font-size:11px"></i>
-    </button>
-    <button onclick="openReport()" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
-      <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px"><i class="fa-solid fa-triangle-exclamation" style="color:#0ea5e9;font-size:15px"></i><span style="position:absolute;font-size:7px;font-weight:900;color:#ef4444;line-height:1;margin-top:2px">!</span></span>
-    </button>
+    <!-- Actions haut-droit -->
+    <div style="display:flex;align-items:center;gap:6px;pointer-events:all">
+      <button onclick="toggleFavDetail()" id="det-fav-btn" style="width:34px;height:34px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <i id="det-fav-icon" class="fa-regular fa-heart" style="color:#fff;font-size:12px"></i>
+      </button>
+      <button onclick="openShareModal()" style="width:34px;height:34px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <i class="fa-solid fa-share-nodes" style="color:#fff;font-size:12px"></i>
+      </button>
+      <button onclick="openReport()" style="width:34px;height:34px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px"><i class="fa-solid fa-triangle-exclamation" style="color:#0ea5e9;font-size:15px"></i><span style="position:absolute;font-size:7px;font-weight:900;color:#ef4444;line-height:1;margin-top:2px">!</span></span>
+      </button>
+    </div>
   </div>
 
   <!-- CORPS 2 COLONNES -->
@@ -2189,6 +2255,8 @@ window.updShip=function(){
 };
 document.getElementById("pub-btn").addEventListener("click",async function(){
   if(!scanData||!me) return;
+  // Intégrer la vidéo si présente
+  if(videoDataUrl && scanData) { scanData.videoPreviewFrame=videoDataUrl; scanData.hasVideo=true; }
   updShip();
   var btn=document.getElementById("pub-btn");
   btn.innerText="Publication...";btn.disabled=true;
@@ -3554,6 +3622,275 @@ window.openSimilarPage = function() {
 };
 
 window.closeSimilarPage=function(){var p=document.getElementById('similar-page');if(p)p.remove();};
+
+// ════════════════════════════════════════════════════════
+// SYSTÈME IA VIDÉO — Upload + Analyse + Auto-fill
+// ════════════════════════════════════════════════════════
+
+var videoFile = null;
+var videoDataUrl = null;
+
+window.onVideoFile = function(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+
+  // Vérif taille (max 500 Mo)
+  if (file.size > 500 * 1024 * 1024) {
+    toast('Vidéo trop lourde (max 500 Mo)');
+    return;
+  }
+
+  videoFile = file;
+  var url = URL.createObjectURL(file);
+  var vid = document.getElementById('vid-preview');
+  vid.src = url;
+  vid.load();
+
+  // Afficher preview zone
+  document.getElementById('video-upload-zone').style.display = 'none';
+  document.getElementById('video-preview-zone').style.display = 'block';
+
+  vid.onloadedmetadata = function() {
+    // Badge durée
+    var dur = Math.round(vid.duration);
+    var m = Math.floor(dur/60), s = dur%60;
+    var badge = document.getElementById('vid-duration-badge');
+    if (badge) badge.innerText = m+':'+(s<10?'0':'')+s;
+
+    // Alerte si > 60s
+    if (dur > 60) {
+      toast('Vidéo longue — les 60 premières sec. seront analysées');
+    }
+
+    // Lancer analyse IA
+    analyzeVideo(vid, file);
+  };
+};
+
+window.removeVideo = function() {
+  videoFile = null;
+  videoDataUrl = null;
+  var vid = document.getElementById('vid-preview');
+  vid.src = '';
+  document.getElementById('video-upload-zone').style.display = 'block';
+  document.getElementById('video-preview-zone').style.display = 'none';
+  document.getElementById('vid-ai-pending').style.display = 'none';
+  document.getElementById('vid-ai-done').style.display = 'none';
+  document.getElementById('vid-ai-error').style.display = 'none';
+  // Reset file input
+  document.getElementById('video-input').value = '';
+};
+
+function setVidStep(label, pct) {
+  document.getElementById('vid-ai-step-label').innerText = label;
+  document.getElementById('vid-ai-progress-bar').style.width = pct + '%';
+}
+
+function extractFrameFromVideo(vid, timeSeconds) {
+  return new Promise(function(resolve) {
+    var canvas = document.createElement('canvas');
+    canvas.width = 640;
+    canvas.height = Math.round(640 * vid.videoHeight / vid.videoWidth) || 360;
+    var ctx = canvas.getContext('2d');
+    var seeked = false;
+    vid.currentTime = timeSeconds || 1;
+    vid.onseeked = function() {
+      if (seeked) return;
+      seeked = true;
+      ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', 0.85));
+    };
+    // Fallback si onseeked ne déclenche pas
+    setTimeout(function() {
+      if (!seeked) {
+        seeked = true;
+        ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.85));
+      }
+    }, 2000);
+  });
+}
+
+async function analyzeVideo(vid, file) {
+  // Afficher pending
+  document.getElementById('vid-ai-pending').style.display = 'block';
+  document.getElementById('vid-ai-done').style.display = 'none';
+  document.getElementById('vid-ai-error').style.display = 'none';
+
+  try {
+    // ÉTAPE 1 — Extraire plusieurs frames pour analyse complète
+    setVidStep('Extraction des images clés...', 10);
+    await new Promise(function(r){setTimeout(r,300)});
+
+    var frames = [];
+    var checkpoints = [1, Math.min(5, vid.duration*0.25), Math.min(15, vid.duration*0.5)];
+    for (var i = 0; i < checkpoints.length; i++) {
+      var frame = await extractFrameFromVideo(vid, checkpoints[i]);
+      frames.push(frame);
+      setVidStep('Analyse image ' + (i+1) + '/3...', 15 + i*20);
+      await new Promise(function(r){setTimeout(r,200)});
+    }
+
+    // ÉTAPE 2 — Vérification authenticité (heuristique locale)
+    setVidStep('Vérification authenticité...', 60);
+    await new Promise(function(r){setTimeout(r,400)});
+    var authScore = checkVideoAuthenticity(vid, file);
+
+    // ÉTAPE 3 — Analyse IA principale avec la meilleure frame
+    setVidStep('Analyse IA du contenu...', 75);
+    var bestFrame = frames[0]; // frame 1 seconde = généralement la plus nette
+    videoDataUrl = bestFrame;
+
+    var aiResult = await callGeminiVideo(bestFrame, file.name);
+
+    // ÉTAPE 4 — Auto-fill du formulaire
+    setVidStep('Remplissage automatique...', 90);
+    await new Promise(function(r){setTimeout(r,300)});
+
+    applyVideoAIResult(aiResult, bestFrame, authScore);
+
+    setVidStep('Terminé', 100);
+    await new Promise(function(r){setTimeout(r,200)});
+
+    document.getElementById('vid-ai-pending').style.display = 'none';
+    document.getElementById('vid-ai-done').style.display = 'block';
+
+    // Afficher résultats dans le panneau IA
+    showVideoAIResults(aiResult, authScore);
+
+  } catch(e) {
+    document.getElementById('vid-ai-pending').style.display = 'none';
+    document.getElementById('vid-ai-error').style.display = 'block';
+    document.getElementById('vid-ai-error-msg').innerText = e.message || 'Erreur analyse vidéo';
+    console.error('Video AI error:', e);
+  }
+}
+
+async function callGeminiVideo(frameB64, filename) {
+  // Appel API Gemini avec le frame extrait
+  // On enrichit le prompt avec le nom du fichier pour contexte
+  var fileHint = filename ? ' (fichier: ' + filename + ')' : '';
+  var r = await fetch('https://analyzeimage-xjtnixfrra-uc.a.run.app', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      imageBase64: frameB64.split(',')[1],
+      mimeType: 'image/jpeg',
+      extraContext: 'Cette image est extraite dune vidéo de présentation dun objet à vendre.' + fileHint + ' Analyse lobjet visible et génère une annonce complète.'
+    })
+  });
+  var d = await r.json();
+  if (d.error) throw new Error(d.error);
+  return d;
+}
+
+function checkVideoAuthenticity(vid, file) {
+  var score = 100;
+  var flags = [];
+
+  // Vérifier que c'est bien une vraie vidéo (durée > 2s)
+  if (vid.duration < 2) {
+    score -= 30;
+    flags.push('Vidéo très courte');
+  }
+
+  // Vérifier ratio (doit être proche de 9:16 ou 16:9)
+  var ratio = vid.videoWidth / vid.videoHeight;
+  if (ratio < 0.4 || ratio > 3) {
+    score -= 10;
+    flags.push('Format inhabituel');
+  }
+
+  // Taille fichier cohérente (vidéo trop petite = suspect)
+  var expectedMinSize = vid.duration * 50000; // ~50ko/s minimum
+  if (file.size < expectedMinSize) {
+    score -= 20;
+    flags.push('Fichier très compressé');
+  }
+
+  return { score: Math.max(0, score), flags: flags };
+}
+
+function applyVideoAIResult(aiResult, frameB64, authScore) {
+  // Si pas encore de photo principale, utiliser le frame
+  var scanPrev = document.getElementById('scan-prev');
+  var resPrev = document.getElementById('res-thumb');
+
+  if (scanPrev && (!scanPrev.src || scanPrev.src === window.location.href)) {
+    scanPrev.src = frameB64;
+    scanPrev.classList.remove('hidden');
+  }
+
+  // Pré-remplir le formulaire si l'étape résultats est visible
+  if (aiResult.title) {
+    var nameInput = document.getElementById('ai-name');
+    if (nameInput && !nameInput.value) nameInput.value = aiResult.title;
+  }
+  if (aiResult.description) {
+    var descInput = document.getElementById('ai-desc');
+    if (descInput && !descInput.value) descInput.value = aiResult.description;
+  }
+
+  // Si pas encore de scanData, initialiser avec les données vidéo
+  if (!scanData && aiResult.title) {
+    scanData = {
+      itemName: aiResult.title,
+      price: aiResult.price || 0,
+      category: aiResult.category || '',
+      condition: aiResult.condition || 'Bon état',
+      description: aiResult.description || '',
+      brand: aiResult.brand || '',
+      model: aiResult.model || '',
+      imageUrl: frameB64,
+      shipping: []
+    };
+    // Afficher l'étape résultats directement depuis la vidéo
+    showResult(aiResult, frameB64);
+  }
+}
+
+function showVideoAIResults(aiResult, authScore) {
+  var container = document.getElementById('vid-ai-results');
+  if (!container) return;
+
+  var scoreColor = authScore.score >= 80 ? '#22c55e' : authScore.score >= 50 ? '#f59e0b' : '#ef4444';
+  var scoreLabel = authScore.score >= 80 ? 'Vidéo authentique' : authScore.score >= 50 ? 'Vidéo acceptable' : 'Vidéo suspecte';
+
+  var html = '';
+
+  // Score authenticité
+  html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">';
+  html += '<i class="fa-solid fa-shield-check" style="color:'+scoreColor+';font-size:11px"></i>';
+  html += '<span style="font-size:11px;font-weight:700;color:'+scoreColor+'">'+scoreLabel+'</span>';
+  html += '<span style="font-size:11px;color:rgba(255,255,255,.4)">'+authScore.score+'/100</span>';
+  html += '</div>';
+
+  if (authScore.flags.length > 0) {
+    html += '<p style="font-size:10px;color:#f59e0b;margin-bottom:4px">⚠ ' + authScore.flags.join(', ') + '</p>';
+  }
+
+  // Ce qui a été détecté
+  if (aiResult.title) {
+    html += '<div style="display:flex;align-items:center;gap:6px">';
+    html += '<i class="fa-solid fa-tag" style="color:rgba(255,255,255,.3);font-size:10px"></i>';
+    html += '<span style="font-size:11px;color:rgba(255,255,255,.6)">Objet détecté : <strong style="color:#fff">'+aiResult.title+'</strong></span>';
+    html += '</div>';
+  }
+  if (aiResult.condition) {
+    html += '<div style="display:flex;align-items:center;gap:6px;margin-top:3px">';
+    html += '<i class="fa-solid fa-star" style="color:rgba(255,255,255,.3);font-size:10px"></i>';
+    html += '<span style="font-size:11px;color:rgba(255,255,255,.6)">État estimé : <strong style="color:#fff">'+aiResult.condition+'</strong></span>';
+    html += '</div>';
+  }
+
+  // Auto-fill info
+  html += '<p style="font-size:10px;color:rgba(255,255,255,.35);margin-top:6px;font-style:italic">Titre, description et état pré-remplis ↑</p>';
+
+  container.innerHTML = html;
+}
+
+// videoUrl intégré directement dans le listener pub-btn existant
+
 </script>
 </body>
 </html>
