@@ -7,93 +7,118 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-  SPLASH / LOGIN
-══════════════════════════════════════════ -->
-<div id="splash" class="splash">
-  <!-- Gauche : visuel -->
-  <div class="splash-left">
-    <div class="splash-logo">YOUB<span class="dot-anim-splash"></span>IIZ</div>
-    <p class="splash-tagline">La seule marketplace où chaque objet a sa vidéo.<br>Vendez mieux. Achetez en confiance.</p>
-    <!-- Vidéo démo loop -->
-    <div style="margin-top:32px;display:flex;gap:10px">
-      <div style="width:110px;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#1e293b;opacity:.9">
-        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover"></video>
-      </div>
-      <div style="width:110px;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#1e293b;margin-top:24px;opacity:.7">
-        <video src="https://www.w3schools.com/html/movie.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover"></video>
-      </div>
-    </div>
-  </div>
-  <!-- Droite : auth -->
-  <div class="splash-right">
-    <div style="margin-bottom:28px;text-align:center">
-      <div style="font-weight:900;font-size:26px;color:#0f172a;letter-spacing:-0.5px">Youbiiiz</div>
-      <div style="font-size:13px;color:#94a3b8;margin-top:4px">La vente en vidéo</div>
-    </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-login" onclick="showTab('login')">Connexion</button>
-      <button class="auth-tab" id="tab-register" onclick="showTab('register')">Inscription</button>
-    </div>
-    <!-- Login -->
-    <div id="panel-login" class="auth-form">
-      <div id="auth-msg" class="auth-msg"></div>
-      <input id="login-email" class="auth-input" type="email" placeholder="Email">
-      <input id="login-pass" class="auth-input" type="password" placeholder="Mot de passe">
-      <button class="btn-auth" onclick="doLogin()">Se connecter</button>
-      <button class="btn-visitor" onclick="doAnon()">
-        <i class="fa-solid fa-eye" style="margin-right:6px;color:#94a3b8"></i>Continuer en visiteur
-      </button>
-    </div>
-    <!-- Register -->
-    <div id="panel-register" class="auth-form" style="display:none">
-      <div id="auth-msg-r" class="auth-msg"></div>
-      <input id="reg-email" class="auth-input" type="email" placeholder="Email">
-      <input id="reg-pass" class="auth-input" type="password" placeholder="Mot de passe (6+ chars)">
-      <button class="btn-auth" onclick="doRegister()">Créer mon compte</button>
-      <button class="btn-visitor" onclick="doAnon()">
-        <i class="fa-solid fa-eye" style="margin-right:6px;color:#94a3b8"></i>Continuer en visiteur
-      </button>
-    </div>
-  </div>
-</div>
+<!-- ══════════ SPLASH ══════════ -->
+<div id="splash">
 
-<!-- ══════════════════════════════════════════
-  APP (hidden until auth)
-══════════════════════════════════════════ -->
+  <!-- Gauche : hero -->
+  <div class="splash-hero">
+    <div class="splash-bg-grid" id="splash-grid"></div>
+    <div class="splash-content">
+      <div class="splash-logo">
+        YOUB<span class="splash-logo-accent">III</span>Z
+      </div>
+      <h1 class="splash-headline">La vente,<br>en <span class="splash-headline-accent">vidéo.</span></h1>
+      <p class="splash-sub">Filmez votre objet. Publiez en 30 secondes.<br>L'IA remplit tout automatiquement.</p>
+      <div class="splash-stats">
+        <div class="splash-stat"><span class="splash-stat-n">10k+</span><span class="splash-stat-l">Vendeurs</span></div>
+        <div class="splash-stat-divider"></div>
+        <div class="splash-stat"><span class="splash-stat-n">50k+</span><span class="splash-stat-l">Vidéos</span></div>
+        <div class="splash-stat-divider"></div>
+        <div class="splash-stat"><span class="splash-stat-n">2M€+</span><span class="splash-stat-l">Vendus</span></div>
+      </div>
+    </div>
+    <!-- Grille de vidéos démo (Whatnot style) -->
+    <div class="splash-video-mosaic">
+      <div class="svm-col svm-col-1">
+        <div class="svm-card"><img src="https://picsum.photos/seed/shoes1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">185€</span><span class="svm-name">Jordan 1 Retro</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/watch1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">6 800€</span><span class="svm-name">Rolex Datejust</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/guitar1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">90€</span><span class="svm-name">Yamaha F310</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+      </div>
+      <div class="svm-col svm-col-2">
+        <div class="svm-card"><img src="https://picsum.photos/seed/iphone14/300/500" alt=""><div class="svm-overlay"><span class="svm-price">699€</span><span class="svm-name">iPhone 14 Pro</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/ps5a/300/500" alt=""><div class="svm-overlay"><span class="svm-price">420€</span><span class="svm-name">PlayStation 5</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/bike1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">680€</span><span class="svm-name">Vélo électrique</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+      </div>
+      <div class="svm-col svm-col-3">
+        <div class="svm-card"><img src="https://picsum.photos/seed/mac1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">950€</span><span class="svm-name">MacBook Air M2</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/dyson1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">290€</span><span class="svm-name">Dyson V11</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/lego1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">480€</span><span class="svm-name">Lego 75192</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+      </div>
+    </div>
+    <!-- Gradient overlay -->
+    <div class="splash-fade-right"></div>
+  </div>
+
+  <!-- Droite : auth -->
+  <div class="splash-auth">
+    <div class="splash-auth-inner">
+      <div class="splash-auth-logo">Youbiiiz</div>
+      <div class="splash-auth-tagline">Rejoignez la marketplace vidéo</div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="showTab('login')">Connexion</button>
+        <button class="auth-tab" id="tab-register" onclick="showTab('register')">Inscription</button>
+      </div>
+
+      <div id="auth-msg" class="auth-msg" style="display:none"></div>
+
+      <!-- Login -->
+      <div id="panel-login">
+        <input id="login-email" class="auth-input" type="email" placeholder="Email" autocomplete="email">
+        <input id="login-pass" class="auth-input" type="password" placeholder="Mot de passe" autocomplete="current-password">
+        <button class="btn-auth" onclick="doLogin()">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Se connecter
+        </button>
+      </div>
+
+      <!-- Register -->
+      <div id="panel-register" style="display:none">
+        <input id="reg-email" class="auth-input" type="email" placeholder="Email" autocomplete="email">
+        <input id="reg-pass" class="auth-input" type="password" placeholder="Mot de passe (6+ caractères)" autocomplete="new-password">
+        <button class="btn-auth" onclick="doRegister()">
+          <i class="fa-solid fa-user-plus"></i> Créer mon compte
+        </button>
+      </div>
+
+      <div class="auth-sep"><span>ou</span></div>
+
+      <button class="btn-visitor" onclick="doAnon()">
+        <i class="fa-solid fa-eye"></i> Continuer en visiteur
+      </button>
+
+      <div class="auth-features">
+        <div class="auth-feature"><i class="fa-solid fa-shield-halved"></i><span>Paiement sécurisé</span></div>
+        <div class="auth-feature"><i class="fa-solid fa-video"></i><span>Vendeur en vidéo</span></div>
+        <div class="auth-feature"><i class="fa-solid fa-wand-magic-sparkles"></i><span>IA intégrée</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /splash -->
+
+<!-- ══════════ APP ══════════ -->
 <div id="app" style="display:none">
 
   <!-- HEADER -->
   <header class="header">
     <div class="header-logo" onclick="switchView('home')">
-      YOUB
-      <span class="dot-anim">
-        <span></span><span></span><span></span>
-      </span>
-      IIZ
+      YOUB<span style="color:#0ea5e9">III</span>Z
     </div>
     <div class="header-search">
-      <i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:13px;flex-shrink:0"></i>
-      <input id="search-input" type="text" placeholder='Rechercher une annonce vidéo...' oninput="applyFilters()">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="search-input" type="text" placeholder="Rechercher une annonce vidéo..." oninput="applyFilters()">
     </div>
     <div class="header-actions">
       <button class="btn-sell" onclick="openPublish()">
-        <i class="fa-solid fa-video"></i>
-        <span>Vendre</span>
+        <i class="fa-solid fa-video"></i> Vendre
       </button>
-      <div style="position:relative">
-        <button class="icon-btn" onclick="switchView('notifications')">
-          <i class="fa-solid fa-bell"></i>
-        </button>
+      <button class="icon-btn" onclick="switchView('notifications')" style="position:relative">
+        <i class="fa-solid fa-bell"></i>
         <span id="notif-dot" class="notif-dot" style="display:none"></span>
-      </div>
+      </button>
       <button class="avatar-btn" onclick="switchView('profile')">
         <i class="fa-solid fa-user"></i>
       </button>
@@ -101,33 +126,30 @@
   </header>
 
   <!-- CATEGORY BAR -->
-  <div class="cat-bar" id="cat-bar">
-    <button class="cat-pill active" onclick="filterCat('all',this)"><span class="cat-emoji">🏠</span>Tout</button>
-    <button class="cat-pill" onclick="filterCat('Téléphones & objets connectés',this)"><span class="cat-emoji">📱</span>Téléphones</button>
-    <button class="cat-pill" onclick="filterCat('Ordinateurs',this)"><span class="cat-emoji">💻</span>Ordinateurs</button>
-    <button class="cat-pill" onclick="filterCat('Consoles',this)"><span class="cat-emoji">🎮</span>Gaming</button>
-    <button class="cat-pill" onclick="filterCat('Mode femme',this)"><span class="cat-emoji">👗</span>Mode</button>
-    <button class="cat-pill" onclick="filterCat('Chaussures homme',this)"><span class="cat-emoji">👟</span>Chaussures</button>
-    <button class="cat-pill" onclick="filterCat('Ameublement',this)"><span class="cat-emoji">🛋</span>Maison</button>
-    <button class="cat-pill" onclick="filterCat('Vélos',this)"><span class="cat-emoji">🚲</span>Vélos</button>
-    <button class="cat-pill" onclick="filterCat('Montres & Bijoux',this)"><span class="cat-emoji">⌚</span>Montres</button>
-    <button class="cat-pill" onclick="filterCat('Instruments de musique',this)"><span class="cat-emoji">🎸</span>Musique</button>
-    <button class="cat-pill" onclick="filterCat('Jeux & Jouets',this)"><span class="cat-emoji">🧸</span>Jouets</button>
-    <button class="cat-pill" onclick="filterCat('Électroménager',this)"><span class="cat-emoji">🏠</span>Électroménager</button>
-    <button class="cat-pill" onclick="filterCat('Livres',this)"><span class="cat-emoji">📚</span>Livres</button>
+  <div class="cat-bar">
+    <button class="cat-pill active" onclick="filterCat('all',this)">🏠 Tout</button>
+    <button class="cat-pill" onclick="filterCat('Téléphones & objets connectés',this)">📱 Téléphones</button>
+    <button class="cat-pill" onclick="filterCat('Ordinateurs',this)">💻 Ordis</button>
+    <button class="cat-pill" onclick="filterCat('Consoles',this)">🎮 Gaming</button>
+    <button class="cat-pill" onclick="filterCat('Mode femme',this)">👗 Mode</button>
+    <button class="cat-pill" onclick="filterCat('Chaussures homme',this)">👟 Chaussures</button>
+    <button class="cat-pill" onclick="filterCat('Ameublement',this)">🛋 Maison</button>
+    <button class="cat-pill" onclick="filterCat('Vélos',this)">🚲 Vélos</button>
+    <button class="cat-pill" onclick="filterCat('Montres & Bijoux',this)">⌚ Montres</button>
+    <button class="cat-pill" onclick="filterCat('Instruments de musique',this)">🎸 Musique</button>
+    <button class="cat-pill" onclick="filterCat('Jeux & Jouets',this)">🧸 Jouets</button>
   </div>
 
-  <!-- MAIN LAYOUT -->
+  <!-- LAYOUT -->
   <div class="app-layout">
-
-    <!-- SIDEBAR -->
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-section">
         <div class="sidebar-title">Navigation</div>
-        <div class="sidebar-item active" onclick="switchView('home')"><i class="fa-solid fa-house"></i>Accueil</div>
-        <div class="sidebar-item" onclick="switchView('map')"><i class="fa-solid fa-map-location-dot"></i>Carte</div>
-        <div class="sidebar-item" onclick="switchView('notifications')"><i class="fa-solid fa-bell"></i>Alertes</div>
-        <div class="sidebar-item" onclick="switchView('profile')"><i class="fa-solid fa-user"></i>Mon profil</div>
+        <div class="sidebar-item active" id="sb-home" onclick="switchView('home')"><i class="fa-solid fa-house"></i>Accueil</div>
+        <div class="sidebar-item" id="sb-map" onclick="switchView('map')"><i class="fa-solid fa-map-location-dot"></i>Carte</div>
+        <div class="sidebar-item" id="sb-notif" onclick="switchView('notifications')"><i class="fa-solid fa-bell"></i>Alertes</div>
+        <div class="sidebar-item" id="sb-profile" onclick="switchView('profile')"><i class="fa-solid fa-user"></i>Mon profil</div>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-title">Catégories</div>
@@ -135,110 +157,75 @@
         <div class="sidebar-item" onclick="filterCat('Ordinateurs',this)"><i class="fa-solid fa-laptop"></i>Ordinateurs</div>
         <div class="sidebar-item" onclick="filterCat('Consoles',this)"><i class="fa-solid fa-gamepad"></i>Gaming</div>
         <div class="sidebar-item" onclick="filterCat('Mode femme',this)"><i class="fa-solid fa-shirt"></i>Mode</div>
-        <div class="sidebar-item" onclick="filterCat('Ameublement',this)"><i class="fa-solid fa-couch"></i>Maison</div>
         <div class="sidebar-item" onclick="filterCat('Montres & Bijoux',this)"><i class="fa-solid fa-clock"></i>Montres</div>
+        <div class="sidebar-item" onclick="filterCat('Vélos',this)"><i class="fa-solid fa-person-biking"></i>Vélos</div>
       </div>
     </aside>
 
-    <!-- VIEWS -->
-    <main style="flex:1;min-width:0;overflow-y:auto" id="main-scroll">
+    <main id="main-scroll">
 
-      <!-- HOME VIEW -->
+      <!-- HOME -->
       <div id="view-home" class="main-content">
-
-        <!-- VIDEO SHORTS HERO (Whatnot-style) -->
         <div class="hero-section">
-          <div class="hero-title">
-            <span class="live-dot"></span>
-            Vidéos en vedette
-          </div>
-          <div class="video-shorts-row" id="shorts-row">
-            <!-- Injecté par JS -->
-          </div>
+          <div class="hero-title"><span class="live-dot"></span> Vidéos en vedette</div>
+          <div class="video-shorts-row" id="shorts-row"></div>
         </div>
-
-        <!-- ANNONCES -->
         <div class="section-header">
           <div class="section-title">Annonces récentes</div>
           <button class="section-link" onclick="filterCat('all',null)">Tout voir</button>
         </div>
         <div class="product-grid" id="feed"></div>
         <div id="empty-state" style="display:none;text-align:center;padding:60px 20px;color:#94a3b8">
-          <i class="fa-solid fa-video-slash" style="font-size:40px;margin-bottom:12px;opacity:.3"></i>
+          <i class="fa-solid fa-video-slash" style="font-size:40px;margin-bottom:12px;opacity:.3;display:block"></i>
           <p style="font-size:14px;font-weight:600">Aucune annonce trouvée</p>
         </div>
-
       </div>
 
-      <!-- MAP VIEW -->
-      <div id="view-map" style="display:none">
-        <div id="map-container"><div id="leaflet-map"></div></div>
+      <!-- MAP -->
+      <div id="view-map" style="display:none;height:calc(100vh - 112px)">
+        <div id="leaflet-map" style="width:100%;height:100%"></div>
       </div>
 
-      <!-- NOTIFICATIONS VIEW -->
-      <div id="view-notifications" class="main-content hidden">
-        <h2 style="font-size:18px;font-weight:800;margin-bottom:20px">Alertes & Notifications</h2>
-        <div id="notif-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      <!-- NOTIFICATIONS -->
+      <div id="view-notifications" class="main-content" style="display:none">
+        <h2 style="font-size:18px;font-weight:800;margin-bottom:20px">Alertes</h2>
+        <div id="notif-list"></div>
       </div>
 
-      <!-- PROFILE VIEW -->
-      <div id="view-profile" class="main-content hidden">
+      <!-- PROFILE -->
+      <div id="view-profile" class="main-content" style="display:none">
         <div class="profile-hero">
           <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
-            <div class="avatar-btn" style="width:56px;height:56px;border-radius:16px;font-size:20px">
-              <i class="fa-solid fa-user"></i>
-            </div>
+            <div class="avatar-btn" style="width:56px;height:56px;border-radius:16px;font-size:20px;flex-shrink:0"><i class="fa-solid fa-user"></i></div>
             <div>
-              <div style="font-size:16px;font-weight:800;color:#fff" id="profile-uid">Visiteur</div>
-              <div id="profile-verified" style="display:none;margin-top:4px">
-                <span style="background:rgba(14,165,233,.2);color:#0ea5e9;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid rgba(14,165,233,.3)">
-                  <i class="fa-solid fa-circle-check"></i> Vérifié
-                </span>
-              </div>
+              <div style="font-size:16px;font-weight:800;color:#fff" id="profile-uid">—</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:2px">Membre Youbiiiz</div>
             </div>
-          </div>
-          <div class="profile-stats-grid">
-            <div class="profile-stat">
-              <div class="profile-stat-val" style="color:#0ea5e9" id="profile-count">0</div>
-              <div class="profile-stat-lbl">Annonces</div>
-            </div>
-            <div class="profile-stat">
-              <div class="profile-stat-val" style="color:#8b5cf6" id="profile-views">0</div>
-              <div class="profile-stat-lbl">Vues</div>
-            </div>
-            <div class="profile-stat">
-              <div class="profile-stat-val" style="color:#f43f5e" id="profile-favs">0</div>
-              <div class="profile-stat-lbl">Favoris</div>
-            </div>
-            <div class="profile-stat">
-              <div class="profile-stat-val" style="color:#f59e0b" id="profile-rating">—</div>
-              <div class="profile-stat-lbl">Note</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div>
-              <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em">Valeur en vente</div>
-              <div style="font-size:20px;font-weight:900;color:#fff" id="profile-total">0€</div>
-            </div>
-            <button onclick="doLogout()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,.7)">
-              <i class="fa-solid fa-right-from-bracket" style="margin-right:6px"></i>Déconnexion
+            <button onclick="doLogout()" style="margin-left:auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer">
+              <i class="fa-solid fa-right-from-bracket"></i>
             </button>
           </div>
+          <div class="profile-stats-grid">
+            <div class="profile-stat"><div class="profile-stat-val" style="color:#0ea5e9" id="profile-count">0</div><div class="profile-stat-lbl">Annonces</div></div>
+            <div class="profile-stat"><div class="profile-stat-val" style="color:#8b5cf6" id="profile-views">0</div><div class="profile-stat-lbl">Vues</div></div>
+            <div class="profile-stat"><div class="profile-stat-val" style="color:#f43f5e" id="profile-favs">0</div><div class="profile-stat-lbl">Favoris</div></div>
+            <div class="profile-stat"><div class="profile-stat-val" style="color:#f59e0b" id="profile-total">0€</div><div class="profile-stat-lbl">En vente</div></div>
+          </div>
         </div>
-        <div style="margin-bottom:16px">
+        <div style="margin-bottom:20px">
           <div style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:12px">Mes annonces</div>
-          <div class="my-listings-grid" id="my-listings"></div>
+          <div class="product-grid" id="my-listings"></div>
         </div>
         <div>
           <div style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:12px">Mes favoris</div>
-          <div class="my-listings-grid" id="fav-listings"></div>
+          <div class="product-grid" id="fav-listings"></div>
         </div>
       </div>
 
     </main>
   </div>
 
-  <!-- BOTTOM NAV (mobile) -->
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
     <div class="bottom-nav-items">
       <button class="bottom-nav-item active" onclick="switchView('home')"><i class="fa-solid fa-house"></i>Accueil</button>
@@ -251,71 +238,49 @@
 
 </div><!-- /app -->
 
-<!-- ══════════════════════════════════════════
-  DETAIL MODAL
-══════════════════════════════════════════ -->
+<!-- ══════════ DETAIL MODAL ══════════ -->
 <div id="detail-modal" class="detail-modal">
-
-  <!-- Header flottant -->
   <div class="detail-header">
-    <button class="det-back-btn" onclick="closeDetail()">
-      <i class="fa-solid fa-arrow-left"></i> Retour
-    </button>
+    <button class="det-back-btn" onclick="closeDetail()"><i class="fa-solid fa-arrow-left"></i> Retour</button>
     <div class="det-actions">
-      <button class="det-action-btn" id="det-fav-btn" onclick="toggleFavDetail()">
-        <i id="det-fav-icon" class="fa-regular fa-heart"></i>
-      </button>
-      <button class="det-action-btn" onclick="shareItem()">
-        <i class="fa-solid fa-share-nodes"></i>
-      </button>
-      <button class="det-action-btn" onclick="reportItem()">
-        <i class="fa-solid fa-flag"></i>
-      </button>
+      <button class="det-action-btn" id="det-fav-btn" onclick="toggleFavDetail()"><i id="det-fav-icon" class="fa-regular fa-heart"></i></button>
+      <button class="det-action-btn" onclick="shareItem()"><i class="fa-solid fa-share-nodes"></i></button>
+      <button class="det-action-btn" onclick="reportItem()"><i class="fa-solid fa-flag"></i></button>
     </div>
   </div>
-
-  <!-- Corps 2 col -->
   <div class="detail-body">
-
     <!-- Média -->
     <div class="detail-media" id="det-media">
-      <!-- Titre + vignette overlay -->
       <div class="media-title-overlay">
         <div class="media-title-text" id="det-title-overlay"></div>
         <div class="media-thumb"><img id="det-thumb-img" src="" alt=""></div>
       </div>
-      <!-- Mode vidéo -->
+      <!-- Vidéo -->
       <div id="det-video-wrap" style="display:none;width:100%;height:100%;flex-direction:column">
         <div style="position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#000">
-          <video id="det-video" style="height:100%;width:auto;max-width:calc(100vh*9/16);object-fit:cover;border-radius:12px;display:block;cursor:pointer" playsinline onclick="vidTogglePlay()"></video>
+          <video id="det-video" style="height:100%;width:auto;max-width:calc(100vh*9/16);object-fit:cover;border-radius:12px;cursor:pointer" playsinline onclick="vidTogglePlay()"></video>
           <div id="vid-play-overlay" onclick="vidTogglePlay()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s">
             <div style="width:64px;height:64px;background:rgba(0,0,0,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.3)">
               <i id="vid-play-icon" class="fa-solid fa-play" style="color:#fff;font-size:22px;margin-left:4px"></i>
             </div>
           </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(transparent,rgba(0,0,0,.8));pointer-events:none"></div>
-          <div style="position:absolute;top:12px;left:12px;z-index:3">
-            <span style="background:rgba(14,165,233,.9);color:#fff;font-size:9px;font-weight:900;padding:3px 10px;border-radius:99px;display:flex;align-items:center;gap:4px">
-              <i class="fa-solid fa-video" style="font-size:8px"></i> VIDÉO
-            </span>
-          </div>
+          <div style="position:absolute;top:12px;left:12px"><span style="background:rgba(14,165,233,.9);color:#fff;font-size:9px;font-weight:900;padding:3px 10px;border-radius:99px"><i class="fa-solid fa-video" style="font-size:8px"></i> VIDÉO</span></div>
         </div>
         <div class="vid-controls-bar">
           <input type="range" id="vid-progress" class="vid-progress" min="0" max="100" value="0" oninput="vidSeek(this.value)">
           <div class="vid-controls-row">
-            <div class="vid-controls-left">
+            <div style="display:flex;align-items:center;gap:10px">
               <button class="vid-ctrl-btn" onclick="vidTogglePlay()"><i id="vid-btn-icon" class="fa-solid fa-play"></i></button>
               <span id="vid-time" class="vid-time">0:00 / 0:00</span>
             </div>
-            <div class="vid-controls-right">
+            <div style="display:flex;align-items:center;gap:10px">
               <button class="vid-ctrl-btn" onclick="vidToggleMute()"><i id="vid-mute-icon" class="fa-solid fa-volume-high"></i></button>
               <button class="vid-ctrl-btn" onclick="vidFullscreen()"><i class="fa-solid fa-expand"></i></button>
             </div>
           </div>
         </div>
-        <div class="photo-strip" id="vid-photo-strip"></div>
       </div>
-      <!-- Mode photo carousel -->
+      <!-- Photo carousel -->
       <div id="det-photo-wrap" style="display:flex;width:100%;height:100%;flex-direction:column">
         <div style="position:relative;flex:1;min-height:0;overflow:hidden">
           <div id="carousel-track" style="display:flex;width:100%;height:100%;transition:transform .35s cubic-bezier(.16,1,.3,1)"></div>
@@ -325,53 +290,33 @@
         </div>
       </div>
     </div>
-
-    <!-- Panneau infos -->
+    <!-- Panel -->
     <div class="detail-panel" id="det-panel">
-
       <div class="det-price-section">
         <div class="det-price" id="det-price">—</div>
         <div class="det-badges" id="det-badges"></div>
-        <div id="det-fraud-warn" style="display:none;margin-top:10px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:10px 14px">
-          <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;margin-right:6px"></i>
-          <span style="font-size:12px;font-weight:700;color:#ef4444">Prix inhabituel — vérifiez avant d'acheter</span>
+        <div id="det-fraud-warn" style="display:none;margin-top:10px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:10px 14px;font-size:12px;font-weight:700;color:#ef4444">
+          <i class="fa-solid fa-triangle-exclamation" style="margin-right:6px"></i>Prix inhabituel — vérifiez avant d'acheter
         </div>
       </div>
-
       <div class="det-buttons">
-        <button id="det-buy-btn" class="btn-buy">
-          <i class="fa-brands fa-stripe" style="font-size:16px"></i> Acheter maintenant
-        </button>
+        <button id="det-buy-btn" class="btn-buy"><i class="fa-brands fa-stripe" style="font-size:16px"></i> Acheter maintenant</button>
         <div class="btn-contact-row">
-          <button id="det-contact-btn" class="btn-contact">
-            <i class="fa-solid fa-message" style="font-size:11px;color:#0ea5e9"></i> Contacter
-          </button>
-          <button class="btn-offer" onclick="openOffer()">
-            <i class="fa-solid fa-handshake" style="font-size:11px"></i> Faire offre
-          </button>
+          <button id="det-contact-btn" class="btn-contact"><i class="fa-solid fa-message" style="font-size:11px;color:#0ea5e9"></i> Contacter</button>
+          <button class="btn-offer"><i class="fa-solid fa-handshake" style="font-size:11px"></i> Faire offre</button>
         </div>
       </div>
-
       <div class="det-divider"></div>
-
-      <!-- Vendeur -->
-      <div class="det-seller-row" onclick="openSeller()" id="det-seller-row">
+      <div class="det-seller-row" id="det-seller-row">
         <div class="det-seller-avatar"><i class="fa-solid fa-user" style="color:#fff;font-size:14px"></i></div>
         <div style="flex:1">
           <div class="det-seller-name" id="det-seller-name">Vendeur</div>
           <div class="det-seller-rating" id="det-seller-rating">Nouveau vendeur</div>
         </div>
-        <div id="det-verified-badge" style="display:none;background:rgba(14,165,233,.15);color:#0ea5e9;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;border:1px solid rgba(14,165,233,.3);margin-right:8px">
-          <i class="fa-solid fa-circle-check"></i> Vérifié
-        </div>
         <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,.2);font-size:11px"></i>
       </div>
-
       <div class="det-divider"></div>
-
-      <!-- Accordions -->
       <div style="padding:0 16px">
-        <!-- Description -->
         <button class="det-accordion-btn" onclick="toggleAcc('acc-desc')">
           <span class="det-accordion-label">Description</span>
           <i class="fa-solid fa-chevron-down det-accordion-icon" id="acc-desc-icon"></i>
@@ -379,7 +324,6 @@
         <div class="det-accordion-content" id="acc-desc">
           <p class="det-desc-text" id="det-desc-text"></p>
         </div>
-        <!-- Livraison -->
         <button class="det-accordion-btn" onclick="toggleAcc('acc-ship')">
           <span class="det-accordion-label">Livraison</span>
           <i class="fa-solid fa-chevron-down det-accordion-icon" id="acc-ship-icon"></i>
@@ -387,7 +331,6 @@
         <div class="det-accordion-content" id="acc-ship">
           <div id="det-ship-list"></div>
         </div>
-        <!-- Score de confiance -->
         <button class="det-accordion-btn" onclick="toggleAcc('acc-trust')">
           <span class="det-accordion-label">Score de confiance</span>
           <span id="det-trust-label" style="font-size:11px;font-weight:800;margin-right:8px"></span>
@@ -395,9 +338,7 @@
         </button>
         <div class="det-accordion-content" id="acc-trust">
           <div class="trust-bar"><div class="trust-fill" id="det-trust-fill"></div></div>
-          <div id="det-trust-details" style="display:flex;gap:6px;flex-wrap:wrap"></div>
         </div>
-        <!-- Localisation -->
         <button class="det-accordion-btn" onclick="toggleAcc('acc-map')">
           <span class="det-accordion-label">Localisation</span>
           <span id="det-loc-city" style="font-size:11px;color:rgba(255,255,255,.4);margin-right:8px"></span>
@@ -407,28 +348,20 @@
           <div style="border-radius:12px;overflow:hidden;height:180px"><div id="det-map"></div></div>
         </div>
       </div>
-
-      <!-- Similaires -->
       <div style="padding:20px 16px 32px">
         <button class="similar-btn" onclick="openSimilarPage()">
           <div style="display:flex;align-items:center;gap:12px">
-            <div class="similar-btn-icon"><i class="fa-solid fa-layer-group" style="color:#0ea5e9;font-size:13px"></i></div>
-            <div style="text-align:left">
-              <div style="font-size:13px;font-weight:700;color:#fff">Annonces similaires</div>
-              <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:1px">Voir tous les articles proches</div>
-            </div>
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(14,165,233,.12);display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-layer-group" style="color:#0ea5e9;font-size:13px"></i></div>
+            <div><div style="font-size:13px;font-weight:700;color:#fff">Annonces similaires</div><div style="font-size:11px;color:rgba(255,255,255,.35)">Voir tous les articles proches</div></div>
           </div>
           <i class="fa-solid fa-arrow-right" style="color:rgba(255,255,255,.3);font-size:12px"></i>
         </button>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-  SIMILAR PAGE
-══════════════════════════════════════════ -->
+<!-- ══════════ SIMILAR PAGE ══════════ -->
 <div id="similar-page" class="similar-page">
   <div class="similar-header">
     <button onclick="closeSimilarPage()" style="width:36px;height:36px;background:rgba(255,255,255,.08);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -442,9 +375,7 @@
   <div class="similar-grid" id="similar-grid"></div>
 </div>
 
-<!-- ══════════════════════════════════════════
-  PUBLISH MODAL
-══════════════════════════════════════════ -->
+<!-- ══════════ PUBLISH MODAL ══════════ -->
 <div id="publish-modal" class="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -453,25 +384,20 @@
       <button class="modal-close" onclick="closePublish()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
-
-      <!-- Zone photo principale -->
       <div class="form-group">
         <label class="form-label">Photo principale *</label>
-        <input type="file" id="main-photo-inp" accept="image/*" class="hidden" onchange="onMainPhoto(this)" style="display:none">
+        <input type="file" id="main-photo-inp" accept="image/*" style="display:none" onchange="onMainPhoto(this)">
         <div class="photo-zone" id="main-photo-zone" onclick="document.getElementById('main-photo-inp').click()">
-          <i class="fa-solid fa-camera" style="font-size:28px;color:#94a3b8;margin-bottom:8px"></i>
+          <i class="fa-solid fa-camera" style="font-size:28px;color:#94a3b8;margin-bottom:8px;display:block"></i>
           <div style="font-size:13px;font-weight:700;color:#475569">Ajouter une photo</div>
-          <div style="font-size:11px;color:#94a3b8;margin-top:4px">L'IA analysera l'objet automatiquement</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:4px">L'IA analyse et remplit tout automatiquement</div>
         </div>
         <div id="main-photo-preview" style="display:none;margin-top:10px">
           <div style="position:relative;width:120px;border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#f1f5f9">
             <img id="main-photo-img" style="width:100%;height:100%;object-fit:contain">
-            <button onclick="removeMainPhoto()" style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
+            <button onclick="removeMainPhoto()" style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>
           </div>
         </div>
-        <!-- AI Analysis status -->
         <div id="ai-status" style="display:none;margin-top:10px">
           <div id="ai-pending" class="ai-status-card ai-status-pending" style="display:none">
             <div style="display:flex;align-items:center;gap:10px">
@@ -479,7 +405,7 @@
               <div style="flex:1">
                 <div style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px">Analyse IA en cours...</div>
                 <div class="ai-progress-bar-track"><div class="ai-progress-fill" id="ai-progress"></div></div>
-                <div id="ai-step" style="font-size:10px;color:#64748b;margin-top:3px">Identification de l'objet...</div>
+                <div id="ai-step" style="font-size:10px;color:#64748b;margin-top:3px">Identification...</div>
               </div>
             </div>
           </div>
@@ -491,17 +417,13 @@
           </div>
         </div>
       </div>
-
-      <!-- Photos supplémentaires -->
       <div class="form-group">
         <label class="form-label">Photos supplémentaires</label>
         <input type="file" id="extra-photos-inp" accept="image/*" multiple style="display:none" onchange="onExtraPhotos(this)">
         <div style="display:flex;gap:8px;flex-wrap:wrap" id="extra-photos-list">
-          <button onclick="document.getElementById('extra-photos-inp').click()" style="width:64px;height:64px;border:2px dashed #e2e8f0;border-radius:12px;background:#f8fafc;font-size:20px;color:#94a3b8">+</button>
+          <button onclick="document.getElementById('extra-photos-inp').click()" style="width:64px;height:64px;border:2px dashed #e2e8f0;border-radius:12px;background:#f8fafc;font-size:22px;color:#94a3b8;cursor:pointer">+</button>
         </div>
       </div>
-
-      <!-- Vidéo -->
       <div class="form-group">
         <label class="form-label" style="display:flex;align-items:center;gap:8px">
           Vidéo de présentation
@@ -509,23 +431,18 @@
         </label>
         <input type="file" id="video-inp" accept="video/*" style="display:none" onchange="onVideoUpload(this)">
         <div id="video-zone" class="video-upload-zone" onclick="document.getElementById('video-inp').click()">
-          <i class="fa-solid fa-video" style="font-size:24px;color:#0ea5e9;margin-bottom:8px"></i>
+          <i class="fa-solid fa-video" style="font-size:24px;color:#0ea5e9;margin-bottom:8px;display:block"></i>
           <div style="font-size:13px;font-weight:700;color:#0f172a">Filmer l'objet en vidéo</div>
           <div style="font-size:11px;color:#64748b;margin-top:4px">Max 500 Mo · Format 9:16 recommandé</div>
         </div>
         <div id="video-preview" style="display:none;margin-top:10px">
-          <div class="vid-preview-wrap">
+          <div style="position:relative;width:124px;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#000;max-height:220px">
             <video id="vid-preview-player" style="width:100%;height:100%;object-fit:cover" muted playsinline></video>
-            <button onclick="removeVideo()" style="position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
+            <button onclick="removeVideo()" style="position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>
             <div id="vid-dur-badge" style="position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.7);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px"></div>
           </div>
-          <div id="vid-ai-status" style="margin-top:8px"></div>
         </div>
       </div>
-
-      <!-- Infos -->
       <div class="form-group">
         <label class="form-label">Titre *</label>
         <input id="pub-title" class="form-input" type="text" placeholder="Ex: iPhone 14 Pro 256Go Noir">
@@ -533,18 +450,15 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" class="form-group">
         <div>
           <label class="form-label">Prix (€) *</label>
-          <div class="price-input">
-            <span>€</span>
-            <input id="pub-price" class="form-input" type="number" placeholder="0">
+          <div style="position:relative">
+            <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:#0ea5e9">€</span>
+            <input id="pub-price" class="form-input" type="number" placeholder="0" style="padding-left:28px">
           </div>
         </div>
         <div>
           <label class="form-label">Condition</label>
           <select id="pub-cond" class="form-select">
-            <option>Neuf</option>
-            <option selected>Très bon état</option>
-            <option>Bon état</option>
-            <option>État correct</option>
+            <option>Neuf</option><option selected>Très bon état</option><option>Bon état</option><option>État correct</option>
           </select>
         </div>
       </div>
@@ -552,36 +466,11 @@
         <label class="form-label">Catégorie</label>
         <select id="pub-cat" class="form-select">
           <option value="">Choisir...</option>
-          <optgroup label="📱 Électronique">
-            <option>Téléphones & objets connectés</option>
-            <option>Ordinateurs</option>
-            <option>Consoles</option>
-            <option>Électroménager</option>
-            <option>Appareils photo</option>
-          </optgroup>
-          <optgroup label="👗 Mode">
-            <option>Mode femme</option>
-            <option>Mode homme</option>
-            <option>Chaussures femme</option>
-            <option>Chaussures homme</option>
-            <option>Montres & Bijoux</option>
-          </optgroup>
-          <optgroup label="🏠 Maison">
-            <option>Ameublement</option>
-            <option>Décoration</option>
-            <option>Jardin</option>
-          </optgroup>
-          <optgroup label="🎭 Loisirs">
-            <option>Instruments de musique</option>
-            <option>Jeux & Jouets</option>
-            <option>Livres</option>
-            <option>Sport</option>
-          </optgroup>
-          <optgroup label="🚗 Autres">
-            <option>Vélos</option>
-            <option>Véhicules</option>
-            <option>Services</option>
-          </optgroup>
+          <optgroup label="📱 Électronique"><option>Téléphones & objets connectés</option><option>Ordinateurs</option><option>Consoles</option><option>Électroménager</option></optgroup>
+          <optgroup label="👗 Mode"><option>Mode femme</option><option>Mode homme</option><option>Chaussures femme</option><option>Chaussures homme</option><option>Montres & Bijoux</option></optgroup>
+          <optgroup label="🏠 Maison"><option>Ameublement</option><option>Décoration</option></optgroup>
+          <optgroup label="🎭 Loisirs"><option>Instruments de musique</option><option>Jeux & Jouets</option><option>Livres</option><option>Sport</option></optgroup>
+          <optgroup label="🚗 Autres"><option>Vélos</option><option>Services</option></optgroup>
         </select>
       </div>
       <div class="form-group">
@@ -592,35 +481,28 @@
         <label class="form-label">Ville</label>
         <input id="pub-city" class="form-input" type="text" placeholder="Paris, Lyon...">
       </div>
-
-      <!-- Livraison -->
       <div class="form-group">
-        <label class="form-label">Options de livraison</label>
-        <div class="ship-toggle-row">
-          <span class="ship-toggle-label">🤝 Remise en main propre</span>
-          <label class="toggle-sw"><input type="checkbox" id="ship-hand" checked><div class="toggle-track"></div></label>
-        </div>
-        <div class="ship-toggle-row">
-          <span class="ship-toggle-label">📦 Colissimo</span>
-          <label class="toggle-sw"><input type="checkbox" id="ship-colis"><div class="toggle-track"></div></label>
-        </div>
-        <div class="ship-toggle-row">
-          <span class="ship-toggle-label">🏪 Mondial Relay</span>
-          <label class="toggle-sw"><input type="checkbox" id="ship-relay"><div class="toggle-track"></div></label>
+        <label class="form-label">Livraison</label>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div class="ship-toggle-row"><span class="ship-toggle-label">🤝 Main propre</span><label class="toggle-sw"><input type="checkbox" id="ship-hand" checked><div class="toggle-track"></div></label></div>
+          <div class="ship-toggle-row"><span class="ship-toggle-label">📦 Colissimo</span><label class="toggle-sw"><input type="checkbox" id="ship-colis"><div class="toggle-track"></div></label></div>
+          <div class="ship-toggle-row"><span class="ship-toggle-label">🏪 Mondial Relay</span><label class="toggle-sw"><input type="checkbox" id="ship-relay"><div class="toggle-track"></div></label></div>
         </div>
       </div>
-
       <button id="pub-btn" class="btn-publish" onclick="publishItem()">
         <i class="fa-solid fa-rocket" style="margin-right:6px"></i>Publier l'annonce
       </button>
-
     </div>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

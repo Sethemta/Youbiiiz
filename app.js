@@ -203,21 +203,38 @@ window.showTab = function(tab) {
 };
 
 window.doLogin = function() {
-  var email = document.getElementById('login-email').value.trim();
-  var pass  = document.getElementById('login-pass').value;
-  if (!email || !pass) { showAuthError('Remplissez tous les champs'); return; }
+  var email = (document.getElementById('login-email') || {}).value || '';
+  var pass  = (document.getElementById('login-pass') || {}).value || '';
+  email = email.trim();
+  if (!email || !pass) { showAuthError('Remplissez email et mot de passe'); return; }
+  if (!auth) { showAuthError('Chargement en cours, réessayez...'); setTimeout(window.doLogin, 800); return; }
   auth.signInWithEmailAndPassword(email, pass)
     .then(function(r) { me = r.user; boot(); })
-    .catch(function(e) { showAuthError(e.message); });
+    .catch(function(e) {
+      var msg = 'Erreur de connexion';
+      if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') msg = 'Email ou mot de passe incorrect';
+      else if (e.code === 'auth/invalid-email') msg = 'Email invalide';
+      else if (e.code === 'auth/too-many-requests') msg = 'Trop de tentatives, réessayez plus tard';
+      showAuthError(msg);
+    });
 };
 
 window.doRegister = function() {
-  var email = document.getElementById('reg-email').value.trim();
-  var pass  = document.getElementById('reg-pass').value;
-  if (!email || !pass) { showAuthError('Remplissez tous les champs'); return; }
+  var email = (document.getElementById('reg-email') || {}).value || '';
+  var pass  = (document.getElementById('reg-pass') || {}).value || '';
+  email = email.trim();
+  if (!email || !pass) { showAuthError('Remplissez email et mot de passe'); return; }
+  if (pass.length < 6) { showAuthError('Mot de passe trop court (6 caractères min)'); return; }
+  if (!auth) { showAuthError('Chargement en cours, réessayez...'); setTimeout(window.doRegister, 800); return; }
   auth.createUserWithEmailAndPassword(email, pass)
     .then(function(r) { me = r.user; boot(); })
-    .catch(function(e) { showAuthError(e.message); });
+    .catch(function(e) {
+      var msg = 'Erreur d\'inscription';
+      if (e.code === 'auth/email-already-in-use') msg = 'Email déjà utilisé, connectez-vous';
+      else if (e.code === 'auth/invalid-email') msg = 'Email invalide';
+      else if (e.code === 'auth/weak-password') msg = 'Mot de passe trop faible';
+      showAuthError(msg);
+    });
 };
 
 window.doAnon = function() {
@@ -234,13 +251,17 @@ window.doLogout = function() {
 
 function showAuthError(msg) {
   var el = document.getElementById('auth-msg');
-  if (el) {
-    el.style.display = 'block';
-    el.style.background = '#fef2f2';
-    el.style.color = '#dc2626';
-    el.style.border = '1px solid #fecaca';
-    el.textContent = msg;
-  }
+  if (!el) return;
+  el.className = 'auth-msg err';
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function showAuthOk(msg) {
+  var el = document.getElementById('auth-msg');
+  if (!el) return;
+  el.className = 'auth-msg ok';
+  el.textContent = msg;
+  el.style.display = 'block';
 }
 
 // ═══════════════════════════════════════════════════════════════
