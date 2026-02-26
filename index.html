@@ -1329,11 +1329,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <!-- MODE VIDÉO -->
         <div id="det-video-mode" style="display:none;width:100%;height:100%;flex-direction:column">
           <div id="det-vid-container" style="position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#000">
-            <!-- Bouton toggle format -->
-            <button onclick="toggleVideoFormat()" id="det-vid-format-btn" style="position:absolute;top:16px;right:56px;z-index:5;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:99px;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;cursor:pointer;display:flex;align-items:center;gap:5px">
-              <i class="fa-solid fa-mobile-screen" style="font-size:10px"></i> 9:16
-            </button>
-            <video id="det-video" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer" playsinline onclick="toggleVideoPlay()"></video>
+<video id="det-video" style="width:auto;height:100%;max-width:calc(100vh * 9 / 16);object-fit:cover;display:block;cursor:pointer;border-radius:16px" playsinline onclick="toggleVideoPlay()"></video>
             <div id="det-vid-overlay" onclick="toggleVideoPlay()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s">
               <div style="width:72px;height:72px;background:rgba(0,0,0,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.3)">
                 <i id="det-vid-play-icon" class="fa-solid fa-play" style="color:#fff;font-size:24px;margin-left:5px"></i>
@@ -3491,7 +3487,7 @@ window.toggleAccordion = function(id) {
 };
 
 
-window._videoFormat = 'cover'; // 'cover' = plein écran, 'contain9:16' = vertical
+window._videoFormat = '9:16'; // 'cover' = plein écran, 'contain9:16' = vertical
 
 window.toggleVideoFormat = function() {
   var vid = document.getElementById('det-video');
@@ -3510,7 +3506,7 @@ window.toggleVideoFormat = function() {
     if (btn) btn.innerHTML = '<i class="fa-solid fa-expand" style="font-size:10px"></i> Plein écran';
   } else {
     // Passe en plein écran cover
-    window._videoFormat = 'cover';
+    window._videoFormat = '9:16';
     vid.style.width = '100%';
     vid.style.height = '100%';
     vid.style.maxWidth = '';
