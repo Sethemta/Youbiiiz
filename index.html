@@ -925,12 +925,6 @@ function doAnon() {
 var FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
 
 // Initialiser Firebase quand le SDK est chargé
-function initFirebase(){
-  if(typeof firebase==="undefined") return setTimeout(initFirebase, 100);
-  var fb=firebase.initializeApp(FB);
-  var auth=firebase.auth();
-  var db=firebase.firestore();
-
 var FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
 var fb=firebase.initializeApp(FB),auth=firebase.auth(),db=firebase.firestore();
 
@@ -2348,7 +2342,6 @@ window.switchView=function(v){
 // MYCARD améliorée avec stats vues
 // ════════════════════════════════════════════════════════
 
-} // end initFirebase
 
 // Démarrer quand le DOM est prêt
 if(document.readyState==="loading"){
