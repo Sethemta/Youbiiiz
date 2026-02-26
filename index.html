@@ -1292,96 +1292,94 @@ header .i-wrapper{gap:2px;margin:0 2px}
 </div>
 
 <!-- DETAIL -->
-<div id="detail-modal" class="fixed inset-0 flex-col" style="display:none;z-index:9999;background:#f8fafc">
+<div id="detail-modal" class="fixed inset-0 flex-col" style="display:none;z-index:9999;background:#07090f">
 
-  <!-- Header -->
-  <div style="background:#fff;border-bottom:1px solid #e2e8f0;padding:10px 24px;display:flex;align-items:center;gap:10px;flex-shrink:0">
-    <button onclick="closeDetail()" style="width:34px;height:34px;background:#f1f5f9;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-      <i class="fa-solid fa-arrow-left" style="color:#0f172a;font-size:12px"></i>
+  <!-- ═══ HEADER FLOTTANT PILL ═══ -->
+  <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:8px 16px 8px 10px">
+    <button onclick="closeDetail()" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <i class="fa-solid fa-arrow-left" style="color:#fff;font-size:11px"></i>
     </button>
-    <p style="font-weight:700;font-size:14px;color:#0f172a">Retour</p>
-    <button onclick="openShareModal()" style="width:34px;height:34px;background:#f1f5f9;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center">
-      <i class="fa-solid fa-share-nodes" style="color:#0ea5e9;font-size:12px"></i>
+    <span style="color:rgba(255,255,255,.5);font-size:12px;padding:0 4px">Retour</span>
+    <div style="width:1px;height:16px;background:rgba(255,255,255,.15)"></div>
+    <button onclick="toggleFavDetail()" id="det-fav-btn" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+      <i id="det-fav-icon" class="fa-regular fa-heart" style="color:#fff;font-size:11px"></i>
     </button>
-    <button onclick="toggleFavDetail()" id="det-fav-btn" style="width:34px;height:34px;background:#f1f5f9;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center">
-      <i id="det-fav-icon" class="fa-regular fa-heart" style="color:#64748b;font-size:12px"></i>
+    <button onclick="openShareModal()" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+      <i class="fa-solid fa-share-nodes" style="color:#fff;font-size:11px"></i>
     </button>
-    <button onclick="openReport()" style="width:34px;height:34px;background:#f1f5f9;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center">
+    <button onclick="openReport()" style="width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
       <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px"><i class="fa-solid fa-triangle-exclamation" style="color:#0ea5e9;font-size:15px"></i><span style="position:absolute;font-size:7px;font-weight:900;color:#ef4444;line-height:1;margin-top:2px">!</span></span>
     </button>
   </div>
 
-  <!-- CORPS 3 COLONNES -->
-  <div style="flex:1;display:grid;grid-template-columns:2fr 2fr 1.2fr;gap:20px;padding:20px 24px;overflow:hidden;min-height:0">
+  <!-- ═══ CORPS PRINCIPAL 2 ZONES ═══ -->
+  <div style="flex:1;display:grid;grid-template-columns:1fr 420px;overflow:hidden;min-height:0">
 
-        <!-- ══ COL 1 : vignette au-dessus, carrousel en dessous ══ -->
-    <div style="display:flex;flex-direction:column;gap:10px;min-height:0;overflow:hidden">
+    <!-- ══════════════════════════════
+         ZONE GAUCHE : MÉDIA IMMERSIF
+    ══════════════════════════════ -->
+    <div style="position:relative;overflow:hidden;background:#000">
 
-      <!-- Titre + vignette côte à côte -->
-      <div style="display:flex;align-items:center;gap:14px;flex-shrink:0">
-        <!-- Titre à gauche -->
-        <div style="flex:1;min-width:0">
-          <p id="det-title-col" style="font-weight:900;font-size:32px;color:#0f172a;line-height:1.2;word-break:break-word;text-align:center"></p>
-        </div>
-        <!-- Vignette à droite -->
-        <div id="det-thumb-top" style="width:180px;height:180px;min-width:180px;border-radius:18px;overflow:hidden;border:3px solid #0ea5e9;box-shadow:0 4px 16px rgba(14,165,233,.35);background:#e2e8f0;flex-shrink:0"></div>
+      <!-- Titre + vignette au dessus -->
+      <div style="position:absolute;top:70px;left:0;right:0;z-index:10;padding:0 28px;display:flex;align-items:center;gap:16px">
+        <p id="det-title-col" style="flex:1;font-weight:900;font-size:28px;color:#fff;line-height:1.2;text-shadow:0 2px 20px rgba(0,0,0,.8)"></p>
+        <div id="det-thumb-top" style="width:90px;height:90px;min-width:90px;border-radius:16px;overflow:hidden;border:2.5px solid #0ea5e9;box-shadow:0 0 0 4px rgba(14,165,233,.25);background:#1e293b;flex-shrink:0"></div>
       </div>
 
-      <!-- ══ ZONE MÉDIA : vidéo ou carrousel photos ══ -->
-      <div id="det-media-zone" style="position:relative;border-radius:20px;overflow:hidden;background:#0f172a;flex:1;min-height:0;box-shadow:0 6px 28px rgba(0,0,0,.18)">
+      <!-- Zone média (vidéo ou photos) -->
+      <div id="det-media-zone" style="position:absolute;inset:0;background:#000">
 
-        <!-- MODE VIDÉO (caché si pas de vidéo) -->
+        <!-- MODE VIDÉO -->
         <div id="det-video-mode" style="display:none;width:100%;height:100%;flex-direction:column">
-          <!-- Lecteur vidéo -->
-          <div style="position:relative;flex:1;min-height:0;background:#000">
-            <video id="det-video" style="width:100%;height:100%;object-fit:contain;display:block;cursor:pointer" playsinline onclick="toggleVideoPlay()"></video>
-            <!-- Overlay play/pause -->
+          <div style="position:relative;flex:1;min-height:0">
+            <video id="det-video" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer" playsinline onclick="toggleVideoPlay()"></video>
             <div id="det-vid-overlay" onclick="toggleVideoPlay()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s">
-              <div style="width:64px;height:64px;background:rgba(0,0,0,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
-                <i id="det-vid-play-icon" class="fa-solid fa-play" style="color:#fff;font-size:22px;margin-left:4px"></i>
+              <div style="width:72px;height:72px;background:rgba(0,0,0,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.3)">
+                <i id="det-vid-play-icon" class="fa-solid fa-play" style="color:#fff;font-size:24px;margin-left:5px"></i>
               </div>
             </div>
-            <!-- Barre de contrôles vidéo -->
-            <div id="det-vid-controls" style="position:absolute;bottom:0;left:0;right:0;padding:8px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.7));display:flex;flex-direction:column;gap:6px;z-index:3">
-              <!-- Progress bar -->
-              <input id="det-vid-progress" type="range" min="0" max="100" value="0" oninput="seekVideo(this.value)" style="width:100%;height:3px;accent-color:#0ea5e9;cursor:pointer;background:rgba(255,255,255,.3)">
+            <!-- Gradient bas -->
+            <div style="position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(transparent,rgba(0,0,0,.85));pointer-events:none"></div>
+            <!-- Controls -->
+            <div id="det-vid-controls" style="position:absolute;bottom:0;left:0;right:0;padding:10px 16px 14px;z-index:3;display:flex;flex-direction:column;gap:7px">
+              <input id="det-vid-progress" type="range" min="0" max="100" value="0" oninput="seekVideo(this.value)" style="width:100%;height:3px;accent-color:#0ea5e9;cursor:pointer">
               <div style="display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:8px">
-                  <button onclick="toggleVideoPlay()" style="background:none;border:none;cursor:pointer;padding:2px">
-                    <i id="det-vid-btn-icon" class="fa-solid fa-play" style="color:#fff;font-size:13px"></i>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <button onclick="toggleVideoPlay()" style="background:none;border:none;cursor:pointer">
+                    <i id="det-vid-btn-icon" class="fa-solid fa-play" style="color:#fff;font-size:14px"></i>
                   </button>
-                  <span id="det-vid-time" style="color:rgba(255,255,255,.8);font-size:10px;font-family:monospace">0:00 / 0:00</span>
+                  <span id="det-vid-time" style="color:rgba(255,255,255,.7);font-size:10px;font-family:monospace">0:00 / 0:00</span>
                 </div>
-                <div style="display:flex;align-items:center;gap:8px">
-                  <button onclick="toggleVideoMute()" style="background:none;border:none;cursor:pointer;padding:2px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <button onclick="toggleVideoMute()" style="background:none;border:none;cursor:pointer">
                     <i id="det-vid-mute-icon" class="fa-solid fa-volume-high" style="color:#fff;font-size:12px"></i>
                   </button>
-                  <button onclick="toggleVideoFS()" style="background:none;border:none;cursor:pointer;padding:2px">
+                  <button onclick="toggleVideoFS()" style="background:none;border:none;cursor:pointer">
                     <i class="fa-solid fa-expand" style="color:#fff;font-size:12px"></i>
                   </button>
                 </div>
               </div>
             </div>
-            <!-- Badge VIDÉO -->
-            <div style="position:absolute;top:10px;left:10px;background:rgba(14,165,233,.9);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:3;letter-spacing:.05em">
-              <i class="fa-solid fa-video" style="font-size:9px"></i> VIDÉO
+            <div style="position:absolute;top:16px;left:16px;background:rgba(14,165,233,.9);color:#fff;font-size:9px;font-weight:900;padding:3px 10px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:4;letter-spacing:.08em">
+              <i class="fa-solid fa-video" style="font-size:8px"></i> VIDÉO
             </div>
-            <!-- Badge vues -->
-            <div id="det-views-badge" class="hidden" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.48);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:3">
-              <i class="fa-solid fa-eye" style="font-size:9px"></i><span id="det-views-count">0</span> vues
+            <div id="det-views-badge" class="hidden" style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,.5);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:4">
+              <i class="fa-solid fa-eye" style="font-size:8px"></i><span id="det-views-count">0</span>
             </div>
           </div>
-          <!-- Strip photos sous la vidéo -->
-          <div id="det-photo-strip" style="display:flex;gap:6px;padding:8px;background:#1e293b;overflow-x:auto;flex-shrink:0"></div>
+          <!-- Strip photos -->
+          <div id="det-photo-strip" style="display:flex;gap:8px;padding:10px 16px;background:rgba(0,0,0,.6);overflow-x:auto;flex-shrink:0;backdrop-filter:blur(10px)"></div>
         </div>
 
-        <!-- MODE PHOTOS (carrousel classique, caché si vidéo présente) -->
+        <!-- MODE PHOTOS -->
         <div id="det-photo-mode" style="display:flex;width:100%;height:100%;flex-direction:column">
           <div style="position:relative;flex:1;min-height:0">
             <div id="det-carousel-track" style="display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.16,1,.3,1)"></div>
-            <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-left"></i></button>
-            <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-right"></i></button>
-            <div id="det-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2"></div>
+            <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:14px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-left"></i></button>
+            <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-right"></i></button>
+            <div id="det-dots" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2"></div>
+            <!-- Gradient bas sur photos -->
+            <div style="position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(transparent,rgba(0,0,0,.5));pointer-events:none"></div>
           </div>
         </div>
 
@@ -1391,107 +1389,117 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
     </div>
 
-    <!-- ══ COL 2 : INFOS scrollables ══ -->
-    <div class="no-sb" style="overflow-y:auto;display:flex;flex-direction:column;gap:16px;min-height:0;padding-right:4px">
+    <!-- ══════════════════════════════
+         ZONE DROITE : PANNEAU INFO
+    ══════════════════════════════ -->
+    <div class="no-sb" style="overflow-y:auto;background:#0d1117;border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:0">
 
-      <div>
-        <p id="det-price" style="color:#0ea5e9;font-weight:900;font-size:52px;line-height:1;margin-bottom:10px"></p>
-        
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
-          <span id="det-cat"  style="font-size:12px;font-weight:700;color:#0ea5e9;background:#e0f2fe;padding:5px 12px;border-radius:99px"></span>
-          <span id="det-cond" style="font-size:12px;font-weight:700;color:#334155;background:#f1f5f9;padding:5px 12px;border-radius:99px;border:1px solid #e2e8f0"></span>
-          <span id="det-city-tag" class="hidden" style="font-size:12px;font-weight:700;color:#475569;background:#f1f5f9;padding:5px 12px;border-radius:99px;border:1px solid #e2e8f0">
+      <!-- PRIX HERO -->
+      <div style="padding:72px 28px 20px;background:linear-gradient(180deg,rgba(14,165,233,.08) 0%,transparent 100%)">
+        <p id="det-price" style="font-weight:900;font-size:52px;line-height:1;color:#0ea5e9;letter-spacing:-1px;margin-bottom:4px"></p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+          <span id="det-cat"  style="font-size:11px;font-weight:700;color:#0ea5e9;background:rgba(14,165,233,.12);padding:4px 11px;border-radius:99px;border:1px solid rgba(14,165,233,.25)"></span>
+          <span id="det-cond" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);padding:4px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.1)"></span>
+          <span id="det-city-tag" class="hidden" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);padding:4px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">
             <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:9px;margin-right:3px"></i><span id="det-city-val"></span>
           </span>
           <span id="det-troc-tag" class="hidden troc-badge">🔄 Échange OK</span>
         </div>
-        <p id="det-brand" style="font-size:12px;color:#94a3b8;font-family:monospace"></p>
+        <p id="det-brand" style="font-size:11px;color:rgba(255,255,255,.3);font-family:monospace"></p>
         <div id="det-price-range" class="hidden" style="margin-top:8px"></div>
-        <div id="det-fraud-warn" class="fraud-warn hidden" style="margin-top:10px">
+        <div id="det-fraud-warn" class="fraud-warn hidden" style="margin-top:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:10px 14px">
           <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;flex-shrink:0"></i>
-          <div><p style="font-size:13px;font-weight:700;color:#dc2626">Prix inhabituel</p><p style="font-size:11px;color:#ef4444;margin-top:2px">Prix très bas par rapport au marché.</p></div>
+          <div><p style="font-size:12px;font-weight:700;color:#ef4444">Prix inhabituel</p><p style="font-size:11px;color:rgba(239,68,68,.8);margin-top:2px">Prix très bas par rapport au marché.</p></div>
         </div>
       </div>
 
-      <div style="height:1px;background:#e2e8f0"></div>
-
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button id="buy-btn" style="width:100%;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(14,165,233,.3)">
-          <i class="fa-brands fa-stripe" style="font-size:12px"></i> Acheter maintenant
+      <!-- BOUTONS -->
+      <div style="padding:0 24px 20px;display:flex;flex-direction:column;gap:8px">
+        <button id="buy-btn" style="width:100%;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 24px rgba(14,165,233,.35)">
+          <i class="fa-brands fa-stripe" style="font-size:17px"></i> Acheter maintenant
         </button>
         <div style="display:flex;gap:8px">
-          <button id="contact-btn" style="flex:1;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:#0f172a;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+          <button id="contact-btn" style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
             <i class="fa-solid fa-message" style="font-size:11px;color:#0ea5e9"></i> Contacter
           </button>
-          <button onclick="openOffer()" style="flex:1;background:#fff8f0;border:1.5px solid #fed7aa;border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:#ea580c;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+          <button onclick="openOffer()" style="flex:1;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:#fb923c;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
             <i class="fa-solid fa-handshake" style="font-size:11px"></i> Faire offre
           </button>
         </div>
       </div>
 
-      <div style="height:1px;background:#e2e8f0"></div>
+      <!-- SÉPARATEUR -->
+      <div style="height:1px;background:rgba(255,255,255,.06);margin:0 24px"></div>
 
-      <div>
-        <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Description</p>
-        <p id="det-desc" style="font-size:14px;color:#334155;line-height:1.75"></p>
+      <!-- DESCRIPTION -->
+      <div style="padding:20px 24px">
+        <p style="font-size:10px;font-weight:800;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px">Description</p>
+        <p id="det-desc" style="font-size:13px;color:rgba(255,255,255,.7);line-height:1.75"></p>
       </div>
 
-      <div>
-        <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Livraison</p>
+      <!-- LIVRAISON -->
+      <div style="padding:0 24px 20px">
+        <p style="font-size:10px;font-weight:800;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px">Livraison</p>
         <div id="det-ship" style="display:flex;flex-wrap:wrap;gap:8px"></div>
       </div>
 
-      <div style="background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <!-- SÉPARATEUR -->
+      <div style="height:1px;background:rgba(255,255,255,.06);margin:0 24px"></div>
+
+      <!-- SCORE DE CONFIANCE -->
+      <div style="padding:20px 24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
           <div style="display:flex;align-items:center;gap:6px">
-            <p style="font-size:13px;font-weight:800;color:#0f172a">Score de confiance</p>
-            <span title="Analyse automatique" style="width:17px;height:17px;background:#e0f2fe;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#0ea5e9;cursor:help">?</span>
+            <p style="font-size:12px;font-weight:800;color:rgba(255,255,255,.8)">Score de confiance</p>
+            <span title="Analyse automatique" style="width:16px;height:16px;background:rgba(14,165,233,.15);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#0ea5e9;cursor:help">?</span>
           </div>
           <span id="det-trust-label" style="font-size:12px;font-weight:800"></span>
         </div>
-        <p style="font-size:11px;color:#94a3b8;margin-bottom:10px">Qualité analysée automatiquement</p>
-        <div class="trust-bar"><div id="det-trust-fill" class="trust-fill" style="width:0%"></div></div>
-        <div id="det-trust-details" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"></div>
+        <div style="height:3px;background:rgba(255,255,255,.08);border-radius:99px;margin-bottom:10px"><div id="det-trust-fill" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#0ea5e9,#6366f1);width:0%;transition:width .6s ease"></div></div>
+        <div id="det-trust-details" style="display:flex;gap:6px;flex-wrap:wrap"></div>
       </div>
 
-      <div id="det-seller-card" onclick="openSellerProfile()" style="background:#fff;border-radius:16px;padding:16px;border:1px solid #e2e8f0;cursor:pointer">
-        <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Vendeur</p>
+      <!-- CARTE -->
+      <div style="padding:0 24px 20px">
+        <p style="font-size:10px;font-weight:800;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px">Localisation</p>
+        <div style="border-radius:16px;overflow:hidden;position:relative;height:180px">
+          <div id="det-map" style="width:100%;height:100%"></div>
+          <div id="det-loc-badge" style="position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.93);border-radius:99px;padding:4px 10px;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:500">
+            <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:10px"></i>
+            <span id="det-loc-city" style="font-size:11px;font-weight:700;color:#0f172a"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SÉPARATEUR -->
+      <div style="height:1px;background:rgba(255,255,255,.06);margin:0 24px"></div>
+
+      <!-- VENDEUR -->
+      <div id="det-seller-card" onclick="openSellerProfile()" style="padding:20px 24px;cursor:pointer">
+        <p style="font-size:10px;font-weight:800;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px">Vendeur</p>
         <div style="display:flex;align-items:center;gap:12px">
           <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#0ea5e9,#6366f1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
             <i class="fa-solid fa-user" style="color:#fff;font-size:15px"></i>
           </div>
           <div style="flex:1">
             <div style="display:flex;align-items:center;gap:6px">
-              <p id="det-seller" style="font-weight:700;font-size:14px;color:#0f172a"></p>
+              <p id="det-seller" style="font-weight:700;font-size:14px;color:#fff"></p>
               <span id="det-verified" class="verified-badge hidden"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
             </div>
-            <p id="det-rating" style="font-size:11px;color:#f59e0b;margin-top:3px">Nouveau vendeur</p>
+            <p id="det-rating" style="font-size:11px;color:#f59e0b;margin-top:2px">Nouveau vendeur</p>
           </div>
-          <i class="fa-solid fa-chevron-right" style="color:#cbd5e1;font-size:12px"></i>
+          <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,.2);font-size:11px"></i>
         </div>
       </div>
 
-      <div style="padding-bottom:12px">
-        <p style="font-size:11px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Annonces similaires</p>
-        <div id="det-similar" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:6px"></div>
+      <!-- ANNONCES SIMILAIRES -->
+      <div style="padding:0 24px 32px">
+        <div style="height:1px;background:rgba(255,255,255,.06);margin-bottom:20px"></div>
+        <p style="font-size:10px;font-weight:800;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px">Annonces similaires</p>
+        <div id="det-similar" style="display:flex;gap:12px;overflow-x:auto;padding-bottom:6px"></div>
       </div>
 
     </div>
-
-    <!-- ══ COL 3 : CARTE pleine hauteur ══ -->
-    <div style="display:flex;flex-direction:column;min-height:0;overflow:hidden">
-      <div style="border-radius:20px;overflow:hidden;background:#e2e8f0;flex:1;position:relative;min-height:300px;box-shadow:0 4px 24px rgba(0,0,0,.09)">
-        <div id="det-map" style="width:100%;height:100%;min-height:300px"></div>
-        <div id="det-loc-badge" style="position:absolute;bottom:12px;left:12px;background:rgba(255,255,255,.95);border-radius:99px;padding:5px 12px;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:500">
-          <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:11px"></i>
-          <span id="det-loc-city" style="font-size:12px;font-weight:700;color:#0f172a"></span>
-        </div>
-        <div style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,.88);border-radius:10px;padding:4px 10px;font-size:11px;font-weight:600;color:#64748b;z-index:500">
-          <i class="fa-solid fa-circle-info" style="color:#0ea5e9;margin-right:4px"></i>Zone approx.
-        </div>
-      </div>
-    </div>
-
   </div>
 
 </div>
@@ -3099,7 +3107,12 @@ function renderSimilar(item){
   if(!similar.length){el.innerHTML='<p style="font-size:12px;color:#94a3b8;padding:8px 0">Aucune annonce similaire</p>';return;}
   el.innerHTML=similar.map(function(i){
     var sid=i.id,simg=i.imageUrl||'',sname=i.itemName||'Objet',sprice=i.price||0;
-    return '<div onclick="openDetail(\'' +sid+ '\')" style="flex-shrink:0;width:240px;cursor:pointer"><div style="width:240px;height:200px;background:#f1f5f9;border-radius:14px;overflow:hidden;margin-bottom:6px;border:1px solid #e2e8f0"><img src="' +simg+ '" style="width:100%;height:100%;object-fit:cover;display:block"></div><p style="font-size:12px;font-weight:700;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' +sname+ '</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">' +sprice+ '€</p></div>';
+    var h='<div onclick="openDetail(\''+sid+'\')" style="flex-shrink:0;width:200px;cursor:pointer">';
+    h+='<div style="width:200px;height:160px;background:#1e293b;border-radius:14px;overflow:hidden;margin-bottom:8px;border:1px solid rgba(255,255,255,.08)">';
+    h+='<img src="'+simg+'" style="width:100%;height:100%;object-fit:cover;display:block"></div>';
+    h+='<p style="font-size:12px;font-weight:700;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+sname+'</p>';
+    h+='<p style="font-size:14px;font-weight:900;color:#0ea5e9">'+sprice+'€</p></div>';
+    return h;
   }).join('');
 }
 
