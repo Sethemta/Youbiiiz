@@ -1276,7 +1276,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
           <div class="bg-slate-800 rounded-xl p-3 border border-slate-600/30">
             <p class="text-[17px] text-slate-400 uppercase font-bold mb-1">Etat</p>
-            <p id="ai-cond" class="text-sm font-extrabold text-green-400">-</p>
+            <p id="ai-cat" style="display:none"></span><span id="ai-cond" class="text-sm font-extrabold text-green-400">-</p>
           </div>
         </div>
         <!-- Prix marché IA -->
@@ -2230,15 +2230,17 @@ async function callGemini(b64){
   }catch(e){toast("IA:"+e.message);resetScan();}
 }
 function showResult(d,img){
-  document.getElementById("scan-spin").classList.add("hidden");
-  document.getElementById("scan-line").classList.add("hidden");
-  document.getElementById("res-thumb").src=img;
-  document.getElementById("ai-name").value=d.title||"";
-  document.getElementById("ai-price").innerText=(d.price||0)+"euro";
-  document.getElementById("ai-cat").innerText=d.category||"";
-  document.getElementById("ai-desc").value=d.description||"";
-  document.getElementById("ai-cond").innerText=d.condition||"";
-  document.getElementById("ai-brand").innerText=d.brand||"-";
+  function _set(id,val,prop){var e=document.getElementById(id);if(e){if(prop==="value")e.value=val;else e.innerText=val;}}
+  function _cls(id,c){var e=document.getElementById(id);if(e)e.classList.add(c);}
+  _cls("scan-spin","hidden");
+  _cls("scan-line","hidden");
+  var rt=document.getElementById("res-thumb");if(rt)rt.src=img;
+  _set("ai-name",d.title||"","value");
+  _set("ai-price",(d.price||0)+"euro","text");
+  _set("ai-cat",d.category||"","text");
+  _set("ai-desc",d.description||"","value");
+  _set("ai-cond",d.condition||"","text");
+  _set("ai-brand",d.brand||"-","text");
   document.getElementById("ai-model").innerText=d.model||"-";
   scanData={itemName:d.title,price:d.price,category:d.category,condition:d.condition||"Bon etat",description:d.description||"",brand:d.brand||"",model:d.model||"",imageUrl:img,shipping:[]};
   document.getElementById("step-photo").classList.add("hidden");
