@@ -1328,7 +1328,11 @@ header .i-wrapper{gap:2px;margin:0 2px}
       <div id="det-media-zone" style="position:absolute;inset:0;background:#000">
         <!-- MODE VIDÉO -->
         <div id="det-video-mode" style="display:none;width:100%;height:100%;flex-direction:column">
-          <div style="position:relative;flex:1;min-height:0">
+          <div id="det-vid-container" style="position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#000">
+            <!-- Bouton toggle format -->
+            <button onclick="toggleVideoFormat()" id="det-vid-format-btn" style="position:absolute;top:16px;right:56px;z-index:5;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:99px;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;cursor:pointer;display:flex;align-items:center;gap:5px">
+              <i class="fa-solid fa-mobile-screen" style="font-size:10px"></i> 9:16
+            </button>
             <video id="det-video" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer" playsinline onclick="toggleVideoPlay()"></video>
             <div id="det-vid-overlay" onclick="toggleVideoPlay()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s">
               <div style="width:72px;height:72px;background:rgba(0,0,0,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.3)">
@@ -1483,10 +1487,21 @@ header .i-wrapper{gap:2px;margin:0 2px}
 
       </div>
 
-      <!-- ANNONCES SIMILAIRES -->
+      <!-- ANNONCES SIMILAIRES → bouton -->
       <div style="padding:28px 24px 40px">
-        <p style="font-size:10px;font-weight:800;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px">Similaires</p>
-        <div id="det-similar" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+        <button onclick="openSimilarPage()" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(14,165,233,.12);display:flex;align-items:center;justify-content:center">
+              <i class="fa-solid fa-layer-group" style="color:#0ea5e9;font-size:13px"></i>
+            </div>
+            <div style="text-align:left">
+              <p style="font-size:13px;font-weight:700;color:#fff">Annonces similaires</p>
+              <p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:1px">Voir tous les articles proches</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color:rgba(255,255,255,.3);font-size:12px"></i>
+        </button>
+        <div id="det-similar" style="display:none"></div>
       </div>
 
       <!-- hidden fields requis par le JS -->
@@ -3475,6 +3490,74 @@ window.toggleAccordion = function(id) {
   }
 };
 
+
+window._videoFormat = 'cover'; // 'cover' = plein écran, 'contain9:16' = vertical
+
+window.toggleVideoFormat = function() {
+  var vid = document.getElementById('det-video');
+  var btn = document.getElementById('det-vid-format-btn');
+  var container = document.getElementById('det-vid-container');
+  if (!vid) return;
+  if (window._videoFormat === 'cover') {
+    // Passe en 9:16 vertical centré
+    window._videoFormat = '9:16';
+    vid.style.width = 'auto';
+    vid.style.height = '100%';
+    vid.style.maxWidth = 'calc(100vh * 9 / 16)';
+    vid.style.objectFit = 'cover';
+    vid.style.borderRadius = '16px';
+    if (container) container.style.background = '#000';
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-expand" style="font-size:10px"></i> Plein écran';
+  } else {
+    // Passe en plein écran cover
+    window._videoFormat = 'cover';
+    vid.style.width = '100%';
+    vid.style.height = '100%';
+    vid.style.maxWidth = '';
+    vid.style.objectFit = 'cover';
+    vid.style.borderRadius = '0';
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-mobile-screen" style="font-size:10px"></i> 9:16';
+  }
+};
+
+window.openSimilarPage = function() {
+  if (!curItem) return;
+  var similar = items.filter(function(i) {
+    if (i.id === curItem.id) return false;
+    return (i.category||'').toLowerCase() === (curItem.category||'').toLowerCase();
+  });
+  if (!similar.length) similar = items.filter(function(i) { return i.id !== curItem.id; });
+
+  var existing = document.getElementById('similar-page');
+  if (existing) existing.remove();
+
+  var page = document.createElement('div');
+  page.id = 'similar-page';
+  page.style.cssText = 'position:fixed;inset:0;z-index:10000;background:#07090f;overflow-y:auto;display:flex;flex-direction:column';
+
+  var html = '<div style="padding:20px 24px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;background:#07090f;z-index:2">';
+  html += '<button onclick="closeSimilarPage()" style="width:36px;height:36px;background:rgba(255,255,255,.08);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class=\"fa-solid fa-arrow-left\" style=\"color:#fff;font-size:12px\"></i></button>';
+  html += '<div><p style="font-size:16px;font-weight:800;color:#fff">Annonces similaires</p>';
+  html += '<p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">' + similar.length + ' résultats</p></div></div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:20px 24px 40px">';
+
+  similar.forEach(function(i) {
+    html += '<div style="cursor:pointer" onclick="closeSimilarPage();openDetail(\'' + i.id + '\')">';
+    html += '<div style="aspect-ratio:1/1;background:#1e293b;border-radius:16px;overflow:hidden;margin-bottom:8px;border:1px solid rgba(255,255,255,.07)">';
+    html += '<img src="' + (i.imageUrl||'') + '" style="width:100%;height:100%;object-fit:cover;display:block"></div>';
+    if (i.videoUrl) html += '<div style="display:inline-flex;align-items:center;gap:3px;background:rgba(14,165,233,.15);border-radius:99px;padding:2px 8px;margin-bottom:4px"><i class=\"fa-solid fa-video\" style=\"color:#0ea5e9;font-size:8px\"></i><span style=\"font-size:9px;font-weight:800;color:#0ea5e9\">VIDÉO</span></div><br>';
+    html += '<p style="font-size:12px;font-weight:700;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (i.itemName||'') + '</p>';
+    html += '<p style="font-size:15px;font-weight:900;color:#0ea5e9">' + (i.price||0) + '€</p>';
+    if (i.condition) html += '<p style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">' + i.condition + '</p>';
+    html += '</div>';
+  });
+
+  html += '</div>';
+  page.innerHTML = html;
+  document.body.appendChild(page);
+};
+
+window.closeSimilarPage=function(){var p=document.getElementById('similar-page');if(p)p.remove();};
 </script>
 </body>
 </html>
