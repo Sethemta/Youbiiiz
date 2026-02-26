@@ -1322,15 +1322,64 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <div id="det-thumb-top" style="width:180px;height:180px;border-radius:18px;overflow:hidden;border:3px solid #0ea5e9;box-shadow:0 4px 16px rgba(14,165,233,.35);background:#e2e8f0;flex-shrink:0"></div>
       </div>
 
-      <!-- Carrousel SOUS la vignette, aucun chevauchement -->
-      <div style="position:relative;border-radius:20px;overflow:hidden;background:#e8edf2;flex:1;min-height:0;box-shadow:0 6px 28px rgba(0,0,0,.11)">
-        <div id="det-carousel-track" style="display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.16,1,.3,1)"></div>
-        <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-left"></i></button>
-        <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-right"></i></button>
-        <div id="det-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2"></div>
-        <div id="det-views-badge" class="hidden" style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:2">
-          <i class="fa-solid fa-eye" style="font-size:9px"></i><span id="det-views-count">0</span> vues
+      <!-- ══ ZONE MÉDIA : vidéo ou carrousel photos ══ -->
+      <div id="det-media-zone" style="position:relative;border-radius:20px;overflow:hidden;background:#0f172a;flex:1;min-height:0;box-shadow:0 6px 28px rgba(0,0,0,.18)">
+
+        <!-- MODE VIDÉO (caché si pas de vidéo) -->
+        <div id="det-video-mode" style="display:none;width:100%;height:100%;flex-direction:column">
+          <!-- Lecteur vidéo -->
+          <div style="position:relative;flex:1;min-height:0;background:#000">
+            <video id="det-video" style="width:100%;height:100%;object-fit:contain;display:block;cursor:pointer" playsinline onclick="toggleVideoPlay()"></video>
+            <!-- Overlay play/pause -->
+            <div id="det-vid-overlay" onclick="toggleVideoPlay()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s">
+              <div style="width:64px;height:64px;background:rgba(0,0,0,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+                <i id="det-vid-play-icon" class="fa-solid fa-play" style="color:#fff;font-size:22px;margin-left:4px"></i>
+              </div>
+            </div>
+            <!-- Barre de contrôles vidéo -->
+            <div id="det-vid-controls" style="position:absolute;bottom:0;left:0;right:0;padding:8px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.7));display:flex;flex-direction:column;gap:6px;z-index:3">
+              <!-- Progress bar -->
+              <input id="det-vid-progress" type="range" min="0" max="100" value="0" oninput="seekVideo(this.value)" style="width:100%;height:3px;accent-color:#0ea5e9;cursor:pointer;background:rgba(255,255,255,.3)">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <button onclick="toggleVideoPlay()" style="background:none;border:none;cursor:pointer;padding:2px">
+                    <i id="det-vid-btn-icon" class="fa-solid fa-play" style="color:#fff;font-size:13px"></i>
+                  </button>
+                  <span id="det-vid-time" style="color:rgba(255,255,255,.8);font-size:10px;font-family:monospace">0:00 / 0:00</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <button onclick="toggleVideoMute()" style="background:none;border:none;cursor:pointer;padding:2px">
+                    <i id="det-vid-mute-icon" class="fa-solid fa-volume-high" style="color:#fff;font-size:12px"></i>
+                  </button>
+                  <button onclick="toggleVideoFS()" style="background:none;border:none;cursor:pointer;padding:2px">
+                    <i class="fa-solid fa-expand" style="color:#fff;font-size:12px"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Badge VIDÉO -->
+            <div style="position:absolute;top:10px;left:10px;background:rgba(14,165,233,.9);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:3;letter-spacing:.05em">
+              <i class="fa-solid fa-video" style="font-size:9px"></i> VIDÉO
+            </div>
+            <!-- Badge vues -->
+            <div id="det-views-badge" class="hidden" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.48);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:3">
+              <i class="fa-solid fa-eye" style="font-size:9px"></i><span id="det-views-count">0</span> vues
+            </div>
+          </div>
+          <!-- Strip photos sous la vidéo -->
+          <div id="det-photo-strip" style="display:flex;gap:6px;padding:8px;background:#1e293b;overflow-x:auto;flex-shrink:0"></div>
         </div>
+
+        <!-- MODE PHOTOS (carrousel classique, caché si vidéo présente) -->
+        <div id="det-photo-mode" style="display:flex;width:100%;height:100%;flex-direction:column">
+          <div style="position:relative;flex:1;min-height:0">
+            <div id="det-carousel-track" style="display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.16,1,.3,1)"></div>
+            <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-left"></i></button>
+            <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:rgba(255,255,255,.95);border:none;border-radius:50%;color:#0f172a;font-size:11px;cursor:pointer;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.15)"><i class="fa-solid fa-chevron-right"></i></button>
+            <div id="det-dots" style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2"></div>
+          </div>
+        </div>
+
       </div>
       <div id="det-thumbs" style="display:none"></div>
       <div id="det-extra-thumbs" style="display:none"></div>
@@ -1870,11 +1919,11 @@ function showPushBanner(title,body){
 }
 
 var DEMO_ITEMS=[
-  {id:"d1",userId:"demo",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go Noir. Batterie 91%, aucune rayure. Vendu avec chargeur MagSafe.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",lat:48.8566,lng:2.3522,imageUrl:"https://picsum.photos/seed/iphone14/400/400",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],createdAt:{seconds:Date.now()/1000-100},views:42},
+  {id:"d1",userId:"demo",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go Noir. Batterie 91%, aucune rayure. Vendu avec chargeur MagSafe.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",lat:48.8566,lng:2.3522,imageUrl:"https://picsum.photos/seed/iphone14/400/400",videoUrl:"https://www.w3schools.com/html/mov_bbb.mp4",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],createdAt:{seconds:Date.now()/1000-100},views:42},
   {id:"d2",userId:"demo",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",description:"PS5 disc avec 2 manettes DualSense. Peu utilisée, parfait état.",brand:"Sony",model:"PS5",city:"Lyon",lat:45.764,lng:4.835,imageUrl:"https://picsum.photos/seed/ps5demo/400/400",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],createdAt:{seconds:Date.now()/1000-200},views:89},
-  {id:"d3",userId:"demo",itemName:"MacBook Air M2 13 pouces",price:950,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 2022, 8Go RAM, 256Go SSD. Jamais ouvert.",brand:"Apple",model:"MacBook Air M2",city:"Bordeaux",lat:44.837,lng:-0.579,imageUrl:"https://picsum.photos/seed/macbookm2/400/400",shipping:[{method:"Colissimo",price:15}],createdAt:{seconds:Date.now()/1000-300},views:167},
+  {id:"d3",userId:"demo",itemName:"MacBook Air M2 13 pouces",price:950,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 2022, 8Go RAM, 256Go SSD. Jamais ouvert.",brand:"Apple",model:"MacBook Air M2",city:"Bordeaux",lat:44.837,lng:-0.579,imageUrl:"https://picsum.photos/seed/macbookm2/400/400",videoUrl:"https://www.w3schools.com/html/movie.mp4",shipping:[{method:"Colissimo",price:15}],createdAt:{seconds:Date.now()/1000-300},views:167},
   {id:"d4",userId:"demo",itemName:"Vélo électrique Decathlon",price:680,category:"Vélos",condition:"Bon état",description:"Vélo électrique autonomie 60km. 2 saisons, pneus neufs.",brand:"Decathlon",model:"E-ST500",city:"Marseille",lat:43.296,lng:5.369,imageUrl:"https://picsum.photos/seed/veloelec/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Date.now()/1000-400},views:34},
-  {id:"d5",userId:"demo",itemName:"Nike Air Jordan 1 Retro T42",price:185,category:"Chaussures homme",condition:"Très bon état",description:"Jordan 1 Retro High OG Chicago 2022, T42. Portées 3 fois, boîte originale.",brand:"Nike",model:"Air Jordan 1",city:"Toulouse",lat:43.604,lng:1.444,imageUrl:"https://picsum.photos/seed/jordan1/400/400",shipping:[{method:"Mondial Relay",price:5}],createdAt:{seconds:Date.now()/1000-500},views:78},
+  {id:"d5",userId:"demo",itemName:"Nike Air Jordan 1 Retro T42",price:185,category:"Chaussures homme",condition:"Très bon état",description:"Jordan 1 Retro High OG Chicago 2022, T42. Portées 3 fois, boîte originale.",brand:"Nike",model:"Air Jordan 1",city:"Toulouse",lat:43.604,lng:1.444,imageUrl:"https://picsum.photos/seed/jordan1/400/400",videoUrl:"https://www.w3schools.com/html/mov_bbb.mp4",shipping:[{method:"Mondial Relay",price:5}],createdAt:{seconds:Date.now()/1000-500},views:78},
   {id:"d6",userId:"demo",itemName:"Canapé angle convertible gris",price:350,category:"Ameublement",condition:"Bon état",description:"Canapé d angle convertible, tissu gris anthracite avec coffre.",brand:"IKEA",model:"Friheten",city:"Nantes",lat:47.218,lng:-1.553,imageUrl:"https://picsum.photos/seed/canape/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Date.now()/1000-600},views:55},
   {id:"d7",userId:"demo",itemName:"Guitare acoustique Yamaha F310",price:90,category:"Instruments de musique",condition:"Bon état",description:"Yamaha F310 taille 4/4, idéale pour débuter. Vendue avec housse.",brand:"Yamaha",model:"F310",city:"Strasbourg",lat:48.573,lng:7.752,imageUrl:"https://picsum.photos/seed/guitare/400/400",shipping:[{method:"Colissimo",price:12}],createdAt:{seconds:Date.now()/1000-700},views:23},
   {id:"d8",userId:"demo",itemName:"Dyson V11 Aspirateur balai",price:290,category:"Électroménager",condition:"Très bon état",description:"Dyson V11 Absolute Pro, batterie neuve, toutes les têtes incluses.",brand:"Dyson",model:"V11",city:"Lille",lat:50.629,lng:3.057,imageUrl:"https://picsum.photos/seed/dysonv11/400/400",shipping:[{method:"Colissimo",price:18}],createdAt:{seconds:Date.now()/1000-800},views:91},
@@ -1904,6 +1953,7 @@ function initFeed(){
 }
 
 function card(i){
+  var vidBadge=i.videoUrl?'<div style="position:absolute;bottom:6px;left:6px;background:rgba(14,165,233,.92);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;display:flex;align-items:center;gap:3px"><i class="fa-solid fa-video" style="font-size:8px"></i> VIDÉO</div>':'';
   var cond=i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);font-size:12px;font-weight:700;padding:2px 7px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">'+i.condition+"</span>":"";
   var city=i.city?'<p style="font-size:13px;color:#94a3b8;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+"</p>":"";
   return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+'</div><div class="inf"><p style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:12px;font-weight:900;color:#0ea5e9">'+(i.price||0)+"euro</p>"+city+"</div></div>";
@@ -3171,7 +3221,8 @@ window.openDetail=function(id){
   if(!i) return;
   _origOpenDetail(id);
   var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
-  buildCarousel(photos);
+  window._currentItemPhotos=photos;
+  buildMediaPlayer(i);
   renderSimilar(i);
   addToHistory(i);
   computeAndShowTrust(i);
@@ -3234,6 +3285,163 @@ window.switchView=function(v){
 // ════════════════════════════════════════════════════════
 // MYCARD améliorée avec stats vues
 // ════════════════════════════════════════════════════════
+
+
+// ════════════════════════════════════════════════════════
+// SYSTÈME MÉDIA NOUVELLE GÉNÉRATION (Vidéo + Photos)
+// ════════════════════════════════════════════════════════
+
+function buildMediaPlayer(item) {
+  var videoUrl = item.videoUrl || null;
+  var photos = [item.imageUrl].concat(item.extraPhotos || []).filter(Boolean);
+
+  var videoMode = document.getElementById('det-video-mode');
+  var photoMode = document.getElementById('det-photo-mode');
+  var mediaZone = document.getElementById('det-media-zone');
+  if (!videoMode || !photoMode) return;
+
+  if (videoUrl) {
+    // ── MODE VIDÉO ──
+    videoMode.style.display = 'flex';
+    photoMode.style.display = 'none';
+    mediaZone.style.background = '#000';
+
+    var vid = document.getElementById('det-video');
+    if (vid) {
+      vid.src = videoUrl;
+      vid.load();
+      vid.ontimeupdate = function() {
+        var prog = document.getElementById('det-vid-progress');
+        var time = document.getElementById('det-vid-time');
+        if (prog && vid.duration) {
+          prog.value = (vid.currentTime / vid.duration) * 100;
+        }
+        if (time) {
+          time.innerText = fmtTime(vid.currentTime) + ' / ' + fmtTime(vid.duration || 0);
+        }
+        // Sync play/pause icons
+        var ic1 = document.getElementById('det-vid-play-icon');
+        var ic2 = document.getElementById('det-vid-btn-icon');
+        var icon = vid.paused ? 'fa-play' : 'fa-pause';
+        if (ic1) { ic1.className = 'fa-solid ' + icon; if (!vid.paused) ic1.style.marginLeft = '0'; else ic1.style.marginLeft = '4px'; }
+        if (ic2) ic2.className = 'fa-solid ' + icon;
+      };
+      vid.onended = function() {
+        var ic1 = document.getElementById('det-vid-play-icon');
+        var ic2 = document.getElementById('det-vid-btn-icon');
+        if (ic1) { ic1.className = 'fa-solid fa-play'; ic1.style.marginLeft = '4px'; }
+        if (ic2) ic2.className = 'fa-solid fa-play';
+      };
+      // Show overlay on click area
+      var overlay = document.getElementById('det-vid-overlay');
+      if (overlay) {
+        vid.addEventListener('click', function() {
+          overlay.style.opacity = '1';
+          setTimeout(function() { overlay.style.opacity = '0'; }, 600);
+        });
+      }
+    }
+
+    // Strip de photos sous la vidéo
+    var strip = document.getElementById('det-photo-strip');
+    if (strip) {
+      if (photos.length > 0) {
+        strip.innerHTML = photos.map(function(src, idx) {
+          return '<div onclick="showVideoPhoto(' + idx + ')" style="flex-shrink:0;width:56px;height:56px;border-radius:10px;overflow:hidden;border:2px solid ' + (idx === 0 ? '#0ea5e9' : 'transparent') + ';cursor:pointer;transition:border-color .15s" id="vstrip-' + idx + '">'
+            + '<img src="' + src + '" style="width:100%;height:100%;object-fit:cover;display:block">'
+            + '</div>';
+        }).join('');
+      } else {
+        strip.style.display = 'none';
+      }
+    }
+
+  } else {
+    // ── MODE PHOTOS UNIQUEMENT ──
+    videoMode.style.display = 'none';
+    photoMode.style.display = 'flex';
+    mediaZone.style.background = '#e8edf2';
+    buildCarousel(photos);
+  }
+}
+
+function fmtTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  var m = Math.floor(s / 60);
+  var sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+window.toggleVideoPlay = function() {
+  var vid = document.getElementById('det-video');
+  if (!vid) return;
+  if (vid.paused) { vid.play(); } else { vid.pause(); }
+};
+
+window.seekVideo = function(val) {
+  var vid = document.getElementById('det-video');
+  if (vid && vid.duration) vid.currentTime = (val / 100) * vid.duration;
+};
+
+window.toggleVideoMute = function() {
+  var vid = document.getElementById('det-video');
+  if (!vid) return;
+  vid.muted = !vid.muted;
+  var ic = document.getElementById('det-vid-mute-icon');
+  if (ic) ic.className = 'fa-solid ' + (vid.muted ? 'fa-volume-xmark' : 'fa-volume-high');
+};
+
+window.toggleVideoFS = function() {
+  var vid = document.getElementById('det-video');
+  if (!vid) return;
+  if (vid.requestFullscreen) vid.requestFullscreen();
+  else if (vid.webkitEnterFullscreen) vid.webkitEnterFullscreen();
+};
+
+window.showVideoPhoto = function(idx) {
+  // Swap video src for photo lightbox overlay
+  var photos = window._currentItemPhotos || [];
+  if (!photos[idx]) return;
+  // Highlight selected strip item
+  var strips = document.querySelectorAll('[id^="vstrip-"]');
+  strips.forEach(function(el) { el.style.borderColor = 'transparent'; });
+  var sel = document.getElementById('vstrip-' + idx);
+  if (sel) sel.style.borderColor = '#0ea5e9';
+  // Show photo in overlay on top of video zone
+  var zone = document.getElementById('det-media-zone');
+  if (!zone) return;
+  var existing = document.getElementById('det-photo-overlay');
+  if (existing) existing.remove();
+  var overlay = document.createElement('div');
+  overlay.id = 'det-photo-overlay';
+  overlay.style.cssText = 'position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:10;cursor:pointer';
+  overlay.innerHTML = '<img src="' + photos[idx] + '" style="max-width:100%;max-height:100%;object-fit:contain">'
+    + '<button onclick="closPhotoOverlay()" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>'
+    + '<div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:3px 10px;border-radius:99px">Photo ' + (idx+1) + ' / ' + photos.length + '</div>';
+  zone.appendChild(overlay);
+};
+
+window.closPhotoOverlay = function() {
+  var el = document.getElementById('det-photo-overlay');
+  if (el) el.remove();
+  // Re-highlight first strip item
+  var strip0 = document.getElementById('vstrip-0');
+  if (strip0) {
+    var strips = document.querySelectorAll('[id^="vstrip-"]');
+    strips.forEach(function(s) { s.style.borderColor = 'transparent'; });
+    strip0.style.borderColor = '#0ea5e9';
+  }
+};
+
+// Stop video when closing detail
+var _origCloseDetail2 = window.closeDetail;
+window.closeDetail = function() {
+  var vid = document.getElementById('det-video');
+  if (vid) { vid.pause(); vid.src = ''; }
+  var overlay = document.getElementById('det-photo-overlay');
+  if (overlay) overlay.remove();
+  if (_origCloseDetail2) _origCloseDetail2();
+};
 
 </script>
 </body>
