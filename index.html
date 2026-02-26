@@ -2172,7 +2172,7 @@ window.snapPhoto=function(){
   c.getContext("2d").drawImage(v,0,0);
   stopCam();
   document.getElementById("snap-btn").classList.add("hidden");
-  processImg(c.toDataURL("image/jpeg",1.0));
+  processImg(c.toDataURL("image/jpeg",1.0)); // qualité max caméra
 };
 window.onFile=function(e){
   var f=e.target.files[0];if(!f)return;
@@ -2198,19 +2198,40 @@ function cropImage(b64){
       var w=img.naturalWidth||img.width;
       var h=img.naturalHeight||img.height;
       if(!w||!h){resolve(b64);return;}
-      // Calcul pour tenir l'image entiere dans 400x400 avec padding
-      var scale=Math.min(400/w,400/h);
-      var dw=Math.round(w*scale);
-      var dh=Math.round(h*scale);
-      var dx=Math.round((400-dw)/2);
-      var dy=Math.round((400-dh)/2);
-      var c=document.createElement("canvas");
-      c.width=400;c.height=400;
-      var ctx=c.getContext("2d");
-      ctx.fillStyle="#f5f5f5";
-      ctx.fillRect(0,0,400,400);
-      ctx.drawImage(img,0,0,w,h,dx,dy,dw,dh);
-      resolve(c.toDataURL("image/jpeg",0.82));
+
+      // ── Taille cible haute résolution ──
+      var TARGET = 1200;
+
+      // ── Recadrage intelligent : crop centré en carré (cover) ──
+      // Prend le min des deux dims comme taille du carré source
+      var cropSize = Math.min(w, h);
+      // Centrer le crop sur l'objet (milieu légèrement en haut pour les objets posés)
+      var sx = Math.round((w - cropSize) / 2);
+      var sy = Math.round((h - cropSize) / 3); // 1/3 depuis le haut = sujet mieux cadré
+      sy = Math.max(0, Math.min(sy, h - cropSize));
+
+      var c = document.createElement("canvas");
+      c.width = TARGET;
+      c.height = TARGET;
+      var ctx = c.getContext("2d");
+
+      // Activer le lissage haute qualité
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+
+      // Fond neutre propre (visible seulement si image transparente)
+      ctx.fillStyle = "#f8f8f8";
+      ctx.fillRect(0, 0, TARGET, TARGET);
+
+      // Dessin avec recadrage centré
+      ctx.drawImage(img, sx, sy, cropSize, cropSize, 0, 0, TARGET, TARGET);
+
+      // Légère amélioration contraste/luminosité via filtre canvas
+      // (sans dégrader la photo)
+      // ctx.filter = "contrast(1.05) brightness(1.02)"; // optionnel
+
+      // Qualité JPEG élevée
+      resolve(c.toDataURL("image/jpeg", 0.92));
     };
     img.onerror=function(){resolve(b64);};
     img.src=b64;
