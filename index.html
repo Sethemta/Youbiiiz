@@ -1317,9 +1317,14 @@ header .i-wrapper{gap:2px;margin:0 2px}
         <!-- ══ COL 1 : vignette au-dessus, carrousel en dessous ══ -->
     <div style="display:flex;flex-direction:column;gap:10px;min-height:0;overflow:hidden">
 
-      <!-- Vignette SÉPARÉE en haut, alignée à droite -->
-      <div style="display:flex;justify-content:flex-end;flex-shrink:0">
-        <div id="det-thumb-top" style="width:180px;height:180px;border-radius:18px;overflow:hidden;border:3px solid #0ea5e9;box-shadow:0 4px 16px rgba(14,165,233,.35);background:#e2e8f0;flex-shrink:0"></div>
+      <!-- Titre + vignette côte à côte -->
+      <div style="display:flex;align-items:center;gap:14px;flex-shrink:0">
+        <!-- Titre à gauche -->
+        <div style="flex:1;min-width:0">
+          <p id="det-title-col" style="font-weight:900;font-size:18px;color:#0f172a;line-height:1.25;word-break:break-word"></p>
+        </div>
+        <!-- Vignette à droite -->
+        <div id="det-thumb-top" style="width:180px;height:180px;min-width:180px;border-radius:18px;overflow:hidden;border:3px solid #0ea5e9;box-shadow:0 4px 16px rgba(14,165,233,.35);background:#e2e8f0;flex-shrink:0"></div>
       </div>
 
       <!-- ══ ZONE MÉDIA : vidéo ou carrousel photos ══ -->
@@ -2230,6 +2235,7 @@ window.openDetail=function(id){
   document.getElementById("buy-btn").onclick=function(){openPay(i);};
   loadSellerRating(i.userId);
   var dtb=document.getElementById("det-title-big");if(dtb)dtb.innerText=i.itemName||"";
+  var dtc=document.getElementById("det-title-col");if(dtc)dtc.innerText=i.itemName||"";
   var m=document.getElementById("detail-modal");
   m.style.display="flex";
 };
