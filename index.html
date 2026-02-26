@@ -184,8 +184,6 @@ header .i-wrapper{gap:2px;margin:0 2px}
 .share-btn:active{transform:scale(.88)}
 .share-btn .sb-icon{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:13px}
 .share-btn span{font-size:13px;font-weight:700;color:#64748b}
-/* COINS */
-.coins-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px;border:1px solid #fcd34d}
 /* OFFER */
 .offer-input{font-size:22px;font-weight:900;color:#0ea5e9;text-align:center;background:none;border:none;outline:none;width:100%;font-family:inherit}
 /* HISTORY */
@@ -342,7 +340,7 @@ header .i-wrapper{gap:2px;margin:0 2px}
   <!-- HEADER WHATNOT STYLE -->
   <header class="yb-header shrink-0">
     <!-- Logo -->
-    <div style="display:inline-flex;align-items:flex-end;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:#0f172a;letter-spacing:-.5px;line-height:1;cursor:pointer;user-select:none;flex-shrink:0;margin-right:8px" onclick="switchView('home')">
+    <div style="display:inline-flex;align-items:flex-end;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:19px;color:#0f172a;letter-spacing:-.5px;line-height:1;cursor:pointer;user-select:none;flex-shrink:0;margin-right:8px" onclick="switchView('home')">
       <span>YOUB</span><span style="display:inline-flex;align-items:flex-end;gap:2px;margin:0 2px 2px 2px;line-height:0"><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:3px;height:3px;background:#0ea5e9;border-radius:1px;margin-bottom:1px;display:block;animation:dribble .9s infinite;--b:-6px"></span><span style="width:3px;height:14px;background:#0ea5e9;border-radius:1px;display:block"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:3px;height:3px;background:#0ea5e9;border-radius:1px;margin-bottom:1px;display:block;animation:dribble 1.3s infinite .2s;--b:-8px"></span><span style="width:3px;height:14px;background:#0ea5e9;border-radius:1px;display:block"></span></span><span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:3px;height:3px;background:#0ea5e9;border-radius:1px;margin-bottom:1px;display:block;animation:dribble 1.1s infinite .5s;--b:-7px"></span><span style="width:3px;height:14px;background:#0ea5e9;border-radius:1px;display:block"></span></span></span>
       <span>Z</span>
     </div>
@@ -754,1127 +752,193 @@ header .i-wrapper{gap:2px;margin:0 2px}
         </div>
       </div>
 
-      <!-- Coins + Historique -->
-      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <span class="text-lg">🪙</span>
-            
-          </div>
-          <div class="text-right">
-            <p style="font-size:12px;color:#94a3b8;font-weight:700;text-transform:uppercase">Valeur estimée</p>
-            <p id="profile-coins-eur" style="font-size:12px;font-weight:800;color:#f59e0b">0.00€</p>
-          </div>
-        </div>
-        <p style="font-size:13px;color:#94a3b8;margin-bottom:8px">🎁 Gagner des coins : vendre un article (+10), recevoir un avis 5★ (+5), parrainer (+20)</p>
-        <div style="background:#fefce8;border:1px solid #fef08a;border-radius:10px;padding:8px 10px;font-size:12px;color:#713f12;font-weight:600">
-          1 Coin = 0.01€ de réduction sur votre prochain achat
-        </div>
-      </div>
-
-      <!-- Historique de navigation -->
-      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-        <div class="flex items-center justify-between mb-3">
-          <p style="font-size:12px;font-weight:800;color:#0f172a"><i class="fa-solid fa-clock-rotate-left" style="color:#8b5cf6;margin-right:6px;font-size:12px"></i>Récemment consultées</p>
-          <button onclick="clearHistory()" style="font-size:12px;color:#94a3b8;background:none;border:none;cursor:pointer;font-family:inherit">Effacer</button>
-        </div>
-        <div id="history-list">
-          <p style="font-size:12px;color:#94a3b8;text-align:center;padding:12px 0">Aucune annonce consultée</p>
-        </div>
-      </div>
-      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-        <div class="flex items-center justify-between mb-3">
-          <p style="font-size:12px;font-weight:800;color:#0f172a"><i class="fa-solid fa-bell text-sky-500 mr-1.5" style="font-size:12px"></i>Mes alertes</p>
-          <button onclick="openAlertes()" style="background:#eff9ff;color:#0ea5e9;border:none;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer">+ Nouvelle</button>
-        </div>
-        <div id="alerts-list">
-          <p style="font-size:12px;color:#94a3b8;text-align:center;padding:12px 0">Aucune alerte sauvegardée</p>
-        </div>
-      </div>
-
-      <!-- Favoris -->
-      <div style="background:#fff;border:1px solid #e8ecf0;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-        <p style="font-size:12px;font-weight:800;color:#0f172a;margin-bottom:12px"><i class="fa-solid fa-heart text-rose-500 mr-1.5" style="font-size:12px"></i>Mes favoris</p>
-        <div id="fav-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">
-          <p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:12px;font-weight:700;text-transform:uppercase;padding:16px 0">Aucun favori</p>
-        </div>
-      </div>
-
-      <p style="font-size:13px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Mes annonces</p>
-      <button onclick="doLogout()" style="width:100%;background:#fff;border:1.5px solid #fecaca;border-radius:12px;padding:11px;font-size:12px;font-weight:700;color:#ef4444;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);font-family:inherit"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</button>
-      <div id="my-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;">
-        <p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:12px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>
-      </div>
-    </div>
-
-    </main><!-- /main-content -->
-  </div><!-- /app-body -->
-
-  <!-- NAV MOBILE ONLY -->
-  <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 h-16 flex items-center justify-around px-6 z-[100]" style="box-shadow:0 -2px 12px rgba(0,0,0,.08)">
-    <button onclick="switchView('home')" id="nav-home">
-      <i class="fa-solid fa-house text-xl text-sky-500"></i>
-    </button>
-    <button onclick="switchView('map')" id="nav-map">
-      <i class="fa-solid fa-map-location-dot text-xl text-slate-400"></i>
-    </button>
-    <button onclick="openScan()" class="w-14 h-14 -mt-5 bg-gradient-to-br from-sky-400 to-blue-600 rounded-[18px] flex items-center justify-center shadow-[0_0_24px_rgba(34,211,238,.5)] border-[3px] border-white active:scale-90 transition-transform">
-      <i class="fa-solid fa-plus text-xl text-white"></i>
-    </button>
-    <button onclick="switchView('notifications')" id="nav-notif">
-      <i class="fa-solid fa-bell text-xl text-slate-400"></i>
-    </button>
-    <button onclick="switchView('profile')" id="nav-profile">
-      <i class="fa-solid fa-user text-xl text-slate-400"></i>
-    </button>
-  </nav>
-</div>
-
-<!-- ALERTES MODAL -->
-<div id="alertes-modal" class="fixed inset-0 z-[700] hidden items-end justify-center">
-  <div class="mover absolute inset-0" onclick="closeAlertes()"></div>
-  <div class="relative msheet su w-full max-w-lg p-5 pb-8">
-    <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-700 rounded-full"></div></div>
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-bell text-sky-400"></i>
-        <span class="font-bold text-base">Nouvelle alerte</span>
-      </div>
-      <button onclick="closeAlertes()" class="w-8 h-8 rounded-xl bg-slate-700 flex items-center justify-center"><i class="fa-solid fa-xmark text-base"></i></button>
-    </div>
-    <p class="text-[16px] text-slate-400 mb-2">Décris ce que tu cherches en langage naturel :</p>
-    <input id="alert-query" type="text" placeholder="Ex : iPhone 13 bon état moins de 400€ à Paris..." class="inp mb-2 text-base">
-    <p class="text-[17px] text-slate-500 mb-4"><i class="fa-solid fa-wand-magic-sparkles text-sky-400 mr-1"></i>L'IA analysera les nouvelles annonces et te préviendra dès qu'une correspond</p>
-    <div class="flex gap-2">
-      <button onclick="closeAlertes()" class="flex-1 bg-slate-700 font-bold py-3 rounded-xl text-base">Annuler</button>
-      <button onclick="saveAlert()" class="flex-1 bg-sky-500 text-black font-bold py-3 rounded-xl text-base">Créer l'alerte</button>
-    </div>
-  </div>
-</div>
-
-<!-- PARTAGE RÉSEAUX SOCIAUX -->
-<div id="share-modal" style="display:none;position:fixed;inset:0;z-index:10000;align-items:flex-end;justify-content:center">
-  <div class="mover absolute inset-0" onclick="closeShareModal()"></div>
-  <div class="relative msheet su w-full max-w-lg p-5 pb-8 bg-white">
-    <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-200 rounded-full"></div></div>
-    <div class="flex items-center justify-between mb-5">
-      <p class="font-extrabold text-base">Partager l'annonce</p>
-      <button onclick="closeShareModal()" class="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-slate-500 text-base"></i></button>
-    </div>
-    <!-- Preview -->
-    <div id="share-preview" class="flex gap-3 bg-slate-50 border border-slate-100 rounded-2xl p-3 mb-5">
-      <img id="share-prev-img" class="w-14 h-14 rounded-xl object-contain bg-white border border-slate-100 shrink-0">
-      <div class="flex-1 min-w-0">
-        <p id="share-prev-title" class="font-bold text-base leading-tight truncate"></p>
-        <p id="share-prev-price" class="text-sky-500 font-black text-base mt-0.5"></p>
-        <p class="text-[16px] text-slate-400 mt-0.5">youbiiiz.app</p>
-      </div>
-    </div>
-    <!-- Réseaux -->
-    <div class="grid grid-cols-4 gap-3 mb-5">
-      <div class="share-btn" onclick="shareTo('whatsapp')">
-        <div class="sb-icon" style="background:#dcfce7"><i class="fa-brands fa-whatsapp" style="color:#25D366;font-size:22px"></i></div>
-        <span>WhatsApp</span>
-      </div>
-      <div class="share-btn" onclick="shareTo('facebook')">
-        <div class="sb-icon" style="background:#dbeafe"><i class="fa-brands fa-facebook" style="color:#1877F2;font-size:22px"></i></div>
-        <span>Facebook</span>
-      </div>
-      <div class="share-btn" onclick="shareTo('twitter')">
-        <div class="sb-icon" style="background:#f1f5f9"><i class="fa-brands fa-x-twitter" style="color:#000;font-size:22px"></i></div>
-        <span>X / Twitter</span>
-      </div>
-      <div class="share-btn" onclick="shareTo('telegram')">
-        <div class="sb-icon" style="background:#e0f2fe"><i class="fa-brands fa-telegram" style="color:#0088CC;font-size:22px"></i></div>
-        <span>Telegram</span>
-      </div>
-      <div class="share-btn" onclick="shareTo('instagram')">
-        <div class="sb-icon" style="background:linear-gradient(135deg,#fcebfa,#fce8d5,#fde68a)"><i class="fa-brands fa-instagram" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:22px"></i></div>
-        <span>Instagram</span>
-      </div>
-      <div class="share-btn" onclick="shareTo('tiktok')">
-        <div class="sb-icon" style="background:#f1f5f9"><i class="fa-brands fa-tiktok" style="color:#000;font-size:22px"></i></div>
-        <span>TikTok</span>
-      </div>
-      <div class="share-btn" onclick="shareTo('messenger')">
-        <div class="sb-icon" style="background:#dbeafe"><i class="fa-brands fa-facebook-messenger" style="color:#0099FF;font-size:22px"></i></div>
-        <span>Messenger</span>
-      </div>
-      <div class="share-btn" onclick="shareTo('sms')">
-        <div class="sb-icon" style="background:#dcfce7"><i class="fa-solid fa-message" style="color:#22c55e;font-size:19px"></i></div>
-        <span>SMS</span>
-      </div>
-    </div>
-    <!-- Copier lien -->
-    <div class="flex gap-2">
-      <input id="share-link-val" class="inp flex-1 text-base text-slate-500 bg-slate-50" readonly style="font-family:monospace">
-      <button onclick="copyShareLink()" class="px-4 py-2.5 bg-sky-500 text-black font-bold text-base rounded-xl active:scale-95 transition-transform whitespace-nowrap">
-        <i class="fa-solid fa-copy mr-1"></i>Copier
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- FAIRE UNE OFFRE -->
-<div id="offer-modal" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:0 20px">
-  <div class="mover absolute inset-0" onclick="closeOffer()"></div>
-  <div class="relative bg-white rounded-3xl p-6 w-full max-w-sm su text-center">
-    <button onclick="closeOffer()" class="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-slate-500 text-base"></i></button>
-    <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-3">
-      <i class="fa-solid fa-handshake text-amber-400 text-xl"></i>
-    </div>
-    <h3 class="font-extrabold text-base mb-1">Faire une offre</h3>
-    <p id="offer-sub" class="text-slate-400 text-sm mb-5">Prix demandé : <span id="offer-asked" class="font-bold text-sky-500"></span></p>
-    <div class="flex items-center justify-center gap-2 mb-2">
-      <span class="text-3xl font-black text-slate-300">€</span>
-      <input id="offer-amount" type="number" class="offer-input" placeholder="0" style="width:120px">
-    </div>
-    <div id="offer-hint" class="text-[16px] text-slate-400 mb-5"></div>
-    <!-- Suggestions rapides -->
-    <div class="flex justify-center gap-2 mb-5" id="offer-quick"></div>
-    <button onclick="sendOffer()" class="w-full bg-amber-400 text-black font-extrabold py-4 rounded-2xl text-[17px] active:scale-95 transition-transform">
-      Envoyer l'offre
-    </button>
-  </div>
-</div>
-
-<!-- SIGNALER -->
-<div id="report-modal" style="display:none;position:fixed;inset:0;z-index:10000;align-items:flex-end;justify-content:center">
-  <div class="mover absolute inset-0" onclick="closeReport()"></div>
-  <div class="relative msheet su w-full max-w-lg p-5 pb-8 bg-white">
-    <div class="flex justify-center mb-3"><div class="w-10 h-1 bg-zinc-200 rounded-full"></div></div>
-    <p class="font-extrabold text-base mb-4"><i class="fa-solid fa-flag text-red-500 mr-2"></i>Signaler cette annonce</p>
-    <div id="report-reasons">
-      <div class="report-reason" onclick="submitReport('Arnaque / phishing')"><i class="fa-solid fa-skull-crossbones text-red-400 w-5 text-center"></i>Arnaque / phishing</div>
-      <div class="report-reason" onclick="submitReport('Prix abusif / offre irréaliste')"><i class="fa-solid fa-tag text-orange-400 w-5 text-center"></i>Prix abusif ou irréaliste</div>
-      <div class="report-reason" onclick="submitReport('Contenu interdit ou dangereux')"><i class="fa-solid fa-ban text-red-400 w-5 text-center"></i>Contenu interdit ou dangereux</div>
-      <div class="report-reason" onclick="submitReport('Annonce dupliquée / spam')"><i class="fa-solid fa-clone text-slate-400 w-5 text-center"></i>Annonce dupliquée / spam</div>
-      <div class="report-reason" onclick="submitReport('Photos volées / trompeuses')"><i class="fa-solid fa-image text-slate-400 w-5 text-center"></i>Photos volées ou trompeuses</div>
-      <div class="report-reason" onclick="submitReport('Autre raison')"><i class="fa-solid fa-ellipsis text-slate-400 w-5 text-center"></i>Autre raison</div>
-    </div>
-  </div>
-</div>
-
-<!-- PROFIL VENDEUR -->
-<div id="seller-profile-modal" class="fixed inset-0 z-[700] bg-white hidden flex-col sr">
-  <div class="flex items-center gap-3 px-4 pt-5 pb-4 border-b border-slate-100 shrink-0">
-    <button onclick="closeSellerProfile()" class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center active:scale-90 transition-transform">
-      <i class="fa-solid fa-arrow-left text-slate-600 text-base"></i>
-    </button>
-    <p class="font-extrabold text-base text-slate-900 flex-1">Profil vendeur</p>
-  </div>
-  <div class="flex-1 overflow-y-auto no-sb px-4 pt-5 pb-12">
-    <div class="flex items-center gap-4 mb-5">
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
-        <i class="fa-solid fa-user text-xl text-white"></i>
-      </div>
-      <div>
-        <div class="flex items-center gap-2 flex-wrap">
-          <p id="sp-name" class="font-extrabold text-lg text-slate-900"></p>
-          <span id="sp-verified" class="verified-badge hidden"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
-        </div>
-        <p id="sp-since" class="text-sm text-slate-400 mt-0.5"></p>
-      </div>
-    </div>
-    <div class="flex gap-3 mb-5">
-      <div class="sp-stat"><p id="sp-count" class="text-xl font-black text-sky-500">0</p><p class="text-[17px] text-slate-400 font-bold uppercase mt-1">Annonces</p></div>
-      <div class="sp-stat"><p id="sp-rating-val" class="text-xl font-black text-amber-400">—</p><p class="text-[17px] text-slate-400 font-bold uppercase mt-1">Note</p></div>
-      <div class="sp-stat"><p id="sp-coins" class="text-xl font-black text-amber-500">0 🪙</p><p class="text-[17px] text-slate-400 font-bold uppercase mt-1">Coins</p></div>
-    </div>
-    <p class="text-[16px] text-slate-400 font-bold uppercase tracking-wide mb-3">Annonces actives</p>
-    <div id="sp-listings" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
-  </div>
-</div>
-
-<!-- RECHERCHE PAR PHOTO -->
-<div id="search-photo-modal" class="fixed inset-0 z-[900] hidden items-center justify-center px-5">
-  <div class="mover absolute inset-0" onclick="closeSearchPhoto()"></div>
-  <div class="relative bg-white rounded-3xl p-6 w-full max-w-sm su text-center">
-    <button onclick="closeSearchPhoto()" class="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-slate-500 text-base"></i></button>
-    <div id="sph-idle">
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center mx-auto mb-3">
-        <i class="fa-solid fa-camera-retro text-white text-2xl"></i>
-      </div>
-      <h3 class="font-extrabold text-base mb-1">Recherche par photo</h3>
-      <p class="text-slate-400 text-sm mb-5">Prends ou importe une photo d'un objet — l'IA trouve les annonces similaires</p>
-      <button onclick="document.getElementById('search-photo-inp').click()" class="w-full bg-gradient-to-r from-sky-500 to-indigo-500 text-white font-bold py-3.5 rounded-2xl mb-2 active:scale-95 transition-transform">
-        <i class="fa-solid fa-upload mr-2"></i>Importer une photo
-      </button>
-    </div>
-    <div id="sph-loading" class="hidden">
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center mx-auto mb-3">
-        <i class="fa-solid fa-circle-notch animate-spin text-white text-2xl"></i>
-      </div>
-      <p class="font-bold text-base mb-1">Analyse en cours...</p>
-      <p class="text-slate-400 text-sm">L'IA identifie l'objet et cherche des annonces similaires</p>
-    </div>
-    <div id="sph-results" class="hidden text-left">
-      <p class="font-extrabold text-base mb-1">Résultats pour :</p>
-      <p id="sph-detected" class="text-sky-500 font-bold text-sm mb-3"></p>
-      <div id="sph-list" class="flex flex-col gap-2 max-h-64 overflow-y-auto no-sb"></div>
-      <button onclick="closeSearchPhoto()" class="w-full bg-slate-100 text-slate-600 font-bold py-3 rounded-xl mt-3 text-base">Fermer</button>
-    </div>
-  </div>
-</div>
-
-<!-- SCAN MODAL -->
-<div id="scan-modal" class="fixed inset-0 z-[400] hidden flex-col justify-end">
-  <div class="mover absolute inset-0" onclick="closeScan()"></div>
-  <div class="relative msheet su w-full max-w-lg mx-auto" style="max-height:94vh;display:flex;flex-direction:column;">
-    <div class="flex justify-center pt-3 pb-2 shrink-0">
-      <div class="w-10 h-1 bg-zinc-700 rounded-full"></div>
-    </div>
-
-    <!-- ETAPE 1: photo -->
-    <div id="step-photo" class="px-4 pb-5 shrink-0">
-      <div class="flex items-center justify-between mb-3">
-        <p class="font-extrabold text-[17px]">Nouvelle annonce</p>
-        <button onclick="closeScan()" class="w-8 h-8 rounded-xl bg-gray-200 flex items-center justify-center">
-          <i class="fa-solid fa-xmark text-base"></i>
-        </button>
-      </div>
-      <div id="scan-box" class="relative bg-gray-100 rounded-2xl overflow-hidden mx-auto mb-3" style="width:100%;max-width:340px;aspect-ratio:1/1;">
-        <video id="cam-vid" class="hidden absolute inset-0 w-full h-full object-cover" autoplay playsinline muted></video>
-        <img id="scan-prev" class="hidden absolute inset-0 w-full h-full object-cover">
-        <div id="scan-line" class="hidden absolute w-full left-0 z-20" style="height:2px;background:#0ea5e9;box-shadow:0 0 10px #22d3ee;animation:scanmove 1.8s linear infinite"></div>
-        <div id="scan-ph" class="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none">
-          <div class="w-14 h-14 rounded-2xl bg-gray-200 flex items-center justify-center">
-            <i class="fa-solid fa-camera text-2xl text-gray-400"></i>
-          </div>
-          <p class="text-sm text-gray-400 font-semibold">Photo ou galerie</p>
-        </div>
-        <div id="scan-spin" class="hidden absolute inset-0 bg-white/90 z-30 flex flex-col items-center justify-center gap-3">
-          <i class="fa-solid fa-circle-notch animate-spin text-sky-500 text-3xl"></i>
-          <p class="text-sm text-sky-500 font-bold tracking-widest uppercase">Analyse IA...</p>
-        </div>
-      </div>
-      <div id="photo-btns" class="flex gap-2">
-        <input type="file" id="file-input" class="hidden" accept="image/*" onchange="onFile(event)">
-        <button onclick="document.getElementById('file-input').click()"
-          class="flex-1 bg-gray-200 border border-gray-200 rounded-xl py-3 text-base font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
-          <i class="fa-solid fa-image text-gray-500"></i> Galerie
-        </button>
-        <button id="cam-toggle" onclick="toggleCam()"
-          class="flex-1 bg-gray-200 border border-gray-200 rounded-xl py-3 text-base font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
-          <i class="fa-solid fa-camera text-gray-500"></i> Camera
-        </button>
-        <button id="snap-btn" onclick="snapPhoto()" class="hidden flex-1 bg-sky-500 rounded-xl py-3 text-base font-bold text-black flex items-center justify-center gap-2 active:scale-95 transition-transform">
-          <i class="fa-solid fa-circle"></i> Capturer
-        </button>
-      </div>
-
-      <!-- SÉPARATEUR VIDÉO -->
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-          <div>
-            <p style="font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px">
-              <span style="background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.3);border-radius:99px;padding:2px 8px;font-size:9px;color:#0ea5e9;font-weight:900;letter-spacing:.08em">NOUVEAU</span>
-              Vidéo de présentation
-            </p>
-            <p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:2px">Filmez l'objet — l'IA génère l'annonce</p>
-          </div>
-        </div>
-        <!-- Zone vidéo -->
-        <input type="file" id="video-input" class="hidden" accept="video/*" onchange="onVideoFile(event)">
-        <div id="video-upload-zone" onclick="document.getElementById('video-input').click()" style="border:2px dashed rgba(14,165,233,.3);border-radius:16px;padding:20px;text-align:center;cursor:pointer;background:rgba(14,165,233,.04);transition:all .2s" onmouseover="this.style.borderColor='rgba(14,165,233,.6)'" onmouseout="this.style.borderColor='rgba(14,165,233,.3)'">
-          <div style="width:44px;height:44px;background:rgba(14,165,233,.12);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
-            <i class="fa-solid fa-video" style="color:#0ea5e9;font-size:18px"></i>
-          </div>
-          <p style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">Ajouter une vidéo</p>
-          <p style="font-size:11px;color:rgba(255,255,255,.35)">MP4 · MOV · max 500Mo · 60 sec recommandées</p>
-        </div>
-        <!-- Preview vidéo + analyse -->
-        <div id="video-preview-zone" style="display:none;margin-top:10px">
-          <div style="position:relative;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:9/16;max-height:240px;margin:0 auto;max-width:135px">
-            <video id="vid-preview" style="width:100%;height:100%;object-fit:cover;display:block" muted playsinline></video>
-            <button onclick="removeVideo()" style="position:absolute;top:8px;right:8px;width:26px;height:26px;background:rgba(0,0,0,.7);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2">
-              <i class="fa-solid fa-xmark" style="color:#fff;font-size:11px"></i>
-            </button>
-            <div id="vid-duration-badge" style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.7);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px"></div>
-          </div>
-          <!-- Statut analyse IA vidéo -->
-          <div id="vid-ai-status" style="margin-top:10px;border-radius:14px;overflow:hidden">
-            <div id="vid-ai-pending" style="display:none;background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);border-radius:14px;padding:12px 14px">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div style="width:32px;height:32px;border-radius:10px;background:rgba(14,165,233,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                  <i class="fa-solid fa-wand-magic-sparkles" style="color:#0ea5e9;font-size:13px"></i>
-                </div>
-                <div style="flex:1">
-                  <p style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">Analyse IA en cours...</p>
-                  <div style="height:3px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden">
-                    <div id="vid-ai-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#0ea5e9,#6366f1);border-radius:99px;transition:width .4s ease"></div>
-                  </div>
-                  <p id="vid-ai-step-label" style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">Extraction de la première image...</p>
-                </div>
-              </div>
-            </div>
-            <div id="vid-ai-done" style="display:none;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:14px;padding:12px 14px">
-              <div style="display:flex;align-items:flex-start;gap:10px">
-                <div style="width:32px;height:32px;border-radius:10px;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px">
-                  <i class="fa-solid fa-check" style="color:#22c55e;font-size:13px"></i>
-                </div>
-                <div style="flex:1">
-                  <p style="font-size:12px;font-weight:800;color:#22c55e;margin-bottom:6px">Analyse terminée ✓</p>
-                  <div id="vid-ai-results" style="display:flex;flex-direction:column;gap:4px"></div>
-                </div>
-              </div>
-            </div>
-            <div id="vid-ai-error" style="display:none;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:12px 14px">
-              <p style="font-size:12px;font-weight:700;color:#ef4444"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px"></i><span id="vid-ai-error-msg">Erreur analyse</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ETAPE 2: resultats IA -->
-    <div id="step-result" class="hidden flex-col flex-1 overflow-hidden">
-      <div class="overflow-y-auto no-sb px-4 pb-6 flex-1">
-        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200">
-          <img id="res-thumb" class="w-16 h-16 rounded-xl object-cover border border-gray-200 shrink-0">
-          <div class="flex-1 min-w-0">
-            <p class="text-[16px] text-green-400 font-bold uppercase tracking-wide mb-1"><i class="fa-solid fa-check-circle mr-1"></i>IA terminee</p>
-            <input id="ai-name" class="w-full bg-transparent text-base font-extrabold text-gray-900 outline-none border-b border-gray-200 pb-1 focus:border-cyan-400 truncate">
-          </div>
-          <button onclick="resetScan()" class="shrink-0 w-8 h-8 rounded-xl bg-gray-200 flex items-center justify-center text-gray-500 active:scale-90 transition-transform">
-            <i class="fa-solid fa-rotate-left text-sm"></i>
-          </button>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-          <div class="bg-gray-100 rounded-xl p-3 border border-gray-200">
-            <p class="text-[17px] text-gray-400 uppercase font-bold mb-1">Marque</p>
-            <p id="ai-brand" class="text-base font-extrabold text-sky-500">-</p>
-          </div>
-          <div class="bg-gray-100 rounded-xl p-3 border border-gray-200">
-            <p class="text-[17px] text-gray-400 uppercase font-bold mb-1">Modele</p>
-            <p id="ai-model" class="text-base font-extrabold text-gray-900 truncate">-</p>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
-          <div class="bg-gray-100 rounded-xl p-3 border border-gray-200">
-            <p class="text-[17px] text-gray-400 uppercase font-bold mb-1">Prix</p>
-            <p id="ai-price" class="text-base font-extrabold text-sky-500">-</p>
-          </div>
-      <div class="bg-gray-100 rounded-xl p-3 border border-gray-200">
-          <p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Catégorie</p>
-          <select id="ai-cat-select" class="inp" style="cursor:pointer;font-size:13px">
-            <optgroup label="📱 Électronique">
-              <option>Téléphones & objets connectés</option>
-              <option>Accessoires téléphones</option>
-              <option>Ordinateurs</option>
-              <option>Accessoires informatique</option>
-              <option>Tablettes & liseuses</option>
-              <option>Photo, audio & vidéo</option>
-              <option>Consoles</option>
-              <option>Jeux vidéo</option>
-            </optgroup>
-            <optgroup label="👗 Mode">
-              <option>Vêtements homme</option>
-              <option>Vêtements femme</option>
-              <option>Chaussures homme</option>
-              <option>Chaussures femme</option>
-              <option>Accessoires & Bagagerie</option>
-              <option>Montres & Bijoux</option>
-              <option>Lunettes</option>
-              <option>Beauté & Bien-être</option>
-            </optgroup>
-            <optgroup label="👶 Famille">
-              <option>Vêtements bébé</option>
-              <option>Vêtements enfant</option>
-              <option>Chaussures enfant</option>
-              <option>Équipement bébé</option>
-              <option>Mobilier enfant</option>
-              <option>Jeux & Jouets</option>
-              <option>Puériculture</option>
-            </optgroup>
-            <optgroup label="🏠 Maison & Jardin">
-              <option>Ameublement</option>
-              <option>Électroménager</option>
-              <option>Arts de la table</option>
-              <option>Décoration</option>
-              <option>Linge de maison</option>
-              <option>Bricolage</option>
-              <option>Outillage</option>
-              <option>Jardin & Plantes</option>
-              <option>Papeterie & fournitures</option>
-            </optgroup>
-            <optgroup label="🎭 Loisirs">
-              <option>Livres</option>
-              <option>DVD - Films</option>
-              <option>CD - Musique</option>
-              <option>Instruments de musique</option>
-              <option>Vélos</option>
-              <option>Équipements vélos</option>
-              <option>Sport & Hobbies</option>
-              <option>Chasse & Pêche</option>
-              <option>Collection</option>
-              <option>Vins & Gastronomie</option>
-              <option>Loisirs créatifs</option>
-              <option>Antiquités</option>
-              <option>Modélisme</option>
-              <option>Camping & Plein air</option>
-            </optgroup>
-            <optgroup label="🐾 Animaux">
-              <option>Chiens</option>
-              <option>Chats</option>
-              <option>Chevaux & Équidés</option>
-              <option>Oiseaux</option>
-              <option>Rongeurs & Lapins</option>
-              <option>Reptiles & Amphibiens</option>
-              <option>Poissons</option>
-              <option>Accessoires animaux</option>
-              <option>Alimentation animaux</option>
-            </optgroup>
-            <optgroup label="🚗 Véhicules">
-              <option>Voitures</option>
-              <option>Motos</option>
-              <option>Scooters & Vélos électriques</option>
-              <option>Utilitaires</option>
-              <option>Caravaning</option>
-              <option>Nautisme</option>
-              <option>Équipement auto</option>
-              <option>Équipement moto</option>
-              <option>Équipement caravaning</option>
-              <option>Pièces détachées auto</option>
-            </optgroup>
-            <optgroup label="🏢 Immobilier">
-              <option>Ventes immobilières</option>
-              <option>Locations</option>
-              <option>Colocations</option>
-              <option>Bureaux & Commerces</option>
-              <option>Terrains & Propriétés</option>
-              <option>Locations de vacances</option>
-            </optgroup>
-            <optgroup label="🛠️ Services">
-              <option>Cours particuliers</option>
-              <option>Formation professionnelle</option>
-              <option>Covoiturage</option>
-              <option>Prestations de services</option>
-              <option>Services événementiels</option>
-              <option>Service à la personne</option>
-              <option>Baby-sitting</option>
-              <option>Déménagement</option>
-              <option>Jardinage</option>
-              <option>Bricolage & Réparation</option>
-            </optgroup>
-            <optgroup label="🏭 Matériel Pro">
-              <option>Matériel agricole</option>
-              <option>Tracteurs</option>
-              <option>Poids lourds</option>
-              <option>BTP - Chantier</option>
-              <option>Manutention - Levage</option>
-              <option>Équipements industriels</option>
-              <option>Restauration - Hôtellerie</option>
-              <option>Fournitures de bureau</option>
-              <option>Matériel médical</option>
-              <option>Équipements commerces</option>
-            </optgroup>
-          </select>
-        </div>
-          <div class="bg-gray-100 rounded-xl p-3 border border-gray-200">
-            <p class="text-[17px] text-gray-400 uppercase font-bold mb-1">Etat</p>
-            <p id="ai-cat" style="display:none"></span><span id="ai-cond" class="text-sm font-extrabold text-green-400">-</p>
-          </div>
-        </div>
-        <!-- Prix marché IA -->
-        <div id="price-suggestion" class="hidden bg-gray-100 rounded-xl p-3 border border-gray-200 mb-2">
-          <div class="flex items-center gap-2 mb-1">
-            <i class="fa-solid fa-chart-line text-sky-400" style="font-size:13px"></i>
-            <p class="text-[17px] text-gray-400 uppercase font-bold">Prix du marché</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-[16px] text-gray-400">Similaires :</span>
-            <span id="price-range-txt" class="text-sm font-bold text-sky-400"></span>
-            <span id="price-verdict" class="text-[17px] font-bold px-2 py-0.5 rounded-full"></span>
-          </div>
-        </div>
-        <!-- Photos supplémentaires -->
-        <div class="bg-gray-100 rounded-xl p-3 border border-gray-200 mb-2">
-          <div class="flex items-center justify-between mb-2">
-            <p class="text-[17px] text-gray-400 uppercase font-bold">Photos (max 5)</p>
-            <button onclick="document.getElementById('extra-photos-inp').click()" class="text-[16px] text-sky-400 font-bold bg-sky-500/10 px-2 py-1 rounded-lg">
-              <i class="fa-solid fa-plus mr-1"></i>Ajouter
-            </button>
-          </div>
-          <input type="file" id="extra-photos-inp" accept="image/*" multiple class="hidden" onchange="addExtraPhotos(this)">
-          <div id="extra-photos-list" class="flex gap-2 overflow-x-auto no-sb pb-1 min-h-[40px]">
-            <p class="text-[16px] text-slate-500 self-center">Aucune photo supplémentaire</p>
-          </div>
-        </div>
-        <!-- Troc -->
-        <div class="bg-gray-100 rounded-xl p-3 border border-gray-200 mb-2">
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" id="scan-troc" class="w-4 h-4 accent-amber-400">
-            <span class="text-base font-semibold flex-1">Proposer un échange 🔄</span>
-            <span class="text-[16px] text-gray-400">Troc OK</span>
-          </label>
-        </div>
-        <div class="bg-gray-100 rounded-xl p-3 border border-gray-200 mb-2">
-          <p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Description</p>
-          <textarea id="ai-desc" rows="3" class="w-full bg-transparent text-sm text-slate-200 outline-none resize-none leading-relaxed font-medium"></textarea>
-        </div>
-        <div class="bg-gray-100 rounded-xl p-3 border border-gray-200 mb-2">
-          <p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Ville</p>
-          <div class="relative">
-            <i class="fa-solid fa-location-dot absolute left-3 top-1/2 -translate-y-1/2 text-sky-500" style="font-size:13px"></i>
-            <input id="item-city" type="text" placeholder="Ex : Paris, Lyon..." class="inp pl-7 py-2 text-base" style="background:#0f172a;border-color:rgba(148,163,184,.10)">
-          </div>
-        </div>
-        <div class="bg-gray-100 rounded-xl p-3 border border-gray-200 mb-4">
-          <p class="text-[17px] text-gray-400 uppercase font-bold mb-2.5">Livraison</p>
-          <div class="flex flex-col gap-3">
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="checkbox" id="sh-hand" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
-              <span class="text-base font-semibold flex-1">Main propre</span>
-              <span class="text-sm text-gray-400">Gratuit</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="checkbox" id="sh-relay" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
-              <span class="text-base font-semibold flex-1">Mondial Relay</span>
-              <input type="number" id="sh-relay-p" value="5" class="w-14 bg-white border border-gray-200 rounded-lg px-2 py-1 text-sm text-center text-gray-900 outline-none">
-              <span class="text-sm text-gray-400">euro</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer">
-              <input type="checkbox" id="sh-colis" class="w-4 h-4 accent-cyan-500" onchange="updShip()">
-              <span class="text-base font-semibold flex-1">Colissimo</span>
-              <input type="number" id="sh-colis-p" value="8" class="w-14 bg-white border border-gray-200 rounded-lg px-2 py-1 text-sm text-center text-gray-900 outline-none">
-              <span class="text-sm text-gray-400">euro</span>
-            </label>
-          </div>
-        </div>
-        <button id="pub-btn" class="w-full bg-sky-500 text-black font-extrabold py-4 rounded-2xl text-[17px] active:scale-95 transition-transform shadow-[0_0_18px_rgba(34,211,238,.35)]">
-          Publier l'annonce
-        </button>
-      </div>
-    </div>
-  </div>
-  <canvas id="cap-canvas" class="hidden"></canvas>
-</div>
-
-<!-- DETAIL -->
-<div id="detail-modal" class="fixed inset-0 flex-col" style="display:none;z-index:9999;background:#07090f">
-
-  <!-- HEADER : retour haut-gauche + actions haut-droit -->
-  <div style="position:absolute;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;pointer-events:none">
-    <!-- Bouton retour haut-gauche -->
-    <button onclick="closeDetail()" style="pointer-events:all;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:7px 14px 7px 10px;cursor:pointer;color:#fff;font-size:12px;font-weight:700">
-      <i class="fa-solid fa-arrow-left" style="font-size:11px"></i>
-      Retour
-    </button>
-    <!-- Actions haut-droit -->
-    <div style="display:flex;align-items:center;gap:6px;pointer-events:all">
-      <button onclick="toggleFavDetail()" id="det-fav-btn" style="width:34px;height:34px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">
-        <i id="det-fav-icon" class="fa-regular fa-heart" style="color:#fff;font-size:12px"></i>
-      </button>
-      <button onclick="openShareModal()" style="width:34px;height:34px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">
-        <i class="fa-solid fa-share-nodes" style="color:#fff;font-size:12px"></i>
-      </button>
-      <button onclick="openReport()" style="width:34px;height:34px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center">
-        <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px"><i class="fa-solid fa-triangle-exclamation" style="color:#0ea5e9;font-size:15px"></i><span style="position:absolute;font-size:7px;font-weight:900;color:#ef4444;line-height:1;margin-top:2px">!</span></span>
-      </button>
-    </div>
-  </div>
-
-  <!-- CORPS 2 COLONNES -->
-  <div style="flex:1;display:grid;grid-template-columns:1fr 380px;overflow:hidden;min-height:0">
-
-    <!-- ═══ GAUCHE : MÉDIA ═══ -->
-    <div style="position:relative;overflow:hidden;background:#000">
-
-      <!-- Titre + vignette flottants -->
-      <div style="position:absolute;top:70px;left:0;right:0;z-index:10;padding:0 28px;display:flex;align-items:center;gap:16px">
-        <p id="det-title-col" style="flex:1;font-weight:900;font-size:28px;color:#fff;line-height:1.2;text-shadow:0 2px 20px rgba(0,0,0,.8)"></p>
-        <div id="det-thumb-top" style="width:90px;height:90px;min-width:90px;border-radius:16px;overflow:hidden;border:2.5px solid #0ea5e9;box-shadow:0 0 0 4px rgba(14,165,233,.2);background:#f1f5f9;flex-shrink:0"></div>
-      </div>
-
-      <!-- Zone média -->
-      <div id="det-media-zone" style="position:absolute;inset:0;background:#000">
-        <!-- MODE VIDÉO -->
-        <div id="det-video-mode" style="display:none;width:100%;height:100%;flex-direction:column">
-          <div id="det-vid-container" style="position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#000">
-<video id="det-video" style="width:auto;height:100%;max-width:calc(100vh * 9 / 16);object-fit:cover;display:block;cursor:pointer;border-radius:16px" playsinline onclick="toggleVideoPlay()"></video>
-            <div id="det-vid-overlay" onclick="toggleVideoPlay()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s">
-              <div style="width:72px;height:72px;background:rgba(0,0,0,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.3)">
-                <i id="det-vid-play-icon" class="fa-solid fa-play" style="color:#fff;font-size:24px;margin-left:5px"></i>
-              </div>
-            </div>
-            <div style="position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(transparent,rgba(0,0,0,.85));pointer-events:none"></div>
-            <div id="det-vid-controls" style="position:absolute;bottom:0;left:0;right:0;padding:10px 16px 14px;z-index:3;display:flex;flex-direction:column;gap:7px">
-              <input id="det-vid-progress" type="range" min="0" max="100" value="0" oninput="seekVideo(this.value)" style="width:100%;height:3px;accent-color:#0ea5e9;cursor:pointer">
-              <div style="display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                  <button onclick="toggleVideoPlay()" style="background:none;border:none;cursor:pointer"><i id="det-vid-btn-icon" class="fa-solid fa-play" style="color:#fff;font-size:14px"></i></button>
-                  <span id="det-vid-time" style="color:rgba(255,255,255,.7);font-size:10px;font-family:monospace">0:00 / 0:00</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px">
-                  <button onclick="toggleVideoMute()" style="background:none;border:none;cursor:pointer"><i id="det-vid-mute-icon" class="fa-solid fa-volume-high" style="color:#fff;font-size:12px"></i></button>
-                  <button onclick="toggleVideoFS()" style="background:none;border:none;cursor:pointer"><i class="fa-solid fa-expand" style="color:#fff;font-size:12px"></i></button>
-                </div>
-              </div>
-            </div>
-            <div style="position:absolute;top:16px;left:16px;background:rgba(14,165,233,.9);color:#fff;font-size:9px;font-weight:900;padding:3px 10px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:4;letter-spacing:.08em">
-              <i class="fa-solid fa-video" style="font-size:8px"></i> VIDÉO
-            </div>
-            <div id="det-views-badge" class="hidden" style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,.5);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;z-index:4">
-              <i class="fa-solid fa-eye" style="font-size:8px"></i><span id="det-views-count">0</span>
-            </div>
-          </div>
-          <div id="det-photo-strip" style="display:flex;gap:8px;padding:10px 16px;background:rgba(0,0,0,.6);overflow-x:auto;flex-shrink:0;backdrop-filter:blur(10px)"></div>
-        </div>
-        <!-- MODE PHOTOS -->
-        <div id="det-photo-mode" style="display:flex;width:100%;height:100%;flex-direction:column">
-          <div style="position:relative;flex:1;min-height:0">
-            <div id="det-carousel-track" style="display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.16,1,.3,1)"></div>
-            <button id="det-prev" onclick="carNav(-1)" style="display:none;position:absolute;left:14px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-left"></i></button>
-            <button id="det-next" onclick="carNav(1)"  style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:12px;cursor:pointer;align-items:center;justify-content:center;z-index:2"><i class="fa-solid fa-chevron-right"></i></button>
-            <div id="det-dots" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2"></div>
-            <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(transparent,rgba(0,0,0,.4));pointer-events:none"></div>
-          </div>
-        </div>
-      </div>
-      <div id="det-thumbs" style="display:none"></div>
-      <div id="det-extra-thumbs" style="display:none"></div>
-    </div>
-
-    <!-- ═══ DROITE : PANNEAU ÉPURÉ ═══ -->
-    <div class="no-sb" style="overflow-y:auto;background:#0d1117;border-left:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column">
-
-      <!-- PRIX + BADGES (l'essentiel) -->
-      <div style="padding:80px 28px 24px;background:linear-gradient(180deg,rgba(14,165,233,.06) 0%,transparent 100%)">
-        <p id="det-price" style="font-weight:900;font-size:52px;line-height:1;color:#0ea5e9;letter-spacing:-1px;margin-bottom:12px"></p>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
-          <span id="det-cond" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);padding:4px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.1)"></span>
-          <span id="det-city-tag" class="hidden" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.7);background:rgba(255,255,255,.06);padding:4px 12px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">
-            <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:9px;margin-right:3px"></i><span id="det-city-val"></span>
-          </span>
-          <span id="det-troc-tag" class="hidden troc-badge">🔄 Échange OK</span>
-        </div>
-        <div id="det-fraud-warn" class="fraud-warn hidden" style="margin-top:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:10px 14px">
-          <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;flex-shrink:0"></i>
-          <div><p style="font-size:12px;font-weight:700;color:#ef4444">Prix inhabituel</p></div>
-        </div>
-      </div>
-
-      <!-- BOUTONS (3 actions) -->
-      <div style="padding:0 24px 28px;display:flex;flex-direction:column;gap:8px">
-        <button id="buy-btn" style="width:100%;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 24px rgba(14,165,233,.3)">
-          <i class="fa-brands fa-stripe" style="font-size:17px"></i> Acheter maintenant
-        </button>
-        <div style="display:flex;gap:8px">
-          <button id="contact-btn" style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:13px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
-            <i class="fa-solid fa-message" style="font-size:11px;color:#0ea5e9"></i> Contacter
-          </button>
-          <button onclick="openOffer()" style="flex:1;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:13px;font-size:13px;font-weight:700;color:#fb923c;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
-            <i class="fa-solid fa-handshake" style="font-size:11px"></i> Faire offre
-          </button>
-        </div>
-      </div>
-
-      <!-- SÉPARATEUR -->
-      <div style="height:1px;background:rgba(255,255,255,.06);margin:0 24px 28px"></div>
-
-      <!-- VENDEUR (compact) -->
-      <div id="det-seller-card" onclick="openSellerProfile()" style="padding:0 24px 28px;cursor:pointer;display:flex;align-items:center;gap:12px">
-        <div style="width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#0ea5e9,#6366f1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <i class="fa-solid fa-user" style="color:#fff;font-size:14px"></i>
-        </div>
-        <div style="flex:1">
-          <p id="det-seller" style="font-weight:700;font-size:13px;color:#fff"></p>
-          <p id="det-rating" style="font-size:11px;color:#f59e0b;margin-top:1px">Nouveau vendeur</p>
-        </div>
-        <span id="det-verified" class="verified-badge hidden"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
-        <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,.2);font-size:11px"></i>
-      </div>
-
-      <!-- SÉPARATEUR -->
-      <div style="height:1px;background:rgba(255,255,255,.06);margin:0 24px 28px"></div>
-
-      <!-- ACCORDION : Description, Livraison, Score, Carte -->
-      <div style="padding:0 24px;display:flex;flex-direction:column;gap:2px">
-
-        <!-- Description -->
-        <div style="border-radius:12px;overflow:hidden">
-          <button onclick="toggleAccordion('acc-desc')" style="width:100%;background:rgba(255,255,255,.04);border:none;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-radius:12px">
-            <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6)">Description</span>
-            <i class="fa-solid fa-chevron-down" id="acc-desc-icon" style="color:rgba(255,255,255,.3);font-size:10px;transition:transform .2s"></i>
-          </button>
-          <div id="acc-desc" style="display:none;padding:4px 16px 16px">
-            <p id="det-desc" style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.75"></p>
-          </div>
-        </div>
-
-        <!-- Livraison -->
-        <div style="border-radius:12px;overflow:hidden;margin-top:2px">
-          <button onclick="toggleAccordion('acc-ship')" style="width:100%;background:rgba(255,255,255,.04);border:none;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-radius:12px">
-            <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6)">Livraison</span>
-            <i class="fa-solid fa-chevron-down" id="acc-ship-icon" style="color:rgba(255,255,255,.3);font-size:10px;transition:transform .2s"></i>
-          </button>
-          <div id="acc-ship" style="display:none;padding:4px 16px 16px">
-            <div id="det-ship" style="display:flex;flex-wrap:wrap;gap:8px"></div>
-          </div>
-        </div>
-
-        <!-- Score de confiance -->
-        <div style="border-radius:12px;overflow:hidden;margin-top:2px">
-          <button onclick="toggleAccordion('acc-trust')" style="width:100%;background:rgba(255,255,255,.04);border:none;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-radius:12px">
-            <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6)">Score de confiance</span>
-            <span id="det-trust-label" style="font-size:11px;font-weight:800;margin-right:8px"></span>
-            <i class="fa-solid fa-chevron-down" id="acc-trust-icon" style="color:rgba(255,255,255,.3);font-size:10px;transition:transform .2s"></i>
-          </button>
-          <div id="acc-trust" style="display:none;padding:4px 16px 16px">
-            <div style="height:3px;background:rgba(255,255,255,.08);border-radius:99px;margin-bottom:10px"><div id="det-trust-fill" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#0ea5e9,#6366f1);width:0%;transition:width .6s ease"></div></div>
-            <div id="det-trust-details" style="display:flex;gap:6px;flex-wrap:wrap"></div>
-          </div>
-        </div>
-
-        <!-- Localisation -->
-        <div style="border-radius:12px;overflow:hidden;margin-top:2px">
-          <button onclick="toggleAccordion('acc-map')" style="width:100%;background:rgba(255,255,255,.04);border:none;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-radius:12px">
-            <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6)">Localisation</span>
-            <div style="display:flex;align-items:center;gap:6px">
-              <span id="det-loc-city" style="font-size:11px;color:rgba(255,255,255,.4)"></span>
-              <i class="fa-solid fa-chevron-down" id="acc-map-icon" style="color:rgba(255,255,255,.3);font-size:10px;transition:transform .2s"></i>
-            </div>
-          </button>
-          <div id="acc-map" style="display:none;padding:4px 16px 16px">
-            <div style="border-radius:14px;overflow:hidden;height:180px;position:relative">
-              <div id="det-map" style="width:100%;height:100%"></div>
-              <div id="det-loc-badge" style="display:none"></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ANNONCES SIMILAIRES → bouton -->
-      <div style="padding:28px 24px 40px">
-        <button onclick="openSimilarPage()" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(14,165,233,.12);display:flex;align-items:center;justify-content:center">
-              <i class="fa-solid fa-layer-group" style="color:#0ea5e9;font-size:13px"></i>
-            </div>
-            <div style="text-align:left">
-              <p style="font-size:13px;font-weight:700;color:#fff">Annonces similaires</p>
-              <p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:1px">Voir tous les articles proches</p>
-            </div>
-          </div>
-          <i class="fa-solid fa-arrow-right" style="color:rgba(255,255,255,.3);font-size:12px"></i>
-        </button>
-        <div id="det-similar" style="display:none"></div>
-      </div>
-
-      <!-- hidden fields requis par le JS -->
-      <div id="det-cat" style="display:none"></div>
-      <div id="det-brand" style="display:none"></div>
-      <div id="det-price-range" style="display:none"></div>
-      <div id="det-title-big" style="display:none"></div>
-
-    </div>
-  </div>
-
-</div>
-<!-- CHAT -->
-<div id="chat-modal" class="fixed inset-0 z-[600] bg-white hidden flex-col sr">
-  <div class="flex items-center gap-3 px-3 pt-4 pb-3 bg-white border-b border-gray-200 shrink-0">
-    <button onclick="closeChat()" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center">
-      <i class="fa-solid fa-arrow-left text-base"></i>
-    </button>
-    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
-      <i class="fa-solid fa-user text-sm text-gray-900"></i>
-    </div>
-    <div class="flex-1">
-      <p id="chat-seller" class="font-bold text-base leading-none"></p>
-      <p class="text-[16px] text-green-400 font-semibold mt-0.5">En ligne</p>
-    </div>
-  </div>
-  <div class="px-3 py-2 bg-gray-100/50 border-b border-gray-200 flex gap-3 items-center shrink-0">
-    <img id="chat-img" class="w-9 h-9 rounded-lg object-cover border border-gray-200 shrink-0">
-    <div class="flex-1 min-w-0">
-      <p id="chat-iname" class="text-sm font-bold truncate"></p>
-      <p id="chat-iprice" class="text-sm text-sky-500 font-bold"></p>
-    </div>
-  </div>
-  <div id="chat-msgs" class="flex-1 overflow-y-auto no-sb p-4 flex flex-col gap-3"></div>
-  <!-- Suggestions IA contextuelles -->
-  <div class="px-3 pt-2 bg-white shrink-0">
-    <p class="text-[17px] text-slate-500 font-bold uppercase mb-1.5 tracking-wide"><i class="fa-solid fa-wand-magic-sparkles text-sky-400 mr-1"></i>IA suggère</p>
-    <div id="chat-suggestions" class="flex gap-2 overflow-x-auto no-sb pb-1"></div>
-  </div>
-  <div class="px-3 py-3 bg-white border-t border-gray-200 shrink-0">
-    <div class="flex gap-2">
-      <input id="chat-inp" type="text" placeholder="Message..." onkeypress="if(event.key==='Enter')sendMsg()" oninput="updateChatSuggestions()"
-        class="flex-1 bg-gray-100 border border-gray-200 rounded-xl px-4 py-2.5 text-base text-gray-900 placeholder-zinc-600 outline-none focus:border-sky-500">
-      <button onclick="sendMsg()" class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center active:scale-90 transition-transform">
-        <i class="fa-solid fa-paper-plane text-black text-sm"></i>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- PAIEMENT -->
-<div id="pay-modal" class="fixed inset-0 z-[700] hidden items-end justify-center">
-  <div class="mover absolute inset-0" onclick="closePay()"></div>
-  <div class="relative msheet su w-full max-w-lg p-5 pb-8">
-    <div class="flex justify-center mb-4"><div class="w-10 h-1 bg-zinc-700 rounded-full"></div></div>
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-2">
-        <div class="w-7 h-7 rounded-lg bg-green-500/15 flex items-center justify-center">
-          <i class="fa-solid fa-shield-halved text-green-400 text-sm"></i>
-        </div>
-        <span class="font-bold text-base">Paiement securise</span>
-      </div>
-      <button onclick="closePay()" class="w-8 h-8 rounded-xl bg-gray-200 flex items-center justify-center">
-        <i class="fa-solid fa-xmark text-base"></i>
-      </button>
-    </div>
-    <div class="flex gap-3 mb-4">
-      <div id="pay-img" class="w-14 h-14 rounded-xl bg-gray-200 bg-cover bg-center shrink-0 border border-gray-200"></div>
-      <div>
-        <p id="pay-title" class="font-bold text-base mb-1 leading-tight"></p>
-        <p id="pay-price" class="text-sky-500 font-black text-lg"></p>
-      </div>
-    </div>
-    <div id="pay-ship-wrap" class="hidden mb-3">
-      <p class="text-[17px] text-gray-400 uppercase font-bold mb-2">Choisir la livraison</p>
-      <div id="pay-ship-list" class="flex flex-col gap-2"></div>
-    </div>
-    <div class="bg-gray-100 rounded-xl p-4 mb-3 border border-gray-200 text-base">
-      <div class="flex justify-between mb-2"><span class="text-gray-500">Article</span><span id="pay-sub" class="font-bold"></span></div>
-      <div class="flex justify-between mb-2"><span class="text-gray-500">Livraison</span><span id="pay-shipcost" class="font-bold">-</span></div>
-      <div id="pay-coins-row" class="hidden flex justify-between mb-2 items-center"><span class="text-gray-500">Youbiiiz Coins</span><span id="pay-coins-discount" class="font-bold text-amber-400"></span></div>
-      <div class="flex justify-between border-t border-gray-200 pt-3"><span class="font-bold">Total</span><span id="pay-total" class="font-extrabold text-sky-500 text-base"></span></div>
-    </div>
-    <!-- Paiement en plusieurs fois -->
-    <div class="mb-4">
-      <p class="text-[17px] text-gray-400 uppercase font-bold mb-2">Mode de paiement</p>
-      <div id="pay-mode-1x" class="pay3x-option selected" onclick="selectPayMode('1x')">
-        <div class="flex items-center justify-between">
-          <span class="text-base font-bold">Paiement comptant</span>
-          <span id="pay-1x-amount" class="text-base font-extrabold text-sky-400"></span>
-        </div>
-      </div>
-      <div id="pay-mode-3x" class="pay3x-option" onclick="selectPayMode('3x')">
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-base font-bold">Paiement en 3×</span>
-            <span class="text-[16px] text-green-400 font-bold ml-2">Sans frais</span>
-          </div>
-          <span id="pay-3x-amount" class="text-base font-extrabold text-sky-400"></span>
-        </div>
-        <p id="pay-3x-detail" class="text-[16px] text-gray-400 mt-1"></p>
-      </div>
-    </div>
-    <!-- Coins dispo -->
-    <div id="pay-use-coins" class="hidden mb-3 flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl p-3">
-      <div class="flex items-center gap-2">
-        <span class="text-lg">🪙</span>
-        <div><p class="text-sm font-bold text-amber-800">Utiliser mes Coins</p><p id="pay-coins-avail" class="text-[16px] text-amber-600"></p></div>
-      </div>
-      <label class="toggle-sw" style="filter:hue-rotate(30deg)">
-        <input type="checkbox" id="use-coins-toggle" onchange="toggleCoinsDiscount()">
-        <div class="toggle-track"></div>
-      </label>
-    </div>
-    <button id="stripe-btn" onclick="doStripe()" class="w-full bg-[#635bff] text-gray-900 font-bold py-4 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
-      <i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant
-    </button>
-  </div>
-</div>
-
-<!-- NOTATION -->
-<div id="rate-modal" class="fixed inset-0 z-[800] hidden items-center justify-center px-5">
-  <div class="mover absolute inset-0"></div>
-  <div class="relative bg-[#111] rounded-3xl p-6 w-full max-w-xs border border-gray-200 text-center su">
-    <div class="w-14 h-14 rounded-2xl bg-yellow-500/10 flex items-center justify-center mx-auto mb-3">
-      <i class="fa-solid fa-star text-yellow-400 text-2xl"></i>
-    </div>
-    <h3 class="font-extrabold text-base mb-1">Laisser une note</h3>
-    <p id="rate-sub" class="text-gray-400 text-sm mb-4">Comment s'est passee la transaction ?</p>
-    <div class="flex justify-center gap-2 mb-4">
-      <button onclick="setStar(1)" class="star text-3xl text-slate-600 transition-all" data-v="1">&#9733;</button>
-      <button onclick="setStar(2)" class="star text-3xl text-slate-600 transition-all" data-v="2">&#9733;</button>
-      <button onclick="setStar(3)" class="star text-3xl text-slate-600 transition-all" data-v="3">&#9733;</button>
-      <button onclick="setStar(4)" class="star text-3xl text-slate-600 transition-all" data-v="4">&#9733;</button>
-      <button onclick="setStar(5)" class="star text-3xl text-slate-600 transition-all" data-v="5">&#9733;</button>
-    </div>
-    <textarea id="rate-comment" placeholder="Commentaire (optionnel)" rows="2" class="inp text-base mb-4 resize-none" style="font-size:12px"></textarea>
-    <button onclick="submitRate()" class="w-full bg-yellow-400 text-black font-bold py-3.5 rounded-2xl mb-2 active:scale-95 transition-transform">Envoyer</button>
-    <button onclick="closeRate()" class="w-full text-gray-400 text-base py-2">Passer</button>
-  </div>
-</div>
-
-<!-- EDIT -->
-<div id="edit-modal" class="fixed inset-0 z-[600] hidden items-end justify-center">
-  <div class="mover absolute inset-0" onclick="closeEdit()"></div>
-  <div class="relative msheet su w-full max-w-lg">
-    <div class="flex justify-center pt-3 pb-1"><div class="w-10 h-1 bg-zinc-700 rounded-full"></div></div>
-    <div class="flex items-center justify-between px-4 pt-2 pb-3">
-      <p class="font-extrabold text-[17px]">Modifier</p>
-      <button onclick="closeEdit()" class="w-8 h-8 rounded-xl bg-gray-200 flex items-center justify-center"><i class="fa-solid fa-xmark text-base"></i></button>
-    </div>
-    <div class="overflow-y-auto no-sb px-4 pb-8" style="max-height:65vh">
-      <div class="mb-3"><p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Titre</p>
-        <input id="edit-title" class="inp"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-        <div><p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Prix (euro)</p>
-          <input id="edit-price" type="number" class="inp text-sky-500 font-black"></div>
-        <div><p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Etat</p>
-          <select id="edit-cond" class="inp" style="cursor:pointer">
-            <option>Neuf</option><option>Tres bon etat</option><option>Bon etat</option><option>Etat correct</option>
-          </select></div>
-      </div>
-      <div class="mb-3"><p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Catégorie</p>
-        <select id="edit-cat" class="inp" style="cursor:pointer;font-size:13px">
-          <optgroup label="📱 Électronique">
-            <option>Téléphones & objets connectés</option>
-            <option>Accessoires téléphones</option>
-            <option>Ordinateurs</option>
-            <option>Accessoires informatique</option>
-            <option>Tablettes & liseuses</option>
-            <option>Photo, audio & vidéo</option>
-            <option>Consoles</option>
-            <option>Jeux vidéo</option>
-          </optgroup>
-          <optgroup label="👗 Mode">
-            <option>Vêtements homme</option>
-            <option>Vêtements femme</option>
-            <option>Chaussures homme</option>
-            <option>Chaussures femme</option>
-            <option>Accessoires & Bagagerie</option>
-            <option>Montres & Bijoux</option>
-            <option>Lunettes</option>
-            <option>Beauté & Bien-être</option>
-          </optgroup>
-          <optgroup label="👶 Famille">
-            <option>Vêtements bébé</option>
-            <option>Vêtements enfant</option>
-            <option>Chaussures enfant</option>
-            <option>Équipement bébé</option>
-            <option>Mobilier enfant</option>
-            <option>Jeux & Jouets</option>
-            <option>Puériculture</option>
-          </optgroup>
-          <optgroup label="🏠 Maison & Jardin">
-            <option>Ameublement</option>
-            <option>Électroménager</option>
-            <option>Arts de la table</option>
-            <option>Décoration</option>
-            <option>Linge de maison</option>
-            <option>Bricolage</option>
-            <option>Outillage</option>
-            <option>Jardin & Plantes</option>
-            <option>Papeterie & fournitures</option>
-          </optgroup>
-          <optgroup label="🎭 Loisirs">
-            <option>Livres</option>
-            <option>DVD - Films</option>
-            <option>CD - Musique</option>
-            <option>Instruments de musique</option>
-            <option>Vélos</option>
-            <option>Équipements vélos</option>
-            <option>Sport & Hobbies</option>
-            <option>Chasse & Pêche</option>
-            <option>Collection</option>
-            <option>Vins & Gastronomie</option>
-            <option>Loisirs créatifs</option>
-            <option>Antiquités</option>
-            <option>Modélisme</option>
-            <option>Camping & Plein air</option>
-          </optgroup>
-          <optgroup label="🐾 Animaux">
-            <option>Chiens</option>
-            <option>Chats</option>
-            <option>Chevaux & Équidés</option>
-            <option>Oiseaux</option>
-            <option>Rongeurs & Lapins</option>
-            <option>Reptiles & Amphibiens</option>
-            <option>Poissons</option>
-            <option>Accessoires animaux</option>
-            <option>Alimentation animaux</option>
-          </optgroup>
-          <optgroup label="🚗 Véhicules">
-            <option>Voitures</option>
-            <option>Motos</option>
-            <option>Scooters & Vélos électriques</option>
-            <option>Utilitaires</option>
-            <option>Caravaning</option>
-            <option>Nautisme</option>
-            <option>Équipement auto</option>
-            <option>Équipement moto</option>
-            <option>Équipement caravaning</option>
-            <option>Pièces détachées auto</option>
-          </optgroup>
-          <optgroup label="🏢 Immobilier">
-            <option>Ventes immobilières</option>
-            <option>Locations</option>
-            <option>Colocations</option>
-            <option>Bureaux & Commerces</option>
-            <option>Terrains & Propriétés</option>
-            <option>Locations de vacances</option>
-          </optgroup>
-          <optgroup label="🛠️ Services">
-            <option>Cours particuliers</option>
-            <option>Formation professionnelle</option>
-            <option>Covoiturage</option>
-            <option>Prestations de services</option>
-            <option>Services événementiels</option>
-            <option>Service à la personne</option>
-            <option>Baby-sitting</option>
-            <option>Déménagement</option>
-            <option>Jardinage</option>
-            <option>Bricolage & Réparation</option>
-          </optgroup>
-          <optgroup label="🏭 Matériel Pro">
-            <option>Matériel agricole</option>
-            <option>Tracteurs</option>
-            <option>Poids lourds</option>
-            <option>BTP - Chantier</option>
-            <option>Manutention - Levage</option>
-            <option>Équipements industriels</option>
-            <option>Restauration - Hôtellerie</option>
-            <option>Fournitures de bureau</option>
-            <option>Matériel médical</option>
-            <option>Équipements commerces</option>
-          </optgroup>
-        </select></div>
-      <div class="mb-4"><p class="text-[17px] text-gray-400 uppercase font-bold mb-1.5">Description</p>
-        <textarea id="edit-desc" rows="3" class="inp resize-none"></textarea></div>
-      <button id="edit-save" onclick="saveEdit()" class="w-full bg-sky-500 text-black font-bold py-4 rounded-2xl mb-2 active:scale-95 transition-transform">Sauvegarder</button>
-      <button onclick="confirmDel(editingId)" class="w-full bg-red-500/8 border border-red-500/20 text-red-400 font-bold py-3.5 rounded-2xl text-base active:scale-95 transition-transform">
-        <i class="fa-solid fa-trash mr-2"></i>Supprimer
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- CONFIRM DELETE -->
-<div id="del-modal" class="fixed inset-0 z-[700] hidden items-center justify-center px-5">
-  <div class="mover absolute inset-0"></div>
-  <div class="relative bg-[#111] rounded-3xl p-5 w-full max-w-xs border border-red-500/20 text-center su">
-    <i class="fa-solid fa-trash text-red-400 text-2xl mb-3"></i>
-    <p class="font-extrabold text-base mb-1">Supprimer ?</p>
-    <p class="text-gray-400 text-sm mb-5">Cette action est definitive.</p>
-    <div class="flex gap-2">
-      <button onclick="closeDel()" class="flex-1 bg-gray-200 font-bold py-3 rounded-xl text-base">Annuler</button>
-      <button onclick="doDelete()" class="flex-1 bg-red-500 font-bold py-3 rounded-xl text-base">Supprimer</button>
-    </div>
-  </div>
-</div>
-
-<input type="file" id="search-photo-inp" accept="image/*" class="hidden" onchange="onSearchPhoto(this)">
 
 <script type="module">
 
-import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import{getFirestore,collection,addDoc,onSnapshot,serverTimestamp,doc,where,orderBy,query,getDocs,deleteDoc,updateDoc,getDoc}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+// ══════════════════════════════════════════════════════════════
+// YOUBIIIZ — Script unifié (pas de module ES, pas de scope split)
+// ══════════════════════════════════════════════════════════════
 
-const FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
-const fb=initializeApp(FB),auth=getAuth(fb),db=getFirestore(fb);
 
-let me=null,items=[],curItem=null,scanData=null,camStream=null;
-let editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
-let activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
+// ── FONCTIONS CRITIQUES UI (indépendantes de Firebase) ──
+var me = null; // partagé avec le module Firebase
+
+function showAuthMsg(msg, ok) {
+  var el = document.getElementById("auth-msg");
+  if (!el) return;
+  el.style.display = "block";
+  el.style.background = ok ? "#f0fdf4" : "#fef2f2";
+  el.style.color = ok ? "#166534" : "#dc2626";
+  el.style.border = ok ? "1px solid #bbf7d0" : "1px solid #fecaca";
+  el.innerText = msg;
+}
+function hideAuthMsg() {
+  var el = document.getElementById("auth-msg");
+  if (el) el.style.display = "none";
+}
+
+function showTab(tab) {
+  document.getElementById("panel-login").style.display = tab === "login" ? "block" : "none";
+  document.getElementById("panel-register").style.display = tab === "register" ? "block" : "none";
+  var tl = document.getElementById("tab-login");
+  var tr = document.getElementById("tab-register");
+  tl.style.background = tab === "login" ? "#fff" : "transparent";
+  tl.style.color = tab === "login" ? "#0f172a" : "#94a3b8";
+  tl.style.boxShadow = tab === "login" ? "0 1px 4px rgba(0,0,0,.1)" : "none";
+  tr.style.background = tab === "register" ? "#fff" : "transparent";
+  tr.style.color = tab === "register" ? "#0f172a" : "#94a3b8";
+  tr.style.boxShadow = tab === "register" ? "0 1px 4px rgba(0,0,0,.1)" : "none";
+  hideAuthMsg();
+}
+
+
+
+// Mode visiteur : 100% sans Firebase
+var __demoItems = [
+  {id:"demo1",userId:"demo_seller_1",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go Noir Spatial. Batterie 91%, aucune rayure. Vendu avec chargeur MagSafe et coque. Fonctionne parfaitement.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",lat:48.8566,lng:2.3522,imageUrl:"https://picsum.photos/seed/iphone14/400/400",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],createdAt:{seconds:Math.floor(Date.now()/1000)-3600},views:42},
+  {id:"demo2",userId:"demo_seller_2",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",description:"PS5 édition disc avec 2 manettes DualSense. Peu utilisée, parfait état. Câbles et boîte inclus.",brand:"Sony",model:"PS5",city:"Lyon",lat:45.7640,lng:4.8357,imageUrl:"https://picsum.photos/seed/ps5demo/400/400",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],createdAt:{seconds:Math.floor(Date.now()/1000)-7200},views:89},
+  {id:"demo3",userId:"demo_seller_3",itemName:"MacBook Air M2 13 pouces",price:950,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 2022, 8Go RAM, 256Go SSD. Jamais ouvert, offert en cadeau. Facture disponible.",brand:"Apple",model:"MacBook Air M2",city:"Bordeaux",lat:44.8378,lng:-0.5792,imageUrl:"https://picsum.photos/seed/macbookm2/400/400",shipping:[{method:"Colissimo",price:15}],createdAt:{seconds:Math.floor(Date.now()/1000)-10800},views:167},
+  {id:"demo4",userId:"demo_seller_4",itemName:"Vélo électrique Decathlon",price:680,category:"Vélos",condition:"Bon état",description:"Vélo électrique autonomie 60km, frein à disque. 2 saisons d'usage, pneus neufs.",brand:"Decathlon",model:"B Twin E-ST500",city:"Marseille",lat:43.2965,lng:5.3698,imageUrl:"https://picsum.photos/seed/veloelec/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-14400},views:34},
+  {id:"demo5",userId:"demo_seller_5",itemName:"Nike Air Jordan 1 Retro T42",price:185,category:"Chaussures homme",condition:"Très bon état",description:"Jordan 1 Retro High OG Chicago 2022, T42. Portées 3 fois, boîte et lacets originaux.",brand:"Nike",model:"Air Jordan 1",city:"Toulouse",lat:43.6047,lng:1.4442,imageUrl:"https://picsum.photos/seed/jordan1/400/400",shipping:[{method:"Mondial Relay",price:5},{method:"Colissimo",price:8}],createdAt:{seconds:Math.floor(Date.now()/1000)-18000},views:78},
+  {id:"demo6",userId:"demo_seller_6",itemName:"Canapé angle convertible gris",price:350,category:"Ameublement",condition:"Bon état",description:"Canapé d'angle convertible méridienne droite, tissu gris anthracite avec coffre de rangement.",brand:"IKEA",model:"Friheten",city:"Nantes",lat:47.2184,lng:-1.5536,imageUrl:"https://picsum.photos/seed/canape/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-21600},views:55},
+  {id:"demo7",userId:"demo_seller_7",itemName:"Guitare acoustique Yamaha F310",price:90,category:"Instruments de musique",condition:"Bon état",description:"Yamaha F310 taille 4/4, idéale pour débuter. Vendue avec housse et capodastre.",brand:"Yamaha",model:"F310",city:"Strasbourg",lat:48.5734,lng:7.7521,imageUrl:"https://picsum.photos/seed/guitare/400/400",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:12}],createdAt:{seconds:Math.floor(Date.now()/1000)-25200},views:23},
+  {id:"demo8",userId:"demo_seller_8",itemName:"Dyson V11 Aspirateur balai",price:290,category:"Électroménager",condition:"Très bon état",description:"Dyson V11 Absolute Pro, batterie neuve. Livré avec toutes les têtes et support mural.",brand:"Dyson",model:"V11",city:"Lille",lat:50.6292,lng:3.0573,imageUrl:"https://picsum.photos/seed/dysonv11/400/400",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:18}],createdAt:{seconds:Math.floor(Date.now()/1000)-28800},views:91},
+  {id:"demo9",userId:"demo_seller_9",itemName:"Rolex Datejust 36mm Cadran Vert",price:6800,category:"Montres & Bijoux",condition:"Très bon état",description:"Rolex Datejust 36mm, lunette flutée or jaune, cadran vert. Année 2019, boîte et papiers.",brand:"Rolex",model:"Datejust 36",city:"Paris",lat:48.8738,lng:2.2950,imageUrl:"https://picsum.photos/seed/rolex/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Math.floor(Date.now()/1000)-32400},views:203},
+  {id:"demo10",userId:"demo_seller_10",itemName:"Lego Millennium Falcon 75192",price:480,category:"Jeux & Jouets",condition:"Neuf",description:"Lego 75192, 7541 pièces, boîte scellée jamais ouverte. Facture disponible.",brand:"Lego",model:"75192",city:"Nice",lat:43.7102,lng:7.2620,imageUrl:"https://picsum.photos/seed/lego75192/400/400",shipping:[{method:"Colissimo",price:20}],createdAt:{seconds:Math.floor(Date.now()/1000)-36000},views:312}
+];
+
+function __showView(v) {
+  // Minimal switchView that works without the Firebase module
+  ["home","map","notifications","profile"].forEach(function(n) {
+    var el = document.getElementById("view-" + n);
+    if (!el) return;
+    if (n === "map") {
+      el.style.display = n === v ? "block" : "none";
+    } else {
+      if (n === v) el.classList.remove("hidden");
+      else el.classList.add("hidden");
+    }
+  });
+}
+
+function __renderDemoFeed() {
+  var feed = document.getElementById("feed");
+  if (!feed) return;
+  feed.innerHTML = __demoItems.map(function(item) {
+    var isFav = typeof favorites !== "undefined" && favorites.has(item.id);
+    return [
+      '<div class="card fi" data-id="' + item.id + '" style="cursor:pointer;position:relative">',
+        '<div class="sq" style="position:relative">',
+          '<img src="' + item.imageUrl + '" loading="lazy" style="width:100%;height:100%;object-fit:cover">',
+          '<span style="position:absolute;top:6px;left:7px;background:rgba(255,255,255,.93);color:#0ea5e9;font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px">' + item.condition + '</span>',
+          '<button class="fav-card-btn" data-fav="' + item.id + '" style="position:absolute;top:6px;right:7px;width:30px;height:30px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.15);line-height:1">' + (isFav ? '❤️' : '🤍') + '</button>',
+        '</div>',
+        '<div class="inf">',
+          '<p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#0f172a">' + item.itemName + '</p>',
+          '<p style="font-size:15px;font-weight:900;color:#0ea5e9">' + item.price + '€</p>',
+          '<p style="font-size:10px;color:#64748b;margin-top:2px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>' + item.city + '</p>',
+        '</div>',
+      '</div>'
+    ].join("");
+  }).join("");
+}
+
+window.__openDemoItem = function(id) {
+  if(window.__demoItems && items.push){
+    var current = items;
+    var ids = new Set(current.map(function(x){return x.id;}));
+    window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) items.push(d); });
+  }
+  if(typeof window.openDetail === "function"){
+    window.openDetail(id);
+  }
+};
+
+function doAnon() {
+  me = { uid: "visitor_" + Math.random().toString(36).slice(2, 8), email: null, isVisitor: true };
+  me = me;
+  
+  window.items = __demoItems; // expose to module when it loads
+
+  // Hide splash, show app
+  document.getElementById("splash").style.display = "none";
+  var app = document.getElementById("app");
+  app.classList.remove("hidden");
+  app.style.opacity = "1";
+
+  // Show visitor banner
+  var vb = document.getElementById("visitor-banner");
+  if (vb) vb.style.display = "flex";
+
+  // Force home view visible, hide profile/notif/map
+  __showView("home");
+
+  // Hide profile nav items (visitor has no account)
+  var navProfile = document.getElementById("nav-profile");
+  if (navProfile) navProfile.style.display = "none";
+  var snavProfile = document.getElementById("snav-profile");
+  if (snavProfile) snavProfile.style.display = "none";
+  var snavNotif = document.getElementById("snav-notif");
+  if (snavNotif) snavNotif.style.display = "none";
+  var navNotif = document.getElementById("nav-notif");
+  if (navNotif) navNotif.style.display = "none";
+
+  // Render demo feed now
+  __renderDemoFeed();
+
+  // Event delegation: clic sur les cartes du feed
+  var feed = document.getElementById("feed");
+  if (feed && !feed.__listenerAdded) {
+    feed.__listenerAdded = true;
+    feed.addEventListener("click", function(e) {
+      var favBtn = e.target.closest(".fav-card-btn");
+      if (favBtn) {
+        e.stopPropagation();
+        var fid = favBtn.getAttribute("data-fav");
+        if (fid && typeof toggleFavCard !== "undefined") toggleFavCard(favBtn, fid);
+        return;
+      }
+      var card = e.target.closest("[data-id]");
+      if (card) {
+        var cid = card.getAttribute("data-id");
+        if (!cid) return;
+        // Merge demo items
+        if (window.__demoItems) {
+          var ids = new Set(items.map(function(x){return x.id;}));
+          window.__demoItems.forEach(function(d){ if(!ids.has(d.id)) items.push(d); });
+        }
+        openDetail(cid);
+      }
+    });
+  }
+
+  // When module loads later, it will also call injectDemoData — allow it
+  // items is in scope — inject demo items directly
+  if(window.__demoItems){
+    var _dids=new Set(items.map(function(x){return x.id;}));
+    window.__demoItems.forEach(function(d){if(!_dids.has(d.id))items.push(d);});
+  }
+}
+
+
+// ── Firebase config ──
+var FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
+
+// Initialiser Firebase quand le SDK est chargé
+function initFirebase(){
+  if(typeof firebase==="undefined") return setTimeout(initFirebase, 100);
+  var fb=firebase.initializeApp(FB);
+  var auth=firebase.auth();
+  var db=firebase.firestore();
+
+var FB={apiKey:"AIzaSyDOSIhWwrlkhNfk8Y3-tl9IebJW0YBA7d4",authDomain:"youbiiiz-app.firebaseapp.com",projectId:"youbiiiz-app",storageBucket:"youbiiiz-app.firebasestorage.app",messagingSenderId:"664733497216",appId:"1:664733497216:web:ae19fbadf0fa509f59b365"};
+var fb=firebase.initializeApp(FB),auth=firebase.auth(),db=firebase.firestore();
+
+var me=null;
+var items=[],curItem=null,scanData=null,camStream=null;
+
+var editingId=null,deletingId=null,payItem=null,selShip=null,curStar=0,rateCtx=null;
+var activeCat="all",map=null,userLat=null,userLng=null,mapMarkers=[];
 
 window.onerror=(m,s,l)=>{toast("JS:"+m+" L"+l);};
 function toast(m,ok){
@@ -1885,31 +949,15 @@ function toast(m,ok){
   setTimeout(function(){e.style.display="none";},3500);
 }
 
-onAuthStateChanged(auth,function(u){
-  if(u){
-    me=u;
-    var badge=document.getElementById("user-badge");
-    if(badge) badge.innerText="ID:"+u.uid.slice(0,4);
-    var puid=document.getElementById("profile-uid");
-    if(puid) puid.innerText=(u.email||"Anonyme")+" · "+u.uid.slice(0,8)+"...";
+auth.onAuthStateChanged(function(u){
+  if(u && (!me || !me.isVisitor)){
+    me=u; 
     boot();
   }
   // Sinon: landing page reste visible, l'user doit se connecter
 });
 
 // AUTH FUNCTIONS
-window.showTab=function(tab){
-  document.getElementById("panel-login").style.display=tab==="login"?"block":"none";
-  document.getElementById("panel-register").style.display=tab==="register"?"block":"none";
-  document.getElementById("tab-login").style.background=tab==="login"?"#fff":"transparent";
-  document.getElementById("tab-login").style.color=tab==="login"?"#0f172a":"#94a3b8";
-  document.getElementById("tab-login").style.boxShadow=tab==="login"?"0 1px 4px rgba(0,0,0,.1)":"none";
-  document.getElementById("tab-register").style.background=tab==="register"?"#fff":"transparent";
-  document.getElementById("tab-register").style.color=tab==="register"?"#0f172a":"#94a3b8";
-  document.getElementById("tab-register").style.boxShadow=tab==="register"?"0 1px 4px rgba(0,0,0,.1)":"none";
-  hideAuthMsg();
-};
-
 function showAuthMsg(msg,ok){
   var el=document.getElementById("auth-msg");
   el.style.display="block";
@@ -1925,7 +973,7 @@ window.doLogin=async function(){
   var pass=document.getElementById("login-password").value;
   if(!email||!pass){showAuthMsg("Remplis tous les champs");return;}
   try{
-    await signInWithEmailAndPassword(auth,email,pass);
+    await auth.signInWithEmailAndPassword(email,pass);
   }catch(e){
     var msgs={"auth/user-not-found":"Compte introuvable","auth/wrong-password":"Mot de passe incorrect","auth/invalid-email":"Email invalide","auth/invalid-credential":"Email ou mot de passe incorrect"};
     showAuthMsg(msgs[e.code]||"Erreur: "+e.message);
@@ -1940,7 +988,7 @@ window.doRegister=async function(){
   if(pass.length<6){showAuthMsg("Mot de passe trop court (min. 6 car.)");return;}
   if(pass!==conf){showAuthMsg("Les mots de passe ne correspondent pas");return;}
   try{
-    await createUserWithEmailAndPassword(auth,email,pass);
+    await auth.createUserWithEmailAndPassword(email,pass);
   }catch(e){
     var msgs={"auth/email-already-in-use":"Email déjà utilisé","auth/invalid-email":"Email invalide","auth/weak-password":"Mot de passe trop faible"};
     showAuthMsg(msgs[e.code]||"Erreur: "+e.message);
@@ -1949,106 +997,111 @@ window.doRegister=async function(){
 
 window.doGoogle=async function(){
   try{
-    var provider=new GoogleAuthProvider();
-    await signInWithPopup(auth,provider);
+    var provider=new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
   }catch(e){
     if(e.code!=="auth/popup-closed-by-user") showAuthMsg("Erreur Google: "+e.message);
   }
 };
 
 window.doAnon=function(){
-  // Mode visiteur instantané — pas besoin de Firebase
+  // Mode visiteur: bypass Firebase entièrement
   me={uid:"visitor_"+Math.random().toString(36).slice(2,8),email:null,isVisitor:true};
+  document.getElementById("auth-msg") && (document.getElementById("auth-msg").style.display="none");
   boot();
 };
 
 window.doLogout=async function(){
   try{
-    await signOut(auth);
-    document.getElementById("app").classList.add("hidden");
-    document.getElementById("app").style.opacity="0";
-    document.getElementById("splash").style.display="flex";
-    me=null;
-  }catch(e){toast("Erreur: "+e.message);}
+    if(me && !me.isVisitor) await auth.signOut();
+  }catch(e){}
+  me=null;
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("app").style.opacity="0";
+  document.getElementById("splash").style.display="flex";
 };
 
 function boot(){
-  var splash=document.getElementById("splash");
-  if(splash){splash.style.display="none";splash.style.zIndex="-1";}
+  if(__me) me = __me;
+  document.getElementById("splash").style.display="none";
   var app=document.getElementById("app");
   app.classList.remove("hidden");
-  app.style.display="flex";
-  app.style.opacity="0";
   setTimeout(function(){app.style.opacity="1";},80);
-  // Afficher panneau gauche sur desktop
-  var left=document.getElementById("landing-left");
-  if(left&&window.innerWidth>=768) left.style.display="flex";
-  var lm=document.getElementById("logo-mobile");
-  if(lm&&window.innerWidth>=768) lm.style.display="none";
+  // Update UI with user info
+  if(me){
+    var badge=document.getElementById("user-badge");
+    if(badge) badge.innerText=me.isVisitor?"Visiteur":"ID:"+me.uid.slice(0,4);
+    var puid=document.getElementById("profile-uid");
+    if(puid) puid.innerText=me.isVisitor?"Mode visiteur — sans compte":((me.email||"Anonyme")+" · "+me.uid.slice(0,8)+"...");
+    var suid=document.getElementById("sidebar-uid");
+    if(suid) suid.innerText=me.isVisitor?"Mode visiteur":(me.email||"Compte anonyme");
+  }
   initFeed();
-  initNotifs();
+  if(!me||!me.isVisitor) initNotifs();
   checkPayReturn();
-  initPush();
+  var vb=document.getElementById("visitor-banner");
+  if(vb) vb.style.display=(me&&me.isVisitor)?"flex":"none";
 }
 
 async function initPush(){/* messaging désactivé */}
 
 function showPushBanner(title,body){
   var el=document.createElement("div");
-  el.style.cssText="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9000;background:#f1f5f9;border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:12px 16px;max-width:320px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;align-items:center;gap:12px;animation:su .3s cubic-bezier(.16,1,.3,1)";
-  el.innerHTML='<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#22d3ee,#3b82f6);flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-bell" style="color:#000;font-size:13px"></i></div><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;margin:0 0 2px">'+title+'</p><p style="font-size:12px;color:#64748b;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+body+'</p></div><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#64748b;cursor:pointer;padding:4px;font-size:13px">x</button>';
+  el.style.cssText="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9000;background:#1e293b;border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:12px 16px;max-width:320px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;align-items:center;gap:12px;animation:su .3s cubic-bezier(.16,1,.3,1)";
+  el.innerHTML='<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#22d3ee,#3b82f6);flex-shrink:0;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-bell" style="color:#000;font-size:14px"></i></div><div style="flex:1;min-width:0"><p style="font-size:13px;font-weight:700;margin:0 0 2px">'+title+'</p><p style="font-size:11px;color:#94a3b8;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+body+'</p></div><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#94a3b8;cursor:pointer;padding:4px;font-size:14px">x</button>';
   document.body.appendChild(el);
   setTimeout(function(){if(el.parentElement)el.remove();},5000);
 }
 
-var DEMO_ITEMS=[
-  {id:"d1",userId:"demo",itemName:"iPhone 14 Pro 256Go Noir",price:699,category:"Téléphones & objets connectés",condition:"Très bon état",description:"iPhone 14 Pro 256Go Noir. Batterie 91%, aucune rayure. Vendu avec chargeur MagSafe.",brand:"Apple",model:"iPhone 14 Pro",city:"Paris",lat:48.8566,lng:2.3522,imageUrl:"https://picsum.photos/seed/iphone14/400/400",videoUrl:"https://www.w3schools.com/html/mov_bbb.mp4",shipping:[{method:"Main propre",price:0},{method:"Colissimo",price:8}],createdAt:{seconds:Date.now()/1000-100},views:42},
-  {id:"d2",userId:"demo",itemName:"PlayStation 5 + 2 manettes",price:420,category:"Consoles",condition:"Bon état",description:"PS5 disc avec 2 manettes DualSense. Peu utilisée, parfait état.",brand:"Sony",model:"PS5",city:"Lyon",lat:45.764,lng:4.835,imageUrl:"https://picsum.photos/seed/ps5demo/400/400",shipping:[{method:"Main propre",price:0},{method:"Mondial Relay",price:12}],createdAt:{seconds:Date.now()/1000-200},views:89},
-  {id:"d3",userId:"demo",itemName:"MacBook Air M2 13 pouces",price:950,category:"Ordinateurs",condition:"Neuf",description:"MacBook Air M2 2022, 8Go RAM, 256Go SSD. Jamais ouvert.",brand:"Apple",model:"MacBook Air M2",city:"Bordeaux",lat:44.837,lng:-0.579,imageUrl:"https://picsum.photos/seed/macbookm2/400/400",videoUrl:"https://www.w3schools.com/html/movie.mp4",shipping:[{method:"Colissimo",price:15}],createdAt:{seconds:Date.now()/1000-300},views:167},
-  {id:"d4",userId:"demo",itemName:"Vélo électrique Decathlon",price:680,category:"Vélos",condition:"Bon état",description:"Vélo électrique autonomie 60km. 2 saisons, pneus neufs.",brand:"Decathlon",model:"E-ST500",city:"Marseille",lat:43.296,lng:5.369,imageUrl:"https://picsum.photos/seed/veloelec/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Date.now()/1000-400},views:34},
-  {id:"d5",userId:"demo",itemName:"Nike Air Jordan 1 Retro T42",price:185,category:"Chaussures homme",condition:"Très bon état",description:"Jordan 1 Retro High OG Chicago 2022, T42. Portées 3 fois, boîte originale.",brand:"Nike",model:"Air Jordan 1",city:"Toulouse",lat:43.604,lng:1.444,imageUrl:"https://picsum.photos/seed/jordan1/400/400",videoUrl:"https://www.w3schools.com/html/mov_bbb.mp4",shipping:[{method:"Mondial Relay",price:5}],createdAt:{seconds:Date.now()/1000-500},views:78},
-  {id:"d6",userId:"demo",itemName:"Canapé angle convertible gris",price:350,category:"Ameublement",condition:"Bon état",description:"Canapé d angle convertible, tissu gris anthracite avec coffre.",brand:"IKEA",model:"Friheten",city:"Nantes",lat:47.218,lng:-1.553,imageUrl:"https://picsum.photos/seed/canape/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Date.now()/1000-600},views:55},
-  {id:"d7",userId:"demo",itemName:"Guitare acoustique Yamaha F310",price:90,category:"Instruments de musique",condition:"Bon état",description:"Yamaha F310 taille 4/4, idéale pour débuter. Vendue avec housse.",brand:"Yamaha",model:"F310",city:"Strasbourg",lat:48.573,lng:7.752,imageUrl:"https://picsum.photos/seed/guitare/400/400",shipping:[{method:"Colissimo",price:12}],createdAt:{seconds:Date.now()/1000-700},views:23},
-  {id:"d8",userId:"demo",itemName:"Dyson V11 Aspirateur balai",price:290,category:"Électroménager",condition:"Très bon état",description:"Dyson V11 Absolute Pro, batterie neuve, toutes les têtes incluses.",brand:"Dyson",model:"V11",city:"Lille",lat:50.629,lng:3.057,imageUrl:"https://picsum.photos/seed/dysonv11/400/400",shipping:[{method:"Colissimo",price:18}],createdAt:{seconds:Date.now()/1000-800},views:91},
-  {id:"d9",userId:"demo",itemName:"Rolex Datejust 36mm Cadran Vert",price:6800,category:"Montres & Bijoux",condition:"Très bon état",description:"Rolex Datejust 36mm, lunette flutée or jaune. Année 2019, boîte et papiers.",brand:"Rolex",model:"Datejust 36",city:"Paris",lat:48.873,lng:2.295,imageUrl:"https://picsum.photos/seed/rolex/400/400",shipping:[{method:"Main propre",price:0}],createdAt:{seconds:Date.now()/1000-900},views:203},
-  {id:"d10",userId:"demo",itemName:"Lego Millennium Falcon 75192",price:480,category:"Jeux & Jouets",condition:"Neuf",description:"Lego 75192, 7541 pièces, boîte scellée jamais ouverte.",brand:"Lego",model:"75192",city:"Nice",lat:43.710,lng:7.262,imageUrl:"https://picsum.photos/seed/lego75192/400/400",shipping:[{method:"Colissimo",price:20}],createdAt:{seconds:Date.now()/1000-1000},views:312}
-];
-
 function initFeed(){
-  // Inject demo items immediately for visitors
-  var demoIds=new Set(DEMO_ITEMS.map(function(x){return x.id;}));
-  DEMO_ITEMS.forEach(function(d){if(!items.find(function(x){return x.id===d.id;}))items.push(d);});
-  applyFilters();
-  // Then listen for real Firebase items
-  onSnapshot(collection(db,"scans"),function(snap){
-    // Remove demo items, replace with real ones
-    items=items.filter(function(x){return !demoIds.has(x.id);});
-    snap.forEach(function(d){items.push(Object.assign({id:d.id},d.data()));});
-    // Re-add any demo items not replaced by real ones
-    DEMO_ITEMS.forEach(function(d){if(!items.find(function(x){return x.id===d.id;}))items.push(d);});
-    items.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
+  // Show demo data immediately while Firebase loads
+  if(typeof window.__injectDemoAndRender==="function") window.__injectDemoAndRender();
+  if(!me||!me.isVisitor){
+  onSnapshot(db.collection("scans"),function(snap){
+    var realItems=[];
+    snap.docs.forEach(function(d){realItems.push(Object.assign({id:d.id},d.data()));});
+    realItems.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
+    // Keep demo items not replaced by real ones
+    var realIds=new Set(realItems.map(function(i){return i.id;}));
+    var demoKept=items.filter(function(i){return i.id.indexOf("demo")===0&&!realIds.has(i.id);});
+    items=realItems.concat(demoKept);
     applyFilters();
     updateProfile();
-  },function(e){
-    // Firebase unavailable (visitor mode) - just show demos
-    applyFilters();
-  });
+  },function(e){toast("Feed:"+e.message);})
+  };
 }
 
 function card(i){
-  var vidBadge=i.videoUrl?'<div style="position:absolute;bottom:6px;left:6px;background:rgba(14,165,233,.92);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;display:flex;align-items:center;gap:3px"><i class="fa-solid fa-video" style="font-size:8px"></i> VIDÉO</div>':'';
-  var cond=i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);font-size:12px;font-weight:700;padding:2px 7px;border-radius:99px;border:1px solid rgba(255,255,255,.1)">'+i.condition+"</span>":"";
-  var city=i.city?'<p style="font-size:13px;color:#64748b;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+"</p>":"";
-  return '<div class="card fi" onclick="openDetail(\''+i.id+'\')"><div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+'</div><div class="inf"><p style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#1e293b">'+(i.itemName||"Objet")+'</p><p style="font-size:12px;font-weight:900;color:#0ea5e9">'+(i.price||0)+"euro</p>"+city+"</div></div>";
+  var isFav=favorites.has(i.id);
+  var cond=i.condition?'<span style="position:absolute;top:6px;left:7px;background:rgba(255,255,255,.93);color:#0ea5e9;font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px">'+i.condition+'</span>':"";
+  var hrt='<button onclick="event.stopPropagation();toggleFavCard(this,\''+(i.id)+'\''+')" '
+      +'style="position:absolute;top:6px;right:7px;width:30px;height:30px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.15);transition:transform .18s;line-height:1">'
+      +(isFav?'❤️':'🤍')+'</button>';
+  var city=i.city?'<p style="font-size:10px;color:#64748b;margin-top:3px"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:8px;margin-right:2px"></i>'+i.city+'</p>':"";
+  return '<div class="card fi" onclick="openDetail(\''+(i.id)+'\''+')">'
+    +'<div class="sq"><img src="'+(i.imageUrl||"")+'" loading="lazy">'+cond+hrt+'</div>'
+    +'<div class="inf">'
+    +'<p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:#0f172a">'+(i.itemName||"Objet")+'</p>'
+    +'<p style="font-size:15px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p>'
+    +city+'</div></div>';
 }
 
 function myCard(i){
-  return '<div class="card fi"><div class="sq"><img src="'+(i.imageUrl||"")+'">'+(i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:12px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+"</span>":"")+'</div><div class="inf"><p style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">'+(i.itemName||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9;margin-bottom:6px">'+(i.price||0)+'euro</p><div style="display:flex;gap:5px"><button onclick="event.stopPropagation();openEdit(\''+i.id+'\')" style="flex:1;background:#f1f5f9;border:1px solid rgba(148,163,184,.15);border-radius:9px;padding:5px;font-size:13px;font-weight:700;cursor:pointer">Modif.</button><button onclick="event.stopPropagation();confirmDel(\''+i.id+'\')" style="flex:1;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:9px;padding:5px;font-size:13px;font-weight:700;color:#f87171;cursor:pointer">Supp.</button></div></div></div>';
+  var cond=i.condition?'<span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px">'+i.condition+'</span>':"";
+  return '<div class="card fi">'+
+    '<div class="sq"><img src="'+(i.imageUrl||'')+'">'+cond+'</div>'+
+    '<div class="inf">'+
+    '<p style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">'+(i.itemName||'Objet')+'</p>'+
+    '<p style="font-size:14px;font-weight:900;color:#0ea5e9;margin-bottom:6px">'+(i.price||0)+'€</p>'+
+    '<div style="display:flex;gap:5px">'+
+    '<button onclick="event.stopPropagation();openEdit(\''+(i.id)+'\''+')" style="flex:1;background:#1e293b;border:1px solid rgba(148,163,184,.15);border-radius:9px;padding:5px;font-size:10px;font-weight:700;cursor:pointer">Modif.</button>'+
+    '<button onclick="event.stopPropagation();confirmDel(\''+(i.id)+'\''+')" style="flex:1;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:9px;padding:5px;font-size:10px;font-weight:700;color:#f87171;cursor:pointer">Supp.</button>'+
+    '</div></div></div>';
 }
 
 function renderFeed(list){
   var el=document.getElementById("feed");
-  if(!list.length){el.innerHTML='<div style="grid-column:1/-1;padding:56px 0;text-align:center;color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase">Aucune annonce</div>';return;}
+  if(!list.length){el.innerHTML='<div style="grid-column:1/-1;padding:56px 0;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase">Aucune annonce</div>';return;}
   el.innerHTML=list.map(card).join("");
 }
 
@@ -2065,7 +1118,7 @@ window.applyFilters=function(){
 
 window.filterCat=function(cat,btn){
   activeCat=cat;
-  document.querySelectorAll(".chip").forEach(function(b){b.classList.remove("on");});
+  document.querySelectorAll(".cat-pill").forEach(function(b){b.classList.remove("on");});
   btn.classList.add("on");
   applyFilters();
 };
@@ -2098,7 +1151,7 @@ window.switchView=function(v){
     },250);
   }
   if(v==="notifications"&&me){
-    getDocs(query(collection(db,"notifications"),where("userId","==",me.uid),where("read","==",false))).then(function(s){
+    getDocs(query(db.collection("notifications"),where("userId","==",me.uid),where("read","==",false))).then(function(s){
       s.forEach(function(d){updateDoc(doc(db,"notifications",d.id),{read:true});});
     });
   }
@@ -2109,9 +1162,9 @@ function updateProfile(){
   if(!me) return;
   var mine=items.filter(function(i){return i.userId===me.uid;});
   document.getElementById("profile-count").innerText=mine.length;
-  document.getElementById("profile-total").innerText=mine.reduce(function(s,i){return s+(parseFloat(i.price)||0);},0)+"euro";
+  document.getElementById("profile-total").innerText=mine.reduce(function(s,i){return s+(parseFloat(i.price)||0);},0)+"€";
   var el=document.getElementById("my-listings");
-  el.innerHTML=mine.length?mine.map(myCard).join(""):'<p style="grid-column:1/-1;text-align:center;color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>';
+  el.innerHTML=mine.length?mine.map(myCard).join(""):'<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:32px 0">Aucune annonce</p>';
 }
 
 // SCAN
@@ -2156,7 +1209,11 @@ window.toggleCam=async function(){
     document.getElementById("scan-ph").classList.add("hidden");
     document.getElementById("cam-toggle").classList.add("hidden");
     document.getElementById("snap-btn").classList.remove("hidden");
-  }catch(e){document.getElementById("file-input").click();}
+  }catch(e){
+    // Camera unavailable: fallback to file picker
+    toast("Caméra non disponible — sélectionne une photo depuis la galerie");
+    document.getElementById("file-input").click();
+  }
 };
 function stopCam(){
   if(camStream){camStream.getTracks().forEach(function(t){t.stop();});camStream=null;}
@@ -2169,7 +1226,7 @@ window.snapPhoto=function(){
   c.getContext("2d").drawImage(v,0,0);
   stopCam();
   document.getElementById("snap-btn").classList.add("hidden");
-  processImg(c.toDataURL("image/jpeg",1.0)); // qualité max caméra
+  processImg(c.toDataURL("image/jpeg",1.0));
 };
 window.onFile=function(e){
   var f=e.target.files[0];if(!f)return;
@@ -2195,36 +1252,19 @@ function cropImage(b64){
       var w=img.naturalWidth||img.width;
       var h=img.naturalHeight||img.height;
       if(!w||!h){resolve(b64);return;}
-
-      // ── Contain intelligent : image entière visible, fond blanc, haute résolution ──
-      var TARGET = 1200;
-      var PADDING = 40; // espace autour de l'objet comme leboncoin
-
-      // Calcul contain : mise à l'échelle sans rogner
-      var scale = Math.min((TARGET - PADDING*2) / w, (TARGET - PADDING*2) / h);
-      var dw = Math.round(w * scale);
-      var dh = Math.round(h * scale);
-      var dx = Math.round((TARGET - dw) / 2);
-      var dy = Math.round((TARGET - dh) / 2);
-
-      var c = document.createElement("canvas");
-      c.width = TARGET;
-      c.height = TARGET;
-      var ctx = c.getContext("2d");
-
-      // Lissage haute qualité
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-
-      // Fond blanc propre comme leboncoin
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, TARGET, TARGET);
-
-      // Image entière centrée avec padding
-      ctx.drawImage(img, 0, 0, w, h, dx, dy, dw, dh);
-
-      // Qualité JPEG élevée
-      resolve(c.toDataURL("image/jpeg", 0.93));
+      // Calcul pour tenir l'image entiere dans 400x400 avec padding
+      var TARGET=1200,PAD=40;
+      var scale=Math.min((TARGET-PAD*2)/w,(TARGET-PAD*2)/h);
+      var dw=Math.round(w*scale),dh=Math.round(h*scale);
+      var dx=Math.round((TARGET-dw)/2),dy=Math.round((TARGET-dh)/2);
+      var c=document.createElement("canvas");
+      c.width=TARGET;c.height=TARGET;
+      var ctx=c.getContext("2d");
+      ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
+      ctx.fillStyle="#ffffff";
+      ctx.fillRect(0,0,TARGET,TARGET);
+      ctx.drawImage(img,0,0,w,h,dx,dy,dw,dh);
+      resolve(c.toDataURL("image/jpeg",0.93));
     };
     img.onerror=function(){resolve(b64);};
     img.src=b64;
@@ -2244,17 +1284,21 @@ async function callGemini(b64){
   }catch(e){toast("IA:"+e.message);resetScan();}
 }
 function showResult(d,img){
-  function _set(id,val,prop){var e=document.getElementById(id);if(e){if(prop==="value")e.value=val;else e.innerText=val;}}
-  function _cls(id,c){var e=document.getElementById(id);if(e)e.classList.add(c);}
-  _cls("scan-spin","hidden");
-  _cls("scan-line","hidden");
-  var rt=document.getElementById("res-thumb");if(rt)rt.src=img;
-  _set("ai-name",d.title||"","value");
-  _set("ai-price",(d.price||0)+"euro","text");
-  _set("ai-cat",d.category||"","text");
-  _set("ai-desc",d.description||"","value");
-  _set("ai-cond",d.condition||"","text");
-  _set("ai-brand",d.brand||"-","text");
+  document.getElementById("scan-spin").classList.add("hidden");
+  document.getElementById("scan-line").classList.add("hidden");
+  document.getElementById("res-thumb").src=img;
+  document.getElementById("ai-name").value=d.title||"";
+  document.getElementById("ai-price").innerText=(d.price||0)+"€";
+  var catSel=document.getElementById("ai-cat-select");
+  if(catSel&&d.category){
+    // Try exact match first, then partial
+    var found=false;
+    Array.from(catSel.options).forEach(function(o){if(o.value===d.category){catSel.value=d.category;found=true;}});
+    if(!found){Array.from(catSel.options).forEach(function(o){if(!found&&o.value.toLowerCase().indexOf(d.category.toLowerCase())>=0){catSel.value=o.value;found=true;}});}
+  }
+  document.getElementById("ai-desc").value=d.description||"";
+  document.getElementById("ai-cond").innerText=d.condition||"";
+  document.getElementById("ai-brand").innerText=d.brand||"-";
   document.getElementById("ai-model").innerText=d.model||"-";
   scanData={itemName:d.title,price:d.price,category:d.category,condition:d.condition||"Bon etat",description:d.description||"",brand:d.brand||"",model:d.model||"",imageUrl:img,shipping:[]};
   document.getElementById("step-photo").classList.add("hidden");
@@ -2271,20 +1315,20 @@ window.updShip=function(){
 };
 document.getElementById("pub-btn").addEventListener("click",async function(){
   if(!scanData||!me) return;
-  // Intégrer la vidéo si présente
-  if(videoDataUrl && scanData) { scanData.videoPreviewFrame=videoDataUrl; scanData.hasVideo=true; }
   updShip();
+  if(me&&me.isVisitor){toast("Crée un compte pour publier une annonce !");return;}
   var btn=document.getElementById("pub-btn");
   btn.innerText="Publication...";btn.disabled=true;
   try{
     var city=document.getElementById("item-city").value.trim();
+    var selectedCat=document.getElementById("ai-cat-select")?document.getElementById("ai-cat-select").value:scanData.category;
     // Geocoder la ville pour la carte
     var coords=city?await geocodeAndSave(city):null;
-    await addDoc(collection(db,"scans"),{
+    await addDoc(db.collection("scans"),{
       userId:me.uid,
       itemName:document.getElementById("ai-name").value,
       price:scanData.price,
-      category:scanData.category,
+      category:selectedCat,
       condition:scanData.condition,
       description:document.getElementById("ai-desc").value,
       brand:scanData.brand,
@@ -2294,7 +1338,7 @@ document.getElementById("pub-btn").addEventListener("click",async function(){
       lat:coords?coords.lat:null,
       lng:coords?coords.lng:null,
       imageUrl:scanData.imageUrl,
-      createdAt:serverTimestamp()
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
     closeScan();
     switchView("home");
@@ -2311,9 +1355,10 @@ window.openDetail=function(id){
   var i=items.find(function(x){return x.id===id;});
   if(!i) return;
   curItem=i;
-  // Image handled by carousel below
-  var _dt=document.getElementById("det-title");if(_dt)_dt.innerText=i.itemName||"";
-  document.getElementById("det-price").innerText=(i.price||0)+"euro";
+  // det-img is handled by buildCarousel override below
+  document.getElementById("det-title").innerText=i.itemName||"";
+  var dtb=document.getElementById("det-title-big");if(dtb)dtb.innerText=i.itemName||"";
+  document.getElementById("det-price").innerText=(i.price||0)+"€";
   document.getElementById("det-cat").innerText=i.category||"";
   document.getElementById("det-cond").innerText=i.condition||"";
   document.getElementById("det-desc").innerText=i.description||"Aucune description.";
@@ -2325,25 +1370,21 @@ window.openDetail=function(id){
   var sh=document.getElementById("det-ship");
   if(i.shipping&&i.shipping.length){
     sh.innerHTML=i.shipping.map(function(s){
-      return '<span style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:5px 12px;font-size:12px;font-weight:700;color:#0f172a">'+s.method+' <span style="color:#0ea5e9;font-weight:800">'+(s.price===0?"Gratuit":s.price+"euro")+"</span></span>";
+      return '<span style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:5px 12px;font-size:11px;font-weight:700;color:#0f172a">'+s.method+' <span style="color:#0ea5e9;font-weight:800">'+(s.price===0?"Gratuit":s.price+"€")+"</span></span>";
     }).join("");
   }else{
-    sh.innerHTML='<span style="font-size:13px;color:#64748b">Non renseigne</span>';
+    sh.innerHTML='<span style="font-size:12px;color:#94a3b8">Non renseigne</span>';
   }
-  document.getElementById("contact-btn").onclick=function(){openChat(i);};
-  document.getElementById("buy-btn").onclick=function(){openPay(i);};
+  document.getElementById("contact-btn").onclick=function(){if(me&&me.isVisitor){toast("Crée un compte pour contacter le vendeur !");return;}openChat(i);};
+  document.getElementById("buy-btn").onclick=function(){if(me&&me.isVisitor){toast("Crée un compte pour acheter !");return;}openPay(i);};
   loadSellerRating(i.userId);
-  var dtb=document.getElementById("det-title-big");if(dtb)dtb.innerText=i.itemName||"";
-  var dtc=document.getElementById("det-title-col");if(dtc)dtc.innerText=i.itemName||"";
   var m=document.getElementById("detail-modal");
   m.style.display="flex";
+  m.style.zIndex="9999";
 };
 window.closeDetail=function(){
   var m=document.getElementById("detail-modal");
-  if(m){m.style.display="none";}
-  // Destroy map to free memory
-  var mapEl=document.getElementById("det-map");
-  if(mapEl&&mapEl._leaflet_id){mapEl.innerHTML="";delete mapEl._leaflet_id;}
+  if(m){ m.style.display="none"; m.style.zIndex=""; }
 };
 
 // CHAT
@@ -2351,12 +1392,13 @@ window.openChat=function(i){
   curItem=i;
   document.getElementById("chat-seller").innerText="Vendeur #"+(i.userId||"").slice(0,6);
   document.getElementById("chat-iname").innerText=i.itemName||"";
-  document.getElementById("chat-iprice").innerText=(i.price||0)+"euro";
+  document.getElementById("chat-iprice").innerText=(i.price||0)+"€";
   document.getElementById("chat-img").src=i.imageUrl||"";
-  document.getElementById("chat-msgs").innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:13px;color:#64748b;background:#1e3a5f;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Debut de conversation</span></div>';
+  document.getElementById("chat-msgs").innerHTML='<div style="text-align:center;padding:16px 0"><span style="font-size:10px;color:#94a3b8;background:#1e3a5f;padding:4px 12px;border-radius:99px;font-weight:700;text-transform:uppercase">Debut de conversation</span></div>';
   var m=document.getElementById("chat-modal");
   m.classList.remove("hidden");m.classList.add("flex");
   closeDetail();
+  setTimeout(function(){renderChatSuggestions(i,"start");},100);
 };
 window.closeChat=function(){
   var m=document.getElementById("chat-modal");
@@ -2373,7 +1415,7 @@ function addBubble(t,mine){
   var el=document.getElementById("chat-msgs");
   var d=document.createElement("div");
   d.className="flex "+(mine?"justify-end":"justify-start");
-  d.innerHTML='<div class="max-w-[72%] px-4 py-2 text-base font-medium '+(mine?"bme":"bthem")+'">'+t+"</div>";
+  d.innerHTML='<div class="max-w-[72%] px-4 py-2 text-sm font-medium '+(mine?"bme":"bthem")+'">'+t+"</div>";
   el.appendChild(d);el.scrollTop=el.scrollHeight;
 }
 
@@ -2382,15 +1424,15 @@ window.openPay=function(i){
   payItem=i;selShip=null;
   document.getElementById("pay-img").style.backgroundImage="url("+i.imageUrl+")";
   document.getElementById("pay-title").innerText=i.itemName;
-  document.getElementById("pay-price").innerText=i.price+"euro";
-  document.getElementById("pay-sub").innerText=i.price+"euro";
+  document.getElementById("pay-price").innerText=i.price+"€";
+  document.getElementById("pay-sub").innerText=i.price+"€";
   document.getElementById("pay-shipcost").innerText="-";
-  document.getElementById("pay-total").innerText=i.price+"euro";
+  document.getElementById("pay-total").innerText=i.price+"€";
   var wrap=document.getElementById("pay-ship-wrap"),list=document.getElementById("pay-ship-list");
   if(i.shipping&&i.shipping.length){
     wrap.classList.remove("hidden");
     list.innerHTML=i.shipping.map(function(s,idx){
-      return '<label style="display:flex;align-items:center;gap:10px;background:#1e3a5f;border:1px solid rgba(148,163,184,.10);border-radius:12px;padding:10px 12px;cursor:pointer"><input type="radio" name="ship" value="'+idx+'" onchange="selShipping('+idx+')" style="accent-color:#0ea5e9"><span style="font-size:12px;font-weight:600;flex:1">'+s.method+'</span><span style="font-size:12px;font-weight:800;color:#0ea5e9">'+(s.price===0?"Gratuit":s.price+"euro")+"</span></label>";
+      return '<label style="display:flex;align-items:center;gap:10px;background:#1e3a5f;border:1px solid rgba(148,163,184,.10);border-radius:12px;padding:10px 12px;cursor:pointer"><input type="radio" name="ship" value="'+idx+'" onchange="selShipping('+idx+')" style="accent-color:#0ea5e9"><span style="font-size:13px;font-weight:600;flex:1">'+s.method+'</span><span style="font-size:13px;font-weight:800;color:#0ea5e9">'+(s.price===0?"Gratuit":s.price+"€")+"</span></label>";
     }).join("");
   }else{wrap.classList.add("hidden");}
   var m=document.getElementById("pay-modal");
@@ -2400,8 +1442,8 @@ window.openPay=function(i){
 window.selShipping=function(idx){
   selShip=payItem.shipping[idx];
   var tot=(parseFloat(payItem.price)||0)+selShip.price;
-  document.getElementById("pay-shipcost").innerText=selShip.price===0?"Gratuit":selShip.price+"euro";
-  document.getElementById("pay-total").innerText=tot+"euro";
+  document.getElementById("pay-shipcost").innerText=selShip.price===0?"Gratuit":selShip.price+"€";
+  document.getElementById("pay-total").innerText=tot+"€";
 };
 window.closePay=function(){
   var m=document.getElementById("pay-modal");
@@ -2418,7 +1460,7 @@ window.doStripe=async function(){
     var r=await fetch("https://createpayment-xjtnixfrra-uc.a.run.app",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:tot,itemName:payItem.itemName,itemId:payItem.id,buyerId:me.uid,sellerId:payItem.userId})});
     var d=await r.json();
     if(d.error){toast("Stripe:"+d.error);return;}
-    await addDoc(collection(db,"notifications"),{userId:payItem.userId,type:"payment_initiated",message:"Paiement pour "+payItem.itemName,itemId:payItem.id,read:false,createdAt:serverTimestamp()});
+    await addDoc(db.collection("notifications"),{userId:payItem.userId,type:"payment_initiated",message:"Paiement pour "+payItem.itemName,itemId:payItem.id,read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     window.location.href=d.url;
   }catch(e){toast("Erreur:"+e.message);}
   btn.innerHTML='<i class="fa-brands fa-stripe text-2xl"></i> Payer maintenant';btn.disabled=false;
@@ -2431,8 +1473,8 @@ function checkPayReturn(){
   setTimeout(async function(){
     if(!me) return;
     try{
-      await addDoc(collection(db,"notifications"),{userId:me.uid,type:"payment_success",message:"Paiement valide ! Contactez le vendeur.",itemId:iid||"",read:false,createdAt:serverTimestamp()});
-      if(sid) await addDoc(collection(db,"notifications"),{userId:sid,type:"sale",message:"Votre article vient d'etre achete !",itemId:iid||"",read:false,createdAt:serverTimestamp()});
+      await addDoc(db.collection("notifications"),{userId:me.uid,type:"payment_success",message:"Paiement valide ! Contactez le vendeur.",itemId:iid||"",read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      if(sid) await addDoc(db.collection("notifications"),{userId:sid,type:"sale",message:"Votre article vient d'etre achete !",itemId:iid||"",read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
       rateCtx={targetUserId:sid,role:"buyer",itemId:iid||""};
       setTimeout(function(){openRate("vendeur");},2000);
     }catch(e){}
@@ -2442,10 +1484,10 @@ function checkPayReturn(){
 // NOTIFS
 function initNotifs(){
   if(!me) return;
-  var q=query(collection(db,"notifications"),where("userId","==",me.uid));
+  var q=query(db.collection("notifications"),where("userId","==",me.uid));
   onSnapshot(q,function(snap){
     var list=[];
-    snap.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));});
+    snap.docs.forEach(function(d){list.push(Object.assign({id:d.id},d.data()));});
     list.sort(function(a,b){return(b.createdAt?b.createdAt.seconds:0)-(a.createdAt?a.createdAt.seconds:0);});
     var unread=list.filter(function(n){return !n.read;}).length;
     var b=document.getElementById("nbadge");
@@ -2455,11 +1497,11 @@ function initNotifs(){
     var emojis={payment_success:"✅",payment_initiated:"💳",sale:"🎉",rating:"⭐"};
     document.getElementById("notif-list").innerHTML=list.length?list.map(function(n){
       var date=n.createdAt?new Date(n.createdAt.seconds*1000).toLocaleDateString("fr-FR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"";
-      return '<div onclick="markRead(\''+n.id+'\')" style="background:#f1f5f9;border:1px solid rgba(148,163,184,.10);border-radius:16px;padding:14px;margin-bottom:8px;cursor:pointer;opacity:'+(n.read?".5":"1")+'"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:13px">'+(emojis[n.type]||"bell")+'</span><div style="flex:1"><p style="font-size:12px;font-weight:700;margin-bottom:3px">'+n.message+'</p><p style="font-size:13px;color:#64748b">'+date+"</p></div>"+(n.read?"":'<span style="width:7px;height:7px;background:#0ea5e9;border-radius:99px;margin-top:3px;flex-shrink:0;display:block"></span>')+"</div></div>";
-    }).join(""):'<p style="text-align:center;color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>';
+      return '<div onclick="markRead(\''+n.id+'\')" style="background:#1e293b;border:1px solid rgba(148,163,184,.10);border-radius:16px;padding:14px;margin-bottom:8px;cursor:pointer;opacity:'+(n.read?".5":"1")+'"><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">'+(emojis[n.type]||"bell")+'</span><div style="flex:1"><p style="font-size:13px;font-weight:700;margin-bottom:3px">'+n.message+'</p><p style="font-size:10px;color:#94a3b8">'+date+"</p></div>"+(n.read?"":'<span style="width:7px;height:7px;background:#0ea5e9;border-radius:99px;margin-top:3px;flex-shrink:0;display:block"></span>')+"</div></div>";
+    }).join(""):'<p style="text-align:center;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;padding:48px 0">Aucune notification</p>';
   });
 }
-window.markRead=async function(id){await updateDoc(doc(db,"notifications",id),{read:true});};
+window.markRead=async function(id){await db.collection("notifications").doc(id).update({read:true});};
 
 // NOTATION
 window.openRate=function(role){
@@ -2486,24 +1528,24 @@ window.submitRate=async function(){
   if(!curStar){toast("Choisissez une note");return;}
   if(!rateCtx) return;
   try{
-    await addDoc(collection(db,"ratings"),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById("rate-comment").value,createdAt:serverTimestamp()});
+    await addDoc(db.collection("ratings"),{targetUserId:rateCtx.targetUserId,fromUserId:me.uid,itemId:rateCtx.itemId,rating:curStar,comment:document.getElementById("rate-comment").value,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     await updUserRating(rateCtx.targetUserId);
-    await addDoc(collection(db,"notifications"),{userId:rateCtx.targetUserId,type:"rating",message:"Vous avez recu une note de "+curStar+"etoiles",read:false,createdAt:serverTimestamp()});
+    await addDoc(db.collection("notifications"),{userId:rateCtx.targetUserId,type:"rating",message:"Vous avez recu une note de "+curStar+"★",read:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     closeRate();toast("Note envoyee !",true);
   }catch(e){toast("Erreur:"+e.message);}
 };
 async function updUserRating(uid){
   try{
-    var s=await getDocs(query(collection(db,"ratings"),where("targetUserId","==",uid)));
+    var s=await getDocs(query(db.collection("ratings"),where("targetUserId","==",uid)));
     var r=[];s.forEach(function(d){r.push(d.data().rating);});
     if(!r.length) return;
     var avg=(r.reduce(function(a,b){return a+b;},0)/r.length).toFixed(1);
-    await updateDoc(doc(db,"users",uid),{rating:parseFloat(avg),ratingCount:r.length});
+    await db.collection("users").doc(uid).update({rating:parseFloat(avg),ratingCount:r.length});
   }catch(e){}
 }
 async function loadSellerRating(uid){
   try{
-    var d=await getDoc(doc(db,"users",uid));
+    var d=await db.collection("users").doc(uid).get();
     var el=document.getElementById("det-rating");
     if(d.exists()&&d.data().rating){
       var r=d.data().rating,n=d.data().ratingCount||0;
@@ -2516,7 +1558,7 @@ async function loadSellerRating(uid){
 async function loadMyRating(){
   if(!me) return;
   try{
-    var d=await getDoc(doc(db,"users",me.uid));
+    var d=await db.collection("users").doc(me.uid).get();
     if(d.exists()&&d.data().rating) document.getElementById("profile-rating").innerText="★"+d.data().rating;
   }catch(e){}
 }
@@ -2542,7 +1584,7 @@ window.saveEdit=async function(){
   if(!editingId) return;
   var btn=document.getElementById("edit-save");btn.innerText="Sauvegarde...";btn.disabled=true;
   try{
-    await updateDoc(doc(db,"scans",editingId),{
+    await updateDoc(db.collection("scans").doc(editingId),{
       itemName:document.getElementById("edit-title").value,
       price:parseFloat(document.getElementById("edit-price").value)||0,
       description:document.getElementById("edit-desc").value,
@@ -2565,7 +1607,7 @@ window.closeDel=function(){
 };
 window.doDelete=async function(){
   if(!deletingId) return;
-  try{await deleteDoc(doc(db,"scans",deletingId));closeDel();}
+  try{await deleteDoc(db.collection("scans").doc(deletingId));closeDel();}
   catch(e){toast("Erreur:"+e.message);}
 };
 
@@ -2576,13 +1618,13 @@ function initMap(){
   if(map) return;
   var lat=userLat||46.2276,lng=userLng||2.2137,zoom=userLat?13:6;
   map=L.map("map-el",{zoomControl:false}).setView([lat,lng],zoom);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:"© CartoDB",maxZoom:19}).addTo(map);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{attribution:"CartoDB",maxZoom:19}).addTo(map);
   clusterGroup=L.markerClusterGroup({
     maxClusterRadius:50,
     iconCreateFunction:function(cluster){
       return L.divIcon({
         className:"",
-        html:'<div style="background:#0ea5e9;color:#000;font-size:13px;font-weight:900;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.5)">'+cluster.getChildCount()+"</div>",
+        html:'<div style="background:#0ea5e9;color:#000;font-size:12px;font-weight:900;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.5)">'+cluster.getChildCount()+"</div>",
         iconSize:[36,36],iconAnchor:[18,18]
       });
     }
@@ -2662,7 +1704,7 @@ function addItemMarker(item,lat,lng){
   marker.on("click",function(){
     document.getElementById("map-pop-img").src=item.imageUrl||"";
     document.getElementById("map-pop-name").innerText=item.itemName||"";
-    document.getElementById("map-pop-price").innerText=(item.price||0)+"euro";
+    document.getElementById("map-pop-price").innerText=(item.price||0)+"€";
     document.getElementById("map-pop-city-txt").innerText=item.city||"";
     document.getElementById("map-pop-btn").onclick=function(){openDetail(item.id);};
     var p=document.getElementById("map-popup");
@@ -2677,9 +1719,9 @@ function addItemMarker(item,lat,lng){
 
 window.setRadius=function(km){
   activeRadius=km;
-  ["r5","r20","r50","r0"].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el){el.style.background="#0f172a";el.style.color="#94a3b8";el.style.border="1px solid rgba(148,163,184,.15)";}
+  [1,2,5,20,50,0].forEach(function(km){
+    var el=document.getElementById("r"+km);
+    if(el){el.style.background="#fff";el.style.color="#64748b";el.style.border="1px solid #e2e8f0";}
   });
   var activeBtn=document.getElementById("r"+km);
   if(activeBtn){activeBtn.style.background="#22d3ee";activeBtn.style.color="#000";activeBtn.style.border="none";}
@@ -2713,6 +1755,611 @@ async function geocodeAndSave(city){
   if(!city) return null;
   return await geocodeCity(city);
 }
+
+
+window.filterCatSidebar=function(cat,el){
+  activeCat=cat;
+  document.querySelectorAll(".sidebar-nav-item,.sb-subitem").forEach(function(b){b.classList.remove("active");});
+  if(el) el.classList.add("active");
+  applyFilters();
+  var t=document.getElementById("feed-section-title");
+  if(t) t.innerText=cat==="all"?"Pour toi":cat;
+  switchView("home");
+};
+window.setSidebarActive=function(id){
+  ["snav-home","snav-map","snav-notif","snav-profile"].forEach(function(n){
+    var el=document.getElementById(n);
+    if(el) el.classList.remove("active");
+  });
+  var el=document.getElementById(id);
+  if(el) el.classList.add("active");
+};
+window.toggleGroup=function(id){
+  var list=document.getElementById(id);
+  var arrow=document.getElementById("arrow-"+id);
+  if(!list) return;
+  list.classList.toggle("hidden");
+  if(arrow) arrow.classList.toggle("open",!list.classList.contains("hidden"));
+};
+
+
+// ════════════════════════════════════════════════════════
+// FAVORIS
+// ════════════════════════════════════════════════════════
+var favorites=new Set(JSON.parse(localStorage.getItem("yb_favs")||"[]"));
+window.toggleFavCard=function(btn,id){
+  if(favorites.has(id)){
+    favorites.delete(id);
+    btn.innerHTML='🤍';
+  }else{
+    favorites.add(id);
+    btn.innerHTML='❤️';
+  }
+  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
+  btn.style.transform='scale(1.3)';
+  setTimeout(function(){btn.style.transform='scale(1)';},180);
+};
+window.toggleFav=function(id,btn){
+  if(favorites.has(id)){favorites.delete(id);if(btn){btn.textContent="🤍";btn.classList.remove("fav");}}
+  else{favorites.add(id);if(btn){btn.textContent="❤️";btn.classList.add("fav");}}
+  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
+};
+window.toggleFavDetail=function(){
+  if(!curItem) return;
+  var id=curItem.id;
+  var icon=document.getElementById("det-fav-icon");
+  if(favorites.has(id)){
+    favorites.delete(id);
+    if(icon){icon.className="fa-regular fa-heart text-sm text-slate-400";}
+  }else{
+    favorites.add(id);
+    if(icon){icon.className="fa-solid fa-heart text-sm text-rose-400";}
+  }
+  localStorage.setItem("yb_favs",JSON.stringify([...favorites]));
+};
+function renderFavs(){
+  var el=document.getElementById("fav-listings");
+  if(!el) return;
+  var favItems=items.filter(function(i){return favorites.has(i.id);});
+  if(!favItems.length){el.innerHTML='<p style="text-align:center;color:#94a3b8;font-size:11px;padding:24px 0;font-weight:700;text-transform:uppercase">Aucun favori</p>';return;}
+  el.innerHTML=favItems.map(function(i){
+    return '<div onclick="openDetail(\''+i.id+'\')" style="display:flex;align-items:center;gap:10px;padding:10px;background:#f8fafc;border-radius:14px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:8px"><img src="'+(i.imageUrl||"")+'" style="width:48px;height:48px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid #e8ecf0;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div><button onclick="event.stopPropagation();toggleFav(\''+i.id+'\',null);renderFavs()" style="background:none;border:none;font-size:18px;cursor:pointer">❤️</button></div>';
+  }).join("");
+}
+
+window.__injectDemoAndRender = function injectDemoData(){
+  // Use same __demoItems from pre-script (already defined)
+  if(typeof __demoItems === "undefined" || typeof items === "undefined") return;
+  var realIds=new Set(items.map(function(i){return i.id;}));
+  __demoItems.forEach(function(d){if(!realIds.has(d.id)) items.push(d);});
+  applyFilters();
+  updateProfile();
+}
+
+function computeAndShowTrust(i){
+  var score=0,details=[];
+  if(i.imageUrl){score+=25;details.push({label:"Photo",ok:true});}else{details.push({label:"Pas de photo",ok:false});}
+  if(i.description&&i.description.length>30){score+=20;details.push({label:"Description",ok:true});}else{details.push({label:"Description courte",ok:false});}
+  if(i.city){score+=15;details.push({label:"Ville",ok:true});}else{details.push({label:"Ville manquante",ok:false});}
+  if(i.shipping&&i.shipping.length){score+=15;details.push({label:"Livraison",ok:true});}else{details.push({label:"Livraison non renseignée",ok:false});}
+  if(i.brand||i.model){score+=10;details.push({label:"Marque/Modèle",ok:true});}
+  if(i.condition){score+=10;details.push({label:"État",ok:true});}
+  if(i.price>0){score+=5;details.push({label:"Prix",ok:true});}
+  score=Math.min(100,score);
+  var fill=document.getElementById("det-trust-fill");
+  var label=document.getElementById("det-trust-label");
+  var dets=document.getElementById("det-trust-details");
+  if(!fill) return;
+  fill.style.width=score+"%";
+  fill.style.background=score>=70?"#22c55e":score>=40?"#f59e0b":"#ef4444";
+  if(label) label.innerText=score+"/100 "+(score>=70?"Fiable ✅":score>=40?"Moyen ⚠️":"Risqué ❌");
+  label.style.color=score>=70?"#22c55e":score>=40?"#f59e0b":"#ef4444";
+  if(dets) dets.innerHTML=details.map(function(d){return'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:99px;background:'+(d.ok?"#dcfce7":"#fee2e2")+';color:'+(d.ok?"#166534":"#991b1b")+'">'+d.label+'</span>';}).join("");
+}
+
+// ════════════════════════════════════════════════════════
+// DÉTECTION FRAUDE
+// ════════════════════════════════════════════════════════
+function detectFraud(i){
+  var warn=document.getElementById("det-fraud-warn");
+  if(!warn) return;
+  var price=parseFloat(i.price)||0;
+  var cat=i.category||"";
+  var similar=items.filter(function(x){return x.id!==i.id&&(x.category||"").toLowerCase()===cat.toLowerCase()&&parseFloat(x.price)>0;});
+  if(similar.length>=2){
+    var avg=similar.reduce(function(s,x){return s+parseFloat(x.price);},0)/similar.length;
+    if(price<avg*0.25){warn.classList.remove("hidden");return;}
+  }
+  warn.classList.add("hidden");
+}
+
+// ════════════════════════════════════════════════════════
+// PRIX DU MARCHÉ
+// ════════════════════════════════════════════════════════
+function getPriceRange(cat,excludeId){
+  var similar=items.filter(function(i){return i.id!==excludeId&&(i.category||"").toLowerCase()===(cat||"").toLowerCase()&&parseFloat(i.price)>0;});
+  if(similar.length<2) return null;
+  var prices=similar.map(function(i){return parseFloat(i.price);}).sort(function(a,b){return a-b;});
+  return{min:prices[0],max:prices[prices.length-1],avg:Math.round(prices.reduce(function(s,p){return s+p;},0)/prices.length)};
+}
+function suggestPrice(cat,excludeId){
+  var range=getPriceRange(cat,excludeId);
+  var el=document.getElementById("price-suggestion");
+  var rangeEl=document.getElementById("price-range-txt");
+  var verdictEl=document.getElementById("price-verdict");
+  if(!el||!range) return;
+  var inp=document.getElementById("scan-price");
+  var userPrice=inp?parseFloat(inp.value):0;
+  el.classList.remove("hidden");
+  if(rangeEl) rangeEl.innerText=range.min+"€ – "+range.max+"€ (moy. "+range.avg+"€)";
+  if(verdictEl&&userPrice){
+    if(userPrice<range.min*0.8){verdictEl.innerText="Très bas 🔥";verdictEl.style.background="#fef3c7";verdictEl.style.color="#92400e";}
+    else if(userPrice>range.max*1.2){verdictEl.innerText="Élevé ⚠️";verdictEl.style.background="#fee2e2";verdictEl.style.color="#991b1b";}
+    else{verdictEl.innerText="Prix juste ✅";verdictEl.style.background="#dcfce7";verdictEl.style.color="#166534";}
+  }
+}
+
+window.updateChatSuggestions=function(){
+  if(!curItem) return;
+  var inp=document.getElementById("chat-inp");
+  var phase=inp&&inp.value.length>0?"reply":"start";
+  renderChatSuggestions(curItem,phase);
+};
+
+function renderChatSuggestions(item,phase){
+  var el=document.getElementById("chat-suggestions");
+  if(!el) return;
+  var suggestions=phase==="start"?[
+    "Toujours disponible ?","Dernier prix ?","Livraison possible ?","Vous acceptez les échanges ?"
+  ]:[
+    "Merci pour l'info","Je suis intéressé","Pouvez-vous faire mieux ?","Je prends !"
+  ];
+  el.innerHTML=suggestions.map(function(s){
+    return '<button onclick="qMsg(\''+s+'\')" style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;color:#1e293b;white-space:nowrap;flex-shrink:0">'+s+'</button>';
+  }).join("");
+}
+
+// ════════════════════════════════════════════════════════
+// ALERTES SAUVEGARDÉES
+// ════════════════════════════════════════════════════════
+var savedAlerts=JSON.parse(localStorage.getItem("yb_alerts")||"[]");
+function renderAlerts(){
+  var el=document.getElementById("alerts-list");
+  if(!el) return;
+  if(!savedAlerts.length){el.innerHTML='<p style="text-align:center;color:#94a3b8;font-size:11px;padding:16px 0;font-weight:700;text-transform:uppercase">Aucune alerte</p>';return;}
+  el.innerHTML=savedAlerts.map(function(a,i){
+    return '<div style="display:flex;align-items:center;justify-content:between;gap:8px;padding:10px;background:#f8fafc;border-radius:12px;margin-bottom:6px;border:1px solid #e8ecf0"><div style="flex:1"><p style="font-size:12px;font-weight:700;color:#1e293b">🔔 '+a+'</p></div><button onclick="deleteAlert('+i+')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:14px;padding:2px 6px">✕</button></div>';
+  }).join("");
+}
+window.openAlertes=function(){
+  var m=document.getElementById("alertes-modal");
+  if(m){m.classList.remove("hidden");m.classList.add("flex");}
+};
+window.closeAlertes=function(){
+  var m=document.getElementById("alertes-modal");
+  if(m){m.classList.add("hidden");m.classList.remove("flex");}
+};
+window.saveAlert=function(){
+  var inp=document.getElementById("alert-query");
+  if(!inp||!inp.value.trim()) return;
+  savedAlerts.push(inp.value.trim());
+  localStorage.setItem("yb_alerts",JSON.stringify(savedAlerts));
+  inp.value="";
+  renderAlerts();
+  closeAlertes();
+  toast("Alerte créée ! 🔔",true);
+};
+window.deleteAlert=function(i){
+  savedAlerts.splice(i,1);
+  localStorage.setItem("yb_alerts",JSON.stringify(savedAlerts));
+  renderAlerts();
+};
+function checkAlertsOnNewItems(newItems){
+  if(!savedAlerts.length) return;
+  newItems.forEach(function(item){
+    savedAlerts.forEach(function(alert){
+      var keywords=alert.toLowerCase().split(/\s+/);
+      var text=((item.itemName||"")+" "+(item.category||"")+" "+(item.city||"")).toLowerCase();
+      if(keywords.some(function(k){return k.length>2&&text.includes(k);})){
+        showPushBanner("🔔 Alerte : "+alert,"Nouvelle annonce : "+(item.itemName||"")+" — "+(item.price||0)+"€");
+      }
+    });
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// BADGES VÉRIFIÉS & VIEWER COUNT UPDATE
+// ════════════════════════════════════════════════════════
+function showVerifiedBadge(show){
+  var b=document.getElementById("profile-verified");
+  if(b) show?b.classList.remove("hidden"):b.classList.add("hidden");
+}
+function updateViewCount(item){
+  var vc=(item.views||0)+1;
+  var vb=document.getElementById("det-views-badge");
+  var vc_el=document.getElementById("det-views-count");
+  if(vb){vb.classList.remove("hidden");if(vc_el)vc_el.innerText=vc;}
+  if(me&&item.userId!==me.uid){
+    updateDoc(db.collection("scans").doc(item.id),{views:vc}).catch(function(){});
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// BOOST AUTO
+// ════════════════════════════════════════════════════════
+window.toggleBoost=function(cb){
+  if(cb.checked){toast("Boost auto activé ! ✨",true);localStorage.setItem("yb_boost","1");}
+  else{toast("Boost auto désactivé");localStorage.removeItem("yb_boost");}
+};
+setTimeout(function(){
+  var bt=document.getElementById("boost-toggle");
+  if(bt) bt.checked=!!localStorage.getItem("yb_boost");
+},500);
+
+// ════════════════════════════════════════════════════════
+// PARTAGE NATIF
+// ════════════════════════════════════════════════════════
+window.shareItem=function(){if(curItem) openShareModal();};
+
+// ════════════════════════════════════════════════════════
+// SUGGESTION PRIX IA dans scan
+// ════════════════════════════════════════════════════════
+function updatePriceSuggestion(){
+  var cat=document.getElementById("ai-cat-select");
+  if(cat&&scanData) suggestPrice(cat.value,null);
+}
+
+// ════════════════════════════════════════════════════════
+// CARROUSEL PHOTOS
+// ════════════════════════════════════════════════════════
+var carPhotos=[],carIdx=0;
+function buildCarousel(photos){
+  carPhotos=photos&&photos.length?photos:[""];
+  carIdx=0;
+  var track=document.getElementById("det-carousel-track");
+  var dots=document.getElementById("det-dots");
+  var thumbs=document.getElementById("det-thumbs");
+  if(!track) return;
+  track.innerHTML=carPhotos.map(function(src){
+    return '<div style="width:100%;height:100%;flex-shrink:0;background:#f8f8f8"><img src="'+src+'" style="width:100%;height:100%;object-fit:contain;display:block;"></div>';
+  }).join("");
+  if(carPhotos.length>1){
+    if(dots) dots.innerHTML=carPhotos.map(function(_,i){return'<div class="photo-dot'+(i===0?' on':'')+'" onclick="goSlide('+i+')"></div>';}).join("");
+    var prev=document.getElementById("det-prev"),next=document.getElementById("det-next");
+    if(prev) prev.style.display="flex";
+    if(next) next.style.display="flex";
+  }else{
+    if(dots) dots.innerHTML="";
+    var prev=document.getElementById("det-prev"),next=document.getElementById("det-next");
+    if(prev) prev.style.display="none";
+    if(next) next.style.display="none";
+  }
+  if(thumbs) thumbs.innerHTML=carPhotos.length>1?carPhotos.map(function(src,i){return'<img class="photo-thumb'+(i===0?' active':'')+'" src="'+src+'" onclick="goSlide('+i+')">';}).join(""):"";
+  goSlide(0);
+}
+window.carNav=function(dir){goSlide((carIdx+dir+carPhotos.length)%carPhotos.length);};
+window.goSlide=function(idx){
+  carIdx=idx;
+  var track=document.getElementById("det-carousel-track");
+  if(track) track.style.transform="translateX(-"+(idx*100)+"%)";
+  document.querySelectorAll(".photo-dot").forEach(function(d,i){d.classList.toggle("on",i===idx);});
+  document.querySelectorAll(".photo-thumb").forEach(function(t,i){t.classList.toggle("active",i===idx);});
+};
+
+// ════════════════════════════════════════════════════════
+// PHOTOS SUPPLÉMENTAIRES (scan form)
+// ════════════════════════════════════════════════════════
+var extraPhotos=[];
+window.addExtraPhotos=function(inp){
+  Array.from(inp.files||[]).forEach(function(f){
+    if(extraPhotos.length>=4) return;
+    var r=new FileReader();
+    r.onload=function(ev){extraPhotos.push(ev.target.result);renderExtraPhotos();};
+    r.readAsDataURL(f);
+  });
+  inp.value="";
+};
+function renderExtraPhotos(){
+  var el=document.getElementById("extra-photos-list");
+  if(!el) return;
+  if(!extraPhotos.length){el.innerHTML='<p class="text-[10px] text-slate-500 self-center">Aucune photo supplémentaire</p>';return;}
+  el.innerHTML=extraPhotos.map(function(src,i){
+    return '<div style="position:relative;flex-shrink:0"><img src="'+src+'" class="photo-thumb active"><div onclick="removeExtraPhoto('+i+')" style="position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:#ef4444;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;font-weight:900">×</div></div>';
+  }).join("");
+}
+window.removeExtraPhoto=function(i){extraPhotos.splice(i,1);renderExtraPhotos();};
+
+// ════════════════════════════════════════════════════════
+// PARTAGE RÉSEAUX SOCIAUX
+// ════════════════════════════════════════════════════════
+window.openShareModal=function(){
+  if(!curItem) return;
+  document.getElementById("share-prev-img").src=curItem.imageUrl||"";
+  document.getElementById("share-prev-title").innerText=curItem.itemName||"";
+  document.getElementById("share-prev-price").innerText=(curItem.price||0)+"€";
+  var url="https://youbiiiz.app/item/"+(curItem.id||"");
+  document.getElementById("share-link-val").value=url;
+  var m=document.getElementById("share-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeShareModal=function(){
+  var m=document.getElementById("share-modal");
+  m.classList.add("hidden");m.classList.remove("flex");
+};
+window.shareTo=function(net){
+  if(!curItem) return;
+  var title=encodeURIComponent((curItem.itemName||"")+" — "+(curItem.price||0)+"€");
+  var url=encodeURIComponent("https://youbiiiz.app/item/"+(curItem.id||""));
+  var text=encodeURIComponent("🛍 "+(curItem.itemName||"")+" — "+(curItem.price||0)+"€ sur Youbiiiz → ");
+  var links={
+    whatsapp:"https://wa.me/?text="+text+url,
+    facebook:"https://www.facebook.com/sharer/sharer.php?u="+url,
+    twitter:"https://twitter.com/intent/tweet?text="+text+"&url="+url,
+    telegram:"https://t.me/share/url?url="+url+"&text="+text,
+    messenger:"https://www.facebook.com/dialog/send?link="+url+"&app_id=123456789",
+    sms:"sms:?body="+text+url
+  };
+  if(net==="instagram"||net==="tiktok"){
+    var label=net==="instagram"?"story Instagram 📸":"bio TikTok 🎵";
+    navigator.clipboard.writeText(decodeURIComponent(text)+decodeURIComponent(url)).then(function(){toast("Texte copié ! Colle dans ta "+label,true);}).catch(function(){});
+    closeShareModal();return;
+  }
+  if(links[net]) window.open(links[net],"_blank","noopener,width=600,height=500");
+  closeShareModal();
+};
+window.copyShareLink=function(){
+  var v=document.getElementById("share-link-val");
+  navigator.clipboard.writeText(v.value).then(function(){toast("Lien copié ! 📋",true);}).catch(function(){v.select();document.execCommand("copy");toast("Lien copié !",true);});
+};
+
+// ════════════════════════════════════════════════════════
+// FAIRE UNE OFFRE
+// ════════════════════════════════════════════════════════
+window.openOffer=function(){
+  if(!curItem) return;
+  var price=parseFloat(curItem.price)||0;
+  document.getElementById("offer-asked").innerText=price+"€";
+  document.getElementById("offer-amount").value="";
+  document.getElementById("offer-amount").placeholder=Math.round(price*0.85);
+  document.getElementById("offer-hint").innerText="Conseil : proposez entre "+Math.round(price*0.75)+"€ et "+Math.round(price*0.92)+"€";
+  var percs=[90,80,70];
+  document.getElementById("offer-quick").innerHTML=percs.map(function(p){
+    var v=Math.round(price*p/100);
+    return '<button onclick="document.getElementById(\'offer-amount\').value='+v+'" style="background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:99px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#0f172a">'+v+'€ <span style="color:#94a3b8;font-size:9px">(-'+(100-p)+'%)</span></button>';
+  }).join("");
+  var m=document.getElementById("offer-modal");m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeOffer=function(){var m=document.getElementById("offer-modal");m.classList.add("hidden");m.classList.remove("flex");};
+window.sendOffer=function(){
+  var amt=parseFloat(document.getElementById("offer-amount").value);
+  if(!amt||amt<=0){toast("Entrez un montant valide");return;}
+  if(curItem&&amt>=parseFloat(curItem.price)){toast("Votre offre doit être inférieure au prix");return;}
+  closeOffer();
+  openChat(curItem);
+  setTimeout(function(){
+    document.getElementById("chat-inp").value="Bonjour, je vous propose "+amt+"€ pour cet article. Est-ce que ce prix vous convient ?";
+    sendMsg();
+  },500);
+  toast("Offre envoyée : "+amt+"€ 🤝",true);
+};
+
+// ════════════════════════════════════════════════════════
+// SIGNALEMENT
+// ════════════════════════════════════════════════════════
+window.openReport=function(){var m=document.getElementById("report-modal");m.classList.remove("hidden");m.classList.add("flex");};
+window.closeReport=function(){var m=document.getElementById("report-modal");m.classList.add("hidden");m.classList.remove("flex");};
+window.submitReport=async function(reason){
+  closeReport();
+  if(!me||!curItem) return;
+  try{
+    await db.collection("reports").add({itemId:curItem.id,userId:me.uid,reason:reason,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    toast("Signalement envoyé. Merci ! 🙏",true);
+  }catch(e){toast("Merci pour le signalement 🙏",true);}
+};
+
+// ════════════════════════════════════════════════════════
+// PROFIL VENDEUR PUBLIC
+// ════════════════════════════════════════════════════════
+window.openSellerProfile=function(){
+  if(!curItem) return;
+  var sellerId=curItem.userId;
+  var sellerItems=items.filter(function(i){return i.userId===sellerId;});
+  document.getElementById("sp-name").innerText="Vendeur #"+(sellerId||"").slice(0,8);
+  document.getElementById("sp-count").innerText=sellerItems.length;
+  var since=sellerItems.length&&sellerItems[sellerItems.length-1].createdAt?new Date((sellerItems[sellerItems.length-1].createdAt.seconds||0)*1000).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Récemment";
+  document.getElementById("sp-since").innerText="Membre depuis "+since;
+  getDoc(doc(db,"users",sellerId)).then(function(d){
+    var rv=document.getElementById("sp-rating-val");
+    if(d.exists()&&d.data().rating){if(rv)rv.innerText="★"+d.data().rating;}
+  }).catch(function(){});
+  var el=document.getElementById("sp-listings");
+  el.innerHTML=sellerItems.map(function(i){
+    return '<div onclick="closeSellerProfile();openDetail(\''+i.id+'\')" style="cursor:pointer;background:#f8fafc;border:1px solid #e8ecf0;border-radius:14px;overflow:hidden"><div style="height:90px;background:#f1f5f9"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain;background:#f8f8f8;display:block"></div><div style="padding:8px"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div></div>';
+  }).join("")||'<p style="grid-column:1/-1;text-align:center;color:#94a3b8;font-size:11px;padding:24px">Aucune annonce active</p>';
+  var m=document.getElementById("seller-profile-modal");m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeSellerProfile=function(){var m=document.getElementById("seller-profile-modal");m.classList.add("hidden");m.classList.remove("flex");};
+
+// ════════════════════════════════════════════════════════
+// ANNONCES SIMILAIRES
+// ════════════════════════════════════════════════════════
+function renderSimilar(item){
+  var el=document.getElementById("det-similar");
+  if(!el) return;
+  var similar=items.filter(function(i){
+    if(i.id===item.id) return false;
+    var sameCat=(i.category||"").toLowerCase()===(item.category||"").toLowerCase();
+    var price=parseFloat(item.price)||0;
+    var iPrice=parseFloat(i.price)||0;
+    return sameCat&&(!price||Math.abs(iPrice-price)<price*0.8);
+  }).slice(0,6);
+  if(!similar.length){el.innerHTML='<p style="font-size:11px;color:#94a3b8;padding:8px 0">Aucune annonce similaire</p>';return;}
+  el.innerHTML=similar.map(function(i){
+    return '<div onclick="openDetail(\''+i.id+'\')" style="flex-shrink:0;width:110px;cursor:pointer"><div style="width:110px;height:90px;background:#1e293b;border-radius:12px;overflow:hidden;margin-bottom:5px;border:1px solid rgba(148,163,184,.1)"><img src="'+(i.imageUrl||"")+'" style="width:100%;height:100%;object-fit:contain;display:block;background:#f8f8f8"></div><p style="font-size:11px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div>';
+  }).join("");
+}
+
+// ════════════════════════════════════════════════════════
+// HISTORIQUE DE NAVIGATION
+// ════════════════════════════════════════════════════════
+var browseHistory=JSON.parse(localStorage.getItem("yb_history")||"[]");
+function addToHistory(item){
+  browseHistory=browseHistory.filter(function(h){return h.id!==item.id;});
+  browseHistory.unshift({id:item.id,name:item.itemName,price:item.price,img:item.imageUrl,ts:Date.now()});
+  if(browseHistory.length>20) browseHistory=browseHistory.slice(0,20);
+  localStorage.setItem("yb_history",JSON.stringify(browseHistory));
+}
+function renderHistory(){
+  var el=document.getElementById("history-list");
+  if(!el) return;
+  var valid=browseHistory.filter(function(h){return items.find(function(i){return i.id===h.id;});});
+  if(!valid.length){el.innerHTML='<p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px 0">Aucune annonce consultée</p>';return;}
+  el.innerHTML=valid.slice(0,8).map(function(h){
+    var s=Math.floor((Date.now()-h.ts)/1000);
+    var ago=s<60?"à l'instant":s<3600?Math.floor(s/60)+"min":s<86400?Math.floor(s/3600)+"h":Math.floor(s/86400)+"j";
+    return '<div onclick="openDetail(\''+h.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:6px"><img src="'+(h.img||"")+'" style="width:44px;height:44px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid #e8ecf0;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(h.name||"Objet")+'</p><p style="font-size:13px;font-weight:900;color:#0ea5e9">'+(h.price||0)+'€</p></div><p style="font-size:10px;color:#94a3b8;flex-shrink:0">'+ago+'</p></div>';
+  }).join("");
+}
+window.clearHistory=function(){browseHistory=[];localStorage.removeItem("yb_history");renderHistory();};
+
+// ════════════════════════════════════════════════════════
+// YOUBIIIZ COINS
+// ════════════════════════════════════════════════════════
+var payMode="1x";
+window.selectPayMode=function(mode){
+  payMode=mode;
+  document.getElementById("pay-mode-1x").className="pay3x-option"+(mode==="1x"?" selected":"");
+  document.getElementById("pay-mode-3x").className="pay3x-option"+(mode==="3x"?" selected":"");
+};
+
+// ════════════════════════════════════════════════════════
+// RECHERCHE PAR PHOTO (IA)
+// ════════════════════════════════════════════════════════
+window.openSearchByPhoto=function(){
+  var idle=document.getElementById("sph-idle");
+  var load=document.getElementById("sph-loading");
+  var res=document.getElementById("sph-results");
+  if(idle)idle.classList.remove("hidden");
+  if(load)load.classList.add("hidden");
+  if(res)res.classList.add("hidden");
+  var m=document.getElementById("search-photo-modal");
+  m.classList.remove("hidden");m.classList.add("flex");
+};
+window.closeSearchPhoto=function(){var m=document.getElementById("search-photo-modal");m.classList.add("hidden");m.classList.remove("flex");};
+window.onSearchPhoto=function(inp){
+  var f=inp.files[0];if(!f)return;
+  document.getElementById("sph-idle").classList.add("hidden");
+  document.getElementById("sph-loading").classList.remove("hidden");
+  var r=new FileReader();
+  r.onload=function(ev){analyzeSearchPhoto(ev.target.result);};
+  r.readAsDataURL(f);inp.value="";
+};
+async function analyzeSearchPhoto(b64){
+  try{
+    var mime=b64.indexOf("data:image/png")===0?"image/png":"image/jpeg";
+    var resp=await fetch("https://analyzeimage-xjtnixfrra-uc.a.run.app",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({imageBase64:b64.split(",")[1],mimeType:mime})
+    });
+    var d=await resp.json();
+    var detected=d.title||d.category||"Objet";
+    document.getElementById("sph-loading").classList.add("hidden");
+    document.getElementById("sph-results").classList.remove("hidden");
+    document.getElementById("sph-detected").innerText=detected;
+    var keywords=(detected+" "+(d.category||"")).toLowerCase().split(/[\s,]+/).filter(function(w){return w.length>3;});
+    var matches=items.filter(function(i){
+      var text=((i.itemName||"")+" "+(i.category||"")).toLowerCase();
+      return keywords.some(function(k){return text.indexOf(k)>=0;});
+    }).slice(0,5);
+    var el=document.getElementById("sph-list");
+    if(!matches.length){el.innerHTML='<p style="font-size:12px;color:#94a3b8;text-align:center;padding:16px">Aucune annonce similaire</p>';return;}
+    el.innerHTML=matches.map(function(i){
+      return '<div onclick="closeSearchPhoto();openDetail(\''+i.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:6px"><img src="'+(i.imageUrl||"")+'" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:#fff;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:12px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(i.itemName||"Objet")+'</p><p style="font-size:14px;font-weight:900;color:#0ea5e9">'+(i.price||0)+'€</p></div><i class="fa-solid fa-chevron-right" style="color:#94a3b8;font-size:11px;flex-shrink:0"></i></div>';
+    }).join("");
+  }catch(e){
+    document.getElementById("sph-loading").classList.add("hidden");
+    document.getElementById("sph-idle").classList.remove("hidden");
+    toast("Erreur analyse image");
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE openDetail: carrousel + similaires + historique + coins
+// ════════════════════════════════════════════════════════
+var _origOpenDetail=window.openDetail;
+window.openDetail=function(id){
+  if(window.__demoItems){
+    var ids=new Set(items.map(function(x){return x.id;}));
+    window.__demoItems.forEach(function(d){if(!ids.has(d.id))items.push(d);});
+  }
+  var i=items.find(function(x){return x.id===id;});
+  if(!i) return;
+  _origOpenDetail(id);
+  var photos=[i.imageUrl].concat(i.extraPhotos||[]).filter(Boolean);
+  buildCarousel(photos);
+  renderSimilar(i);
+  addToHistory(i);
+  computeAndShowTrust(i);
+  detectFraud(i);
+  var price=parseFloat(i.price)||0;
+  var coinsEl=document.getElementById("det-coins-earn");
+  if(coinsEl&&price>0){coinsEl.classList.remove("hidden");coinsEl.innerText="🪙 +"+(Math.round(price*0.05))+" coins si tu achètes";}
+};
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE openPay: paiement 3x + coins
+// ════════════════════════════════════════════════════════
+var _origOpenPay=window.openPay;
+window.openPay=function(i){
+  _origOpenPay(i);
+  payMode="1x";
+  var tot=parseFloat(i.price||0);
+  var per3=Math.ceil(tot/3*100)/100;
+  var el1=document.getElementById("pay-1x-amount");
+  var el3=document.getElementById("pay-3x-amount");
+  var el3d=document.getElementById("pay-3x-detail");
+  if(el1) el1.innerText=tot+"€";
+  if(el3) el3.innerText=per3+"€/mois";
+  if(el3d) el3d.innerText="3 prélèvements de "+per3+"€ · Total "+tot+"€ · 0% de frais";
+};
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE doStripe: gain coins après achat
+// ════════════════════════════════════════════════════════
+var _origDoStripe=window.doStripe;
+window.doStripe=async function(){
+  await _origDoStripe();
+};
+
+// ════════════════════════════════════════════════════════
+// OVERRIDE switchView: coins + historique + favs dans profil
+// ════════════════════════════════════════════════════════
+var _origSwitchView=window.switchView;
+window.switchView=function(v){
+  _origSwitchView(v);
+  if(v==="profile"){
+    renderHistory();
+    renderAlerts();
+    renderFavs();
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// MYCARD améliorée avec stats vues
+// ════════════════════════════════════════════════════════
+
+} // end initFirebase
+
+// Démarrer quand le DOM est prêt
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded", initFirebase);
+} else {
+  initFirebase();
+}
+
+
+
+      
 
 
 window.filterCatSidebar=function(cat,el){
@@ -3165,7 +2812,7 @@ window.openSellerProfile=function(){
   var sellerItems=items.filter(function(i){return i.userId===sellerId;});
   document.getElementById("sp-name").innerText="Vendeur #"+(sellerId||"").slice(0,8);
   document.getElementById("sp-count").innerText=sellerItems.length;
-  document.getElementById("sp-coins").innerText=Math.floor(Math.random()*200+50)+" 🪙";
+  var _spCoinsEl=document.getElementById("sp-coins");if(_spCoinsEl)_spCoinsEl.closest(".sp-stat").style.display="none";
   var since=sellerItems.length&&sellerItems[sellerItems.length-1].createdAt?new Date((sellerItems[sellerItems.length-1].createdAt.seconds||0)*1000).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}):"Récemment";
   document.getElementById("sp-since").innerText="Membre depuis "+since;
   getDoc(doc(db,"users",sellerId)).then(function(d){
@@ -3225,7 +2872,7 @@ function renderHistory(){
   el.innerHTML=valid.slice(0,8).map(function(h){
     var s=Math.floor((Date.now()-h.ts)/1000);
     var ago=s<60?"à l'instant":s<3600?Math.floor(s/60)+"min":s<86400?Math.floor(s/3600)+"h":Math.floor(s/86400)+"j";
-    return '<div onclick="openDetail(\''+h.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:6px"><img src="'+(h.img||"")+'" style="width:44px;height:44px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid #e8ecf0;flex-shrink:0"><div style="flex:1;min-width:0"><p style="font-size:13px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(h.name||"Objet")+'</p><p style="font-size:12px;font-weight:900;color:#0ea5e9">'+(h.price||0)+'€</p></div><p style="font-size:13px;color:#64748b;flex-shrink:0">'+ago+'</p></div>';
+    return '<div onclick="openDetail(\''+h.id+'\')" style="display:flex;align-items:center;gap:10px;padding:8px;background:#f8fafc;border-radius:12px;cursor:pointer;border:1px solid #e8ecf0;margin-bottom:6px"><img src="'+(h.img||"")+'" style="width:44px;height:44px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid #e8ecf0;flex-shrink:0"><p style="font-size:13px;color:#64748b;flex-shrink:0">'+ago+'</p></div>';
   }).join("");
 }
 window.clearHistory=function(){browseHistory=[];localStorage.removeItem("yb_history");renderHistory();};
@@ -3233,13 +2880,8 @@ window.clearHistory=function(){browseHistory=[];localStorage.removeItem("yb_hist
 // ════════════════════════════════════════════════════════
 // YOUBIIIZ COINS
 // ════════════════════════════════════════════════════════
-function getCoins(){return parseInt(localStorage.getItem("yb_coins")||"0");}
-function addCoins(n,reason){
-  var c=getCoins()+n;
-  localStorage.setItem("yb_coins",c);
-  if(reason) showPushBanner("🪙 +"+n+" Coins gagnés !",reason);
-  updateCoinsUI();
-}
+function getCoins(){return 0;} // Coins désactivés
+function addCoins(n,reason){} // Coins désactivés
 function updateCoinsUI(){
   var c=getCoins();
   var cv=document.getElementById("profile-coins-val");
@@ -3385,7 +3027,6 @@ var _origSwitchView=window.switchView;
 window.switchView=function(v){
   _origSwitchView(v);
   if(v==="profile"){
-    updateCoinsUI();
     renderHistory();
     renderAlerts();
     renderFavs();
@@ -3906,6 +3547,8 @@ function showVideoAIResults(aiResult, authScore) {
 }
 
 // videoUrl intégré directement dans le listener pub-btn existant
+
+
 
 </script>
 </body>
