@@ -152,7 +152,7 @@ function initFirebase() {
   }
 
   auth.onAuthStateChanged(function(u) {
-    if (u && !me) {
+    if (u && !me && !window._loggedOut) {
       me = u;
       boot();
     }
@@ -208,6 +208,7 @@ window.doLogin = function() {
   email = email.trim();
   if (!email || !pass) { showAuthError('Remplissez email et mot de passe'); return; }
   if (!auth) { showAuthError('Chargement en cours, réessayez...'); setTimeout(window.doLogin, 800); return; }
+  window._loggedOut = false;
   auth.signInWithEmailAndPassword(email, pass)
     .then(function(r) { me = r.user; boot(); })
     .catch(function(e) {
@@ -226,6 +227,7 @@ window.doRegister = function() {
   if (!email || !pass) { showAuthError('Remplissez email et mot de passe'); return; }
   if (pass.length < 6) { showAuthError('Mot de passe trop court (6 caractères min)'); return; }
   if (!auth) { showAuthError('Chargement en cours, réessayez...'); setTimeout(window.doRegister, 800); return; }
+  window._loggedOut = false;
   auth.createUserWithEmailAndPassword(email, pass)
     .then(function(r) { me = r.user; boot(); })
     .catch(function(e) {
@@ -238,15 +240,25 @@ window.doRegister = function() {
 };
 
 window.doAnon = function() {
+  window._loggedOut = false;
   me = { uid: 'visitor_' + Math.random().toString(36).slice(2, 8), isVisitor: true };
   boot();
 };
 
 window.doLogout = function() {
-  if (me && !me.isVisitor && auth) auth.signOut().catch(function(){});
+  window._loggedOut = true;
   me = null;
+  if (auth) auth.signOut().catch(function(){});
   document.getElementById('app').style.display = 'none';
   document.getElementById('splash').style.display = 'flex';
+  // Reset auth form
+  var authMsg = document.getElementById('auth-msg');
+  if (authMsg) { authMsg.style.display = 'none'; authMsg.textContent = ''; }
+  var loginEmail = document.getElementById('login-email');
+  var loginPass  = document.getElementById('login-pass');
+  if (loginEmail) loginEmail.value = '';
+  if (loginPass)  loginPass.value  = '';
+  showTab('login');
 };
 
 function showAuthError(msg) {
