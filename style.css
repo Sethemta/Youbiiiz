@@ -1,3 +1,15 @@
+/* ── Logo dribble animation (original) ── */
+@keyframes dribble {
+  0%,100% { transform:translateY(0); animation-timing-function:cubic-bezier(.8,0,1,1); }
+  50% { transform:translateY(var(--b)); animation-timing-function:cubic-bezier(0,0,.2,1); }
+}
+.yb-logo {
+  display: inline-flex; align-items: flex-end;
+  font-weight: 800; font-size: 20px; color: #0f172a;
+  letter-spacing: -.5px; line-height: 1;
+  cursor: pointer; user-select: none; flex-shrink: 0;
+}
+
 /* ═══════════════════════════════════════════════
    YOUBIIIZ — Style global (Whatnot-inspired)
    Palette : #0ea5e9 cyan · #0f172a dark · #fff
