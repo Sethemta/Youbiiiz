@@ -13,206 +13,81 @@
 <!-- ══════════ SPLASH ══════════ -->
 <div id="splash">
 
-  <!-- ══ HERO GAUCHE ══ -->
-  <div class="splash-hero">
+  <!-- ══ FOND ══ -->
+  <div class="spl-bg"></div>
 
-    <!-- Fond : lignes diagonales subtiles -->
-    <div class="splash-bg-lines"></div>
-
-    <div class="splash-content">
-
-      <!-- Logo -->
-      <div class="splash-logo-wrap">
-        <div class="yb-logo-splash">
-          <span>YOUB</span>
-          <span style="display:inline-flex;align-items:flex-end;gap:4px;margin:0 4px 4px 4px;line-height:0">
-            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:5px;height:5px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 10px rgba(14,165,233,.7);animation:dribble .9s infinite;--b:-12px"></span><span style="width:5px;height:26px;background:#0ea5e9;border-radius:2px;display:block;box-shadow:0 0 6px rgba(14,165,233,.3)"></span></span>
-            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:5px;height:5px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 10px rgba(14,165,233,.7);animation:dribble 1.3s infinite .2s;--b:-16px"></span><span style="width:5px;height:26px;background:#0ea5e9;border-radius:2px;display:block;box-shadow:0 0 6px rgba(14,165,233,.3)"></span></span>
-            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:5px;height:5px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 10px rgba(14,165,233,.7);animation:dribble 1.1s infinite .5s;--b:-14px"></span><span style="width:5px;height:26px;background:#0ea5e9;border-radius:2px;display:block;box-shadow:0 0 6px rgba(14,165,233,.3)"></span></span>
-          </span>
-          <span>Z</span>
+  <!-- ══ GAUCHE : mockups téléphones ══ -->
+  <div class="spl-phones">
+    <!-- Téléphone arrière-gauche -->
+    <div class="spl-phone spl-phone-back">
+      <div class="spl-phone-screen">
+        <video autoplay muted loop playsinline src="https://www.w3schools.com/html/movie.mp4"></video>
+        <div class="spl-phone-info">
+          <span class="spl-phone-price">420€</span>
+          <span class="spl-phone-name">PlayStation 5</span>
         </div>
-        <span class="splash-live-chip"><span class="splash-live-dot"></span> LIVE VIDEO</span>
+        <div class="spl-phone-badge"><i class="fa-solid fa-video"></i> VIDÉO</div>
       </div>
-
-      <!-- Headline -->
-      <h1 class="splash-h1">
-        La 1ère marketplace<br>
-        <em class="splash-em">100% vidéo</em><br>
-        <span class="splash-h1-sub">en France</span>
-      </h1>
-      <p class="splash-desc">
-        Filmez votre objet, publiez en 30 secondes.<br>
-        L'IA génère titre, description et prix automatiquement.
-      </p>
-
-      <!-- Steps inline -->
-      <div class="splash-how">
-        <div class="splash-how-item">
-          <div class="splash-how-icon"><i class="fa-solid fa-video"></i></div>
-          <span>Filmez</span>
+    </div>
+    <!-- Téléphone principal central -->
+    <div class="spl-phone spl-phone-main">
+      <div class="spl-phone-notch"></div>
+      <div class="spl-phone-screen">
+        <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+        <div class="spl-phone-overlay"></div>
+        <div class="spl-phone-badge"><i class="fa-solid fa-video"></i> VIDÉO</div>
+        <div class="spl-phone-info">
+          <div class="spl-phone-seller">
+            <div class="spl-phone-avatar"></div>
+            <span>Thomas_V</span>
+          </div>
+          <span class="spl-phone-price">699€</span>
+          <span class="spl-phone-name">iPhone 14 Pro 256Go</span>
+          <span class="spl-phone-city"><i class="fa-solid fa-location-dot" style="font-size:9px"></i> Paris</span>
         </div>
-        <div class="splash-how-line"></div>
-        <div class="splash-how-item">
-          <div class="splash-how-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-          <span>IA analyse</span>
-        </div>
-        <div class="splash-how-line"></div>
-        <div class="splash-how-item">
-          <div class="splash-how-icon"><i class="fa-solid fa-rocket"></i></div>
-          <span>Vendez</span>
+        <div class="spl-phone-controls">
+          <div class="spl-progress"><div class="spl-progress-fill"></div></div>
         </div>
       </div>
-
-      <!-- CTA -->
-      <div class="splash-cta-row">
-        <button class="splash-cta-primary" onclick="showTab('register');document.querySelector('.splash-auth').scrollIntoView()">
-          <i class="fa-solid fa-user-plus"></i> Créer mon compte
-        </button>
-        <button class="splash-cta-secondary" onclick="doAnon()">
-          Explorer sans compte →
-        </button>
+    </div>
+    <!-- Téléphone arrière-droite -->
+    <div class="spl-phone spl-phone-right">
+      <div class="spl-phone-screen">
+        <video autoplay muted loop playsinline src="https://www.w3schools.com/html/movie.mp4"></video>
+        <div class="spl-phone-info">
+          <span class="spl-phone-price">950€</span>
+          <span class="spl-phone-name">MacBook Air M2</span>
+        </div>
+        <div class="spl-phone-badge"><i class="fa-solid fa-video"></i> VIDÉO</div>
       </div>
-
-      <!-- Stats bar -->
-      <div class="splash-stats-bar">
-        <div class="splash-stat-item">
-          <strong>10k+</strong><span>Vendeurs</span>
-        </div>
-        <div class="splash-stat-sep">·</div>
-        <div class="splash-stat-item">
-          <strong>50k+</strong><span>Vidéos</span>
-        </div>
-        <div class="splash-stat-sep">·</div>
-        <div class="splash-stat-item">
-          <strong>2M€+</strong><span>Vendus</span>
-        </div>
-        <div class="splash-stat-sep">·</div>
-        <div class="splash-stat-item">
-          <strong>4.8★</strong><span>Note app</span>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- ══ GRILLE VIDÉOS DROITE (style Whatnot) ══ -->
-  <div class="splash-videos-panel">
-    <div class="splash-videos-label">
-      <span class="splash-live-dot" style="width:8px;height:8px"></span>
-      Annonces en ce moment
-    </div>
-    <div class="splash-videos-grid">
+  <!-- ══ DROITE : texte + auth ══ -->
+  <div class="spl-right">
 
-      <!-- Colonne 1 -->
-      <div class="svp-col">
-        <div class="svp-card" onclick="doAnon()">
-          <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
-          <div class="svp-overlay"></div>
-          <div class="svp-top"><span class="svp-vid-badge"><i class="fa-solid fa-video"></i> VIDÉO</span></div>
-          <div class="svp-bottom">
-            <div class="svp-price">699€</div>
-            <div class="svp-name">iPhone 14 Pro 256Go</div>
-            <div class="svp-seller"><i class="fa-solid fa-location-dot" style="font-size:9px;color:#0ea5e9"></i> Paris · Thomas_V</div>
-          </div>
-          <div class="svp-hover-play"><i class="fa-solid fa-play"></i></div>
-        </div>
-        <div class="svp-card" onclick="doAnon()">
-          <video autoplay muted loop playsinline src="https://www.w3schools.com/html/movie.mp4"></video>
-          <div class="svp-overlay"></div>
-          <div class="svp-top"><span class="svp-vid-badge"><i class="fa-solid fa-video"></i> VIDÉO</span></div>
-          <div class="svp-bottom">
-            <div class="svp-price">6 800€</div>
-            <div class="svp-name">Rolex Datejust 36mm</div>
-            <div class="svp-seller"><i class="fa-solid fa-location-dot" style="font-size:9px;color:#0ea5e9"></i> Monaco · LuxeShop</div>
-          </div>
-          <div class="svp-hover-play"><i class="fa-solid fa-play"></i></div>
-        </div>
-      </div>
-
-      <!-- Colonne 2 (décalée vers le bas) -->
-      <div class="svp-col svp-col-offset">
-        <div class="svp-card svp-card-featured" onclick="doAnon()">
-          <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
-          <div class="svp-overlay"></div>
-          <div class="svp-top">
-            <span class="svp-vid-badge"><i class="fa-solid fa-video"></i> VIDÉO</span>
-            <span class="svp-views"><i class="fa-solid fa-eye" style="font-size:9px"></i> 234 vues</span>
-          </div>
-          <div class="svp-bottom">
-            <div class="svp-price">420€</div>
-            <div class="svp-name">PlayStation 5 + 2 manettes</div>
-            <div class="svp-seller"><i class="fa-solid fa-location-dot" style="font-size:9px;color:#0ea5e9"></i> Lyon · GameZone</div>
-          </div>
-          <div class="svp-hover-play"><i class="fa-solid fa-play"></i></div>
-        </div>
-        <div class="svp-card" onclick="doAnon()">
-          <video autoplay muted loop playsinline src="https://www.w3schools.com/html/movie.mp4"></video>
-          <div class="svp-overlay"></div>
-          <div class="svp-top"><span class="svp-vid-badge"><i class="fa-solid fa-video"></i> VIDÉO</span></div>
-          <div class="svp-bottom">
-            <div class="svp-price">950€</div>
-            <div class="svp-name">MacBook Air M2</div>
-            <div class="svp-seller"><i class="fa-solid fa-location-dot" style="font-size:9px;color:#0ea5e9"></i> Bordeaux · AppleFan</div>
-          </div>
-          <div class="svp-hover-play"><i class="fa-solid fa-play"></i></div>
-        </div>
-      </div>
-
-      <!-- Colonne 3 -->
-      <div class="svp-col">
-        <div class="svp-card" onclick="doAnon()">
-          <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
-          <div class="svp-overlay"></div>
-          <div class="svp-top"><span class="svp-vid-badge"><i class="fa-solid fa-video"></i> VIDÉO</span></div>
-          <div class="svp-bottom">
-            <div class="svp-price">185€</div>
-            <div class="svp-name">Nike Air Jordan 1 T42</div>
-            <div class="svp-seller"><i class="fa-solid fa-location-dot" style="font-size:9px;color:#0ea5e9"></i> Toulouse · SneakerKing</div>
-          </div>
-          <div class="svp-hover-play"><i class="fa-solid fa-play"></i></div>
-        </div>
-        <div class="svp-card" onclick="doAnon()">
-          <video autoplay muted loop playsinline src="https://www.w3schools.com/html/movie.mp4"></video>
-          <div class="svp-overlay"></div>
-          <div class="svp-top">
-            <span class="svp-vid-badge"><i class="fa-solid fa-video"></i> VIDÉO</span>
-            <span class="svp-views"><i class="fa-solid fa-eye" style="font-size:9px"></i> 89 vues</span>
-          </div>
-          <div class="svp-bottom">
-            <div class="svp-price">290€</div>
-            <div class="svp-name">Dyson V11 Aspirateur</div>
-            <div class="svp-seller"><i class="fa-solid fa-location-dot" style="font-size:9px;color:#0ea5e9"></i> Lille · CleanPro</div>
-          </div>
-          <div class="svp-hover-play"><i class="fa-solid fa-play"></i></div>
-        </div>
-      </div>
-
+    <!-- Logo -->
+    <div class="spl-logo">
+      <span>YOUB</span>
+      <span style="display:inline-flex;align-items:flex-end;gap:3px;margin:0 3px 3px 3px;line-height:0">
+        <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble .9s infinite;--b:-9px"></span><span style="width:4px;height:20px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
+        <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.3s infinite .2s;--b:-11px"></span><span style="width:4px;height:20px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
+        <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.1s infinite .5s;--b:-10px"></span><span style="width:4px;height:20px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
+      </span>
+      <span>Z</span>
     </div>
 
-    <!-- Gradient de fondu bas -->
-    <div class="svp-fade-bottom"></div>
-    <!-- Gradient de fondu gauche vers le hero -->
-    <div class="svp-fade-left"></div>
-  </div>
+    <!-- Headline -->
+    <h1 class="spl-h1">
+      La marketplace<br>
+      <span class="spl-h1-accent">100% vidéo</span>
+    </h1>
+    <p class="spl-sub">
+      Filmez, publiez, vendez en 30 secondes.<br>L'IA s'occupe du reste.
+    </p>
 
-  <!-- ══ PANEL AUTH ══ -->
-  <div class="splash-auth">
-    <div class="splash-auth-inner">
-
-      <div class="splash-auth-logo-wrap">
-        <div class="yb-logo-auth">
-          <span>YOUB</span>
-          <span style="display:inline-flex;align-items:flex-end;gap:3px;margin:0 3px 3px 3px;line-height:0">
-            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble .9s infinite;--b:-9px"></span><span style="width:4px;height:20px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
-            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.3s infinite .2s;--b:-11px"></span><span style="width:4px;height:20px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
-            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.1s infinite .5s;--b:-10px"></span><span style="width:4px;height:20px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
-          </span>
-          <span>Z</span>
-        </div>
-        <div style="font-size:12px;color:#94a3b8;margin-top:6px">La marketplace vidéo</div>
-      </div>
-
+    <!-- Auth -->
+    <div class="spl-auth-box">
       <div class="auth-tabs">
         <button class="auth-tab active" id="tab-login" onclick="showTab('login')">Connexion</button>
         <button class="auth-tab" id="tab-register" onclick="showTab('register')">Inscription</button>
@@ -240,8 +115,17 @@
       <button class="btn-visitor" onclick="doAnon()">
         <i class="fa-solid fa-eye"></i> Explorer sans compte
       </button>
-
     </div>
+
+    <!-- Stats mini -->
+    <div class="spl-stats">
+      <div class="spl-stat"><strong>10k+</strong><span>Vendeurs</span></div>
+      <div class="spl-stat-dot"></div>
+      <div class="spl-stat"><strong>50k+</strong><span>Vidéos</span></div>
+      <div class="spl-stat-dot"></div>
+      <div class="spl-stat"><strong>2M€+</strong><span>Vendus</span></div>
+    </div>
+
   </div>
 
 </div><!-- /splash -->
