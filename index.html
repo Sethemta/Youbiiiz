@@ -13,142 +13,268 @@
 <!-- ══════════ SPLASH ══════════ -->
 <div id="splash">
 
-  <!-- ══ GAUCHE : hero visuel ══ -->
-  <div class="spl-left">
+  <!-- ══ FOND SCÈNE ══ -->
+  <div class="sl-bg">
+    <div class="sl-bg-gradient"></div>
+    <div class="sl-bg-beam sl-bg-beam-1"></div>
+    <div class="sl-bg-beam sl-bg-beam-2"></div>
+    <div class="sl-grid-lines"></div>
+  </div>
 
-    <!-- Logo grand blanc -->
-    <div class="spl-left-logo">
-      <div class="spl-logo-big">
-        <span>YOUB</span>
-        <span style="display:inline-flex;align-items:flex-end;gap:5px;margin:0 5px 6px 5px;line-height:0">
-          <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:6px;height:6px;background:#fff;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 12px rgba(255,255,255,.9);animation:dribble .9s infinite;--b:-12px"></span><span style="width:6px;height:35px;background:#fff;border-radius:2px;display:block;box-shadow:0 0 8px rgba(255,255,255,.5)"></span></span>
-          <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:6px;height:6px;background:#fff;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 12px rgba(255,255,255,.9);animation:dribble 1.3s infinite .2s;--b:-16px"></span><span style="width:6px;height:35px;background:#fff;border-radius:2px;display:block;box-shadow:0 0 8px rgba(255,255,255,.5)"></span></span>
-          <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:6px;height:6px;background:#fff;border-radius:2px;margin-bottom:2px;display:block;box-shadow:0 0 12px rgba(255,255,255,.9);animation:dribble 1.1s infinite .5s;--b:-14px"></span><span style="width:6px;height:35px;background:#fff;border-radius:2px;display:block;box-shadow:0 0 8px rgba(255,255,255,.5)"></span></span>
-        </span>
-        <span>Z</span>
+  <!-- ══ COLONNE SCÈNE (gauche) ══ -->
+  <div class="sl-scene">
+
+    <!-- TITRE HÉRO DIAGONAL -->
+    <div class="sl-hero-text">
+      <div class="sl-eyebrow">
+        <span class="sl-eyebrow-dot"></span>
+        La marketplace vidéo · France
+        <span class="sl-eyebrow-badge">NOUVEAU</span>
       </div>
-      <p class="spl-tagline">La marketplace vidéo nouvelle génération</p>
+      <h1 class="sl-h1">
+        <span class="sl-h1-line sl-h1-white">Vends en</span>
+        <span class="sl-h1-line sl-h1-gradient">vidéo.</span>
+        <span class="sl-h1-line sl-h1-muted">L'IA fait le reste.</span>
+      </h1>
     </div>
 
-    <h1 class="spl-h1-left">
-      Vends et achète<br>
-      <span class="spl-h1-cyan">plus intelligemment.</span>
-    </h1>
+    <!-- LOGO GRAND CENTRÉ -->
+    <div class="sl-logo-stage">
+      <div class="sl-logo-halo"></div>
+      <div class="sl-logo-giant">
+        <span class="sl-lg-youb">YOUB</span>
+        <span class="sl-lg-dots">
+          <span class="sl-lg-i"><span class="sl-lg-dot" style="animation-delay:0s;--b:-15px"></span><span class="sl-lg-stem"></span></span>
+          <span class="sl-lg-i"><span class="sl-lg-dot" style="animation-delay:.22s;--b:-20px"></span><span class="sl-lg-stem"></span></span>
+          <span class="sl-lg-i"><span class="sl-lg-dot" style="animation-delay:.44s;--b:-17px"></span><span class="sl-lg-stem"></span></span>
+        </span>
+        <span class="sl-lg-z">Z</span>
+      </div>
+    </div>
 
-    <!-- Zone de cartes flottantes (original) + mockup vidéo (nouveau) -->
-    <div class="spl-cards-zone">
+    <!-- SCÈNE FLOTTANTE : phone + cartes + badges -->
+    <div class="sl-float-stage">
 
-      <!-- Carte annonce iPhone (flottante, style original) -->
-      <div class="spl-card spl-card-iphone">
-        <div class="spl-card-img spl-card-img-blue">
-          <i class="fa-solid fa-mobile-screen" style="font-size:52px;color:#94a3b8"></i>
+      <!-- Carte produit gauche -->
+      <div class="sl-card sl-card-tl">
+        <div class="sl-card-thumb sl-ct-blue">
+          <i class="fa-solid fa-mobile-screen" style="font-size:38px;color:#64748b"></i>
         </div>
-        <div class="spl-card-body">
-          <div class="spl-card-title">iPhone 14 Pro 256Go</div>
-          <div class="spl-card-price">699€</div>
+        <div class="sl-card-meta">
+          <div class="sl-card-name">iPhone 14 Pro 256Go</div>
+          <div class="sl-card-row">
+            <span class="sl-card-price">699€</span>
+            <span class="sl-card-cond">Très bon état</span>
+          </div>
         </div>
-        <div class="spl-card-badge-cond">Très bon état</div>
-        <div class="spl-card-vidtag"><i class="fa-solid fa-video"></i> VIDÉO</div>
+        <div class="sl-card-vid-tag"><i class="fa-solid fa-video"></i></div>
+        <div class="sl-card-fav"><i class="fa-regular fa-heart"></i></div>
       </div>
 
-      <!-- Mockup téléphone avec vraie vidéo (nouveau) -->
-      <div class="spl-phone-mockup">
-        <div class="spl-phone-notch-bar"></div>
-        <div class="spl-phone-vid">
-          <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
-          <div class="spl-phone-vid-overlay"></div>
-          <div class="spl-phone-vid-badge"><i class="fa-solid fa-video"></i> VIDÉO</div>
-          <div class="spl-phone-vid-info">
-            <div class="spl-phone-vid-price">420€</div>
-            <div class="spl-phone-vid-name">PlayStation 5 + 2 manettes</div>
-            <div style="display:flex;gap:6px;margin-top:6px">
-              <div style="height:3px;flex:1;background:rgba(255,255,255,.3);border-radius:2px"><div style="height:100%;width:55%;background:#0ea5e9;border-radius:2px"></div></div>
+      <!-- Téléphone central → star of the show -->
+      <div class="sl-phone">
+        <div class="sl-phone-glow"></div>
+        <div class="sl-phone-body">
+          <div class="sl-phone-island"></div>
+          <div class="sl-phone-screen">
+            <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+            <div class="sl-phone-vignette"></div>
+
+            <div class="sl-phone-top">
+              <span class="sl-phone-badge-vid"><i class="fa-solid fa-video" style="font-size:7px"></i> VIDÉO</span>
+              <span class="sl-phone-views"><i class="fa-solid fa-eye" style="font-size:8px"></i> 2.3k</span>
             </div>
+
+            <div class="sl-phone-seller">
+              <div class="sl-phone-avatar"></div>
+              <div>
+                <div class="sl-phone-seller-name">Thomas_V</div>
+                <div class="sl-phone-seller-loc">📍 Paris, 75010</div>
+              </div>
+              <div class="sl-phone-trust-score">95<span style="font-size:7px;opacity:.6">/100</span></div>
+            </div>
+
+            <div class="sl-phone-bottom">
+              <div class="sl-phone-price">420€</div>
+              <div class="sl-phone-title">PlayStation 5 + 2 manettes</div>
+              <div class="sl-phone-tags">
+                <span class="sl-phone-tag">Très bon état</span>
+                <span class="sl-phone-tag">Colissimo ✓</span>
+              </div>
+              <div class="sl-phone-progress"><div class="sl-phone-progress-fill"></div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Reflets latéraux du phone -->
+        <div class="sl-phone-shine-l"></div>
+        <div class="sl-phone-shine-r"></div>
+      </div>
+
+      <!-- Carte map droite bas -->
+      <div class="sl-card sl-card-map">
+        <div class="sl-card-thumb sl-ct-map">
+          <span class="sl-map-pin" style="top:20%;left:18%">180€</span>
+          <span class="sl-map-pin sl-map-pin-pulse" style="top:40%;right:15%">430€</span>
+          <span class="sl-map-pin" style="bottom:22%;left:48%">95€</span>
+        </div>
+        <div class="sl-card-map-footer">
+          <i class="fa-solid fa-location-dot" style="color:#0ea5e9;font-size:11px"></i>
+          <span>12 annonces près de toi</span>
+        </div>
+      </div>
+
+      <!-- Badge IA Gemini — signature visuelle originale -->
+      <div class="sl-ia-badge">
+        <div class="sl-ia-badge-shine"></div>
+        <div class="sl-ia-icon-wrap">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <div class="sl-ia-text">
+          <div class="sl-ia-name">IA Gemini</div>
+          <div class="sl-ia-desc">Prix estimé · Titre généré · Description auto</div>
+        </div>
+      </div>
+
+      <!-- Chip LIVE -->
+      <div class="sl-live-chip">
+        <span class="sl-live-dot"></span>
+        En direct maintenant · <strong>2 347</strong> spectateurs
+      </div>
+
+      <!-- Badge score confiance -->
+      <div class="sl-shield-badge">
+        <i class="fa-solid fa-shield-halved" style="color:#22c55e;font-size:16px"></i>
+        <div>
+          <div class="sl-shield-top">Score de confiance</div>
+          <div class="sl-shield-score">
+            <span class="sl-shield-bar"><span class="sl-shield-fill" style="width:95%"></span></span>
+            <span class="sl-shield-num">95/100</span>
           </div>
         </div>
       </div>
 
-      <!-- Carte carte map (flottante, style original) -->
-      <div class="spl-card spl-card-map">
-        <div class="spl-card-img spl-card-img-map">
-          <i class="fa-solid fa-map" style="font-size:22px;color:#3b82f6;opacity:.4"></i>
-          <span class="spl-map-dot spl-map-dot-1">180€</span>
-          <span class="spl-map-dot spl-map-dot-2">430€</span>
-          <span class="spl-map-dot spl-map-dot-3">95€</span>
-        </div>
-        <p class="spl-card-map-label"><i class="fa-solid fa-location-dot" style="color:#0ea5e9;margin-right:4px"></i>Annonces près de toi</p>
-      </div>
+      <!-- Emoji réaction flottant -->
+      <div class="sl-emoji sl-emoji-1">🔥</div>
+      <div class="sl-emoji sl-emoji-2">❤️</div>
+      <div class="sl-emoji sl-emoji-3">🎮</div>
 
-      <!-- Pancarte IA Gemini (original exact) -->
-      <div class="spl-ia-badge">
-        <div class="spl-ia-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-        <div>
-          <div class="spl-ia-title">IA Gemini</div>
-          <div class="spl-ia-sub">Prix estimé en 3s</div>
-        </div>
-      </div>
+    </div><!-- /float-stage -->
 
-      <!-- Badge vues live -->
-      <div class="spl-live-badge">
-        <span class="spl-live-dot-red"></span> 2.3k vues
+    <!-- Stats bas -->
+    <div class="sl-stats">
+      <div class="sl-stat">
+        <span class="sl-stat-n">10k+</span>
+        <span class="sl-stat-l">Vendeurs actifs</span>
       </div>
-
+      <div class="sl-stat-div"></div>
+      <div class="sl-stat">
+        <span class="sl-stat-n">50k+</span>
+        <span class="sl-stat-l">Vidéos publiées</span>
+      </div>
+      <div class="sl-stat-div"></div>
+      <div class="sl-stat">
+        <span class="sl-stat-n">2M€+</span>
+        <span class="sl-stat-l">Transactions</span>
+      </div>
+      <div class="sl-stat-div"></div>
+      <div class="sl-stat">
+        <span class="sl-stat-n">30s</span>
+        <span class="sl-stat-l">Pour publier</span>
+      </div>
     </div>
-  </div>
 
-  <!-- ══ DROITE : auth ══ -->
-  <div class="spl-right">
-    <div class="spl-right-inner">
+  </div><!-- /scene -->
 
-      <!-- Logo pour mobile -->
-      <div class="spl-right-logo">
-        <span>YOUB</span>
-        <span style="display:inline-flex;align-items:flex-end;gap:3px;margin:0 3px 3px 3px;line-height:0">
-          <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble .9s infinite;--b:-9px"></span><span style="width:4px;height:22px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
-          <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.3s infinite .2s;--b:-11px"></span><span style="width:4px;height:22px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
-          <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.1s infinite .5s;--b:-10px"></span><span style="width:4px;height:22px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
-        </span>
-        <span>Z</span>
+  <!-- ══ COLONNE AUTH (droite) ══ -->
+  <div class="sl-auth">
+    <div class="sl-auth-inner">
+
+      <!-- Logo -->
+      <div class="sl-auth-logo-wrap">
+        <div class="sl-auth-logo">
+          <span>YOUB</span>
+          <span style="display:inline-flex;align-items:flex-end;gap:3px;margin:0 3px 3px 3px;line-height:0">
+            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble .9s infinite;--b:-9px"></span><span style="width:4px;height:22px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
+            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.3s infinite .2s;--b:-11px"></span><span style="width:4px;height:22px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
+            <span style="display:inline-flex;flex-direction:column;align-items:center"><span style="width:4px;height:4px;background:#0ea5e9;border-radius:2px;margin-bottom:2px;display:block;animation:dribble 1.1s infinite .5s;--b:-10px"></span><span style="width:4px;height:22px;background:#0ea5e9;border-radius:2px;display:block"></span></span>
+          </span>
+          <span>Z</span>
+        </div>
+        <div class="sl-auth-tagline">La marketplace vidéo #1</div>
       </div>
 
       <!-- Tabs -->
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-login" onclick="showTab('login')">Connexion</button>
-        <button class="auth-tab" id="tab-register" onclick="showTab('register')">Inscription</button>
+      <div class="auth-tabs sl-auth-tabs">
+        <button class="auth-tab sl-tab active" id="tab-login" onclick="showTab('login')">Connexion</button>
+        <button class="auth-tab sl-tab" id="tab-register" onclick="showTab('register')">Inscription</button>
       </div>
 
       <div id="auth-msg" class="auth-msg" style="display:none"></div>
 
-      <!-- Login -->
       <div id="panel-login">
-        <input id="login-email" class="auth-input" type="email" placeholder="Email" autocomplete="email">
-        <input id="login-pass" class="auth-input" type="password" placeholder="Mot de passe" autocomplete="current-password">
-        <button class="btn-auth" onclick="doLogin()">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i> Se connecter
+        <div class="sl-input-wrap">
+          <i class="fa-solid fa-envelope sl-input-icon"></i>
+          <input id="login-email" class="sl-input" type="email" placeholder="Adresse email" autocomplete="email">
+        </div>
+        <div class="sl-input-wrap">
+          <i class="fa-solid fa-lock sl-input-icon"></i>
+          <input id="login-pass" class="sl-input" type="password" placeholder="Mot de passe" autocomplete="current-password">
+        </div>
+        <button class="sl-btn-primary" onclick="doLogin()">
+          Se connecter <i class="fa-solid fa-arrow-right" style="font-size:12px"></i>
         </button>
       </div>
 
-      <!-- Register -->
       <div id="panel-register" style="display:none">
-        <input id="reg-email" class="auth-input" type="email" placeholder="Email" autocomplete="email">
-        <input id="reg-pass" class="auth-input" type="password" placeholder="Mot de passe (6+)" autocomplete="new-password">
-        <button class="btn-auth" onclick="doRegister()">
-          <i class="fa-solid fa-user-plus"></i> Créer mon compte
+        <div class="sl-input-wrap">
+          <i class="fa-solid fa-envelope sl-input-icon"></i>
+          <input id="reg-email" class="sl-input" type="email" placeholder="Adresse email" autocomplete="email">
+        </div>
+        <div class="sl-input-wrap">
+          <i class="fa-solid fa-lock sl-input-icon"></i>
+          <input id="reg-pass" class="sl-input" type="password" placeholder="Mot de passe (6+ caractères)" autocomplete="new-password">
+        </div>
+        <button class="sl-btn-primary" onclick="doRegister()">
+          Créer mon compte <i class="fa-solid fa-arrow-right" style="font-size:12px"></i>
         </button>
       </div>
 
-      <div class="auth-sep"><span>ou</span></div>
-      <button class="btn-visitor" onclick="doAnon()">
-        <i class="fa-solid fa-eye"></i> Explorer sans compte
+      <div class="sl-sep"><span>ou continuer avec</span></div>
+
+      <button class="sl-btn-ghost" onclick="doAnon()">
+        <i class="fa-solid fa-eye"></i>
+        Explorer sans compte
       </button>
 
-      <!-- Stats mini -->
-      <div class="spl-stats-row">
-        <div class="spl-stat-mini"><strong>10k+</strong><span>Vendeurs</span></div>
-        <div class="spl-stat-dot-sep"></div>
-        <div class="spl-stat-mini"><strong>50k+</strong><span>Vidéos</span></div>
-        <div class="spl-stat-dot-sep"></div>
-        <div class="spl-stat-mini"><strong>2M€+</strong><span>Vendus</span></div>
+      <!-- Features strip -->
+      <div class="sl-features">
+        <div class="sl-feature">
+          <div class="sl-feature-icon" style="background:rgba(14,165,233,.1)">
+            <i class="fa-solid fa-video" style="color:#0ea5e9;font-size:12px"></i>
+          </div>
+          <div class="sl-feature-text">
+            <div class="sl-feature-title">Annonce vidéo</div>
+            <div class="sl-feature-sub">Filmez votre objet</div>
+          </div>
+        </div>
+        <div class="sl-feature">
+          <div class="sl-feature-icon" style="background:rgba(139,92,246,.1)">
+            <i class="fa-solid fa-wand-magic-sparkles" style="color:#8b5cf6;font-size:12px"></i>
+          </div>
+          <div class="sl-feature-text">
+            <div class="sl-feature-title">IA Gemini</div>
+            <div class="sl-feature-sub">Titre + prix en 3s</div>
+          </div>
+        </div>
+        <div class="sl-feature">
+          <div class="sl-feature-icon" style="background:rgba(34,197,94,.1)">
+            <i class="fa-solid fa-shield-halved" style="color:#22c55e;font-size:12px"></i>
+          </div>
+          <div class="sl-feature-text">
+            <div class="sl-feature-title">Paiement sécurisé</div>
+            <div class="sl-feature-sub">Stripe intégré</div>
+          </div>
+        </div>
       </div>
 
     </div>
