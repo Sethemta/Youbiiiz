@@ -15,47 +15,98 @@
 
   <!-- Gauche : hero -->
   <div class="splash-hero">
-    <div class="splash-bg-grid" id="splash-grid"></div>
+    <div class="splash-bg-grid"></div>
+    <!-- Particules flottantes -->
+    <div class="splash-particles">
+      <div class="sp sp1"></div><div class="sp sp2"></div><div class="sp sp3"></div>
+      <div class="sp sp4"></div><div class="sp sp5"></div>
+    </div>
+
     <div class="splash-content">
-      <div class="splash-logo">
-        YOUB<span class="splash-logo-accent">iii</span>Z
+      <!-- Logo -->
+      <div class="splash-logo-wrap">
+        <div class="splash-logo-mark">
+          YOUB<span class="splash-dot-anim-hero"><span></span><span></span><span></span></span>IIZ
+        </div>
+        <div class="splash-logo-pill"><i class="fa-solid fa-video"></i> La marketplace vidéo</div>
       </div>
-      <h1 class="splash-headline">La vente,<br>en <span class="splash-headline-accent">vidéo.</span></h1>
-      <p class="splash-sub">Filmez votre objet. Publiez en 30 secondes.<br>L'IA remplit tout automatiquement.</p>
+
+      <!-- Headline -->
+      <h1 class="splash-headline">
+        Vendez en<br>
+        <span class="splash-headline-accent">30 secondes</span><br>
+        <span class="splash-headline-sub">grâce à la vidéo & l'IA</span>
+      </h1>
+
+      <!-- Steps -->
+      <div class="splash-steps">
+        <div class="splash-step">
+          <div class="splash-step-num">1</div>
+          <div class="splash-step-text"><strong>Filmez</strong> votre objet</div>
+        </div>
+        <div class="splash-step-arrow">→</div>
+        <div class="splash-step">
+          <div class="splash-step-num">2</div>
+          <div class="splash-step-text"><strong>L'IA</strong> remplit tout</div>
+        </div>
+        <div class="splash-step-arrow">→</div>
+        <div class="splash-step">
+          <div class="splash-step-num">3</div>
+          <div class="splash-step-text"><strong>Publiez</strong> & vendez</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
       <div class="splash-stats">
-        <div class="splash-stat"><span class="splash-stat-n">10k+</span><span class="splash-stat-l">Vendeurs</span></div>
+        <div class="splash-stat">
+          <span class="splash-stat-n">10k<span style="color:#0ea5e9">+</span></span>
+          <span class="splash-stat-l">Vendeurs actifs</span>
+        </div>
         <div class="splash-stat-divider"></div>
-        <div class="splash-stat"><span class="splash-stat-n">50k+</span><span class="splash-stat-l">Vidéos</span></div>
+        <div class="splash-stat">
+          <span class="splash-stat-n">50k<span style="color:#0ea5e9">+</span></span>
+          <span class="splash-stat-l">Vidéos publiées</span>
+        </div>
         <div class="splash-stat-divider"></div>
-        <div class="splash-stat"><span class="splash-stat-n">2M€+</span><span class="splash-stat-l">Vendus</span></div>
+        <div class="splash-stat">
+          <span class="splash-stat-n">2M€<span style="color:#0ea5e9">+</span></span>
+          <span class="splash-stat-l">Déjà vendus</span>
+        </div>
+      </div>
+
+      <!-- Trust badges -->
+      <div class="splash-trust">
+        <div class="splash-trust-item"><i class="fa-solid fa-shield-halved"></i> Paiement sécurisé</div>
+        <div class="splash-trust-item"><i class="fa-solid fa-wand-magic-sparkles"></i> IA intégrée</div>
+        <div class="splash-trust-item"><i class="fa-solid fa-star"></i> Avis vérifiés</div>
       </div>
     </div>
-    <!-- Grille de vidéos démo (Whatnot style) -->
+
+    <!-- Mosaïque vidéos -->
     <div class="splash-video-mosaic">
       <div class="svm-col svm-col-1">
-        <div class="svm-card"><img src="https://picsum.photos/seed/shoes1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">185€</span><span class="svm-name">Jordan 1 Retro</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
-        <div class="svm-card"><img src="https://picsum.photos/seed/watch1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">6 800€</span><span class="svm-name">Rolex Datejust</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
-        <div class="svm-card"><img src="https://picsum.photos/seed/guitar1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">90€</span><span class="svm-name">Yamaha F310</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/shoe11/300/520" alt=""><div class="svm-overlay"><span class="svm-price">185€</span><span class="svm-name">Jordan 1 Retro T42</span><span class="svm-city">Paris</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/watch11/300/520" alt=""><div class="svm-overlay"><span class="svm-price">6 800€</span><span class="svm-name">Rolex Datejust</span><span class="svm-city">Monaco</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/guitar11/300/520" alt=""><div class="svm-overlay"><span class="svm-price">90€</span><span class="svm-name">Yamaha F310</span><span class="svm-city">Lyon</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
       </div>
       <div class="svm-col svm-col-2">
-        <div class="svm-card"><img src="https://picsum.photos/seed/iphone14/300/500" alt=""><div class="svm-overlay"><span class="svm-price">699€</span><span class="svm-name">iPhone 14 Pro</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
-        <div class="svm-card"><img src="https://picsum.photos/seed/ps5a/300/500" alt=""><div class="svm-overlay"><span class="svm-price">420€</span><span class="svm-name">PlayStation 5</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
-        <div class="svm-card"><img src="https://picsum.photos/seed/bike1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">680€</span><span class="svm-name">Vélo électrique</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card svm-featured"><img src="https://picsum.photos/seed/iphone141/300/520" alt=""><div class="svm-overlay"><span class="svm-price">699€</span><span class="svm-name">iPhone 14 Pro 256Go</span><span class="svm-city">Paris</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/ps5b/300/520" alt=""><div class="svm-overlay"><span class="svm-price">420€</span><span class="svm-name">PlayStation 5</span><span class="svm-city">Bordeaux</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/bike11/300/520" alt=""><div class="svm-overlay"><span class="svm-price">680€</span><span class="svm-name">Vélo électrique</span><span class="svm-city">Nantes</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
       </div>
       <div class="svm-col svm-col-3">
-        <div class="svm-card"><img src="https://picsum.photos/seed/mac1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">950€</span><span class="svm-name">MacBook Air M2</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
-        <div class="svm-card"><img src="https://picsum.photos/seed/dyson1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">290€</span><span class="svm-name">Dyson V11</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
-        <div class="svm-card"><img src="https://picsum.photos/seed/lego1/300/500" alt=""><div class="svm-overlay"><span class="svm-price">480€</span><span class="svm-name">Lego 75192</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/mac11/300/520" alt=""><div class="svm-overlay"><span class="svm-price">950€</span><span class="svm-name">MacBook Air M2</span><span class="svm-city">Toulouse</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div><div class="svm-badge"><i class="fa-solid fa-video"></i> VIDÉO</div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/dyson11/300/520" alt=""><div class="svm-overlay"><span class="svm-price">290€</span><span class="svm-name">Dyson V11</span><span class="svm-city">Lille</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
+        <div class="svm-card"><img src="https://picsum.photos/seed/rolex1/300/520" alt=""><div class="svm-overlay"><span class="svm-price">6 800€</span><span class="svm-name">Rolex Submariner</span><span class="svm-city">Nice</span></div><div class="svm-play"><i class="fa-solid fa-play"></i></div></div>
       </div>
     </div>
-    <!-- Gradient overlay -->
     <div class="splash-fade-right"></div>
   </div>
 
   <!-- Droite : auth -->
   <div class="splash-auth">
     <div class="splash-auth-inner">
-      <div class="splash-auth-logo">YOUB<span style="color:#0ea5e9">iii</span>Z</div>
+      <div class="splash-auth-logo">YOUB<span class="splash-dot-anim"><span></span><span></span><span></span></span>IIZ</div>
       <div class="splash-auth-tagline">Rejoignez la marketplace vidéo</div>
 
       <div class="auth-tabs">
@@ -105,7 +156,7 @@
   <!-- HEADER -->
   <header class="header">
     <div class="header-logo" onclick="switchView('home')">
-      YOUB<span style="color:#0ea5e9">iii</span>Z
+      YOUB<span class="dot-anim"><span></span><span></span><span></span></span>IIZ
     </div>
     <div class="header-search">
       <i class="fa-solid fa-magnifying-glass"></i>
