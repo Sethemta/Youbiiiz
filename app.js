@@ -287,7 +287,7 @@ window.switchView = function(v) {
     if (n === 'map') {
       el.style.display = n === v ? 'block' : 'none';
     } else {
-      el.classList.toggle('hidden', n !== v);
+      el.style.display = n === v ? 'block' : 'none';
     }
   });
 
