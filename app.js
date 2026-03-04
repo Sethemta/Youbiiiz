@@ -350,7 +350,7 @@ function renderFeed() {
   var empty = document.getElementById('empty-state');
   if (!feed) return;
 
-  var list = getFilteredItems();
+  var list = rankItemsTikTok(getFilteredItems());
   feed.innerHTML = '';
 
   if (!list.length) {
@@ -435,6 +435,9 @@ function renderShorts() {
 
     row.appendChild(card);
   });
+
+  // Autoplay/pause intelligent
+  setupShortsAutoplay();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1245,3 +1248,163 @@ window.onerror = function(msg, src, line) {
 document.addEventListener('DOMContentLoaded', function() {
   initFirebase();
 });
+
+
+// ═══════════════════════════════════════════════════════════════
+// IA QUICK FILL + FEED TIKTOK + SHORTS AUTOPLAY (patch)
+// Objectif: que ça tourne immédiatement même sans backend IA
+// ═══════════════════════════════════════════════════════════════
+
+function showToast(msg, kind) {
+  var el = document.getElementById('toast');
+  if (!el) { alert(msg); return; }
+  el.className = kind ? kind : '';
+  el.textContent = msg;
+  el.style.display = 'block';
+  clearTimeout(window.__toastHide);
+  window.__toastHide = setTimeout(function(){ el.style.display = 'none'; }, 2600);
+}
+
+function setInputValueSafe(id, val) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.value = (val == null) ? '' : val;
+  try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch(e) {}
+  try { el.dispatchEvent(new Event('change', { bubbles: true })); } catch(e) {}
+}
+
+// Capture 1 frame d'une vidéo (<video>) en base64 JPEG (préparation IA)
+function captureVideoFrameBase64(videoEl, quality) {
+  quality = (typeof quality === 'number') ? quality : 0.82;
+  if (!videoEl || !videoEl.videoWidth || !videoEl.videoHeight) return null;
+  var c = document.createElement('canvas');
+  c.width = videoEl.videoWidth;
+  c.height = videoEl.videoHeight;
+  var ctx = c.getContext('2d');
+  ctx.drawImage(videoEl, 0, 0, c.width, c.height);
+  return c.toDataURL('image/jpeg', quality);
+}
+
+// ⚠️ Backend IA non fourni ici. Pour que ça tourne immédiatement,
+// on fait un fallback: on estime le prix depuis le titre existant (ou vide).
+async function aiDetectFromBase64Image(_dataUrl) {
+  // Placeholder: retourne une structure compatible sans planter
+  return { title:'', category:'', brand:'', model:'', conditionHint:'', confidence:0 };
+}
+
+async function aiGenerateListingText(payload) {
+  // Placeholder: si pas de backend, on renvoie un texte simple
+  var title = payload.title || '';
+  var condition = payload.condition || '';
+  var price = payload.price ? (payload.price + '€') : '';
+  var desc = '';
+  if (title) desc += title + (condition ? (' — ' + condition) : '') + (price ? (' — ' + price) : '') + '\n';
+  desc += '• Vendu en l\'état\n• Remise en main propre ou envoi possible\n• Paiement sécurisé recommandé';
+  return { title: title, description: desc, bullets: [], category: payload.category || '' };
+}
+
+async function estimatePrice(q) {
+  // Fallback local simple (améliorable)
+  var title = (q.title || '').toLowerCase();
+  var base = 50;
+  if (title.indexOf('iphone') > -1) base = 650;
+  if (title.indexOf('ps5') > -1 || title.indexOf('playstation 5') > -1) base = 420;
+  if (title.indexOf('macbook') > -1) base = 900;
+  if (title.indexOf('dyson') > -1) base = 250;
+  var cond = (q.condition || '').toLowerCase();
+  var m = 1;
+  if (cond.indexOf('neuf') > -1) m = 1.05;
+  else if (cond.indexOf('très bon') > -1) m = 1.00;
+  else if (cond.indexOf('bon') > -1) m = 0.9;
+  else if (cond.indexOf('correct') > -1) m = 0.8;
+  var sp = Math.max(5, Math.round(base * m));
+  return { suggestedPrice: sp, low: Math.round(sp*0.9), high: Math.round(sp*1.1), source:'fallback', confidence:0.35 };
+}
+
+// Pipeline: vidéo → capture frame → (IA placeholder) → estimation prix → pré-remplit
+async function autoFillFromVideo(videoEl) {
+  try {
+    showToast('Analyse IA (fallback) en cours…');
+
+    // On garde la capture pour plus tard (backend IA)
+    captureVideoFrameBase64(videoEl, 0.78);
+
+    // On utilise le titre déjà tapé si présent
+    var title = ((document.getElementById('pub-title') || {}).value || '').trim();
+    var cond = ((document.getElementById('pub-cond') || {}).value || '').trim();
+    var cat  = ((document.getElementById('pub-cat') || {}).value || '').trim();
+
+    var est = await estimatePrice({ title: title, category: cat, condition: cond });
+    var txt = await aiGenerateListingText({ title: title, category: cat, condition: cond, price: est.suggestedPrice, lang: 'fr' });
+
+    if (title) setInputValueSafe('pub-title', txt.title || title);
+    if (cat) setInputValueSafe('pub-cat', txt.category || cat);
+    if (cond) setInputValueSafe('pub-cond', cond);
+    if (est && est.suggestedPrice) setInputValueSafe('pub-price', String(est.suggestedPrice));
+    setInputValueSafe('pub-desc', (txt.description || '').trim());
+
+    showToast('Annonce pré-remplie ✅', 'ok');
+  } catch (e) {
+    console.error(e);
+    showToast('Erreur IA : ' + (e.message || ''), 'err');
+  }
+}
+
+// Bouton IA dans la modale publish
+window.startQuickPublish = function() {
+  var v = document.getElementById('vid-preview-player');
+  if (v) autoFillFromVideo(v);
+  else showToast('Ajoute une vidéo pour pré-remplir.', 'err');
+};
+
+// Feed TikTok-like: récence + engagement + distance + boost vidéo
+function haversineKm(lat1, lon1, lat2, lon2) {
+  function toRad(x){ return x * Math.PI / 180; }
+  var R = 6371;
+  var dLat = toRad(lat2-lat1);
+  var dLon = toRad(lon2-lon1);
+  var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(toRad(lat1))*Math.cos(toRad(lat2)) * Math.sin(dLon/2)*Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function itemScoreTikTok(item) {
+  var now = Date.now()/1000;
+  var created = (item.createdAt && item.createdAt.seconds) ? item.createdAt.seconds : (now - 999999);
+  var ageHrs = Math.max(0.1, (now - created) / 3600);
+
+  var recency = 1 / Math.pow(ageHrs, 0.55);
+  var views = item.views || 0;
+  var favs  = item.favs || 0;
+  var engagement = Math.log(1 + views) + 2.2*Math.log(1 + favs);
+
+  var distBonus = 1;
+  if (userLat != null && userLng != null && item.lat != null && item.lng != null) {
+    var km = haversineKm(userLat, userLng, item.lat, item.lng);
+    distBonus = 1 / (1 + (km/25));
+  }
+  var vidBoost = item.videoUrl ? 1.15 : 1.0;
+  return recency * (1 + engagement) * distBonus * vidBoost;
+}
+
+function rankItemsTikTok(list) {
+  return list.slice().sort(function(a,b){ return itemScoreTikTok(b) - itemScoreTikTok(a); });
+}
+
+// Shorts autoplay/pause selon visibilité
+function setupShortsAutoplay() {
+  var root = document.getElementById('shorts-row');
+  if (!root) return;
+  var vids = root.querySelectorAll('video');
+  if (!vids.length) return;
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) { try { v.play(); } catch(err) {} }
+      else { try { v.pause(); } catch(err) {} }
+    });
+  }, { threshold: 0.6 });
+
+  vids.forEach(function(v){ v.preload = 'metadata'; io.observe(v); });
+}
