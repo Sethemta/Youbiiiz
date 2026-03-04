@@ -1124,6 +1124,18 @@ window.onVideoUpload = function(input) {
     var m = Math.floor(dur/60), s = dur%60;
     var badge = document.getElementById('vid-dur-badge');
     if (badge) badge.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+
+    // ✅ Auto pré-remplissage dès l'upload (fallback)
+    // On se place à ~0.2s pour garantir une frame disponible
+    try {
+      player.currentTime = Math.min(0.2, Math.max(0, (player.duration || 1) - 0.1));
+      player.onseeked = function() {
+        try { autoFillFromVideo(player, file && file.name ? file.name : ''); } catch(e) {}
+        player.onseeked = null;
+      };
+    } catch(e) {
+      try { autoFillFromVideo(player, file && file.name ? file.name : ''); } catch(err) {}
+    }
   };
 };
 
@@ -1321,24 +1333,54 @@ async function estimatePrice(q) {
   return { suggestedPrice: sp, low: Math.round(sp*0.9), high: Math.round(sp*1.1), source:'fallback', confidence:0.35 };
 }
 
+function guessTitleFromFilename(name) {
+  if (!name) return '';
+  // retire extension
+  var base = name.replace(/\.[a-z0-9]+$/i, '');
+  base = base.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  // évite les noms génériques de smartphone
+  if (/^(vid|video|img|dsc|clip|mov|pxl|gopr|untitled)\b/i.test(base)) return '';
+  return base;
+}
+
+function guessCategoryFromText(t) {
+  t = (t || '').toLowerCase();
+  if (!t) return '';
+  if (t.indexOf('iphone')>-1 || t.indexOf('samsung')>-1 || t.indexOf('xiaomi')>-1 || t.indexOf('pixel')>-1) return 'Téléphones & objets connectés';
+  if (t.indexOf('macbook')>-1 || t.indexOf('pc')>-1 || t.indexOf('laptop')>-1 || t.indexOf('ordinateur')>-1) return 'Ordinateurs';
+  if (t.indexOf('ps5')>-1 || t.indexOf('playstation')>-1 || t.indexOf('xbox')>-1 || t.indexOf('switch')>-1) return 'Consoles';
+  if (t.indexOf('dyson')>-1 || t.indexOf('aspir')>-1 || t.indexOf('lave')>-1) return 'Électroménager';
+  if (t.indexOf('rolex')>-1 || t.indexOf('montre')>-1) return 'Montres & Bijoux';
+  if (t.indexOf('velo')>-1 || t.indexOf('vélo')>-1) return 'Vélos';
+  if (t.indexOf('lego')>-1) return 'Jeux & Jouets';
+  if (t.indexOf('guit')>-1 || t.indexOf('yamaha')>-1) return 'Instruments de musique';
+  if (t.indexOf('canap')>-1 || t.indexOf('ikea')>-1) return 'Ameublement';
+  if (t.indexOf('jordan')>-1 || t.indexOf('nike')>-1 || t.indexOf('adidas')>-1 || t.indexOf('chauss')>-1) return 'Chaussures homme';
+  return '';
+}
+
 // Pipeline: vidéo → capture frame → (IA placeholder) → estimation prix → pré-remplit
-async function autoFillFromVideo(videoEl) {
+async function autoFillFromVideo(videoEl, fileName) {
   try {
     showToast('Analyse IA (fallback) en cours…');
 
     // On garde la capture pour plus tard (backend IA)
     captureVideoFrameBase64(videoEl, 0.78);
 
-    // On utilise le titre déjà tapé si présent
+    // Titre: si vide, on essaie de deviner depuis le nom du fichier
     var title = ((document.getElementById('pub-title') || {}).value || '').trim();
+    if (!title) title = guessTitleFromFilename(fileName);
+    if (!title) title = 'Objet à vendre';
+
     var cond = ((document.getElementById('pub-cond') || {}).value || '').trim();
     var cat  = ((document.getElementById('pub-cat') || {}).value || '').trim();
+    if (!cat) cat = guessCategoryFromText(title);
 
     var est = await estimatePrice({ title: title, category: cat, condition: cond });
     var txt = await aiGenerateListingText({ title: title, category: cat, condition: cond, price: est.suggestedPrice, lang: 'fr' });
 
-    if (title) setInputValueSafe('pub-title', txt.title || title);
-    if (cat) setInputValueSafe('pub-cat', txt.category || cat);
+    setInputValueSafe('pub-title', (txt.title || title));
+    if (cat) setInputValueSafe('pub-cat', (txt.category || cat));
     if (cond) setInputValueSafe('pub-cond', cond);
     if (est && est.suggestedPrice) setInputValueSafe('pub-price', String(est.suggestedPrice));
     setInputValueSafe('pub-desc', (txt.description || '').trim());
@@ -1353,8 +1395,27 @@ async function autoFillFromVideo(videoEl) {
 // Bouton IA dans la modale publish
 window.startQuickPublish = function() {
   var v = document.getElementById('vid-preview-player');
-  if (v) autoFillFromVideo(v);
-  else showToast('Ajoute une vidéo pour pré-remplir.', 'err');
+  if (!v) { showToast('Ajoute une vidéo pour pré-remplir.', 'err'); return; }
+
+  var name = (videoFile && videoFile.name) ? videoFile.name : '';
+
+  // Si la vidéo n'est pas encore prête, on attend le metadata puis on "seek" un peu
+  if (!v.videoWidth || !v.videoHeight) {
+    v.onloadedmetadata = function() {
+      try {
+        v.currentTime = Math.min(0.2, Math.max(0, (v.duration || 1) - 0.1));
+        v.onseeked = function() {
+          autoFillFromVideo(v, name);
+          v.onseeked = null;
+        };
+      } catch(e) {
+        autoFillFromVideo(v, name);
+      }
+    };
+    showToast('Préparation de la vidéo…');
+    return;
+  }
+  autoFillFromVideo(v, name);
 };
 
 // Feed TikTok-like: récence + engagement + distance + boost vidéo

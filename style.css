@@ -1185,12 +1185,12 @@ img { display: block; max-width: 100%; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1em;
-  height: 1em;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #ef4444;
   color: #fff;
-  font-size: 0.72em;
+  font-size: 16px;
   font-weight: 900;
   flex-shrink: 0;
   letter-spacing: 0;
