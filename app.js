@@ -13,6 +13,10 @@ var FB_CONFIG = {
   appId: "1:664733497216:web:ae19fbadf0fa509f59b365"
 };
 
+
+
+// ── Backend API (Firebase Functions) ──
+var API_BASE = "https://europe-west1-youbiiiz-app.cloudfunctions.net/api/api";
 // ── État global ──
 var auth, db;
 var me = null;
@@ -350,7 +354,7 @@ function renderFeed() {
   var empty = document.getElementById('empty-state');
   if (!feed) return;
 
-  var list = rankItemsTikTok(getFilteredItems());
+  var list = getFilteredItems();
   feed.innerHTML = '';
 
   if (!list.length) {
@@ -435,9 +439,6 @@ function renderShorts() {
 
     row.appendChild(card);
   });
-
-  // Autoplay/pause intelligent
-  setupShortsAutoplay();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1025,54 +1026,113 @@ function analyzePhoto(b64) {
   var progress = document.getElementById('ai-progress');
   var step     = document.getElementById('ai-step');
 
-  if (statusEl) statusEl.style.display = 'block';
-  if (pending) pending.style.display = 'block';
-  if (done) done.style.display = 'none';
+  function setStep(label, pct) {
+    if (statusEl) statusEl.style.display = 'block';
+    if (pending) pending.style.display = 'block';
+    if (done) done.style.display = 'none';
+    if (step) step.textContent = label || '';
+    if (progress) progress.style.width = (pct || 0) + '%';
+  }
 
-  var steps = ['Identification de l\'objet...', 'Estimation du prix...', 'Vérification de l\'état...', 'Génération de la description...'];
-  var pcts  = [20, 50, 75, 90];
-  var si = 0;
-  var interval = setInterval(function() {
-    if (si < steps.length) {
-      if (step) step.textContent = steps[si];
-      if (progress) progress.style.width = pcts[si] + '%';
-      si++;
-    }
-  }, 500);
-
-  fetch('https://analyzeimage-xjtnixfrra-uc.a.run.app', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ imageBase64: b64.split(',')[1], mimeType: 'image/jpeg' })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(d) {
-    clearInterval(interval);
+  function showDone() {
     if (progress) progress.style.width = '100%';
     if (pending) pending.style.display = 'none';
     if (done) done.style.display = 'block';
+  }
 
-    scanData = d;
-    if (d.title)       { var t = document.getElementById('pub-title'); if (t && !t.value) t.value = d.title; }
-    if (d.price)       { var p = document.getElementById('pub-price'); if (p && !p.value) p.value = d.price; }
-    if (d.description) { var desc = document.getElementById('pub-desc'); if (desc && !desc.value) desc.value = d.description; }
-    if (d.category) {
-      var sel = document.getElementById('pub-cat');
-      if (sel) for (var i = 0; i < sel.options.length; i++) {
-        if (sel.options[i].value === d.category) { sel.selectedIndex = i; break; }
+  function postJSON(url, body) {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body || {})
+    }).then(function(r) {
+      if (!r.ok) return r.text().then(function(t){ throw new Error(t || ('HTTP ' + r.status)); });
+      return r.json();
+    });
+  }
+
+  // 1) Detect (title/category/condition/brand/model)
+  setStep("Identification de l'objet...", 20);
+
+  postJSON(API_BASE + '/ai/detect', { image: b64 })
+    .then(function(det) {
+      scanData = det || {};
+      if (det && det.title) {
+        var t = document.getElementById('pub-title');
+        if (t && !t.value) t.value = det.title;
       }
-    }
-    if (d.condition) {
-      var cond = document.getElementById('pub-cond');
-      if (cond) for (var i = 0; i < cond.options.length; i++) {
-        if (cond.options[i].value === d.condition) { cond.selectedIndex = i; break; }
+      if (det && det.category) {
+        var sel = document.getElementById('pub-cat');
+        if (sel) for (var i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === det.category) { sel.selectedIndex = i; break; }
+        }
       }
-    }
-  })
-  .catch(function() {
-    clearInterval(interval);
-    if (pending) pending.style.display = 'none';
-  });
+      if (det && (det.conditionHint || det.condition)) {
+        var val = det.conditionHint || det.condition;
+        var cond = document.getElementById('pub-cond');
+        if (cond) for (var j = 0; j < cond.options.length; j++) {
+          if (cond.options[j].value === val) { cond.selectedIndex = j; break; }
+        }
+      }
+
+      // 2) Price estimate (needs at least title)
+      setStep("Estimation du prix...", 55);
+      var title = (document.getElementById('pub-title') || {}).value || det.title || '';
+      return postJSON(API_BASE + '/price/estimate', { title: title, category: det.category || '' })
+        .then(function(pe) { return { det: det, price: pe }; });
+    })
+    .then(function(obj) {
+      var pe = (obj || {}).price || {};
+      if (pe && pe.price) {
+        var p = document.getElementById('pub-price');
+        if (p && !p.value) p.value = pe.price;
+      }
+
+      // 3) Generate listing description
+      setStep("Génération de la description...", 85);
+
+      var title = (document.getElementById('pub-title') || {}).value || '';
+      var category = (document.getElementById('pub-cat') || {}).value || (obj.det || {}).category || '';
+      var condition = (document.getElementById('pub-cond') || {}).value || (obj.det || {}).conditionHint || '';
+      var priceVal = (document.getElementById('pub-price') || {}).value || '';
+
+      return postJSON(API_BASE + '/ai/generate-listing', {
+        title: title,
+        brand: (obj.det || {}).brand || '',
+        model: (obj.det || {}).model || '',
+        category: category,
+        condition: condition,
+        price: priceVal
+      });
+    })
+    .then(function(gen) {
+      if (gen) {
+        // If backend returns description or bullets
+        var desc = document.getElementById('pub-desc');
+        if (desc && !desc.value) {
+          if (gen.description) desc.value = gen.description;
+          else if (Array.isArray(gen.bullets) && gen.bullets.length) {
+            desc.value = gen.bullets.map(function(b){ return '• ' + b; }).join('\n');
+          }
+        }
+
+        // Update category if provided
+        if (gen.category) {
+          var sel = document.getElementById('pub-cat');
+          if (sel) for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === gen.category) { sel.selectedIndex = i; break; }
+          }
+        }
+      }
+      showDone();
+    })
+    .catch(function(err) {
+      console.error('AI analyze error:', err);
+      // hide pending but keep UI visible
+      if (pending) pending.style.display = 'none';
+      if (statusEl) statusEl.style.display = 'none';
+      toast("L'IA n'a pas pu analyser la photo. Réessaie avec une photo plus nette.", false);
+    });
 }
 
 // ── Photos supplémentaires ──
@@ -1113,28 +1173,45 @@ window.onVideoUpload = function(input) {
   if (!file) return;
   if (file.size > 500 * 1024 * 1024) { toast('Vidéo trop lourde (max 500 Mo)'); return; }
   videoFile = file;
+
   var url = URL.createObjectURL(file);
   var player = document.getElementById('vid-preview-player');
   player.src = url;
   player.load();
+
   document.getElementById('video-zone').style.display = 'none';
   document.getElementById('video-preview').style.display = 'block';
+
   player.onloadedmetadata = function() {
-    var dur = Math.round(player.duration);
+    var dur = Math.round(player.duration || 0);
     var m = Math.floor(dur/60), s = dur%60;
     var badge = document.getElementById('vid-dur-badge');
     if (badge) badge.textContent = m + ':' + (s < 10 ? '0' : '') + s;
 
-    // ✅ Auto pré-remplissage dès l'upload (fallback)
-    // On se place à ~0.2s pour garantir une frame disponible
+    // ✅ Si l’utilisateur n’a pas mis de photo principale, on extrait automatiquement une frame de la vidéo
+    // pour déclencher l’analyse IA (workflow "vidéo only").
+    if (!mainPhotoData) {
+      try {
+        // Aller à ~0.5s (ou au début si très courte)
+        player.currentTime = Math.min(0.5, Math.max(0, (player.duration || 1) - 0.1));
+      } catch (e) {}
+    }
+  };
+
+  // Quand on arrive sur la frame demandée, capture canvas -> dataURL -> processMainPhoto
+  player.onseeked = function() {
+    if (mainPhotoData) return;
     try {
-      player.currentTime = Math.min(0.2, Math.max(0, (player.duration || 1) - 0.1));
-      player.onseeked = function() {
-        try { autoFillFromVideo(player, file && file.name ? file.name : ''); } catch(e) {}
-        player.onseeked = null;
-      };
-    } catch(e) {
-      try { autoFillFromVideo(player, file && file.name ? file.name : ''); } catch(err) {}
+      var canvas = document.createElement('canvas');
+      canvas.width = player.videoWidth || 720;
+      canvas.height = player.videoHeight || 1280;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(player, 0, 0, canvas.width, canvas.height);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+      // Réutilise le pipeline existant (resize + preview + analyzePhoto)
+      processMainPhoto(dataUrl);
+    } catch (e) {
+      console.warn('Video frame capture failed', e);
     }
   };
 };
@@ -1260,212 +1337,3 @@ window.onerror = function(msg, src, line) {
 document.addEventListener('DOMContentLoaded', function() {
   initFirebase();
 });
-
-
-// ═══════════════════════════════════════════════════════════════
-// IA QUICK FILL + FEED TIKTOK + SHORTS AUTOPLAY (patch)
-// Objectif: que ça tourne immédiatement même sans backend IA
-// ═══════════════════════════════════════════════════════════════
-
-function showToast(msg, kind) {
-  var el = document.getElementById('toast');
-  if (!el) { alert(msg); return; }
-  el.className = kind ? kind : '';
-  el.textContent = msg;
-  el.style.display = 'block';
-  clearTimeout(window.__toastHide);
-  window.__toastHide = setTimeout(function(){ el.style.display = 'none'; }, 2600);
-}
-
-function setInputValueSafe(id, val) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.value = (val == null) ? '' : val;
-  try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch(e) {}
-  try { el.dispatchEvent(new Event('change', { bubbles: true })); } catch(e) {}
-}
-
-// Capture 1 frame d'une vidéo (<video>) en base64 JPEG (préparation IA)
-function captureVideoFrameBase64(videoEl, quality) {
-  quality = (typeof quality === 'number') ? quality : 0.82;
-  if (!videoEl || !videoEl.videoWidth || !videoEl.videoHeight) return null;
-  var c = document.createElement('canvas');
-  c.width = videoEl.videoWidth;
-  c.height = videoEl.videoHeight;
-  var ctx = c.getContext('2d');
-  ctx.drawImage(videoEl, 0, 0, c.width, c.height);
-  return c.toDataURL('image/jpeg', quality);
-}
-
-// ⚠️ Backend IA non fourni ici. Pour que ça tourne immédiatement,
-// on fait un fallback: on estime le prix depuis le titre existant (ou vide).
-async function aiDetectFromBase64Image(_dataUrl) {
-  // Placeholder: retourne une structure compatible sans planter
-  return { title:'', category:'', brand:'', model:'', conditionHint:'', confidence:0 };
-}
-
-async function aiGenerateListingText(payload) {
-  // Placeholder: si pas de backend, on renvoie un texte simple
-  var title = payload.title || '';
-  var condition = payload.condition || '';
-  var price = payload.price ? (payload.price + '€') : '';
-  var desc = '';
-  if (title) desc += title + (condition ? (' — ' + condition) : '') + (price ? (' — ' + price) : '') + '\n';
-  desc += '• Vendu en l\'état\n• Remise en main propre ou envoi possible\n• Paiement sécurisé recommandé';
-  return { title: title, description: desc, bullets: [], category: payload.category || '' };
-}
-
-async function estimatePrice(q) {
-  // Fallback local simple (améliorable)
-  var title = (q.title || '').toLowerCase();
-  var base = 50;
-  if (title.indexOf('iphone') > -1) base = 650;
-  if (title.indexOf('ps5') > -1 || title.indexOf('playstation 5') > -1) base = 420;
-  if (title.indexOf('macbook') > -1) base = 900;
-  if (title.indexOf('dyson') > -1) base = 250;
-  var cond = (q.condition || '').toLowerCase();
-  var m = 1;
-  if (cond.indexOf('neuf') > -1) m = 1.05;
-  else if (cond.indexOf('très bon') > -1) m = 1.00;
-  else if (cond.indexOf('bon') > -1) m = 0.9;
-  else if (cond.indexOf('correct') > -1) m = 0.8;
-  var sp = Math.max(5, Math.round(base * m));
-  return { suggestedPrice: sp, low: Math.round(sp*0.9), high: Math.round(sp*1.1), source:'fallback', confidence:0.35 };
-}
-
-function guessTitleFromFilename(name) {
-  if (!name) return '';
-  // retire extension
-  var base = name.replace(/\.[a-z0-9]+$/i, '');
-  base = base.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
-  // évite les noms génériques de smartphone
-  if (/^(vid|video|img|dsc|clip|mov|pxl|gopr|untitled)\b/i.test(base)) return '';
-  return base;
-}
-
-function guessCategoryFromText(t) {
-  t = (t || '').toLowerCase();
-  if (!t) return '';
-  if (t.indexOf('iphone')>-1 || t.indexOf('samsung')>-1 || t.indexOf('xiaomi')>-1 || t.indexOf('pixel')>-1) return 'Téléphones & objets connectés';
-  if (t.indexOf('macbook')>-1 || t.indexOf('pc')>-1 || t.indexOf('laptop')>-1 || t.indexOf('ordinateur')>-1) return 'Ordinateurs';
-  if (t.indexOf('ps5')>-1 || t.indexOf('playstation')>-1 || t.indexOf('xbox')>-1 || t.indexOf('switch')>-1) return 'Consoles';
-  if (t.indexOf('dyson')>-1 || t.indexOf('aspir')>-1 || t.indexOf('lave')>-1) return 'Électroménager';
-  if (t.indexOf('rolex')>-1 || t.indexOf('montre')>-1) return 'Montres & Bijoux';
-  if (t.indexOf('velo')>-1 || t.indexOf('vélo')>-1) return 'Vélos';
-  if (t.indexOf('lego')>-1) return 'Jeux & Jouets';
-  if (t.indexOf('guit')>-1 || t.indexOf('yamaha')>-1) return 'Instruments de musique';
-  if (t.indexOf('canap')>-1 || t.indexOf('ikea')>-1) return 'Ameublement';
-  if (t.indexOf('jordan')>-1 || t.indexOf('nike')>-1 || t.indexOf('adidas')>-1 || t.indexOf('chauss')>-1) return 'Chaussures homme';
-  return '';
-}
-
-// Pipeline: vidéo → capture frame → (IA placeholder) → estimation prix → pré-remplit
-async function autoFillFromVideo(videoEl, fileName) {
-  try {
-    showToast('Analyse IA (fallback) en cours…');
-
-    // On garde la capture pour plus tard (backend IA)
-    captureVideoFrameBase64(videoEl, 0.78);
-
-    // Titre: si vide, on essaie de deviner depuis le nom du fichier
-    var title = ((document.getElementById('pub-title') || {}).value || '').trim();
-    if (!title) title = guessTitleFromFilename(fileName);
-    if (!title) title = 'Objet à vendre';
-
-    var cond = ((document.getElementById('pub-cond') || {}).value || '').trim();
-    var cat  = ((document.getElementById('pub-cat') || {}).value || '').trim();
-    if (!cat) cat = guessCategoryFromText(title);
-
-    var est = await estimatePrice({ title: title, category: cat, condition: cond });
-    var txt = await aiGenerateListingText({ title: title, category: cat, condition: cond, price: est.suggestedPrice, lang: 'fr' });
-
-    setInputValueSafe('pub-title', (txt.title || title));
-    if (cat) setInputValueSafe('pub-cat', (txt.category || cat));
-    if (cond) setInputValueSafe('pub-cond', cond);
-    if (est && est.suggestedPrice) setInputValueSafe('pub-price', String(est.suggestedPrice));
-    setInputValueSafe('pub-desc', (txt.description || '').trim());
-
-    showToast('Annonce pré-remplie ✅', 'ok');
-  } catch (e) {
-    console.error(e);
-    showToast('Erreur IA : ' + (e.message || ''), 'err');
-  }
-}
-
-// Bouton IA dans la modale publish
-window.startQuickPublish = function() {
-  var v = document.getElementById('vid-preview-player');
-  if (!v) { showToast('Ajoute une vidéo pour pré-remplir.', 'err'); return; }
-
-  var name = (videoFile && videoFile.name) ? videoFile.name : '';
-
-  // Si la vidéo n'est pas encore prête, on attend le metadata puis on "seek" un peu
-  if (!v.videoWidth || !v.videoHeight) {
-    v.onloadedmetadata = function() {
-      try {
-        v.currentTime = Math.min(0.2, Math.max(0, (v.duration || 1) - 0.1));
-        v.onseeked = function() {
-          autoFillFromVideo(v, name);
-          v.onseeked = null;
-        };
-      } catch(e) {
-        autoFillFromVideo(v, name);
-      }
-    };
-    showToast('Préparation de la vidéo…');
-    return;
-  }
-  autoFillFromVideo(v, name);
-};
-
-// Feed TikTok-like: récence + engagement + distance + boost vidéo
-function haversineKm(lat1, lon1, lat2, lon2) {
-  function toRad(x){ return x * Math.PI / 180; }
-  var R = 6371;
-  var dLat = toRad(lat2-lat1);
-  var dLon = toRad(lon2-lon1);
-  var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(toRad(lat1))*Math.cos(toRad(lat2)) * Math.sin(dLon/2)*Math.sin(dLon/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
-}
-
-function itemScoreTikTok(item) {
-  var now = Date.now()/1000;
-  var created = (item.createdAt && item.createdAt.seconds) ? item.createdAt.seconds : (now - 999999);
-  var ageHrs = Math.max(0.1, (now - created) / 3600);
-
-  var recency = 1 / Math.pow(ageHrs, 0.55);
-  var views = item.views || 0;
-  var favs  = item.favs || 0;
-  var engagement = Math.log(1 + views) + 2.2*Math.log(1 + favs);
-
-  var distBonus = 1;
-  if (userLat != null && userLng != null && item.lat != null && item.lng != null) {
-    var km = haversineKm(userLat, userLng, item.lat, item.lng);
-    distBonus = 1 / (1 + (km/25));
-  }
-  var vidBoost = item.videoUrl ? 1.15 : 1.0;
-  return recency * (1 + engagement) * distBonus * vidBoost;
-}
-
-function rankItemsTikTok(list) {
-  return list.slice().sort(function(a,b){ return itemScoreTikTok(b) - itemScoreTikTok(a); });
-}
-
-// Shorts autoplay/pause selon visibilité
-function setupShortsAutoplay() {
-  var root = document.getElementById('shorts-row');
-  if (!root) return;
-  var vids = root.querySelectorAll('video');
-  if (!vids.length) return;
-
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      var v = e.target;
-      if (e.isIntersecting) { try { v.play(); } catch(err) {} }
-      else { try { v.pause(); } catch(err) {} }
-    });
-  }, { threshold: 0.6 });
-
-  vids.forEach(function(v){ v.preload = 'metadata'; io.observe(v); });
-}
