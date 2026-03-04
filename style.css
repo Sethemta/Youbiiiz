@@ -1167,3 +1167,32 @@ img { display: block; max-width: 100%; }
   .sl-scene { display: none; }
   .sl-auth { width: 100%; box-shadow: none; padding: 60px 28px; }
 }
+
+/* ══════════ YIABIZ LOGO ══════════ */
+.yia-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.yia-y, .yia-biz, .yia-lz { color: #fff; }
+.sl-auth .yia-y, .sl-auth .yia-biz, .sl-auth .yia-lz { color: #fff; }
+.yia-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+.sl-tagline { color: rgba(255,255,255,.5); font-size: 12px; font-weight: 600; margin-top: 6px; letter-spacing: .05em; }
